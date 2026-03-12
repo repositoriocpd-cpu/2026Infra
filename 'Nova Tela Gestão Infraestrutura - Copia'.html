@@ -9,10 +9,10 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @font-face {
             font-family: 'Alexandria-Light';
@@ -2542,64 +2542,91 @@
         });
 
         // --- PAYMENT PROCESS CONTROL LOGIC ---
+        const SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         let state = {
-            processes: JSON.parse(localStorage.getItem('processes')) || [],
-            suppliers: JSON.parse(localStorage.getItem('suppliers')) || [
-                'ANA DAS NEVES CAMPANHÃO',
-                'C TEIXEIRA 110 COMERCIO DE ALIMENTOS LTDA',
-                'COMERCIAL MILANO BRASIL LTDA',
-                'DANIEL CARDOSO DE OLIVEIRA',
-                'DISTRIBUIDORA BRAZLIMP LTDA',
-                'DISTRIBUIDORA LIMPOLI EIRELI - ME',
-                'EMPRESA SAP COMÉRCIO SERVIÇOS E DISTRIBUIÇÃO',
-                'ESKINA DO GÁS REVENDEDOR DE GÁS LTDA',
-                'GABRIEL QUEIROZ DA SILVA',
-                'GUARAILHA DISTRIBUIDORA DE ALIMENTOS LTDA',
-                'HERCÍLIA HARUMI IWANAGA',
-                'HERMAN DINALDO SOARES FERREIRA',
-                'INOVAR COMÉRCIO E SERVIÇO DE TERCEIRIZAÇÃO LTDA',
-                'ITAMED COMÉRCIO E ARQUITETURA LTDA (CLIMATIZADORES)',
-                'ITAMED COMÉRCIO E ARQUITETURA LTDA (MANUTENÇÃO)',
-                'JOSÉ EDUARDO DA SILVA MEDINA',
-                'LUMAR EMPREENDIMENTOS IMOBILIÁRIOS',
-                'LUZIA FUGIKO YOSHY PACHECO',
-                'MARCIO KOITY TAKENAKA',
-                'MARIA LAURENÇO MORITA',
-                'MÔNICA ASSIS DE ARAÚJO E SILVA',
-                'PAULO ROBERTO MONTEIRO DA SILVA',
-                'RG DISTRIBUIDORA, COMÉRCIO E SERVIÇOS LTDA',
-                'ROSA MARIA MENDES MARINS DO NASCIMENTO',
-                'SIBELLY TRANSPORTE LTDA (ALUGUEL)',
-                'SIBELLY TRANSPORTE LTDA (GESTÃO)',
-                'SOLANGE CANDIDA SOARES FERREIRA',
-                'WILLIAM SHIOSE ALVES MOREIRA',
-                'WILSON MASSALINO DE FREITAS'
-            ],
-            locations: JSON.parse(localStorage.getItem('locations')) || ['Secretaria', 'Gabinete', 'Finanças', 'Protocolo', 'Compras', 'Almoxarifado', 'Tesouraria', 'Nutrição'],
-            objects: JSON.parse(localStorage.getItem('objects')) || ['Compra de Material', 'Prestação de Serviço'],
-            statuses: JSON.parse(localStorage.getItem('statuses')) || ['Em Análise', 'Aguardando Assinatura', 'Concluído', 'Pendente'],
-            handlers: JSON.parse(localStorage.getItem('handlers')) || ['Gabinete', 'Infraestrutura', 'Administrativo'],
-            users: JSON.parse(localStorage.getItem('users')) || ['Admin', 'Operador'],
+            processes: [],
+            suppliers: [],
+            locations: [],
+            objects: [],
+            statuses: [],
+            handlers: [],
+            users: [],
             currentConfigType: ''
         };
 
         let statusChart, locationChart;
 
-        function initApp() {
-            updateSelects();
-            updateDashboardCounters();
-            renderProcessTable();
+        async function initApp() {
+            try {
+                // Fetch all data concurrently
+                const [
+                    { data: suppliers },
+                    { data: locations },
+                    { data: objects },
+                    { data: statuses },
+                    { data: handlers },
+                    { data: users },
+                    { data: processes }
+                ] = await Promise.all([
+                    supabase.from('suppliers').select('name').order('name'),
+                    supabase.from('locations').select('name').order('name'),
+                    supabase.from('objects').select('name').order('name'),
+                    supabase.from('statuses').select('name').order('name'),
+                    supabase.from('handlers').select('name').order('name'),
+                    supabase.from('users').select('name').order('name'),
+                    supabase.from('processes').select('*, process_history(*)').order('created_at', { ascending: false })
+                ]);
+
+                // Map data to the state array format
+                state.suppliers = suppliers?.map(s => s.name) || [];
+                state.locations = locations?.map(l => l.name) || [];
+                state.objects = objects?.map(o => o.name) || [];
+                state.statuses = statuses?.map(s => s.name) || [];
+                state.handlers = handlers?.map(h => h.name) || [];
+                state.users = users?.map(u => u.name) || [];
+                
+                // Map processes to match the existing camelCase structure
+                state.processes = processes?.map(p => ({
+                    id: p.id,
+                    ppNumber: p.pp_number,
+                    exerciseYear: p.exercise_year,
+                    ppAno: p.pp_ano,
+                    coverValue: p.cover_value,
+                    supplier: p.supplier_name,
+                    object: p.object_name,
+                    openingDate: p.opening_date,
+                    deadline: p.deadline,
+                    treatedBy: p.treated_by,
+                    status: p.status,
+                    location: p.location,
+                    locationDate: p.location_date,
+                    situation: p.situation,
+                    notes: p.notes,
+                    history: p.process_history?.map(h => ({
+                        date: h.history_date,
+                        from: h.location_from,
+                        to: h.location_to,
+                        msg: h.message
+                    })) || []
+                })) || [];
+
+                updateSelects();
+                updateDashboardCounters();
+                renderProcessTable();
+            } catch (error) {
+                console.error("Error initializing app from Supabase:", error);
+                alert("Erro ao conectar com o banco de dados.");
+            }
         }
         window.addEventListener('load', initApp);
 
-        function saveData() {
-            localStorage.setItem('processes', JSON.stringify(state.processes));
-            localStorage.setItem('suppliers', JSON.stringify(state.suppliers));
-            localStorage.setItem('locations', JSON.stringify(state.locations));
-            localStorage.setItem('objects', JSON.stringify(state.objects));
-            localStorage.setItem('statuses', JSON.stringify(state.statuses));
-            localStorage.setItem('handlers', JSON.stringify(state.handlers));
-            localStorage.setItem('users', JSON.stringify(state.users));
+        async function saveData() {
+            // saveData will be replaced by specific remote saving logic
+            // keeping this as a no-op fallback to prevent errors during transition
+            console.log("saveData called (Local logic disabled)");
         }
 
         function showSection(sectionId) {
@@ -2770,7 +2797,7 @@
             });
         }
 
-        function launchManualUpdate() {
+        async function launchManualUpdate() {
             const input = document.getElementById('newManualUpdate');
             const message = input.value.trim();
             if (!message) return;
@@ -2782,11 +2809,22 @@
             };
 
             if (id) {
-                const idx = state.processes.findIndex(p => p.id === id);
-                if (idx !== -1) {
-                    state.processes[idx].history.push(update);
-                    renderModalHistory(state.processes[idx].history);
-                    saveData();
+                try {
+                    const { error } = await supabase.from('process_history').insert({
+                        process_id: id,
+                        history_date: update.date,
+                        message: message
+                    });
+                    if (error) throw error;
+
+                    const idx = state.processes.findIndex(p => p.id === id);
+                    if (idx !== -1) {
+                        state.processes[idx].history.push(update);
+                        renderModalHistory(state.processes[idx].history);
+                    }
+                } catch(e) {
+                    console.error(e);
+                    alert("Erro ao salvar atualização no banco.");
                 }
             } else {
                 // For new processes, we store in a temporary property on the form or global
@@ -2844,47 +2882,68 @@
 
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        document.getElementById('processForm').onsubmit = (e) => {
+        document.getElementById('processForm').onsubmit = async (e) => {
             e.preventDefault();
             const id = document.getElementById('processId').value;
-            const data = {
-                ppNumber: document.getElementById('ppNumber').value,
-                exerciseYear: document.getElementById('exerciseYear').value,
-                ppAno: document.getElementById('ppAno').value,
-                coverValue: document.getElementById('coverValue').value,
-                supplier: document.getElementById('supplierSelect').value,
-                object: document.getElementById('objectSelect').value,
-                openingDate: document.getElementById('openingDate').value,
+            const dataBase = {
+                pp_number: document.getElementById('ppNumber').value,
+                exercise_year: document.getElementById('exerciseYear').value,
+                pp_ano: document.getElementById('ppAno').value,
+                cover_value: document.getElementById('coverValue').value,
+                supplier_name: document.getElementById('supplierSelect').value,
+                object_name: document.getElementById('objectSelect').value,
+                opening_date: document.getElementById('openingDate').value,
                 deadline: document.getElementById('deadline').value,
-                treatedBy: document.getElementById('treatedBy').value,
+                treated_by: document.getElementById('treatedBy').value,
                 status: document.getElementById('statusSelect').value,
                 location: document.getElementById('locationSelect').value,
-                locationDate: document.getElementById('locationDate').value,
+                location_date: document.getElementById('locationDate').value,
                 situation: document.getElementById('situation').value,
                 notes: document.getElementById('notes').value
             };
 
-            if (id) {
-                const idx = state.processes.findIndex(p => p.id === id);
-                if (state.processes[idx].location !== data.location) {
-                    state.processes[idx].history.push({ 
-                        date: new Date().toLocaleString(),
-                        from: state.processes[idx].location, 
-                        to: data.location
-                    });
+            const btn = document.querySelector('#processForm button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = 'Salvando...';
+            btn.disabled = true;
+
+            try {
+                if (id) {
+                    const idx = state.processes.findIndex(p => p.id === id);
+                    const oldLoc = state.processes[idx].location;
+
+                    const { error } = await supabase.from('processes').update(dataBase).eq('id', id);
+                    if (error) throw error;
+
+                    if (oldLoc !== dataBase.location) {
+                        await supabase.from('process_history').insert({ 
+                            process_id: id,
+                            history_date: new Date().toLocaleString(),
+                            location_from: oldLoc, 
+                            location_to: dataBase.location
+                        });
+                    }
+                } else {
+                    const { data: newProc, error } = await supabase.from('processes').insert(dataBase).select().single();
+                    if (error) throw error;
+
+                    const newHistories = [
+                        { process_id: newProc.id, history_date: new Date().toLocaleString(), location_from: 'Início', location_to: dataBase.location },
+                        ...(window._tempHistory || []).map(h => ({ process_id: newProc.id, history_date: h.date, message: h.message }))
+                    ];
+                    
+                    await supabase.from('process_history').insert(newHistories);
                 }
-                state.processes[idx] = { ...state.processes[idx], ...data };
-            } else {
-                state.processes.push({
-                    id: Date.now().toString(),
-                    ...data,
-                    history: [
-                        { date: new Date().toLocaleString(), from: 'Início', to: data.location },
-                        ...(window._tempHistory || [])
-                    ]
-                });
+                
+                await initApp();
+                closeModal('processControlModal');
+            } catch(error) {
+                console.error(error);
+                alert("Erro ao salvar o processo no banco de dados.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
             }
-            saveData(); initApp(); closeModal('processControlModal');
         };
 
         function showHistory(process) {
@@ -2949,21 +3008,42 @@
             document.getElementById('configInputLabel').innerText = inputLabel[state.currentConfigType] || 'Novo Item';
         }
 
-        function saveConfigItem() {
+        async function saveConfigItem() {
+            const table = state.currentConfigType;
             const val = document.getElementById('configInput').value.trim();
             if (val) {
-                state[state.currentConfigType].push(val);
-                document.getElementById('configInput').value = '';
-                saveData(); renderConfigList(); updateSelects();
+                try {
+                    const { error } = await supabase.from(table).insert({ name: val });
+                    if (error) throw error;
+                    
+                    state[table].push(val);
+                    document.getElementById('configInput').value = '';
+                    renderConfigList(); 
+                    updateSelects();
+                } catch(e) {
+                    console.error(e);
+                    alert(`Erro ao adicionar item em ${table}.`);
+                }
             }
         }
 
-        function deleteConfigItem(idx) {
-            state[state.currentConfigType].splice(idx, 1);
-            saveData(); renderConfigList(); updateSelects();
+        async function deleteConfigItem(idx) {
+            const table = state.currentConfigType;
+            const nameToDelete = state[table][idx];
+            try {
+                const { error } = await supabase.from(table).delete().eq('name', nameToDelete);
+                if (error) throw error;
+
+                state[table].splice(idx, 1);
+                renderConfigList(); 
+                updateSelects();
+            } catch(e) {
+                console.error(e);
+                alert(`Erro ao remover item de ${table}.`);
+            }
         }
 
-        function quickAddConfig(type) {
+        async function quickAddConfig(type) {
             const labels = { suppliers: 'Fornecedor', locations: 'Localização', objects: 'Objeto', statuses: 'Status', handlers: 'Tratador' };
             const val = prompt(`Digite o novo ${labels[type]}:`);
             if (val && val.trim()) {
@@ -2972,23 +3052,39 @@
                     alert('Este item já existe.');
                     return;
                 }
-                state[type].push(trimmed);
-                saveData();
-                updateSelects();
-                const selectId = type === 'suppliers' ? 'supplierSelect' : 
-                                 type === 'objects' ? 'objectSelect' : 
-                                 type === 'locations' ? 'locationSelect' : 
-                                 type === 'handlers' ? 'treatedBy' : 'statusSelect';
-                document.getElementById(selectId).value = trimmed;
+                
+                try {
+                    const { error } = await supabase.from(type).insert({ name: trimmed });
+                    if (error) throw error;
+
+                    state[type].push(trimmed);
+                    updateSelects();
+                    
+                    const selectId = type === 'suppliers' ? 'supplierSelect' : 
+                                     type === 'objects' ? 'objectSelect' : 
+                                     type === 'locations' ? 'locationSelect' : 
+                                     type === 'handlers' ? 'treatedBy' : 'statusSelect';
+                    document.getElementById(selectId).value = trimmed;
+                } catch(e) {
+                    console.error(e);
+                    alert(`Erro ao adicionar ${labels[type]}.`);
+                }
             }
         }
 
-        function deleteProcess(id) {
+        async function deleteProcess(id) {
             if (confirm('Tem certeza que deseja excluir este processo?')) {
-                state.processes = state.processes.filter(p => p.id !== id);
-                saveData();
-                renderProcessTable();
-                updateDashboardCounters();
+                try {
+                    const { error } = await supabase.from('processes').delete().eq('id', id);
+                    if (error) throw error;
+                    
+                    state.processes = state.processes.filter(p => p.id !== id);
+                    renderProcessTable();
+                    updateDashboardCounters();
+                } catch(error) {
+                    console.error(error);
+                    alert("Erro ao excluir processo do banco de dados.");
+                }
             }
         }
 
