@@ -1,0 +1,3167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel SESMEC- Infra</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'Alexandria-Light';
+            src: url('Alexandria-Light.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --govbr-blue: #005A9C;
+            --govbr-blue-dark: #071d41;
+            --govbr-light-gray: #f2f2f2;
+            --text-color: #333;
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Alexandria-Light', sans-serif;
+            margin: 0;
+            background-color: var(--govbr-light-gray);
+            color: var(--text-color);
+            font-weight: 300;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .govbr-header {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            border-bottom: 1px solid #333;
+        }
+
+        body.dark-mode .header-top {
+            border-bottom-color: #333;
+        }
+
+        body.dark-mode .logo-separator,
+        body.dark-mode .actions-separator {
+            background-color: #333;
+        }
+
+        body.dark-mode .state-name {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .header-actions a,
+        body.dark-mode .menu-icon,
+        body.dark-mode .department-info a {
+            color: #a9d1ff;
+        }
+
+        body.dark-mode .header-actions a.header-link {
+            color: #a9d1ff;
+        }
+
+        body.dark-mode .department-info span {
+            margin: 0 0.5rem;
+            color: #333;
+        }
+
+        body.dark-mode .user-info span[contenteditable="true"]:focus {
+            background-color: #444;
+            color: #fff;
+        }
+
+        body.dark-mode .stat-card {
+            background-color: #1e1e1e;
+            border-color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .stat-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            background-color: #2a2a2a;
+        }
+
+        body.dark-mode .stat-card h3 {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .stat-card .stat-number {
+            color: #66b3ff;
+        }
+
+        body.dark-mode .side-menu {
+            background-color: #1e1e1e;
+        }
+
+        body.dark-mode .side-menu-header {
+            border-bottom-color: #333;
+        }
+
+        body.dark-mode .side-menu li a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .side-menu li a .fas {
+            color: #66b3ff;
+        }
+
+        body.dark-mode .side-menu li a:hover {
+            background-color: #333;
+            color: #66b3ff;
+            border-left-color: #66b3ff;
+        }
+
+        body.dark-mode .overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        body.dark-mode .modal-content {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .modal-content .close-button {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .modal-content a {
+            color: #66b3ff;
+        }
+
+        body.dark-mode .slider-title {
+            color: #66b3ff;
+        }
+
+        body.dark-mode .swiper-slide {
+            background-color: #1e1e1e;
+            border-color: #333;
+        }
+
+        body.dark-mode .swiper-slide a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .slide-caption {
+            background-color: #1e1e1e;
+        }
+
+        body.dark-mode .swiper-button-next,
+        body.dark-mode .swiper-button-prev {
+            color: #66b3ff !important;
+        }
+
+        body.dark-mode .swiper-pagination-bullet-active {
+            background: #66b3ff !important;
+        }
+
+        /* Responsive visibility helpers */
+        .hide-on-small,
+        .hide-on-medium,
+        .hide-on-very-small {
+            display: none !important;
+        }
+
+        .show-on-small,
+        .show-on-medium,
+        .show-on-very-small {
+            display: inline !important;
+        }
+
+        @media (max-width: 360px) {
+            .hide-on-very-small {
+                display: none !important;
+            }
+
+            .show-on-very-small {
+                display: inline !important;
+            }
+
+            /* Hide specific icons on very small screens */
+            .header-actions a[title="Transparência"],
+            .header-actions a[aria-label="Modo noturno"],
+            .header-actions a[aria-label="Acessibilidade"],
+            .header-actions a[aria-label="Menu de aplicativos"],
+            .header-actions a[aria-label="Comentários"] {
+                display: none !important;
+            }
+        }
+
+        @media (min-width: 400px) and (max-width: 600px) {
+            .hide-on-small {
+                display: inline !important;
+            }
+
+            .show-on-small {
+                display: none !important;
+            }
+
+            .hide-on-medium {
+                display: none !important;
+            }
+
+            .show-on-medium {
+                display: inline !important;
+            }
+        }
+
+        @media (min-width: 600px) {
+
+            .hide-on-small,
+            .hide-on-medium {
+                display: inline !important;
+            }
+
+            .show-on-small,
+            .show-on-medium {
+                display: none !important;
+            }
+        }
+
+        .govbr-header {
+            background-color: white;
+            color: var(--text-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (min-width: 768px) {
+            .header-top {
+                padding: 0.75rem 2rem;
+            }
+        }
+
+        .header-logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-logo {
+            height: 20px;
+        }
+
+        .logo-box {
+            display: none;
+            /* Hide old logo box */
+        }
+
+        .logo-separator {
+            width: 1px;
+            height: 24px;
+            background-color: var(--border-color);
+        }
+
+        .state-name {
+            font-size: 1.1rem;
+            color: #333333;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .header-actions a {
+            color: var(--govbr-blue);
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        .header-actions a.header-link {
+            font-size: 1rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-actions a.header-link i {
+            display: none;
+        }
+
+        @media (max-width: 400px) {
+            .header-actions a.header-link span {
+                display: none !important;
+            }
+
+            .header-actions a.header-link i {
+                display: inline !important;
+            }
+
+            .actions-separator {
+                margin: 0;
+            }
+        }
+
+        #dark-mode-toggle,
+        #accessibility-toggle {
+            color: #1452b5;
+        }
+
+        .actions-separator {
+            width: 1px;
+            height: 16px;
+            background-color: var(--border-color);
+            margin: 0 -0.5rem;
+        }
+
+        .header-bottom {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            gap: 1rem;
+        }
+
+        .menu-icon {
+            color: var(--govbr-blue);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .department-info {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        @media (min-width: 600px) {
+            .department-info {
+                font-size: 1rem;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .department-info {
+                font-size: 1.1rem;
+            }
+        }
+
+        .department-info a {
+            color: var(--govbr-blue);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .department-info a:hover {
+            text-decoration: underline;
+        }
+
+        .department-info a[contenteditable="true"]:focus {
+            outline: none;
+            background-color: #eef3fc;
+            box-shadow: 0 0 2px 1px var(--govbr-blue);
+            border-radius: 4px;
+            padding: 0 4px;
+            text-decoration: none;
+        }
+
+        .department-info span {
+            margin: 0 0.5rem;
+            color: var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-info .fa-user-circle {
+            font-size: 1.5rem;
+            color: var(--govbr-blue);
+        }
+
+        .user-info span[contenteditable="true"]:focus {
+            outline: none;
+            background-color: #eef3fc;
+            box-shadow: 0 0 2px 1px var(--govbr-blue);
+            border-radius: 4px;
+            padding: 0 4px;
+        }
+
+        .header-sign-in {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 100;
+        }
+
+        .user-info:hover .header-sign-in {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-sign-in ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .header-sign-in li a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .header-sign-in li a:hover {
+            background-color: var(--govbr-light-gray);
+            color: var(--govbr-blue);
+        }
+
+        .header-sign-in li a .fas {
+            width: 16px;
+            text-align: center;
+            color: var(--govbr-blue);
+        }
+
+        body.dark-mode .header-sign-in {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+        }
+
+        body.dark-mode .header-sign-in li a {
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .header-sign-in li a:hover {
+            background-color: #333;
+            color: #66b3ff;
+        }
+
+        .header-content h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 300;
+        }
+
+        .header-content h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .container {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.75rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .header-actions a.header-link span {
+                display: none !important;
+            }
+
+            .header-actions a.header-link i {
+                display: inline !important;
+            }
+
+            .actions-separator {
+                margin: 0;
+            }
+
+            .stat-card {
+                min-width: 0;
+                /* Allow cards to shrink properly */
+                padding: 1rem;
+            }
+
+            .stat-card .stat-number {
+                font-size: 1.8rem;
+                /* Slightly smaller font for mobile */
+                margin-bottom: 0.25rem;
+            }
+
+            .stat-card h3 {
+                font-size: 0.9rem;
+                /* Smaller heading for mobile */
+                margin: 0;
+            }
+        }
+
+        @media (min-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .container {
+                padding: 2rem;
+            }
+        }
+
+        /* Slider Section */
+        .slider-title {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--govbr-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .swiper {
+            width: 100%;
+            padding-bottom: 3rem;
+            /* Space for pagination */
+        }
+
+        .swiper-slide {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .swiper-slide a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .swiper-slide:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .slide-caption {
+            padding: 1rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-align: left;
+            flex-grow: 1;
+            background-color: white;
+        }
+
+        .slide-caption h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--govbr-blue);
+            font-size: 1.1rem;
+        }
+
+        .slide-caption p {
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--govbr-blue) !important;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: var(--govbr-blue) !important;
+        }
+
+        body.dark-mode .stat-card .stat-number[contenteditable="true"]:focus,
+        body.dark-mode .stat-card h3[contenteditable="true"]:focus {
+            background-color: #444;
+            color: #fff;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .stat-card[data-edited="true"]:hover {
+            transform: none;
+            box-shadow: var(--card-shadow);
+            background-color: white;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            background-color: #d9e3f3;
+        }
+
+        .stat-card .stat-number[contenteditable="true"]:focus,
+        .stat-card h3[contenteditable="true"]:focus {
+            outline: none;
+            background-color: #eef3fc;
+            box-shadow: 0 0 2px 1px var(--govbr-blue);
+            border-radius: 4px;
+            padding: 2px 4px;
+            margin: -2px -4px;
+        }
+
+        .stat-card {
+            position: relative;
+        }
+
+        .stat-card {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .stat-card .tooltip {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--govbr-blue-dark);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            font-size: 0.9rem;
+            font-weight: normal;
+            pointer-events: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--govbr-blue-dark) transparent transparent transparent;
+        }
+
+        .stat-card:hover .tooltip,
+        .stat-card:focus .tooltip,
+        .stat-card:focus-within .tooltip {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        body.dark-mode .stat-card .tooltip {
+            background-color: #1a3a6e;
+            color: #ffffff;
+        }
+
+        body.dark-mode .stat-card .tooltip::after {
+            border-color: #1a3a6e transparent transparent transparent;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            font-weight: 400;
+        }
+
+        .stat-card .stat-number {
+            margin: 0 0 0.5rem 0;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: var(--govbr-blue);
+        }
+
+        /* Side Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 85%;
+            max-width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .side-menu {
+                width: 300px;
+            }
+        }
+
+        .side-menu.open {
+            transform: translateX(0);
+        }
+
+        .side-menu-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--govbr-blue);
+            width: 100%;
+            max-width: 380px;
+            box-sizing: border-box;
+        }
+
+        .side-menu-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .side-menu ul {
+            list-style: none;
+            padding: 1rem 0;
+            margin: 0;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .side-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.8rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .side-menu li a:hover {
+            background-color: var(--govbr-light-gray);
+            color: var(--govbr-blue);
+            border-left-color: var(--govbr-blue);
+        }
+
+        .side-menu li .submenu {
+            position: fixed;
+            left: 300px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #f2f2f2;
+            /* cor submenu*/
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1001;
+            display: none;
+        }
+
+        body.dark-mode .side-menu li .submenu {
+            background-color: #1e1e1e;
+        }
+
+        .side-menu li .submenu.open {
+            transform: translateX(0);
+            display: block;
+        }
+
+        .side-menu li .submenu ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        .side-menu li .submenu li a {
+            padding-left: 1.5rem;
+        }
+
+        .has-submenu {
+            position: relative;
+        }
+
+        .has-submenu::after {
+            content: "\f054";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            right: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .has-submenu.active::after {
+            transform: rotate(90deg);
+        }
+
+        .side-menu li a .fas {
+            width: 20px;
+            text-align: center;
+            color: var(--govbr-blue);
+        }
+
+        .not-working-icon {
+            margin-left: 5px;
+            position: relative;
+        }
+
+        .not-working-icon .fa-exclamation-triangle {
+            font-size: 0.8em;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Accessibility Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1001;
+            /* Higher than overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .modal.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h1,
+        .modal-content h2,
+        .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--govbr-blue);
+        }
+
+        .modal-content h1 {
+            font-size: 1.8rem;
+        }
+
+        .modal-content h2 {
+            font-size: 1.5rem;
+        }
+
+        .modal-content h3 {
+            font-size: 1.2rem;
+        }
+
+        .modal-content p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content a {
+            color: var(--govbr-blue);
+            font-weight: bold;
+        }
+
+        .modal-content .last-updated {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .cookie-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cookie-controls h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        body.dark-mode .cookie-controls h3 {
+            color: #e0e0e0;
+        }
+
+        .cookie-category {
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 0;
+        }
+
+        body.dark-mode .cookie-category {
+            border-top-color: #333;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-header h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+
+        body.dark-mode .category-header h4 {
+            color: #e0e0e0;
+        }
+
+        .category-header span {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--govbr-blue);
+        }
+
+        body.dark-mode .category-header span {
+            color: #66b3ff;
+        }
+
+        .deselect-all,
+        .deselect-class {
+            background: none;
+            border: 1px solid var(--govbr-blue);
+            color: var(--govbr-blue);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        body.dark-mode .deselect-all,
+        body.dark-mode .deselect-class {
+            border-color: #66b3ff;
+            color: #66b3ff;
+        }
+
+        .cookie-modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        body.dark-mode .cookie-modal-footer {
+            border-top-color: #333;
+        }
+
+        .cookie-modal-footer a {
+            font-weight: normal;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Footer */
+        .govbr-footer {
+            background-color: var(--govbr-blue-dark);
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .footer-container {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .footer-container p {
+            margin: 0.4rem 0;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Additional styles for Process Table */
+        .table-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            margin-top: 1rem;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 1rem;
+            flex-grow: 1;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.2s;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: var(--govbr-blue);
+            color: white;
+        }
+
+        .btn-success {
+            background: #188038;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #d93025;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f9ab00;
+            color: white;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Modal Ported Styles */
+        .process-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .process-modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 95vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #E5E7EB;
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .modal-header-info h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
+        .modal-header-info p {
+            font-size: 0.875rem;
+            color: #6B7280;
+            margin: 0.25rem 0 0 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #9CA3AF;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #374151;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-footer {
+            padding: 1.25rem 2rem;
+            border-top: 1px solid #E5E7EB;
+            background: #F9FAFB;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #1452B5;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #F3F4F6;
+            padding-bottom: 0.75rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem 2.5rem;
+        }
+
+        .form-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem 2.5rem;
+        }
+
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        /* Modal Internal Timeline */
+        .modal-timeline {
+            margin-top: 1.5rem;
+            max-height: 250px;
+            overflow-y: auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .modal-timeline-item {
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 0.8125rem;
+        }
+
+        .modal-timeline-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .modal-timeline-date {
+            font-weight: 700;
+            color: #1452B5;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .modal-timeline-content {
+            color: #4b5563;
+            line-height: 1.4;
+        }
+
+        /* Full History Timeline */
+        .history-container {
+            padding: 1.5rem;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 2rem;
+            border-left: 2px solid #e2e8f0;
+        }
+
+        .history-item:last-child {
+            border-left-color: transparent;
+            padding-bottom: 0;
+        }
+
+        .history-node {
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #1452B5;
+            z-index: 2;
+        }
+
+        .history-item.movement .history-node {
+            border-color: #1452B5;
+            background: #eff6ff;
+        }
+
+        .history-item.log .history-node {
+            border-color: #059669;
+            background: #ecfdf5;
+        }
+
+        .history-date {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .history-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .history-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .history-details {
+            font-size: 0.8125rem;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .history-badge {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .badge-movement { background: #dbeafe; color: #1e40af; }
+        .badge-log { background: #d1fae5; color: #065f46; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.625rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            background-color: #FFFFFF;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            color: #111827;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #1452B5;
+            box-shadow: 0 0 0 3px rgba(20, 82, 181, 0.1);
+        }
+
+        .form-control[readonly] {
+            background-color: #F3F4F6;
+            color: #6B7280;
+            cursor: not-allowed;
+            border-style: solid;
+        }
+
+        .select-with-btn {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-quick-add {
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #E5E7EB;
+            color: #374151;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-quick-add:hover {
+            background-color: #D1D5DB;
+            color: #111827;
+        }
+
+        .btn-action {
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: #374151;
+            border: 1px solid #D1D5DB;
+        }
+
+        .btn-secondary:hover {
+            background-color: #F9FAFB;
+            border-color: #9CA3AF;
+        }
+
+        .btn-primary-new {
+            background-color: #1452B5;
+            color: #FFFFFF;
+        }
+
+        .btn-primary-new:hover {
+            background-color: #104191;
+        }
+
+        /* Dark Mode Adjustments */
+        body.dark-mode .process-modal-content {
+            background-color: #1E293B;
+            border-color: #334155;
+        }
+
+        body.dark-mode .modal-header,
+        body.dark-mode .modal-footer {
+            border-color: #334155;
+            background-color: #0F172A;
+        }
+
+        body.dark-mode .modal-header-info h2 { color: #F1F5F9; }
+        body.dark-mode .modal-header-info p { color: #94A3B8; }
+
+        body.dark-mode .form-section-title {
+            color: #60A5FA;
+            border-color: #1E293B;
+        }
+
+        body.dark-mode .form-group label { color: #CBD5E1; }
+
+        body.dark-mode .form-control {
+            background-color: #0F172A;
+            border-color: #334155;
+            color: #F1F5F9;
+        }
+
+        body.dark-mode .form-control[readonly] {
+            background-color: #1E293B;
+            color: #64748B;
+        }
+
+        body.dark-mode .btn-quick-add {
+            background-color: #334155;
+            color: #F1F5F9;
+        }
+
+        body.dark-mode .btn-secondary {
+            background-color: #0F172A;
+            border-color: #334155;
+            color: #CBD5E1;
+        }
+
+        /* Timeline (Reduzido e Moderno) */
+        .timeline {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .timeline-item {
+            padding: 1rem 0 1rem 2rem;
+            border-left: 2px solid #1452B5;
+            position: relative;
+            font-size: 0.875rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: #1452B5;
+            border-radius: 50%;
+            position: absolute;
+            left: -6px;
+            top: 1.25rem;
+        }
+
+        /* General Dark Mode Enhancements */
+        body.dark-mode .table-container {
+            background-color: #1E293B;
+            border-color: #334155;
+            color: #F1F5F9;
+        }
+
+        body.dark-mode th {
+            background-color: #0F172A;
+            color: #94A3B8;
+            border-bottom-color: #334155;
+        }
+
+        body.dark-mode td {
+            border-bottom-color: #334155;
+            color: #CBD5E1;
+        }
+
+        body.dark-mode .stats-grid .stat-card {
+            background-color: #1E293B;
+            border-color: #334155;
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="side-menu" class="side-menu">
+        <div class="side-menu-header">
+            <h3>Painel SESME-C</h3>
+        </div>
+        <ul>
+            <li>
+                <a href="#" class="has-submenu"><i class="fas fa-plus-square"></i> Lançamentos</a>
+                <div class="submenu">
+                    <ul>
+                        <li><a href="#" onclick="showSection('processes')"><i class="fas fa-sign-in-alt"></i>Novo
+                                Processo</a></li>
+
+
+
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+
+            <li>
+                <a href="#" class="has-submenu"><i class="fas fa-cog"></i> Configurações</a>
+                <div class="submenu">
+                    <ul>
+                        <li><a href="#" onclick="openConfigModal('users')"><i class="fas fa-user-plus"></i> Cadastro de
+                                Usuários </a></li>
+                        <li><a href="#" onclick="openConfigModal('suppliers')"><i class="fas fa-truck"></i> Cadastro de
+                                Fornecedores</a></li>
+                        <li><a href="#" onclick="openConfigModal('objects')"><i class="fas fa-boxes"></i> Cadastro de
+                                Objetos</a></li>
+                        <li><a href="#" onclick="openConfigModal('locations')"><i class="fas fa-map-marker-alt"></i>
+                                Cadastro de Localização</a></li>
+                        <li><a href="#" onclick="openConfigModal('statuses')"><i class="fas fa-tasks"></i> Cadastro de
+                                Status</a></li>
+                        <li><a href="#" onclick="openConfigModal('handlers')"><i class="fas fa-user-cog"></i> Cadastro de
+                                Tratadores</a></li>
+                    </ul>
+                </div>
+            </li>
+
+
+
+            </div>
+            </li>
+
+
+
+
+            <hr style="border: 1px solid gray; margin-bottom:5px;">
+            <li>
+
+            <li>
+                <a href="#" class="has-submenu"><i class="fas fa-arrow-up-right-from-square"></i> Links Externo</a>
+                <div class="submenu">
+                    <ul>
+                        <li><a href="https://servicos.acesso.gov.br/"><i class="fas fa-globe"></i> GOVBR</a></li>
+                        <li><a href="https://novoportal.itaguai.rj.gov.br/"><i class="fas fa-city"></i> PMI</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <div id="overlay" class="overlay"></div>
+
+    <header class="govbr-header">
+        <div class="header-top">
+            <div class="header-logo-area">
+                <img class="header-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo25.png"
+                    alt="Prefeitura de Itaguaí">
+                <div class="logo-separator"></div>
+                <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span>
+            </div>
+            <div class="header-actions">
+                <a href="https://presenca.mec.gov.br/seb/" target="_blank" rel="noopener noreferrer" class="header-link"
+                    title="Sistema Presença"><i class="fas fa-user-check"></i><span class="hide-on-small">Sistema
+                        Presença</span></a>
+                <div class="actions-separator"></div>
+                <a href="https://acesso.inep.gov.br/auth/realms/Producao/protocol/openid-connect/auth?client_id=educacenso&redirect_uri=https%3A%2F%2Feducacenso.inep.gov.br%2Feducacenso%2F%2Fselecionar-entidade&state=b25335c3-ebc8-4a7b-bc16-f5b0e421c3ff&nonce=63283e1a-1a77-44aa-8dcb-e51cdd71d11c&response_mode=fragment&response_type=code&scope=openid"
+                    target="_blank" rel="noopener noreferrer" class="header-link" title="Educacenso"><i
+                        class="fas fa-graduation-cap"></i><span class="hide-on-small">Educacenso</span></a>
+                <div class="actions-separator"></div>
+                <a href="https://sispddeinterativo.mec.gov.br/" target="_blank" rel="noopener noreferrer"
+                    class="header-link" title="PDDE Interativo"><i class="fas fa-external-link-alt"></i><span
+                        class="hide-on-small">PDDE Interativo</span></a>
+                <div class="actions-separator"></div>
+                <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank"
+                    rel="noopener noreferrer" class="header-link" title="Jornal Oficial"><i
+                        class="fas fa-newspaper"></i><span class="hide-on-small">Jornal Oficial</span></a>
+                <div class="actions-separator"></div>
+                <a href="https://portal.transparencia.itaguai.rj.gov.br/" target="_blank" rel="noopener noreferrer"
+                    class="header-link" title="Transparência"><i class="fas fa-search-dollar"></i><span
+                        class="hide-on-small">Transparência</span></a>
+
+                <div class="actions-separator"></div>
+                <a href="#" aria-label="Modo noturno" id="dark-mode-toggle"><i class="fa-solid fa-moon"></i><span
+                        class="hide-on-small"></span></a>
+                <a href="#" aria-label="Acessibilidade" id="accessibility-toggle"><i
+                        class="fa-solid fa-universal-access"></i><span class="hide-on-small"></span></a>
+                <a href="#" aria-label="Menu de aplicativos" id="cookie-toggle"><i
+                        class="fa-solid fa-cookie-bite"></i><span class="hide-on-small"></span></a>
+                <a href="#" id="comments-toggle" aria-label="Comentários" style="color: green;"><i
+                        class="fa-solid fa-comments"></i><span class="hide-on-small"></span></a>
+            </div>
+        </div>
+        <div class="header-bottom">
+            <i id="menu-toggle" class="fa-solid fa-bars menu-icon"></i>
+            <div class="department-info">
+                <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao" class="hide-on-small">Secretaria
+                    Municipal de Educação</a>
+                <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao" class="show-on-small">SMEDU</a>
+                <span class="hide-on-small">|</span>
+                <a href="#" class="hide-on-small hide-on-medium">CONTROLE DE PROCESSOS DE PAGAMENTO</a>
+                <span class="hide-on-small hide-on-medium">|</span>
+                <a href="#" contenteditable="true">nome do departamento logado</a>
+            </div>
+            <div class="user-info">
+                <i class="fa-solid fa-user-circle"></i>
+                <span contenteditable="true">Usuário</span>
+                <div class="header-sign-in">
+                    <ul>
+                        <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                        <!-- <li><a href="#"><i class="fas fa-exchange-alt"></i> Trocar Unidade</a></li> -->
+                        <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
+                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 2rem;">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <p class="stat-number" id="total-processes" data-target="0">0</p>
+                    <h3>Total de Processos</h3>
+                    <div class="tooltip">Quantidade total de Processos</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="treating-processes" data-target="0">0</p>
+                    <h3>Processos em Tramitação</h3>
+                    <div class="tooltip">Total de Processos em Tramitação</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="completed-processes" data-target="0">0</p>
+                    <h3>Processos Finalizados</h3>
+                    <div class="tooltip">Total Geral de Processos Finalizados</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="pending-percent" data-target="0" data-suffix="%">0%</p>
+                    <h3>Percentual de Pendências</h3>
+                    <div class="tooltip">Proporção de processos não concluídos</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="finance-processes" data-target="0">0</p>
+                    <h3>No Financeiro</h3>
+                    <div class="tooltip">Total de Processos no Financeiro</div>
+                </div>
+            </div>
+            <div class="stats-grid" style="margin-top: 1rem;">
+                <div class="stat-card">
+                    <p class="stat-number" id="cabinet-processes" data-target="0">0</p>
+                    <h3>No Gabinete</h3>
+                    <div class="tooltip">Total de Processos no Gabinete</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="purchase-processes" data-target="0">0</p>
+                    <h3>Em Compras</h3>
+                    <div class="tooltip">Total de Processos em Compras</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="warehouse-processes" data-target="0">0</p>
+                    <h3>No Almoxarifado</h3>
+                    <div class="tooltip">Total de Processos no Almoxarifado</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="treasury-processes" data-target="0">0</p>
+                    <h3>Na Tesouraria</h3>
+                    <div class="tooltip">Total de Processos na Tesouraria</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="nutrition-processes" data-target="0">0</p>
+                    <h3>Da Nutrição</h3>
+                    <div class="tooltip">Total de Processos da Nutrição</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="delayed-processes" data-target="0" style="color: var(--danger);">0</p>
+                    <h3>Vencidos / Atrasados</h3>
+                    <div class="tooltip">Total de Processos Vencidos</div>
+                </div>
+            </div>
+
+            <!-- Charts Section (Ported from original) -->
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div class="table-container">
+                    <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Status</h3>
+                    <canvas id="statusChart" style="max-height: 300px;"></canvas>
+                </div>
+                <div class="table-container">
+                    <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Localização</h3>
+                    <canvas id="locationChart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Process List Section -->
+        <div id="processes-section" style="display:none;">
+            <div class="table-container">
+                <div class="table-header" style="flex-direction: column; align-items: flex-start;">
+                    <div class="search-filters"
+                        style="width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <input type="text" id="searchInput" placeholder="Pesquisar por PP, Fornecedor..."
+                            onkeyup="filterTable()" style="width: 100%;">
+                        <select id="statusFilter" onchange="filterTable()" style="width: 100%;">
+                            <option value="">Selecione...</option>
+                        </select>
+                        <select id="locationFilter" onchange="filterTable()" style="width: 100%;">
+                            <option value="">Selecione...</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> Novo
+                            Processo</button>
+                        <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i>
+                            Excel</button>
+                        <button class="btn btn-danger" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i>
+                            PDF</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="processTable">
+                        <thead>
+                            <tr>
+                                <th>PP/ANO</th>
+                                <th>Fornecedor</th>
+                                <th>Objeto</th>
+                                <th>Localização</th>
+                                <th>Status</th>
+                                <th>Prazo Restante</th>
+                                <th style="text-align: center;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="processTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals Section -->
+    <div id="processControlModal" class="process-modal">
+        <div class="process-modal-content">
+            <header class="modal-header">
+                <div class="modal-header-info">
+                    <h2 id="processModalTitle">Novo Processo de Pagamento</h2>
+                    <p>Cadastro de processo administrativo para controle de fluxo</p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeModal('processControlModal')">&times;</button>
+            </header>
+
+            <form id="processForm">
+                <div class="modal-body">
+                    <input type="hidden" id="processId">
+
+                    <!-- Section 1: Identificação -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-fingerprint"></i> Identificação do Processo
+                        </div>
+                        <div class="form-grid-4">
+                            <div class="form-group">
+                                <label>NÚMERO DO P.P.</label>
+                                <input type="text" id="ppNumber" class="form-control" required placeholder="Ex: 000">
+                            </div>
+                            <div class="form-group">
+                                <label>ANO EXERCÍCIO OF</label>
+                                <input type="text" id="exerciseYear" class="form-control" required placeholder="Ex: 2025">
+                            </div>
+                            <div class="form-group">
+                                <label>PP ANO ATUAL</label>
+                                <input type="text" id="ppAno" class="form-control" placeholder="Ex: 001/2025">
+                            </div>
+                            <div class="form-group">
+                                <label>VALOR DE CAPA</label>
+                                <input type="text" id="coverValue" class="form-control" placeholder="R$ 0,00">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Informações -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-info-circle"></i> Informações do Processo
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>FORNECEDOR</label>
+                                <div class="select-with-btn">
+                                    <select id="supplierSelect" class="form-control" required></select>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Fornecedor" onclick="quickAddConfig('suppliers')"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>OBJETO</label>
+                                <div class="select-with-btn">
+                                    <select id="objectSelect" class="form-control" required></select>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Objeto" onclick="quickAddConfig('objects')"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Datas -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-calendar-alt"></i> Prazos e Datas
+                        </div>
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label>DATA DE ABERTURA</label>
+                                <input type="date" id="openingDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>DATA DE CONCLUSÃO</label>
+                                <input type="date" id="deadline" class="form-control" onchange="updateModalRemainingDays()" required>
+                            </div>
+                            <div class="form-group">
+                                <label>DIAS RESTANTES</label>
+                                <input type="text" id="modalRemainingDays" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Responsável -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-user-tie"></i> Atribuição
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>TRATADO POR</label>
+                                <div class="select-with-btn">
+                                    <select id="treatedBy" class="form-control" required></select>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Tratador" onclick="quickAddConfig('handlers')"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Controle -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-stream"></i> Controle de Fluxo
+                        </div>
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label>STATUS</label>
+                                <div class="select-with-btn">
+                                    <select id="statusSelect" class="form-control" required></select>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Status" onclick="quickAddConfig('statuses')"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>LOCALIZAÇÃO</label>
+                                <div class="select-with-btn">
+                                    <select id="locationSelect" class="form-control" required></select>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Nova Localização" onclick="quickAddConfig('locations')"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>DATA LOCALIZAÇÃO</label>
+                                <input type="date" id="locationDate" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <!-- Manual Update Interface -->
+                        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                            <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.625rem;">NOVA ATUALIZAÇÃO / TRAMITAÇÃO</label>
+                            <div style="display: flex; gap: 0.75rem;">
+                                <input type="text" id="newManualUpdate" class="form-control" placeholder="Ex: Processo recebido para conferência...">
+                                <button type="button" class="btn-action btn-primary-new" style="white-space: nowrap; padding: 0.5rem 1.5rem;" onclick="launchManualUpdate()">Lançar</button>
+                            </div>
+                        </div>
+
+                        <!-- Modal Timeline -->
+                        <div id="modalTimeline" class="modal-timeline">
+                            <!-- Updates will be rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Section 6: Situação -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-tag"></i> Situação Atual
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>SITUAÇÃO</label>
+                                <input type="text" id="situation" class="form-control" placeholder="Descreva brevemente a situação atual do processo">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 7: Observação -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-comment-dots"></i> Informações Adicionais
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label>OBSERVAÇÃO</label>
+                                <textarea id="notes" class="form-control" rows="3" placeholder="Insira detalhes complementares ou observações relevantes"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="modal-footer">
+                    <button type="button" class="btn-action btn-secondary" onclick="closeModal('processControlModal')">Cancelar</button>
+                    <button type="submit" class="btn-action btn-primary-new">Salvar Processo</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <!-- Config Modal -->
+    <div id="processConfigModal" class="process-modal">
+        <div class="process-modal-content">
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid var(--border-color); padding-bottom:1rem;">
+                <h2 id="configModalTitle" style="color:var(--govbr-blue);">Configurações</h2>
+                <button onclick="closeModal('processConfigModal')"
+                    style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <div class="form-group">
+                <label id="configInputLabel">Novo Item</label>
+                <div style="display:flex; gap:0.5rem;">
+                    <input type="text" id="configInput">
+                    <button class="btn btn-primary" onclick="saveConfigItem()">Adicionar</button>
+                </div>
+            </div>
+            <ul id="configList" style="list-style:none; margin-top:1rem; max-height:300px; overflow-y:auto;"></ul>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div id="processHistoryModal" class="process-modal">
+        <div class="process-modal-content" style="max-width: 600px;">
+            <header class="modal-header">
+                <div class="modal-header-info">
+                    <h2 style="color:#1452B5;"><i class="fas fa-history"></i> Histórico de Tramitação</h2>
+                    <p id="historyProcessSummary">Rastreabilidade completa do processo administrativo</p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeModal('processHistoryModal')">&times;</button>
+            </header>
+            <div class="history-container" id="historyTimeline">
+                <!-- Items will be rendered here -->
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn-action btn-secondary" onclick="closeModal('processHistoryModal')">Fechar Histórico</button>
+            </footer>
+        </div>
+    </div>
+
+
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Add Navigation -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    </div>
+    </section>
+
+    <div id="accessibility-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-modal-button" class="close-button">&times;</button>
+            <h1>Acessibilidade Digital</h1>
+            <p>Acessibilidade Digital é a eliminação de barreiras na Web. O conceito pressupõe que os sites e portais
+                sejam projetados de modo que todas as pessoas possam perceber, entender, navegar e interagir de maneira
+                efetiva com as páginas.</p>
+            <p>As diversas barreiras encontradas nos sítios eletrônicos atingem principalmente as pessoas com
+                deficiência. Ao utilizarem a Web e seus recursos, as pessoas com deficiência ou outras limitações,
+                deparam-se com obstáculos que dificultam e, muitas vezes, impossibilitam o acesso aos conteúdos e
+                páginas. No Brasil, segundo o Censo Demográfico do IBGE de 2010, há aproximadamente 45 milhões de
+                pessoas que apresentam pelo menos uma das deficiências investigadas. Esse número representa 23,9% da
+                população brasileira. Um percentual a ser considerado quando discutimos a importância de implementar a
+                acessibilidade nos sítios governamentais.</p>
+        </div>
+    </div>
+
+    <div id="cookie-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-cookie-modal-button" class="close-button">&times;</button>
+            <h1>Respeitamos a sua privacidade</h1>
+            <p class="last-updated">Última atualização: 05/02/2024</p>
+            <p>Prezamos pela sua privacidade e proteção de seus dados pessoais! Utilizamos cookies para melhorar sua
+                experiência no site, conforme a nossa Política de Privacidade. Fique à vontade para customizar os
+                cookies que não são estritamente necessários.</p>
+
+            <div class="cookie-controls">
+                <h3>Classes de cookies</h3>
+                <button class="deselect-all">Desselecionar tudo</button>
+            </div>
+
+            <div class="cookie-category">
+                <div class="category-header">
+                    <h4>Estritamente Necessário (4)</h4>
+                    <span>Sempre ativo</span>
+                </div>
+                <p>Esses cookies são indispensáveis para o funcionamento do site e não podem ser desligados em nossos
+                    sistemas por usarem recursos essenciais. Normalmente, eles são definidos apenas em resposta a ações
+                    feitas por você que equivalem a uma solicitação de serviços, como definir suas preferências de
+                    privacidade, fazer login ou preencher formulários. Você pode configurar seu navegador para bloquear
+                    ou alertá-lo sobre esses cookies, mas algumas partes do site não funcionarão. Esses cookies não
+                    armazenam qualquer informação pessoalmente identificável.</p>
+            </div>
+
+            <div class="cookie-category">
+                <div class="category-header">
+                    <h4>Funcionais (1 de 1)</h4>
+                    <button class="deselect-class">Desselecionar toda classe</button>
+                </div>
+                <p>Esses cookies permitem que o site proporcione a você funcionalidades e personalização aprimoradas.
+                    Podem ser definidos por nós ou por provedores terceiros cujos serviços adicionamos às nossas
+                    páginas. Se você não permitir esses cookies, alguns ou todos esses serviços podem não funcionar
+                    corretamente.</p>
+            </div>
+
+            <div class="cookie-category">
+                <div class="category-header">
+                    <h4>Redes sociais (3 de 3)</h4>
+                    <button class="deselect-class">Desselecionar toda classe</button>
+                </div>
+                <p>Esses cookies permitem que o site mostre as postagens da Prefeitura nas redes sociais. Se você não
+                    permitir esses cookies, as postagens da Prefeitura nas redes sociais não serão exibidas no site.</p>
+            </div>
+
+            <div class="cookie-modal-footer">
+                <a href="#">Aviso sobre cookies</a>
+                <a href="#">Declaração de Conformidade com os Princípios de Proteção de Dados</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="govbr-footer">
+        <div class="container footer-container">
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div>
+                    <p><strong>Informações da Secretaria Municipal de Educação | PMI</strong></p>
+                    <p>Rua João Rosa Gonzales, 1242 - Engenho, Itaguaí, Rio de Janeiro - Brasil</p>
+                    <p>CEP: 23.820-380</p>
+                    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.3); margin: 0.5rem 0;">
+                    <p>Telefone: (21) 3782-9003 | RAMAL DO CPD: 2905</p>
+                    <p>Horário de Funcionamento: 8h às 17h</p>
+                    <p>E-mail: cpdinfra@edu.itaguai.rj.gov.br</p>
+                    <p>E-mail: smedu@itaguai.rj.gov.br ou secretaria@edu.itaguai.rj.gov.br</p>
+                </div>
+                <div style="text-align: right;">
+                    <img class="logo-govcidades"
+                        src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg"
+                        alt="Prefeitura de Itaguaí" style="max-height: 40px; margin-bottom: 1rem;">
+                    <p><strong>Redes Sociais</strong></p>
+                    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.3); margin: 0.5rem 0;">
+                    <div
+                        style="display: flex; gap: 1rem; justify-content: flex-end; flex-direction: column; align-items: flex-end;">
+                        <div style="display: flex; gap: 1rem;">
+                            <a href="https://www.instagram.com/" target="_blank"
+                                style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.facebook.com/?ref=tn_tnmn" target="_blank"
+                                style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook-f"></i></a>
+                        </div>
+                        <!-- <img class="logo-govcidades" src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg" alt="Prefeitura de Itaguaí" style="max-height: 40px; margin-top: 1rem;"> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Side Menu Toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const sideMenu = document.getElementById('side-menu');
+            const overlay = document.getElementById('overlay');
+
+            const toggleMenu = () => {
+                sideMenu.classList.toggle('open');
+                overlay.classList.toggle('visible');
+                // Close any open submenus when main menu closes
+                if (!sideMenu.classList.contains('open')) {
+                    document.querySelectorAll('.submenu').forEach(sub => {
+                        sub.classList.remove('open');
+                    });
+                    document.querySelectorAll('.has-submenu').forEach(link => {
+                        link.classList.remove('active');
+                    });
+                }
+            };
+
+            // Submenu hover behavior
+            document.querySelectorAll('.has-submenu').forEach(link => {
+                link.addEventListener('mouseenter', function () {
+                    const submenu = this.nextElementSibling;
+
+                    // Close all other submenus
+                    document.querySelectorAll('.submenu').forEach(sub => {
+                        if (sub !== submenu) sub.classList.remove('open');
+                    });
+                    document.querySelectorAll('.has-submenu').forEach(otherLink => {
+                        if (otherLink !== this) otherLink.classList.remove('active');
+                    });
+
+                    // Open current submenu
+                    submenu.classList.add('open');
+                    this.classList.add('active');
+                });
+
+                // Keep submenu open when hovering over it
+                link.nextElementSibling?.addEventListener('mouseenter', function () {
+                    this.classList.add('open');
+                    this.previousElementSibling.classList.add('active');
+                });
+
+                // Close when mouse leaves both menu item and submenu
+                const closeSubmenu = (link, submenu) => {
+                    setTimeout(() => {
+                        if (!submenu.matches(':hover') && !link.matches(':hover')) {
+                            submenu.classList.remove('open');
+                            link.classList.remove('active');
+                        }
+                    }, 100);
+                };
+
+                link.addEventListener('mouseleave', function () {
+                    closeSubmenu(this, this.nextElementSibling);
+                });
+
+                link.nextElementSibling?.addEventListener('mouseleave', function () {
+                    closeSubmenu(this.previousElementSibling, this);
+                });
+            });
+
+            if (menuToggle && sideMenu && overlay) {
+                menuToggle.addEventListener('click', toggleMenu);
+                overlay.addEventListener('click', () => {
+                    if (sideMenu.classList.contains('open')) {
+                        toggleMenu();
+                    }
+                });
+            }
+
+            // Accessibility Modal
+            const accessibilityToggle = document.getElementById('accessibility-toggle');
+            const accessibilityModal = document.getElementById('accessibility-modal');
+            const closeModalButton = document.getElementById('close-modal-button');
+
+            const toggleAccessibilityModal = () => {
+                accessibilityModal.classList.toggle('visible');
+                overlay.classList.toggle('visible');
+            };
+
+            if (accessibilityToggle && accessibilityModal && closeModalButton && overlay) {
+                accessibilityToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleAccessibilityModal();
+                });
+                closeModalButton.addEventListener('click', toggleAccessibilityModal);
+                overlay.addEventListener('click', () => {
+                    if (accessibilityModal.classList.contains('visible')) {
+                        toggleAccessibilityModal();
+                    }
+                });
+            }
+
+            // Cookie Modal
+            const cookieToggle = document.getElementById('cookie-toggle');
+            const cookieModal = document.getElementById('cookie-modal');
+            const closeCookieModalButton = document.getElementById('close-cookie-modal-button');
+
+            const toggleCookieModal = () => {
+                cookieModal.classList.toggle('visible');
+                overlay.classList.toggle('visible');
+            };
+
+            if (cookieToggle && cookieModal && closeCookieModalButton && overlay) {
+                cookieToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleCookieModal();
+                });
+                closeCookieModalButton.addEventListener('click', toggleCookieModal);
+                overlay.addEventListener('click', () => {
+                    if (cookieModal.classList.contains('visible')) {
+                        toggleCookieModal();
+                    }
+                });
+            }
+
+            // Prevent navigation on editable links
+            document.querySelectorAll('a[contenteditable="true"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (document.activeElement === link) {
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // Stat Counter Animation & Editable Cards
+            const counters = document.querySelectorAll('.stat-number');
+            const animationDuration = 2000; // 2 seconds
+
+            const animateCounter = (counter) => {
+                if (counter.parentElement.dataset.edited === 'true') return;
+
+                const target = +counter.getAttribute('data-target');
+                const suffix = counter.getAttribute('data-suffix') || '';
+                const isFloat = target % 1 !== 0;
+
+                const updateCount = (timestamp) => {
+                    if (counter.parentElement.dataset.edited === 'true') {
+                        // Ensure final value is set correctly if edited during animation.
+                        let currentText = counter.innerText.replace(suffix, '').trim().replace(',', '.');
+                        let newTarget = parseFloat(currentText);
+                        if (isNaN(newTarget)) newTarget = target; // fallback to original target
+
+                        if (isFloat) {
+                            counter.innerText = newTarget.toFixed(1).replace('.', ',') + suffix;
+                        } else {
+                            counter.innerText = Math.floor(newTarget).toLocaleString('pt-BR') + suffix;
+                        }
+                        return; // Stop animation
+                    }
+                    if (!startTime) startTime = timestamp;
+                    const progress = timestamp - startTime;
+                    const percentage = Math.min(progress / animationDuration, 1);
+
+                    let currentValue = percentage * target;
+
+                    if (isFloat) {
+                        // Keep decimal for animation, replace with comma at the end.
+                        counter.innerText = currentValue.toFixed(1) + suffix;
+                    } else {
+                        counter.innerText = Math.floor(currentValue).toLocaleString('pt-BR') + suffix;
+                    }
+
+                    if (progress < animationDuration) {
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        // Ensure final value is exact
+                        if (isFloat) {
+                            counter.innerText = target.toFixed(1).replace('.', ',') + suffix;
+                        } else {
+                            counter.innerText = target.toLocaleString('pt-BR') + suffix;
+                        }
+                    }
+                };
+
+                let startTime;
+                requestAnimationFrame(updateCount);
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (entry.target.parentElement.dataset.edited !== 'true') {
+                            animateCounter(entry.target);
+                        }
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(counter => {
+                const card = counter.parentElement;
+                const h3 = card.querySelector('h3');
+
+                const handleEdit = (element) => {
+                    card.dataset.edited = 'true';
+                    if (element.classList.contains('stat-number')) {
+                        const suffix = element.getAttribute('data-suffix') || '';
+                        let newText = element.innerText.replace(suffix, '').trim().replace(',', '.');
+                        const newTarget = parseFloat(newText);
+
+                        if (!isNaN(newTarget)) {
+                            element.setAttribute('data-target', newTarget);
+                        }
+                        // Re-add suffix if it's not there
+                        if (suffix && !element.innerText.includes(suffix)) {
+                            element.innerText += suffix;
+                        }
+                    }
+                };
+
+                counter.addEventListener('input', () => handleEdit(counter));
+                h3.addEventListener('input', () => handleEdit(h3));
+
+                observer.observe(counter);
+            });
+
+            // Dark Mode Toggle
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent page from jumping to top
+                    document.body.classList.toggle('dark-mode');
+
+                    const icon = darkModeToggle.querySelector('i');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+
+                    icon.classList.toggle('fa-moon', !isDarkMode);
+                    icon.classList.toggle('fa-sun', isDarkMode);
+                });
+            }
+
+            // Remanejamento Modal
+            document.addEventListener('click', function (e) {
+                // Check if clicked element is specifically the remanejamento link
+                if (e.target.closest('#remanejamento-link') ||
+                    e.target.closest('#remanejamento-link i')) {
+                    e.preventDefault();
+                    const modal = document.getElementById('remanejamento-modal');
+                    const overlay = document.getElementById('overlay');
+                    modal.classList.add('visible');
+                    overlay.classList.add('visible');
+                }
+
+                // Handle modal close buttons
+                if (e.target.id === 'close-remanejamento-modal-button' ||
+                    e.target.id === 'cancel-remanejamento-button' ||
+                    e.target === overlay) {
+                    const modal = document.getElementById('remanejamento-modal');
+                    const overlay = document.getElementById('overlay');
+                    modal.classList.remove('visible');
+                    overlay.classList.remove('visible');
+                }
+
+                // Handle confirm button
+                if (e.target.id === 'confirm-remanejamento-button') {
+                    const modal = document.getElementById('remanejamento-modal');
+                    const overlay = document.getElementById('overlay');
+                    modal.classList.remove('visible');
+                    overlay.classList.remove('visible');
+                    // Add your continue logic here
+                    console.log("Continuar com o remanejamento");
+                }
+            });
+
+            // Handle Remanejamento Modal
+            const remanejamentoLink = document.getElementById('remanejamento-link');
+            const remanejamentoModal = document.getElementById('remanejamento-modal');
+            const closeRemanejamentoButton = document.getElementById('close-remanejamento-modal-button');
+            const cancelRemanejamentoButton = document.getElementById('cancel-remanejamento-button');
+            const confirmRemanejamentoButton = document.getElementById('confirm-remanejamento-button');
+
+            const toggleRemanejamentoModal = () => {
+                remanejamentoModal.classList.toggle('visible');
+                overlay.classList.toggle('visible');
+            };
+
+            if (remanejamentoLink && remanejamentoModal && overlay) {
+                remanejamentoLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleRemanejamentoModal();
+                });
+
+                closeRemanejamentoButton.addEventListener('click', toggleRemanejamentoModal);
+                cancelRemanejamentoButton.addEventListener('click', toggleRemanejamentoModal);
+
+                confirmRemanejamentoButton.addEventListener('click', () => {
+                    toggleRemanejamentoModal();
+                    // Add your continue logic here
+                    console.log("Continuar com o remanejamento");
+                });
+
+                overlay.addEventListener('click', () => {
+                    if (remanejamentoModal.classList.contains('visible')) {
+                        toggleRemanejamentoModal();
+                    }
+                });
+            }
+
+            // Comments Modal
+            const commentsToggle = document.getElementById('comments-toggle');
+            const commentsModal = document.getElementById('comments-modal');
+            const closeCommentsModalButton = document.getElementById('close-comments-modal-button');
+
+            const toggleCommentsModal = () => {
+                commentsModal.classList.toggle('visible');
+                overlay.classList.toggle('visible');
+            };
+
+            if (commentsToggle && commentsModal && overlay) {
+                commentsToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleCommentsModal();
+                });
+
+                closeCommentsModalButton.addEventListener('click', toggleCommentsModal);
+                overlay.addEventListener('click', () => {
+                    if (commentsModal.classList.contains('visible')) {
+                        toggleCommentsModal();
+                    }
+                });
+            }
+
+            // Swiper Initialization
+            const swiper = new Swiper('.swiper', {
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 30,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
+        });
+
+        // --- PAYMENT PROCESS CONTROL LOGIC ---
+        let state = {
+            processes: JSON.parse(localStorage.getItem('processes')) || [],
+            suppliers: JSON.parse(localStorage.getItem('suppliers')) || [
+                'ANA DAS NEVES CAMPANHÃO',
+                'C TEIXEIRA 110 COMERCIO DE ALIMENTOS LTDA',
+                'COMERCIAL MILANO BRASIL LTDA',
+                'DANIEL CARDOSO DE OLIVEIRA',
+                'DISTRIBUIDORA BRAZLIMP LTDA',
+                'DISTRIBUIDORA LIMPOLI EIRELI - ME',
+                'EMPRESA SAP COMÉRCIO SERVIÇOS E DISTRIBUIÇÃO',
+                'ESKINA DO GÁS REVENDEDOR DE GÁS LTDA',
+                'GABRIEL QUEIROZ DA SILVA',
+                'GUARAILHA DISTRIBUIDORA DE ALIMENTOS LTDA',
+                'HERCÍLIA HARUMI IWANAGA',
+                'HERMAN DINALDO SOARES FERREIRA',
+                'INOVAR COMÉRCIO E SERVIÇO DE TERCEIRIZAÇÃO LTDA',
+                'ITAMED COMÉRCIO E ARQUITETURA LTDA (CLIMATIZADORES)',
+                'ITAMED COMÉRCIO E ARQUITETURA LTDA (MANUTENÇÃO)',
+                'JOSÉ EDUARDO DA SILVA MEDINA',
+                'LUMAR EMPREENDIMENTOS IMOBILIÁRIOS',
+                'LUZIA FUGIKO YOSHY PACHECO',
+                'MARCIO KOITY TAKENAKA',
+                'MARIA LAURENÇO MORITA',
+                'MÔNICA ASSIS DE ARAÚJO E SILVA',
+                'PAULO ROBERTO MONTEIRO DA SILVA',
+                'RG DISTRIBUIDORA, COMÉRCIO E SERVIÇOS LTDA',
+                'ROSA MARIA MENDES MARINS DO NASCIMENTO',
+                'SIBELLY TRANSPORTE LTDA (ALUGUEL)',
+                'SIBELLY TRANSPORTE LTDA (GESTÃO)',
+                'SOLANGE CANDIDA SOARES FERREIRA',
+                'WILLIAM SHIOSE ALVES MOREIRA',
+                'WILSON MASSALINO DE FREITAS'
+            ],
+            locations: JSON.parse(localStorage.getItem('locations')) || ['Secretaria', 'Gabinete', 'Finanças', 'Protocolo', 'Compras', 'Almoxarifado', 'Tesouraria', 'Nutrição'],
+            objects: JSON.parse(localStorage.getItem('objects')) || ['Compra de Material', 'Prestação de Serviço'],
+            statuses: JSON.parse(localStorage.getItem('statuses')) || ['Em Análise', 'Aguardando Assinatura', 'Concluído', 'Pendente'],
+            handlers: JSON.parse(localStorage.getItem('handlers')) || ['Gabinete', 'Infraestrutura', 'Administrativo'],
+            users: JSON.parse(localStorage.getItem('users')) || ['Admin', 'Operador'],
+            currentConfigType: ''
+        };
+
+        let statusChart, locationChart;
+
+        function initApp() {
+            updateSelects();
+            updateDashboardCounters();
+            renderProcessTable();
+        }
+        window.addEventListener('load', initApp);
+
+        function saveData() {
+            localStorage.setItem('processes', JSON.stringify(state.processes));
+            localStorage.setItem('suppliers', JSON.stringify(state.suppliers));
+            localStorage.setItem('locations', JSON.stringify(state.locations));
+            localStorage.setItem('objects', JSON.stringify(state.objects));
+            localStorage.setItem('statuses', JSON.stringify(state.statuses));
+            localStorage.setItem('handlers', JSON.stringify(state.handlers));
+            localStorage.setItem('users', JSON.stringify(state.users));
+        }
+
+        function showSection(sectionId) {
+            document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('processes-section').style.display = 'none';
+            document.getElementById(`${sectionId}-section`).style.display = 'block';
+
+            // Close menu
+            document.getElementById('side-menu').classList.remove('open');
+            document.getElementById('overlay').classList.remove('visible');
+
+            if (sectionId === 'dashboard') updateDashboardCounters();
+        }
+
+        function updateDashboardCounters() {
+            const now = new Date();
+            const total = state.processes.length;
+            const pending = state.processes.filter(p => p.status !== 'Concluído').length;
+            const completed = total - pending;
+            const delayed = state.processes.filter(p => p.status !== 'Concluído' && new Date(p.deadline) < now).length;
+
+            setCount('total-processes', total);
+            setCount('treating-processes', pending);
+            setCount('completed-processes', completed);
+            setCount('pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
+            setCount('delayed-processes', delayed);
+
+            // Specific location counts
+            setCount('finance-processes', state.processes.filter(p => p.location === 'Finanças').length);
+            setCount('cabinet-processes', state.processes.filter(p => p.location === 'Gabinete').length);
+            setCount('purchase-processes', state.processes.filter(p => p.location === 'Compras').length);
+            setCount('warehouse-processes', state.processes.filter(p => p.location === 'Almoxarifado').length);
+            setCount('treasury-processes', state.processes.filter(p => p.location === 'Tesouraria').length);
+            setCount('nutrition-processes', state.processes.filter(p => p.location === 'Nutrição').length);
+
+            renderCharts();
+        }
+
+        function setCount(id, val) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerText = val + (el.getAttribute('data-suffix') || '');
+                el.setAttribute('data-target', val);
+            }
+        }
+
+        function renderCharts() {
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            const locationCtx = document.getElementById('locationChart').getContext('2d');
+
+            const statusCounts = state.statuses.map(s => state.processes.filter(p => p.status === s).length);
+            const locationCounts = state.locations.map(l => state.processes.filter(p => p.location === l).length);
+
+            if (statusChart) statusChart.destroy();
+            if (locationChart) locationChart.destroy();
+
+            statusChart = new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: state.statuses,
+                    datasets: [{
+                        data: statusCounts,
+                        backgroundColor: ['#005A9C', '#f1c40f', '#2ecc71', '#e74c3c', '#9b59b6']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            locationChart = new Chart(locationCtx, {
+                type: 'bar',
+                data: {
+                    labels: state.locations,
+                    datasets: [{
+                        label: 'Processos',
+                        data: locationCounts,
+                        backgroundColor: '#005A9C'
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+        }
+
+        function renderProcessTable(data = state.processes) {
+            const tbody = document.getElementById('processTableBody');
+            tbody.innerHTML = '';
+
+            data.sort((a, b) => new Date(a.deadline) - new Date(b.deadline)).forEach(p => {
+                const row = document.createElement('tr');
+                const remainingDays = calculateRemainingDays(p.deadline);
+                const colorClass = getDeadlineColorClass(remainingDays, p.status);
+
+                row.innerHTML = `
+                    <td><strong>${p.ppAno}</strong></td>
+                    <td>${p.supplier}</td>
+                    <td>${p.object}</td>
+                    <td>${p.location}</td>
+                    <td><span class="badge" style="background:${getStatusColor(p.status)}; color:white">${p.status}</span></td>
+                    <td>${p.status === 'Concluído' ? 'OK' : remainingDays + ' dias'}</td>
+                    <td style="display:flex; flex-direction: column; gap:4px; align-items: center;">
+                        <button class="btn btn-warning" style="padding:6px; width: 32px; height: 32px; justify-content: center;" onclick='openProcessModal(${JSON.stringify(p)})'><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-primary" style="padding:6px; width: 32px; height: 32px; justify-content: center;" onclick='showHistory(${JSON.stringify(p)})'><i class="fas fa-history"></i></button>
+                        <button class="btn btn-danger" style="padding:6px; width: 32px; height: 32px; justify-content: center; background: #333;" onclick='deleteProcess("${p.id}")'><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterTable() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+            const location = document.getElementById('locationFilter').value;
+
+            const filtered = state.processes.filter(p => {
+                const matchQuery = p.ppAno.toLowerCase().includes(query) || p.supplier.toLowerCase().includes(query);
+                const matchStatus = !status || p.status === status;
+                const matchLoc = !location || p.location === location;
+                return matchQuery && matchStatus && matchLoc;
+            });
+            renderProcessTable(filtered);
+        }
+
+        function calculateRemainingDays(deadline) {
+            const diff = new Date(deadline + 'T23:59:59') - new Date();
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+
+        function getDeadlineColorClass(days, status) {
+            if (status === 'Concluído') return 'btn-success';
+            if (days < 0) return 'btn-danger';
+            if (days < 5) return 'btn-warning';
+            return 'btn-success';
+        }
+
+        function getStatusColor(status) {
+            const colors = { 'Em Análise': '#005A9C', 'Aguardando Assinatura': '#f1c40f', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' };
+            return colors[status] || '#95a5a6';
+        }
+
+        function updateModalRemainingDays() {
+            const deadline = document.getElementById('deadline').value;
+            if (deadline) {
+                const days = calculateRemainingDays(deadline);
+                document.getElementById('modalRemainingDays').value = days + (days === 1 ? ' dia' : ' dias');
+            } else {
+                document.getElementById('modalRemainingDays').value = '';
+            }
+        }
+
+        function renderModalHistory(history = []) {
+            const container = document.getElementById('modalTimeline');
+            if (!container) return;
+            container.innerHTML = history.length ? '' : '<p style="text-align:center; color:#94A3B8; font-size:0.75rem; margin-top:1rem;">Nenhuma atualização registrada.</p>';
+            
+            [...history].reverse().forEach(h => {
+                const item = document.createElement('div');
+                item.className = 'modal-timeline-item';
+                item.innerHTML = `
+                    <span class="modal-timeline-date">${h.date}</span>
+                    <div class="modal-timeline-content">
+                        ${h.from && h.to ? `<strong>Tramitação:</strong> ${h.from} &rarr; ${h.to}` : h.message}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function launchManualUpdate() {
+            const input = document.getElementById('newManualUpdate');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const id = document.getElementById('processId').value;
+            const update = {
+                date: new Date().toLocaleString(),
+                message: message
+            };
+
+            if (id) {
+                const idx = state.processes.findIndex(p => p.id === id);
+                if (idx !== -1) {
+                    state.processes[idx].history.push(update);
+                    renderModalHistory(state.processes[idx].history);
+                    saveData();
+                }
+            } else {
+                // For new processes, we store in a temporary property on the form or global
+                if (!window._tempHistory) window._tempHistory = [];
+                window._tempHistory.push(update);
+                renderModalHistory(window._tempHistory);
+            }
+
+            input.value = '';
+        }
+
+        function openProcessModal(process = null) {
+            const form = document.getElementById('processForm');
+            form.reset();
+            updateSelects();
+            document.getElementById('newManualUpdate').value = '';
+            window._tempHistory = [];
+
+            if (process && typeof process === 'object') {
+                document.getElementById('processModalTitle').innerText = 'Editar Processo';
+                document.getElementById('processId').value = process.id;
+                document.getElementById('ppNumber').value = process.ppNumber || '';
+                document.getElementById('exerciseYear').value = process.exerciseYear || '';
+                document.getElementById('ppAno').value = process.ppAno;
+                document.getElementById('coverValue').value = process.coverValue || '';
+                document.getElementById('supplierSelect').value = process.supplier;
+                document.getElementById('objectSelect').value = process.object;
+                document.getElementById('openingDate').value = process.openingDate || '';
+                document.getElementById('deadline').value = process.deadline;
+                document.getElementById('treatedBy').value = process.treatedBy || '';
+                document.getElementById('statusSelect').value = process.status;
+                document.getElementById('locationSelect').value = process.location;
+                document.getElementById('locationDate').value = process.locationDate || '';
+                document.getElementById('situation').value = process.situation || '';
+                document.getElementById('notes').value = process.notes;
+                updateModalRemainingDays();
+                renderModalHistory(process.history);
+            } else {
+                document.getElementById('processModalTitle').innerText = 'Novo Processo';
+                document.getElementById('processId').value = '';
+                document.getElementById('ppAno').value = generatePPAno();
+                document.getElementById('openingDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('locationDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('modalRemainingDays').value = '';
+                renderModalHistory([]);
+            }
+            document.getElementById('processControlModal').style.display = 'flex';
+        }
+
+        function generatePPAno() {
+            const year = new Date().getFullYear();
+            const lastId = state.processes.filter(p => p.ppAno.endsWith(`/${year}`)).length + 1;
+            return `${String(lastId).padStart(3, '0')}/${year}`;
+        }
+
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        document.getElementById('processForm').onsubmit = (e) => {
+            e.preventDefault();
+            const id = document.getElementById('processId').value;
+            const data = {
+                ppNumber: document.getElementById('ppNumber').value,
+                exerciseYear: document.getElementById('exerciseYear').value,
+                ppAno: document.getElementById('ppAno').value,
+                coverValue: document.getElementById('coverValue').value,
+                supplier: document.getElementById('supplierSelect').value,
+                object: document.getElementById('objectSelect').value,
+                openingDate: document.getElementById('openingDate').value,
+                deadline: document.getElementById('deadline').value,
+                treatedBy: document.getElementById('treatedBy').value,
+                status: document.getElementById('statusSelect').value,
+                location: document.getElementById('locationSelect').value,
+                locationDate: document.getElementById('locationDate').value,
+                situation: document.getElementById('situation').value,
+                notes: document.getElementById('notes').value
+            };
+
+            if (id) {
+                const idx = state.processes.findIndex(p => p.id === id);
+                if (state.processes[idx].location !== data.location) {
+                    state.processes[idx].history.push({ 
+                        date: new Date().toLocaleString(),
+                        from: state.processes[idx].location, 
+                        to: data.location
+                    });
+                }
+                state.processes[idx] = { ...state.processes[idx], ...data };
+            } else {
+                state.processes.push({
+                    id: Date.now().toString(),
+                    ...data,
+                    history: [
+                        { date: new Date().toLocaleString(), from: 'Início', to: data.location },
+                        ...(window._tempHistory || [])
+                    ]
+                });
+            }
+            saveData(); initApp(); closeModal('processControlModal');
+        };
+
+        function showHistory(process) {
+            const timeline = document.getElementById('historyTimeline');
+            const summary = document.getElementById('historyProcessSummary');
+            
+            summary.innerHTML = `Processo: <strong>${process.ppAno}</strong> | Fornecedor: <strong>${process.supplier}</strong>`;
+            timeline.innerHTML = '';
+            
+            const history = process.history || [];
+            if (history.length === 0) {
+                timeline.innerHTML = '<p style="text-align:center; color:#94A3B8; padding:2rem;">Nenhum registro encontrado.</p>';
+            } else {
+                [...history].reverse().forEach(h => {
+                    const item = document.createElement('div');
+                    const isMovement = h.from !== undefined;
+                    item.className = `history-item ${isMovement ? 'movement' : 'log'}`;
+                    
+                    item.innerHTML = `
+                        <div class="history-node"></div>
+                        <div class="history-date">
+                            <i class="far fa-clock"></i> ${h.date}
+                            <span class="history-badge ${isMovement ? 'badge-movement' : 'badge-log'}">
+                                ${isMovement ? 'MUDANÇA DE LOCAL' : 'REGISTRO MANUAL'}
+                            </span>
+                        </div>
+                        <div class="history-card">
+                            <div class="history-title">
+                                ${isMovement ? '<i class="fas fa-exchange-alt"></i> Tramitação de Localização' : '<i class="fas fa-comment-dots"></i> Atualização de Status'}
+                            </div>
+                            <div class="history-details">
+                                ${isMovement 
+                                    ? `<span>De: <strong>${h.from}</strong></span> <i class="fas fa-long-arrow-alt-right"></i> <span>Para: <strong>${h.to}</strong></span>`
+                                    : h.message}
+                            </div>
+                        </div>
+                    `;
+                    timeline.appendChild(item);
+                });
+            }
+            document.getElementById('processHistoryModal').style.display = 'flex';
+        }
+
+        function openConfigModal(type) {
+            state.currentConfigType = type;
+            const labels = { suppliers: 'Fornecedores', locations: 'Localizações', objects: 'Objetos', users: 'Usuários', statuses: 'Status', handlers: 'Tratadores' };
+            document.getElementById('configModalTitle').innerText = `Gestão de ${labels[type]}`;
+            renderConfigList();
+            document.getElementById('processConfigModal').style.display = 'flex';
+        }
+
+        function renderConfigList() {
+            const list = document.getElementById('configList');
+            list.innerHTML = '';
+            state[state.currentConfigType].forEach((item, idx) => {
+                const li = document.createElement('li');
+                li.style = 'display:flex; justify-content:space-between; padding:0.5rem; border-bottom:1px solid #eee;';
+                li.innerHTML = `<span>${item}</span><i class="fas fa-trash" style="color:red; cursor:pointer" onclick="deleteConfigItem(${idx})"></i>`;
+                list.appendChild(li);
+            });
+            const inputLabel = { suppliers: 'Nome do Fornecedor', locations: 'Nome da Localização', objects: 'Nome do Objeto', users: 'Nome do Usuário', statuses: 'Status do Processo', handlers: 'Nome do Tratador do Processo' };
+            document.getElementById('configInputLabel').innerText = inputLabel[state.currentConfigType] || 'Novo Item';
+        }
+
+        function saveConfigItem() {
+            const val = document.getElementById('configInput').value.trim();
+            if (val) {
+                state[state.currentConfigType].push(val);
+                document.getElementById('configInput').value = '';
+                saveData(); renderConfigList(); updateSelects();
+            }
+        }
+
+        function deleteConfigItem(idx) {
+            state[state.currentConfigType].splice(idx, 1);
+            saveData(); renderConfigList(); updateSelects();
+        }
+
+        function quickAddConfig(type) {
+            const labels = { suppliers: 'Fornecedor', locations: 'Localização', objects: 'Objeto', statuses: 'Status', handlers: 'Tratador' };
+            const val = prompt(`Digite o novo ${labels[type]}:`);
+            if (val && val.trim()) {
+                const trimmed = val.trim();
+                if (state[type].includes(trimmed)) {
+                    alert('Este item já existe.');
+                    return;
+                }
+                state[type].push(trimmed);
+                saveData();
+                updateSelects();
+                const selectId = type === 'suppliers' ? 'supplierSelect' : 
+                                 type === 'objects' ? 'objectSelect' : 
+                                 type === 'locations' ? 'locationSelect' : 
+                                 type === 'handlers' ? 'treatedBy' : 'statusSelect';
+                document.getElementById(selectId).value = trimmed;
+            }
+        }
+
+        function deleteProcess(id) {
+            if (confirm('Tem certeza que deseja excluir este processo?')) {
+                state.processes = state.processes.filter(p => p.id !== id);
+                saveData();
+                renderProcessTable();
+                updateDashboardCounters();
+            }
+        }
+
+        function updateSelects() {
+            const fills = [
+                { id: 'supplierSelect', data: state.suppliers },
+                { id: 'objectSelect', data: state.objects },
+                { id: 'locationSelect', data: state.locations },
+                { id: 'statusSelect', data: state.statuses },
+                { id: 'treatedBy', data: state.handlers },
+                { id: 'statusFilter', data: state.statuses, opt: true },
+                { id: 'locationFilter', data: state.locations, opt: true }
+            ];
+            fills.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (!el) return;
+                const currentVal = el.value;
+                el.innerHTML = f.opt ? `<option value="">Selecione...</option>` : '';
+                f.data.forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item; opt.innerText = item;
+                    el.appendChild(opt);
+                });
+                if (currentVal && Array.from(el.options).some(o => o.value === currentVal)) {
+                    el.value = currentVal;
+                }
+            });
+        }
+
+        async function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('l', 'mm', 'a4'); // Landscape for better fit
+            const margin = 14;
+            const logoUrl = "https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo25.png";
+            
+            try {
+                // Header Area
+                // Logo
+                doc.addImage(logoUrl, 'PNG', margin, 10, 40, 20);
+                
+                // Institutional Texts
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                doc.setTextColor(100);
+                doc.text("ESTADO DO RIO DE JANEIRO", 60, 15);
+                doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", 60, 20);
+                doc.text("SECRETARIA MUNICIPAL DE EDUCAÇÃO", 60, 25);
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.setTextColor(0);
+                doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", 60, 35);
+                
+                // Line separator
+                doc.setDrawColor(200);
+                doc.line(margin, 42, 283, 42);
+                
+                // Emission Date
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(9);
+                doc.setTextColor(150);
+                const now = new Date();
+                const emissionDate = now.toLocaleString('pt-BR');
+                doc.text(`Data de Emissão: ${emissionDate}`, margin, 48);
+
+                // Table Data
+                const head = [[
+                    'NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 
+                    'VALOR DE CAPA', 'DATA DE CONCLUSÃO', 'TRATADO POR', 
+                    'STATUS', 'Localização', 'SITUAÇÃO', 
+                    'Ano Exercício OF', 'OBSERVAÇÃO'
+                ]];
+
+                const body = state.processes.map(p => [
+                    p.ppNumber,
+                    p.ppAno.split('/')[1] || '',
+                    p.ppAno,
+                    p.supplier,
+                    p.coverValue,
+                    p.deadline ? new Date(p.deadline + 'T12:00:00').toLocaleDateString('pt-BR') : '',
+                    p.treatedBy,
+                    p.status,
+                    `${p.location} | ${p.locationDate ? new Date(p.locationDate + 'T12:00:00').toLocaleDateString('pt-BR') : ''}`,
+                    p.situation,
+                    p.exerciseYear,
+                    p.notes
+                ]);
+
+                doc.autoTable({
+                    head: head,
+                    body: body,
+                    startY: 55,
+                    margin: { left: margin, right: margin },
+                    styles: {
+                        fontSize: 7,
+                        cellPadding: 2,
+                        lineColor: [200, 200, 200],
+                        lineWidth: 0.1,
+                    },
+                    headStyles: {
+                        fillColor: [0, 0, 0], // Base color
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold',
+                        halign: 'center'
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 15 }, // PP Number
+                        1: { cellWidth: 12 }, // Ano
+                        2: { cellWidth: 18 }, // PPANO
+                        3: { cellWidth: 45 }, // Fornecedor
+                        4: { cellWidth: 20 }, // Valor
+                        11: { cellWidth: 35 } // Observação
+                    },
+                    didParseCell: function (data) {
+                        if (data.section === 'head') {
+                            const green = [122, 147, 66]; // #7A9342
+                            const black = [0, 0, 0];
+                            
+                            const colIndex = data.column.index;
+                            if (colIndex === 0 || colIndex === 1 || // NUMERO, ANO
+                                (colIndex >= 4 && colIndex <= 6) || // VALOR, DATA CONCLUSAO, TRATADO
+                                colIndex === 11) {                  // OBSERVACAO
+                                data.cell.styles.fillColor = green;
+                            } else {
+                                data.cell.styles.fillColor = black;
+                            }
+                        }
+                    }
+                });
+
+                doc.save(`processos_pagamento_${now.getTime()}.pdf`);
+            } catch (error) {
+                console.error("Erro ao gerar PDF:", error);
+                alert("Ocorreu um erro ao gerar o PDF. Verifique o console.");
+            }
+        }
+
+        function exportToExcel() {
+            const ws = XLSX.utils.json_to_sheet(state.processes);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Processos");
+            XLSX.writeFile(wb, "processos.xlsx");
+        }
+    </script>
+    <div id="comments-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-comments-modal-button" class="close-button">&times;</button>
+            <h1>Comentários e Feedback</h1>
+            <p>Em breve disponível - Estamos trabalhando em um sistema de comentários para melhorar nosso serviço.</p>
+        </div>
+    </div>
+
+    <div id="remanejamento-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-remanejamento-modal-button" class="close-button">&times;</button>
+            <h1>Remanejamento de Alunos</h1>
+            <p>Antes de remanejar o aluno para o ano seguinte, por favor, verifique se todos os alunos (Aptos e Não
+                Aptos) têm a matrícula renovada.</p>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+                <button id="cancel-remanejamento-button"
+                    style="padding: 0.5rem 1rem; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">Fechar</button>
+                <button id="confirm-remanejamento-button"
+                    style="padding: 0.5rem 1rem; background: var(--govbr-blue); color: white; border: none; border-radius: 4px; cursor: pointer;">Continuar</button>
+            </div>
+        </div>
+    </div>
+    <p
+        style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">
+        Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo"
+            style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a
+            href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;"
+            target="_blank">DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=JoeSouza/home-ruim"
+            style="color: #fff;text-decoration: underline;" target="_blank">Remix</a></p>
+</body>
+
+</html>
