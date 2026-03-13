@@ -14,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
@@ -1496,13 +1497,13 @@
 
         .form-control {
             width: 100%;
-            height: 40px;
+            height: 28px;
             box-sizing: border-box;
             background: #ffffff;
             border: 1px solid #D1D5DB;
-            border-radius: 6px;
-            padding: 0 0.75rem;
-            font-size: 0.9rem;
+            border-radius: 4px;
+            padding: 0 0.4rem;
+            font-size: 0.75rem;
             color: #111827;
             transition: all 0.2s ease;
         }
@@ -1559,8 +1560,8 @@
 
         .btn-quick-add {
             flex-shrink: 0;
-            width: 40px !important;
-            height: 40px !important;
+            width: 30px !important;
+            height: 30px !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1588,9 +1589,9 @@
         }
         
         .choices__inner {
-            min-height: 40px !important;
-            height: 40px !important;
-            padding: 0 0.75rem 0 0.75rem !important;
+            min-height: 30px !important;
+            height: 30px !important;
+            padding: 0 0.5rem 0 0.5rem !important;
             border-radius: 6px !important;
             background-color: #ffffff !important;
             border: 1px solid #D1D5DB !important;
@@ -1734,6 +1735,185 @@
             background-color: #1E293B;
             border-color: #334155;
         }
+
+        .table-wrapper {
+            max-height: 65vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: white;
+            position: relative;
+        }
+
+        #processTable thead th {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background-color: #f8fafc;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+            white-space: nowrap;
+            padding: 0.75rem 0.5rem;
+        }
+
+        body.dark-mode .table-wrapper {
+            background-color: #1E293B;
+            border-color: #334155;
+        }
+
+        body.dark-mode #processTable thead th {
+            background-color: #0F172A;
+            box-shadow: 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .pdf-col-check {
+            margin-right: 4px;
+            cursor: pointer;
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+        }
+
+        .stat-number.total-color { color: var(--govbr-blue); }
+        .stat-number.success-color { color: #2ecc71; }
+        .stat-number.danger-color { color: #e74c3c; }
+        .stat-number.warning-color { color: #e67e22; }
+
+        .side-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .close-sidebar:hover {
+            transform: scale(1.1);
+        }
+        /* Details Modal Styles */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .details-card {
+            background: #fff;
+            padding: 1.25rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .details-card h4 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--govbr-blue);
+            font-size: 0.95rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .details-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .details-label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+
+        .details-value {
+            font-weight: 500;
+            color: #222;
+        }
+
+        body.dark-mode .details-card {
+            background: #222;
+            border-color: #333;
+        }
+
+        body.dark-mode .details-value {
+            color: #eee;
+        }
+
+        .timeline-vertical {
+            padding: 1rem 0;
+            border-left: 2px solid #e0e0e0;
+            margin-left: 1rem;
+        }
+
+        .timeline-node {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-node::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            background: var(--govbr-blue);
+            border: 3px solid #fff;
+            border-radius: 50%;
+        }
+
+        body.dark-mode .timeline-node::before {
+            border-color: #222;
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .timeline-msg {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border: 1px solid #eee;
+        }
+
+        body.dark-mode .timeline-msg {
+            background: #2a2a2a;
+            border-color: #333;
+        }
+
+        #processTable tbody tr {
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        
+        #processTable tbody tr:hover {
+            background-color: #f0f7ff;
+        }
+        
+        body.dark-mode #processTable tbody tr:hover {
+            background-color: #2a2a2a;
+        }
     </style>
 </head>
 
@@ -1741,6 +1921,9 @@
     <nav id="side-menu" class="side-menu">
         <div class="side-menu-header">
             <h3 style="font-weight: 800; letter-spacing: 0.05em;">SESME-C</h3>
+            <button class="close-sidebar" onclick="window.toggleMenu()" title="Recolher Menu">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
         <ul>
             <li>
@@ -1879,32 +2062,32 @@
         <div id="dashboard-section">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <p class="stat-number" id="total-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="total-processes" data-target="0">0</p>
                     <h3>Total de Processos</h3>
                     <div class="tooltip">Quantidade total de Processos</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="treating-processes" data-target="0">0</p>
+                    <p class="stat-number warning-color" id="treating-processes" data-target="0">0</p>
                     <h3>Processos em Tramitação</h3>
                     <div class="tooltip">Total de Processos em Tramitação</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="completed-processes" data-target="0">0</p>
+                    <p class="stat-number success-color" id="completed-processes" data-target="0">0</p>
                     <h3>Processos Liquidados</h3>
                     <div class="tooltip">Total Geral de Processos Liquidados</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="pending-percent" data-target="0" data-suffix="%">0%</p>
+                    <p class="stat-number warning-color" id="pending-percent" data-target="0" data-suffix="%">0%</p>
                     <h3>Percentual de Pendências</h3>
                     <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="delayed-processes" data-target="0" style="color: var(--danger);">0</p>
+                    <p class="stat-number danger-color" id="delayed-processes" data-target="0">0</p>
                     <h3>Vencidos / Atrasados</h3>
                     <div class="tooltip">Total de Processos Vencidos</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="finance-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="finance-processes" data-target="0">0</p>
                     <h3>No Financeiro</h3>
                     <div class="tooltip">Total de Processos no Financeiro</div>
                 </div>
@@ -1912,32 +2095,32 @@
             
             <div class="stats-grid" style="margin-top: 1rem;">
                 <div class="stat-card">
-                    <p class="stat-number" id="cabinet-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="cabinet-processes" data-target="0">0</p>
                     <h3>No Gabinete</h3>
                     <div class="tooltip">Total de Processos no Gabinete</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="purchase-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="purchase-processes" data-target="0">0</p>
                     <h3>Em Compras</h3>
                     <div class="tooltip">Total de Processos em Compras</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="warehouse-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="warehouse-processes" data-target="0">0</p>
                     <h3>No Almoxarifado</h3>
                     <div class="tooltip">Total de Processos no Almoxarifado</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="treasury-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="treasury-processes" data-target="0">0</p>
                     <h3>Na Tesouraria</h3>
                     <div class="tooltip">Total de Processos na Tesouraria</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="nutrition-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="nutrition-processes" data-target="0">0</p>
                     <h3>Da Nutrição</h3>
                     <div class="tooltip">Total de Processos da Nutrição</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="secretariat-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="secretariat-processes" data-target="0">0</p>
                     <h3>Na Secretaria</h3>
                     <div class="tooltip">Total de Processos na Secretaria</div>
                 </div>
@@ -1946,13 +2129,17 @@
             <!-- Charts Section (Ported from original) -->
             <div
                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                <div class="table-container">
+                <div class="table-container" style="min-height: 350px; display: flex; flex-direction: column;">
                     <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Status</h3>
-                    <canvas id="statusChart" style="max-height: 300px;"></canvas>
+                    <div style="flex: 1; position: relative;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
                 </div>
-                <div class="table-container">
+                <div class="table-container" style="min-height: 350px; display: flex; flex-direction: column;">
                     <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Localização</h3>
-                    <canvas id="locationChart" style="max-height: 300px;"></canvas>
+                    <div style="flex: 1; position: relative;">
+                        <canvas id="locationChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1962,32 +2149,32 @@
             <!-- Modern 6 Insight Cards -->
             <div class="stats-grid" style="margin-bottom: 2rem;">
                 <div class="stat-card">
-                    <p class="stat-number" id="list-total-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="list-total-processes" data-target="0">0</p>
                     <h3>Total de Processos</h3>
                     <div class="tooltip">Quantidade total de Processos</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="list-treating-processes" data-target="0">0</p>
+                    <p class="stat-number warning-color" id="list-treating-processes" data-target="0">0</p>
                     <h3>Processos em Tramitação</h3>
                     <div class="tooltip">Total de Processos em Tramitação</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="list-completed-processes" data-target="0">0</p>
+                    <p class="stat-number success-color" id="list-completed-processes" data-target="0">0</p>
                     <h3>Processos Liquidados</h3>
                     <div class="tooltip">Total Geral de Processos Liquidados</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="list-pending-percent" data-target="0" data-suffix="%">0%</p>
+                    <p class="stat-number warning-color" id="list-pending-percent" data-target="0" data-suffix="%">0%</p>
                     <h3>Percentual de Pendências</h3>
                     <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="list-delayed-processes" data-target="0" style="color: var(--danger);">0</p>
+                    <p class="stat-number danger-color" id="list-delayed-processes" data-target="0">0</p>
                     <h3>Vencidos / Atrasados</h3>
                     <div class="tooltip">Total de Processos Vencidos</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="list-finance-processes" data-target="0">0</p>
+                    <p class="stat-number total-color" id="list-finance-processes" data-target="0">0</p>
                     <h3>No Financeiro</h3>
                     <div class="tooltip">Total de Processos no Financeiro</div>
                 </div>
@@ -1996,15 +2183,27 @@
             <div class="table-container">
                 <div class="table-header" style="flex-direction: column; align-items: flex-start;">
                     <div class="search-filters"
-                        style="width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
-                        <input type="text" id="searchInput" placeholder="Pesquisar por PP, Fornecedor..."
-                            onkeyup="filterTable()" style="width: 100%;">
-                        <select id="statusFilter" onchange="filterTable()" style="width: 100%;">
-                            <option value="">Selecione...</option>
-                        </select>
-                        <select id="locationFilter" onchange="filterTable()" style="width: 100%;">
-                            <option value="">Selecione...</option>
-                        </select>
+                        style="width: 100%; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; align-items: end;">
+                        <div class="form-group" style="margin:0;">
+                            <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Pesquisar</label>
+                            <div style="position: relative;">
+                                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888;"></i>
+                                <input type="text" id="searchInput" placeholder="PP, Fornecedor, Objeto..."
+                                    onkeyup="filterTable()" style="width: 100%; padding-left: 35px; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Status</label>
+                             <select id="statusFilter" onchange="filterTable()" style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
+                                <option value="">Todos os Status</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Localização</label>
+                            <select id="locationFilter" onchange="filterTable()" style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
+                                <option value="">Todas as Localizações</option>
+                            </select>
+                        </div>
                     </div>
                     <div style="display:flex; gap: 0.5rem; margin-top: 1rem;">
                         <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> Novo
@@ -2015,22 +2214,22 @@
                             PDF</button>
                     </div>
                 </div>
-                <div style="overflow-x: auto;">
+                <div class="table-wrapper">
                     <table id="processTable">
                         <thead>
                             <tr>
-                                <th>Nº P.P.</th>
-                                <th>ANO</th>
-                                <th>P.P.ANO</th>
-                                <th>Fornecedor</th>
-                                <th>Objeto</th>
-                                <th>Valor Capa</th>
-                                <th>Abertura</th>
-                                <th>Conclusão</th>
-                                <th>Status</th>
-                                <th>Tratado Por</th>
-                                <th>Localização</th>
-                                <th>Dt Local.</th>
+                                <th onclick="window.sortTable('ppNumber')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="0"> Nº P.P. <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('exerciseYear')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="1"> ANO <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('ppAno')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="2"> P.P.ANO <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('supplier')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="3"> Fornecedor <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('object')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="4"> Objeto <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('coverValue')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="5"> Valor Capa <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('openingDate')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="6"> Abertura <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('deadline')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="7"> Conclusão <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('status')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="8"> Status <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('treatedBy')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="9"> Tratado Por <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('location')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="10"> Localização <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('locationDate')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="11"> Dt Local. <i class="fas fa-sort"></i></th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -2232,7 +2431,90 @@
         </div>
     </div>
 
-    <!-- Config Modal -->
+    <!-- Process Details Modal -->
+    <div id="processDetailsModal" class="process-modal">
+        <div class="process-modal-content" style="max-width: 900px;">
+            <header class="modal-header">
+                <div class="modal-header-info">
+                    <h2 id="detailsModalTitle">Detalhes do Processo</h2>
+                    <p id="detailsModalSubtitle">Visualização completa do fluxo e informações</p>
+                </div>
+                <div style="display:flex; gap: 10px; align-items: center; margin-right: 20px;">
+                    <span id="detailsStatusBadge" class="badge">Status</span>
+                    <button class="modal-close" onclick="closeModal('processDetailsModal')">&times;</button>
+                </div>
+            </header>
+
+            <div class="modal-body" style="padding: 2rem;">
+                <div class="details-grid">
+                    <!-- Informações Gerais -->
+                    <div class="details-card">
+                        <h4><i class="fas fa-info-circle"></i> Informações Gerais</h4>
+                        <div class="details-item">
+                            <span class="details-label">Fornecedor</span>
+                            <span id="detailsSupplier" class="details-value">-</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="details-label">Objeto</span>
+                            <span id="detailsObject" class="details-value">-</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="details-label">Valor de Capa</span>
+                            <span id="detailsValue" class="details-value">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Datas e Prazos -->
+                    <div class="details-card">
+                        <h4><i class="fas fa-calendar-alt"></i> Datas e Prazos</h4>
+                        <div class="details-item">
+                            <span class="details-label">Data de Abertura</span>
+                            <span id="detailsOpeningDate" class="details-value">-</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="details-label">Data de Conclusão</span>
+                            <span id="detailsDeadline" class="details-value">-</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="details-label">Tratado Por</span>
+                            <span id="detailsTreatedBy" class="details-value">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Localização Atual -->
+                    <div class="details-card">
+                        <h4><i class="fas fa-map-marker-alt"></i> Localização Atual</h4>
+                        <div class="details-item">
+                            <span class="details-label">Setor / Órgão</span>
+                            <span id="detailsLocation" class="details-value">-</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="details-label">Última Movimentação</span>
+                            <span id="detailsLocationDate" class="details-value">-</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="details-label">Notas</span>
+                            <span id="detailsNotes" class="details-value">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico / Timeline -->
+                <div class="details-card" style="margin-bottom: 0;">
+                    <h4><i class="fas fa-history"></i> Histórico de Tramitações</h4>
+                    <div id="detailsTimeline" class="timeline-vertical">
+                        <!-- Timeline items will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <footer class="modal-footer" style="padding: 1.5rem 2rem; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-danger" id="detailsBtnDelete"><i class="fas fa-trash"></i> Excluir</button>
+                <button class="btn btn-warning" id="detailsBtnEdit"><i class="fas fa-edit"></i> Editar</button>
+                <button class="btn btn-secondary" onclick="closeModal('processDetailsModal')">Fechar</button>
+            </footer>
+        </div>
+    </div>
     <div id="processConfigModal" class="process-modal">
         <div class="process-modal-content" style="max-width: 500px;">
             <header class="modal-header">
@@ -2518,26 +2800,30 @@
             setupTrigger('remanejamento-link', 'remanejamento-modal');
             setupTrigger('comments-toggle', 'comments-modal');
 
-            // Counter Animations via IntersectionObserver
             var observer = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
-                        var target = +entry.target.getAttribute('data-target');
-                        var suffix = entry.target.getAttribute('data-suffix') || '';
-                        var isFloat = target % 1 !== 0;
-                        var start = null;
-                        var animate = function (now) {
-                            if (!start) start = now;
-                            var progress = Math.min((now - start) / 2000, 1);
-                            var val = progress * target;
-                            entry.target.innerText = (isFloat ? val.toFixed(1) : Math.floor(val).toLocaleString('pt-BR')) + suffix;
-                            if (progress < 1) requestAnimationFrame(animate);
-                        };
-                        requestAnimationFrame(animate);
+                        window.animateCounter(entry.target);
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.5 });
+            }, { threshold: 0.1 });
+
+            window.animateCounter = function(el) {
+                var target = +el.getAttribute('data-target');
+                var suffix = el.getAttribute('data-suffix') || '';
+                var isFloat = target % 1 !== 0;
+                var start = null;
+                var animate = function (now) {
+                    if (!start) start = now;
+                    var progress = Math.min((now - start) / 1000, 1);
+                    var val = progress * target;
+                    el.innerText = (isFloat ? val.toFixed(1) : Math.floor(val).toLocaleString('pt-BR')) + suffix;
+                    if (progress < 1) requestAnimationFrame(animate);
+                };
+                requestAnimationFrame(animate);
+            };
+
             document.querySelectorAll('.stat-number').forEach(function (el) { observer.observe(el); });
 
             // Dark Mode
@@ -2600,7 +2886,11 @@
             const target = document.getElementById(`${id}-section`);
             if (target) target.style.display = 'block';
             window.closeAllModals();
-            if (id === 'dashboard') window.updateDashboardCounters();
+            if (id === 'dashboard') {
+                window.updateDashboardCounters();
+                // Re-run counters for visible cards immediately
+                document.querySelectorAll('#dashboard-section .stat-number').forEach(el => window.animateCounter(el));
+            }
 
             // Expand container width specifically for the processes table to prevent scrolling
             const mainContainer = document.querySelector('main.container');
@@ -2621,7 +2911,10 @@
                 const el = document.getElementById(id);
                 if (el) {
                     el.setAttribute('data-target', val);
-                    el.innerText = val + (el.getAttribute('data-suffix') || '');
+                    // Update innerText immediately to avoid blank display
+                    const suffix = el.getAttribute('data-suffix') || '';
+                    const isFloat = val % 1 !== 0;
+                    el.innerText = (isFloat ? val.toFixed(1) : Math.floor(val).toLocaleString('pt-BR')) + suffix;
                 }
             };
 
@@ -2670,29 +2963,187 @@
             if (statusChart) statusChart.destroy();
             if (locationChart) locationChart.destroy();
 
+            Chart.register(ChartDataLabels);
+
+            const vibrantColors = [
+                '#005A9C', '#2ecc71', '#e67e22', '#e74c3c', '#9b59b6',
+                '#3498db', '#1abc9c', '#f1c40f', '#34495e', '#d35400'
+            ];
+
+            // Gráfico de Status Dinâmico (inclui todos os status presentes no banco)
+            const actualStatuses = [...new Set(window.state.processes.map(p => p.status || 'Não Definido'))];
+            const statusCounts = actualStatuses.map(s => window.state.processes.filter(p => (p.status || 'Não Definido') === s).length);
+
             statusChart = new Chart(sEl.getContext('2d'), {
                 type: 'doughnut',
-                data: { labels: window.state.statuses, datasets: [{ data: window.state.statuses.map(s => window.state.processes.filter(p => p.status === s).length), backgroundColor: ['#005A9C', '#f39c12', '#27ae60', '#e74c3c', '#9b59b6'] }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                data: {
+                    labels: actualStatuses,
+                    datasets: [{
+                        data: statusCounts,
+                        backgroundColor: vibrantColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: { size: 10 }
+                            }
+                        },
+                        datalabels: {
+                            color: '#fff',
+                            fontWeight: 'bold',
+                            font: { size: 11 },
+                            formatter: (value, ctx) => {
+                                if (!value || value === 0) return null;
+                                let sum = 0;
+                                let dataArr = ctx.chart.data.datasets[0].data;
+                                dataArr.map(data => { sum += data; });
+                                let percentage = (value * 100 / sum).toFixed(1) + "%";
+                                return `${value}\n(${percentage})`;
+                            },
+                            textAlign: 'center'
+                        }
+                    }
+                }
             });
 
             locationChart = new Chart(lEl.getContext('2d'), {
                 type: 'bar',
-                data: { labels: window.state.locations, datasets: [{ label: 'Processos', data: window.state.locations.map(l => window.state.processes.filter(p => p.location === l).length), backgroundColor: '#005A9C' }] },
-                options: { responsive: true, maintainAspectRatio: false }
+                data: {
+                    labels: window.state.locations,
+                    datasets: [{
+                        label: 'Processos',
+                        data: window.state.locations.map(l => window.state.processes.filter(p => p.location === l).length),
+                        backgroundColor: vibrantColors,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 40 // Increased space for labels
+                        }
+                    },
+                    plugins: {
+                        datalabels: {
+                            color: (ctx) => {
+                                // If the bar is tall enough, we keep it white inside, 
+                                // but the user reported values were confusing, so let's put them ABOVE the bar in dark blue.
+                                return '#1452B5'; 
+                            },
+                            anchor: 'end',
+                            align: 'top',
+                            offset: 4,
+                            fontWeight: 'bold',
+                            font: { size: 11 },
+                            formatter: (value, ctx) => {
+                                if (!value || value === 0) return null;
+                                let sum = 0;
+                                let dataArr = ctx.chart.data.datasets[0].data;
+                                dataArr.map(data => { sum += data; });
+                                let percentage = (value * 100 / sum).toFixed(1) + "%";
+                                return `${value} (${percentage})`;
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
             });
         };
 
+        window.filterTable = function () {
+            const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
+            const status = document.getElementById('statusFilter')?.value || '';
+            const locationArr = document.getElementById('locationFilter')?.value || '';
+
+            const filtered = window.state.processes.filter(p => {
+                const matchSearch = !query || 
+                    (p.ppNumber || '').toString().toLowerCase().includes(query) ||
+                    (p.supplier || '').toLowerCase().includes(query) ||
+                    (p.object || '').toLowerCase().includes(query);
+                
+                const matchStatus = !status || p.status === status;
+                const matchLoc = !locationArr || p.location === locationArr;
+
+                return matchSearch && matchStatus && matchLoc;
+            });
+
+            window.renderProcessTable(filtered);
+        };
+
+        window.currentSort = { field: '', asc: true };
+        window.sortTable = function (field) {
+            if (window.currentSort.field === field) {
+                window.currentSort.asc = !window.currentSort.asc;
+            } else {
+                window.currentSort.field = field;
+                window.currentSort.asc = true;
+            }
+
+            const sorted = [...(window._lastFiltered || window.state.processes)].sort((a, b) => {
+                let valA = a[field];
+                let valB = b[field];
+
+                // Handle numbers
+                if (typeof valA === 'number' && typeof valB === 'number') {
+                    return window.currentSort.asc ? valA - valB : valB - valA;
+                }
+
+                // Handle dates
+                if (field.toLowerCase().includes('date') || field === 'deadline') {
+                    const dA = valA ? new Date(valA) : new Date(0);
+                    const dB = valB ? new Date(valB) : new Date(0);
+                    return window.currentSort.asc ? dA - dB : dB - dA;
+                }
+
+                // Default string compare
+                valA = (valA || '').toString().toLowerCase();
+                valB = (valB || '').toString().toLowerCase();
+                if (valA < valB) return window.currentSort.asc ? -1 : 1;
+                if (valA > valB) return window.currentSort.asc ? 1 : -1;
+                return 0;
+            });
+
+            window.renderProcessTable(sorted);
+        };
+
         window.renderProcessTable = function (data = window.state.processes) {
+            window._lastFiltered = data;
             const tbody = document.getElementById('processTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            data.sort((a, b) => new Date(a.deadline) - new Date(b.deadline)).forEach(p => {
+            
+            data.forEach(p => {
                 const tr = document.createElement('tr');
-                const days = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
+                tr.onclick = () => window.showProcessDetails(p); // Abre detalhes ao clicar na linha
+                
+                let daysText = '';
+                let daysColor = 'gray';
+
+                if (p.deadline) {
+                    const d = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
+                    daysText = p.status === 'Concluído' ? 'OK' : d + 'd';
+                    daysColor = d < 0 ? 'red' : 'gray';
+                }
+
                 const color = { 'Em Análise': '#005A9C', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' }[p.status] || '#95a5a6';
 
                 const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
+                const formatCurrency = (v) => {
+                    const num = parseFloat(v);
+                    if (isNaN(num)) return v || '';
+                    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
+                };
 
                 tr.innerHTML = `
                     <td>${p.ppNumber || ''}</td>
@@ -2700,19 +3151,32 @@
                     <td><strong>${p.ppAno}</strong></td>
                     <td title="${p.supplier}">${p.supplier ? (p.supplier.length > 20 ? p.supplier.substring(0, 20) + '...' : p.supplier) : ''}</td>
                     <td title="${p.object}">${p.object ? (p.object.length > 20 ? p.object.substring(0, 20) + '...' : p.object) : ''}</td>
-                    <td>${p.coverValue || ''}</td>
+                    <td>${formatCurrency(p.coverValue)}</td>
                     <td>${formatDate(p.openingDate)}</td>
-                    <td>${formatDate(p.deadline)}<br><small style="color:${days < 0 ? 'red' : 'gray'}">(${p.status === 'Concluído' ? 'OK' : days + 'd'})</small></td>
+                    <td>${formatDate(p.deadline)}${daysText ? `<br><small style="color:${daysColor}">(${daysText})</small>` : ''}</td>
                     <td><span class="badge" style="background:${color}; color:white">${p.status}</span></td>
                     <td>${p.treatedBy || ''}</td>
-                    <td>${p.location}</td>
+                    <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
                     <td>${formatDate(p.locationDate)}</td>
-                    <td style="display:flex; flex-direction: row; gap:4px; align-items:center;">
+                    <td onclick="event.stopPropagation();" style="display:flex; flex-direction: row; gap:4px; align-items:center;">
                         <button class="btn btn-warning" style="padding:4px; width:28px; height:28px" onclick='window.openProcessModal(${JSON.stringify(p)})' title="Editar"><i class="fas fa-edit"></i></button>
                         <button class="btn btn-primary" style="padding:4px; width:28px; height:28px" onclick='window.showHistory(${JSON.stringify(p)})' title="Histórico"><i class="fas fa-history"></i></button>
+                        <button class="btn btn-danger" style="padding:4px; width:28px; height:28px" onclick="window.deleteProcess('${p.id}')" title="Excluir"><i class="fas fa-trash"></i></button>
                     </td>`;
                 tbody.appendChild(tr);
             });
+        };
+
+        window.deleteProcess = async function (id) {
+            if (!confirm('Deseja realmente excluir este processo? Esta ação não pode ser desfeita.')) return;
+            try {
+                const { error } = await supabase.from('processes').delete().eq('id', id);
+                if (error) throw error;
+                await window.initApp();
+            } catch (err) {
+                console.error('Delete Error:', err);
+                alert('Erro ao excluir o processo.');
+            }
         };
 
         window.updateModalRemainingDays = function () {
@@ -2831,6 +3295,76 @@
             document.getElementById('processHistoryModal').style.display = 'flex';
         };
 
+        window.showProcessDetails = function (p) {
+            const modal = document.getElementById('processDetailsModal');
+            if (!modal) return;
+
+            const formatDate = (d) => d ? d.split('-').reverse().join('/') : '-';
+            const formatCurrency = (v) => {
+                const num = parseFloat(v);
+                if (isNaN(num)) return v || '-';
+                return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
+            };
+
+            // Basic Info
+            document.getElementById('detailsModalTitle').innerText = `Processo ${p.ppAno}`;
+            document.getElementById('detailsSupplier').innerText = p.supplier || '-';
+            document.getElementById('detailsObject').innerText = p.object || '-';
+            document.getElementById('detailsValue').innerText = formatCurrency(p.coverValue);
+            
+            // Dates & Personnel
+            document.getElementById('detailsOpeningDate').innerText = formatDate(p.openingDate);
+            document.getElementById('detailsDeadline').innerText = formatDate(p.deadline);
+            document.getElementById('detailsTreatedBy').innerText = p.treatedBy || '-';
+
+            // Location & Notes
+            document.getElementById('detailsLocation').innerText = (p.location && p.location !== 'null') ? p.location : 'Não definida';
+            document.getElementById('detailsLocationDate').innerText = formatDate(p.locationDate);
+            document.getElementById('detailsNotes').innerText = p.notes || 'Sem observações.';
+
+            // Status Badge
+            const statusBadge = document.getElementById('detailsStatusBadge');
+            const statusColor = { 'Em Análise': '#005A9C', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' }[p.status] || '#95a5a6';
+            statusBadge.innerText = p.status;
+            statusBadge.style.background = statusColor;
+            statusBadge.style.color = 'white';
+
+            // Timeline
+            const timeline = document.getElementById('detailsTimeline');
+            timeline.innerHTML = '';
+            if (p.history && p.history.length > 0) {
+                [...p.history].reverse().forEach(h => {
+                    const node = document.createElement('div');
+                    node.className = 'timeline-node';
+                    node.innerHTML = `
+                        <div class="timeline-date">${h.date}</div>
+                        <div class="timeline-msg">${h.from ? `<strong>Movimentação:</strong> ${h.from} <i class="fas fa-arrow-right" style="font-size: 10px; margin: 0 5px;"></i> ${h.to}` : h.msg || h.message}</div>
+                    `;
+                    timeline.appendChild(node);
+                });
+            } else {
+                timeline.innerHTML = '<p style="color: #888; font-size: 0.9rem; margin-left: 10px;">Sem histórico de tramitações.</p>';
+            }
+
+            // Action Buttons
+            const btnEdit = document.getElementById('detailsBtnEdit');
+            const btnDelete = document.getElementById('detailsBtnDelete');
+            
+            btnEdit.onclick = () => {
+                window.closeModal('processDetailsModal');
+                window.openProcessModal(p);
+            };
+            
+            btnDelete.onclick = async () => {
+                if (confirm('Deseja realmente excluir este processo?')) {
+                    window.closeModal('processDetailsModal');
+                    await window.deleteProcess(p.id);
+                }
+            };
+
+            modal.style.display = 'flex';
+        };
+
         window.choicesInstances = {};
 
         window.updateSelects = function () {
@@ -2840,8 +3374,8 @@
                 { id: 'treatedBy', data: window.state.handlers, searchable: true },
                 { id: 'locationSelect', data: window.state.locations, searchable: true },
                 { id: 'statusSelect', data: window.state.statuses, searchable: true },
-                { id: 'statusFilter', data: window.state.statuses, opt: true, searchable: false },
-                { id: 'locationFilter', data: window.state.locations, opt: true, searchable: false }
+                { id: 'statusFilter', data: window.state.statuses, opt: true, placeholder: 'Todos os Status', searchable: false },
+                { id: 'locationFilter', data: window.state.locations, opt: true, placeholder: 'Todas Localizações', searchable: false }
             ];
 
             sets.forEach(s => {
@@ -2850,11 +3384,7 @@
 
                 const old = el.value;
 
-                if (window.choicesInstances[s.id]) {
-                    window.choicesInstances[s.id].destroy();
-                }
-
-                el.innerHTML = s.opt ? '<option value="">Filtrar...</option>' : '';
+                el.innerHTML = s.opt ? `<option value="">${s.placeholder || 'Selecionar...'}</option>` : '';
                 s.data.forEach(d => {
                     const o = document.createElement('option');
                     o.value = d;
@@ -3019,30 +3549,56 @@
             const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             doc.text("Data de Emissão: " + dateStr, 14, 43);
 
-            // Tabela
+            // Tabela com Colunas Seletivas
+            const allChecks = document.querySelectorAll('.pdf-col-check');
+            const selectedIndices = [];
+            const selectedHeaders = [];
+
+            allChecks.forEach((check, index) => {
+                if (check.checked) {
+                    selectedIndices.push(index);
+                    selectedHeaders.push(check.parentElement.textContent.replace('✓', '').trim());
+                }
+            });
+
+            if (selectedIndices.length === 0) {
+                alert('Selecione ao menos uma coluna para exportar.');
+                return;
+            }
+
+            const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
+            const dataToExport = window._lastFiltered || window.state.processes;
+
+            const tableBody = dataToExport.map(p => {
+                const row = [];
+                const fullRowData = [
+                    p.ppNumber || '',
+                    p.exerciseYear || '',
+                    p.ppAno || '',
+                    p.supplier || '',
+                    p.object || '',
+                    p.coverValue || '',
+                    formatDate(p.openingDate),
+                    formatDate(p.deadline),
+                    p.status || '',
+                    p.treatedBy || '',
+                    p.location || '',
+                    formatDate(p.locationDate)
+                ];
+                
+                selectedIndices.forEach(idx => {
+                    row.push(fullRowData[idx]);
+                });
+                return row;
+            });
+
             doc.autoTable({
-                head: [['Nº P.P.', 'ANO', 'P.P.ANO', 'Fornecedor', 'Objeto', 'Valor de Capa', 'Data de Abertura', 'Data de Conclusão', 'Tratado Por', 'Status', 'Localização', 'Dt Localização']],
-                body: window.state.processes.map(p => {
-                    const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
-                    return [
-                        p.ppNumber || '',
-                        p.exerciseYear || '',
-                        p.ppAno || '',
-                        p.supplier || '',
-                        p.object || '',
-                        p.coverValue || '',
-                        formatDate(p.openingDate),
-                        formatDate(p.deadline),
-                        p.treatedBy || '',
-                        p.status || '',
-                        p.location || '',
-                        formatDate(p.locationDate)
-                    ];
-                }),
+                head: [selectedHeaders],
+                body: tableBody,
                 startY: 48,
                 theme: 'grid',
                 styles: { fontSize: 7, cellPadding: 2, overflow: 'linebreak' },
-                headStyles: { fillColor: [240, 240, 240], textColor: [50, 50, 50], fontStyle: 'bold' }
+                headStyles: { fillColor: [20, 82, 181], textColor: [255, 255, 255], fontStyle: 'bold' }
             });
 
             doc.save('processos.pdf');
@@ -3052,7 +3608,8 @@
             const header = ['NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSÃO', 'TRATADO POR', 'STATUS', 'Localização'];
             
             const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
-            const dataToExport = window.state.processes.map(p => {
+            const dataToExportSource = window._lastFiltered || window.state.processes;
+            const dataToExport = dataToExportSource.map(p => {
                 let cover = p.coverValue || '';
                 if (cover && !cover.includes('R$')) cover = 'R$ ' + cover;
 

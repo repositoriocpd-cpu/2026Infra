@@ -34,6 +34,8 @@ git push -u origin main
 Você pode acessar em: [github.com/repositoriocpd-cpu/2026Infra](https://github.com/repositoriocpd-cpu/2026Infra)
 
 
+Poderia fazer o deploy para o GitHub 'https://github.com/repositoriocpd-cpu/2026Infra.git', na Branch: 'Infra2026'
+
 
 
 Poderia criar todas as tabelas no supabase: 
@@ -748,8 +750,42 @@ Gere:
 SKILLS
 is (frontend-design)
 De acordo com os princípios da skill, vamos escolher uma estética BOLD, moderna e limpa, para distanciar do padrão básico do navegador ("AI slop aesthetics"). A proposta será criar modais inspirados no estilo "Minimalismo Corporativo Refinado ("Soft Material") com toques elegantes:
+======
+Permita também, em cada modal, 'Pesquisar' um nome da lista ou 'Editar'. Obs.: Em os campos 'Tratado por:'  e 'DIAS RESTANTES', não estão funcionado corretamente. E o botão adicionar também não estão funcionando. Poderia corrigir?
+======
 
 
+Consegui diagnosticar os problemas que você relatou. Aqui está o que aconteceu e como vou consertar:
+
+Tratado Por: Quando a janela do processo é aberta, o sistema não estava "puxando" o tratador do banco de forma correta, e na hora de "Salvar" o sistema não enviava o campo para o banco de dados.
+Dias Restantes: A função responsável por realizar a contagem (updateModalRemainingDays) simplesmente não existia no código atual. Eu a criarei do zero para que automatize os cálculos corretamente de acordo com a Data de Conclusão.
+Botão Adicionar e Gestão: A lista de configuração (Configurações) precisava de ajustes. Eu vou implementar a caixa de "Pesquisa" para filtrar a lista e a opção de "Editar" o item diretamente, não precisando apenas excluí-lo e recriá-lo.
+Pesquisa em todos os Modais: A funcionalidade de "Pesquisar" (usando a biblioteca Choices) será ativada não só em "Fornecedor" e "Objeto", mas agora também em "Tratado Por", "Status" e "Localização".
+====
+No pdf gerado, adicione um cabeçalho de acordo com o exemplo na imagem anexa. Enderelo da logo '	https://upload.wikimedia.org/wikipedia/commons/thu…pg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg'
+
+=====
+
+Lista de Processos de Pagamento
+
+Colunas:
+
+Nº P.P. 
+ANO  
+P.P.ANO
+Fornecedor  
+Objeto  
+Valor de Capa  
+Data de Abertura  
+Data de Conclusão  
+Status  
+Localização
+Dt Localização
+
+=====
 
 
+Os campos deste modal ficaram com um visual muito feito. Ou tamanhos pequenos de mais ou grande de mais. Além de precisar usar a barra de rolagem, o que dificulta a usabilidade do usuário. Poderia usar toda a sua expecialização em UX e deixar este modal muito mais bonito e moderno?
+
+===Adicione no menu lateral um botão 'X' para recolher o menu lateral. Na talela da tela 'Consulta Cadastrados',  na coluna 'Ações', adicione um botão de 'Excluir'. Obs.: Quando na coluna 'Localização' estiver vazia, mantenha vazia e não com o nome 'null'.
 
