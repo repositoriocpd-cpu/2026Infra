@@ -3345,14 +3345,20 @@
             if (p) {
                 document.getElementById('processModalTitle').innerText = 'Editar Processo';
                 document.getElementById('processId').value = p.id;
-                document.getElementById('ppAno').value = p.ppAno;
-                document.getElementById('supplierSelect').value = p.supplier;
-                document.getElementById('objectSelect').value = p.object;
-                document.getElementById('treatedBy').value = p.treatedBy;
-                document.getElementById('deadline').value = p.deadline;
-                document.getElementById('statusSelect').value = p.status;
-                document.getElementById('locationSelect').value = p.location;
-                document.getElementById('notes').value = p.notes;
+                document.getElementById('ppNumber').value = p.ppNumber || '';
+                document.getElementById('exerciseYear').value = p.exerciseYear || '';
+                document.getElementById('ppAno').value = p.ppAno || '';
+                document.getElementById('coverValue').value = p.coverValue || '';
+                document.getElementById('openingDate').value = p.openingDate || '';
+                document.getElementById('supplierSelect').value = p.supplier || '';
+                document.getElementById('objectSelect').value = p.object || '';
+                document.getElementById('treatedBy').value = p.treatedBy || '';
+                document.getElementById('deadline').value = p.deadline || '';
+                document.getElementById('statusSelect').value = p.status || '';
+                document.getElementById('locationSelect').value = p.location || '';
+                document.getElementById('locationDate').value = p.locationDate || '';
+                document.getElementById('situation').value = p.situation || '';
+                document.getElementById('notes').value = p.notes || '';
                 window.renderModalHistory(p.history);
                 window.updateModalRemainingDays();
             } else {
