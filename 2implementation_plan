@@ -1,0 +1,23 @@
+# Refactor Submenu Structure
+
+Refactor the side navigation menu to align with the user's requested layout and aesthetic while maintaining the existing functional triggers ([onclick](file:///c:/Users/CPDINFO/Desktop/2025%20Infra%20Sistemas/%27Nova%20Tela%20Gest%C3%A3o%20Infraestrutura%20-%20Copia%27.html#2288-2295) events).
+
+## Proposed Changes
+
+### UI Components
+
+#### [MODIFY] [Nova Tela Gestão Infraestrutura - Copia.html](file:///c:/Users/CPDINFO/Desktop/2025%20Infra%20Sistemas/'Nova%20Tela%20Gestão%20Infraestrutura%20-%20Copia'.html)
+
+- Update side menu header to "SESME-C".
+- Refactor "Lançamentos" submenu items.
+- Update "Configurações" icon to `fas fa-link` and submenu items (switching icons to `fas fa-sign-in-alt` as requested).
+- Ensure "Links Externo" remains consistent.
+- Preserve all interactive logic ([onclick](file:///c:/Users/CPDINFO/Desktop/2025%20Infra%20Sistemas/%27Nova%20Tela%20Gest%C3%A3o%20Infraestrutura%20-%20Copia%27.html#2288-2295) handlers for modals and settings).
+
+## Verification Plan
+
+### Manual Verification
+- Verify side menu opens correctly.
+- Check that "SESME-C" header is displayed.
+- Test "Novo Processo", "Cadastro de Usuários", etc., to ensure modals still open.
+- Verify submenu toggle behavior (click to expand/collapse).

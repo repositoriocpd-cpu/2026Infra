@@ -1,0 +1,755 @@
+NÚMERO DO P.P.
+Ano Exercício OF
+PP ANO ATUAL
+FORNECEDOR
+OBJETO
+VALOR DE CAPA
+Data de Abertura	
+DATA DE CONCLUSÃO
+Total de Dias Restante da Conclusão (valor baseado na data de conclusão + data hoje) 	
+TRATADO POR	
+STATUS	
+Localização
+Data Localização	
+SITUAÇÃO	
+OBSERVAÇÃO	
+
+
+Em 'Configurações', adicione um novo submenu chamado 'Tratador'. Neste modal deverá aparecer os seguintes campos: Título: Gestão de Tratador do Processos. Um campo 'Nome do Tratador do Processo'. 
+
+
+=== GIT E SUPABASE
+echo "# 2026Infra" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/repositoriocpd-cpu/2026Infra.git
+git push -u origin main
+
+- **Repositório**: `repositoriocpd-cpu/2026Infra`
+- **Branch**: `2026Infra`
+- **Arquivos enviados**: `Nova Tela Gestão Infraestrutura - Copia.html`, `ProcessControl.html`, implementation_plan.md, `start-server.bat` e `README.md`
+
+Você pode acessar em: [github.com/repositoriocpd-cpu/2026Infra](https://github.com/repositoriocpd-cpu/2026Infra)
+
+
+
+
+Poderia criar todas as tabelas no supabase: 
+
+Supabase (repositoriocpd)
+ Project URL =  https://sxsfqvcxikdsahhidrdx.supabase.co
+ ### Anon Key (Legacy) = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y
+
+Poderia fazer o deploy deste sistema no GitHub, https://github.com/repositoriocpd-cpu/2026Infra.git, na branch 2026Infra
+
+
+===
+
+
+
+Nome do sistema: 'CONTROLE DE PROCESSOS DE PAGAMENTO'
+
+Campos do sistema:
+
+Número do Proc. Pgto. (P.P.)
+ANO	(2026, 2025, 2024, 2023) 
+P.P. ANO	
+Fornecedor	- campo select
+Objeto
+Valor de Capa
+Data de Abertura
+Data de Conclusão (dd/mm/aaaa)
+Total de Dias Restante da Conclusão (valor baseado na data de conclusão + data hoje) 
+STATUS - campo select  (DESPACHADO, TRATANDO, PENDENTE, EM ANÁSLISE, LIQUIDADO )
+Localização - campo select  (24 - TESOURARIA, 142 - FINANCEIRO, 143 - GABINETE, 131 - ALMOXARIFADO )
+Data Localização
+
+
+No sistema:
+No módulo 'Configurações' 
+'Cadastro de Fornecedor'
+'Cadastro de Status'
+'Cadastro de Localização'
+'Cadastro de usuário'
+'Cadastro de Objeto'
+
+
+
+===
+
+
+#
+
+Crie um **módulo completo de sistema administrativo** chamado:
+
+# CONTROLE DE PROCESSOS DE PAGAMENTO
+
+Este módulo será utilizado em um **sistema de gestão administrativa pública**, com objetivo de **acompanhar e controlar processos de pagamento da secretaria**.
+
+O sistema deve possuir **interface moderna, organizada, com foco em rastreabilidade de processos, status e localização física do processo dentro da secretaria**.
+
+---
+
+# 1. Estrutura do Banco de Dados
+
+Criar tabela principal:
+
+## payment_processes
+
+Campos:
+
+id (uuid)
+
+numero_processo_pgto (string)
+
+ano (integer)
+
+pp_ano (string gerado automaticamente:  
+numero_processo_pgto + "/" + ano)
+
+fornecedor_id (foreign key → suppliers)
+
+objeto_id (foreign key → objects)
+
+valor_capa (decimal)
+
+data_abertura (date)
+
+data_conclusao (date)
+
+dias_restantes (campo calculado automaticamente  
+data_conclusao - data_atual)
+
+status_id (foreign key → status)
+
+localizacao_id (foreign key → locations)
+
+data_localizacao (date)
+
+created_at
+
+updated_at
+
+---
+
+# 2. Tabelas de Configuração
+
+Criar módulo **Configurações** contendo os seguintes cadastros:
+
+## suppliers
+
+Cadastro de fornecedores
+
+Campos:
+
+id
+
+nome
+
+cnpj
+
+telefone
+
+email
+
+created_at
+
+---
+
+## status
+
+Cadastro de status do processo
+
+Campos:
+
+id
+
+nome
+
+Exemplos:
+
+DESPACHADO  
+TRATANDO  
+PENDENTE
+
+---
+
+## locations
+
+Cadastro de localização física do processo
+
+Campos:
+
+id
+
+codigo
+
+nome
+
+Exemplos:
+
+24 - TESOURARIA  
+142 - FINANCEIRO  
+143 - GABINETE  
+131 - ALMOXARIFADO
+
+---
+
+## objects
+
+Cadastro de objetos do processo
+
+Campos:
+
+id
+
+descricao
+
+---
+
+## users
+
+Cadastro de usuários do sistema
+
+Campos:
+
+id
+
+nome
+
+email
+
+perfil
+
+created_at
+
+---
+
+# 3. Lógica do Sistema
+
+Implementar as seguintes automações:
+
+### 1️⃣ Geração automática do campo
+
+P.P. ANO
+
+Formato:
+
+numero_processo_pgto + "/" + ano
+
+Exemplo:
+
+1234 / 2026 → 1234/2026
+
+---
+
+### 2️⃣ Cálculo automático
+
+Campo:
+
+Total de Dias Restantes da Conclusão
+
+Regra:
+
+dias_restantes = data_conclusao - data_atual
+
+Exibir em destaque:
+
+🟢 verde → mais de 10 dias  
+🟡 amarelo → entre 5 e 10 dias  
+🔴 vermelho → menos de 5 dias
+
+---
+
+### 3️⃣ Histórico de localização
+
+Sempre que a **localização mudar**, registrar histórico.
+
+Criar tabela:
+
+process_location_history
+
+Campos:
+
+id
+
+process_id
+
+location_id
+
+data_movimentacao
+
+usuario
+
+---
+
+# 4. Telas do Sistema
+
+Criar as seguintes telas:
+
+## Tela principal
+
+Lista de Processos de Pagamento
+
+Colunas:
+
+P.P. ANO  
+Fornecedor  
+Objeto  
+Valor de Capa  
+Data de Abertura  
+Data de Conclusão  
+Dias Restantes  
+Status  
+Localização
+
+Filtros:
+
+Ano  
+Fornecedor  
+Status  
+Localização
+
+Busca rápida por:
+
+Número do processo
+
+---
+
+## Tela de Cadastro de Processo
+
+Formulário com todos os campos.
+
+Campos select devem carregar dados das tabelas:
+
+fornecedor  
+status  
+localizacao  
+objeto
+
+---
+
+## Tela de Configurações
+
+Menu:
+
+Configurações
+
+Submenus:
+
+Cadastro de Fornecedor  
+Cadastro de Status  
+Cadastro de Localização  
+Cadastro de Usuário  
+Cadastro de Objeto
+
+Cada cadastro deve possuir:
+
+Criar  
+Editar  
+Excluir  
+Pesquisar
+
+---
+
+# 5. Dashboard
+
+Criar painel com indicadores:
+
+Total de processos
+
+Processos pendentes
+
+Processos despachados
+
+Processos em tratamento
+
+Processos próximos da conclusão
+
+Gráfico de processos por status
+
+Gráfico de processos por localização
+
+---
+
+# 6. UX/UI
+
+Interface moderna estilo **painel administrativo institucional**.
+
+Usar:
+
+cards informativos
+
+tabela com filtros avançados
+
+cores para status
+
+ícones para localização
+
+alerta visual para processos próximos da conclusão
+
+---
+
+# 7. Recursos Extras
+
+Adicionar:
+
+Exportação para PDF
+
+Exportação para Excel
+
+Linha do tempo do processo
+
+Histórico de movimentações
+
+Busca inteligente
+
+---
+
+# 8. Permissões de Usuário
+
+Criar níveis de acesso:
+
+Administrador
+
+Usuário interno
+
+Visualização
+
+---
+
+# 9. Estrutura do Menu
+
+Menu lateral:
+
+Financeiro
+
+→ Controle de Processos de Pagamento
+
+Configurações
+
+→ Fornecedores  
+→ Status  
+→ Localizações  
+→ Objetos  
+→ Usuários
+
+---
+
+# 10. Requisitos Importantes
+
+Interface deve ser:
+
+simples
+
+rápida
+
+responsiva
+
+adaptada para uso administrativo
+
+priorizando **rastreabilidade de processos**.
+
+---
+
+## Resultado esperado
+
+O sistema deve gerar:
+
+estrutura de banco  
+telas completas  
+formulários  
+filtros  
+dashboard  
+histórico de movimentação
+
+para controle eficiente dos **Processos de Pagamento da Secretaria**.
+
+===  Modal prompt
+
+Atue como um **UX/UI Senior Designer especializado em sistemas administrativos e dashboards institucionais**.
+
+Preciso que você **reprojete completamente o modal “Novo Processo”** do meu sistema de **Controle de Processos de Pagamento**.
+
+O objetivo é transformar o modal atual (que está visualmente poluído e desorganizado) em uma **interface moderna, limpa, institucional e profissional**, com excelente usabilidade.
+
+⚠️ **IMPORTANTE**  
+Não altere os campos existentes do sistema.  
+A tarefa é **apenas reorganizar o layout e melhorar o design e a experiência do usuário.**
+
+---
+
+# Contexto do sistema
+
+Sistema administrativo usado para controle de **Processos de Pagamento (P.P.)** dentro de uma secretaria pública.
+
+Os usuários são servidores administrativos que precisam **cadastrar e acompanhar processos rapidamente**.
+
+Portanto a interface deve priorizar:
+
+- clareza
+    
+- rapidez de preenchimento
+    
+- leitura fácil
+    
+- hierarquia visual clara
+    
+
+---
+
+# Campos existentes no modal
+
+Organize estes campos:
+
+**Identificação do processo**
+
+- Número do P.P.
+    
+- Ano Exercício OF
+    
+- PP Ano Atual
+    
+- Valor de Capa
+    
+
+**Informações do processo**
+
+- Fornecedor (select + botão adicionar)
+    
+- Objeto (select + botão adicionar)
+    
+
+**Datas**
+
+- Data de Abertura
+    
+- Data de Conclusão
+    
+- Dias Restantes
+    
+
+**Responsável**
+
+- Tratado por
+    
+
+**Controle do processo**
+
+- Status (select + botão adicionar)
+    
+- Localização (select + botão adicionar)
+    
+- Data Localização
+    
+
+**Situação**
+
+- Situação
+    
+
+**Complemento**
+
+- Observação
+    
+
+---
+
+# Problemas atuais do modal
+
+O modal atual possui:
+
+- layout desalinhado
+    
+- campos sem hierarquia visual
+    
+- muito espaço mal aproveitado
+    
+- aparência de formulário antigo
+    
+- falta de agrupamento lógico
+    
+
+---
+
+# Objetivo do redesign
+
+Transformar o modal em algo semelhante a interfaces modernas como:
+
+- Notion
+    
+- Linear
+    
+- Supabase
+    
+- Stripe Dashboard
+    
+- sistemas SaaS profissionais
+    
+
+---
+
+# Diretrizes de UX/UI
+
+### 1️⃣ Estrutura em seções visuais
+
+Organize o modal em **blocos claros**:
+
+**1. Identificação do Processo**
+
+Número do PP  
+Ano Exercício  
+PP Ano Atual  
+Valor de Capa
+
+**2. Informações**
+
+Fornecedor  
+Objeto
+
+**3. Datas**
+
+Data de abertura  
+Data de conclusão  
+Dias restantes (campo calculado)
+
+**4. Responsável**
+
+Tratado por
+
+**5. Controle**
+
+Status  
+Localização  
+Data localização
+
+**6. Situação**
+
+Campo texto
+
+**7. Observação**
+
+Textarea maior
+
+---
+
+### 2️⃣ Layout em grid moderno
+
+Utilizar **grid responsivo de 2 colunas**.
+
+Exemplo:
+
+Número PP | Ano Exercício  
+PP Ano Atual | Valor de Capa
+
+Fornecedor | Objeto
+
+Data abertura | Data conclusão  
+Dias restantes | Tratado por
+
+Status | Localização  
+Data localização | Situação
+
+Observação ocupando largura total.
+
+---
+
+### 3️⃣ Melhorias visuais
+
+Aplicar:
+
+- bordas suaves
+    
+- padding confortável
+    
+- tipografia moderna
+    
+- espaçamento consistente
+    
+- labels claros
+    
+- ícones discretos
+    
+
+---
+
+### 4️⃣ Cabeçalho do modal
+
+Cabeçalho mais profissional:
+
+**Novo Processo de Pagamento**
+
+subtítulo:
+
+Cadastro de processo administrativo
+
+botão fechar no canto direito.
+
+---
+
+### 5️⃣ Rodapé do modal
+
+Adicionar botões claros:
+
+Cancelar  
+Salvar Processo
+
+Botão salvar destacado.
+
+---
+
+### 6️⃣ Melhorias extras
+
+Adicionar:
+
+- separadores visuais entre seções
+    
+- labels menores e elegantes
+    
+- inputs com foco elegante
+    
+- placeholder úteis
+    
+
+---
+
+# Paleta visual sugerida
+
+Sistema institucional.
+
+Sugestão:
+
+Primary: #1452B5  
+Background modal: branco  
+Inputs: cinza claro  
+Bordas: #E5E7EB
+
+Tipografia limpa e moderna.
+
+---
+
+# Entrega esperada
+
+Gere:
+
+- estrutura visual do modal
+    
+- layout organizado
+    
+- HTML estruturado
+    
+- classes modernas (preferencialmente Tailwind)
+    
+- design pronto para produção
+
+
+SKILLS
+is (frontend-design)
+De acordo com os princípios da skill, vamos escolher uma estética BOLD, moderna e limpa, para distanciar do padrão básico do navegador ("AI slop aesthetics"). A proposta será criar modais inspirados no estilo "Minimalismo Corporativo Refinado ("Soft Material") com toques elegantes:
+
+
+
+
+

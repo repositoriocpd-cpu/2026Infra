@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  body { font-family: sans-serif; }
+  .side-menu { width: 260px; background: #fff; border: 1px solid #ccc; }
+  .side-menu-header { background: #005A9C; color: white; padding: 1rem; }
+  .side-menu ul { list-style: none; margin: 0; padding: 0; }
+  .side-menu li a { display: flex; align-items: center; gap: 8px; padding: 12px 20px; text-decoration: none; color: #333; }
+  .side-menu li a:hover { background: #f0f0f0; }
+  .submenu { display: none; background: #f7f7f7; }
+  .submenu.open { display: block; }
+  .submenu li a { padding-left: 40px; font-size: 0.9rem; }
+  .has-submenu::after { content: " ›"; float: right; transition: transform .3s; }
+  .has-submenu.active::after { transform: rotate(90deg); }
+  #result { padding: 1rem; background: #eef; margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<div id="result">Click a menu item to test...</div>
+
+<nav class="side-menu">
+  <div class="side-menu-header"><h3>SESME-C</h3></div>
+  <ul>
+    <li>
+      <a href="#" class="has-submenu" onclick="toggleSub(this); return false;">&#43; Lançamentos</a>
+      <div class="submenu">
+        <ul>
+          <li><a href="#">&#8594; Novo Processo</a></li>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <a href="#" class="has-submenu" onclick="toggleSub(this); return false;">&#128279; Configurações</a>
+      <div class="submenu">
+        <ul>
+          <li><a href="#">&#8594; Cadastro de Usuários</a></li>
+          <li><a href="#">&#8594; Cadastro de Fornecedores</a></li>
+          <li><a href="#">&#8594; Cadastro de Status</a></li>
+        </ul>
+      </div>
+    </li>
+    <hr>
+    <li>
+      <a href="#" class="has-submenu" onclick="toggleSub(this); return false;">&#8599; Links Externo</a>
+      <div class="submenu">
+        <ul>
+          <li><a href="https://servicos.acesso.gov.br/">GOVBR</a></li>
+          <li><a href="https://novoportal.itaguai.rj.gov.br/">PMI</a></li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<script>
+  function toggleSub(link) {
+    document.getElementById('result').textContent = 'Clicked: ' + link.textContent.trim();
+    var sub = link.nextElementSibling;
+    if (!sub) { document.getElementById('result').textContent += ' — NO SUBMENU FOUND'; return; }
+    var wasOpen = link.classList.contains('active');
+    document.querySelectorAll('.submenu').forEach(function(s){ s.classList.remove('open'); });
+    document.querySelectorAll('.has-submenu').forEach(function(l){ l.classList.remove('active'); });
+    if (!wasOpen) { sub.classList.add('open'); link.classList.add('active'); }
+    document.getElementById('result').textContent += ' — ' + (wasOpen ? 'CLOSED' : 'OPENED');
+  }
+</script>
+</body>
+</html>

@@ -11,8 +11,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
         @font-face {
             font-family: 'Alexandria-Light';
@@ -492,7 +495,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(6, 1fr);
             gap: 1rem;
         }
 
@@ -791,80 +794,77 @@
             margin: 0;
             overflow-y: auto;
             flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .side-menu li a {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.8rem 1.5rem;
-            color: var(--text-color);
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: #4A5568;
             text-decoration: none;
-            font-size: 1rem;
-            transition: background-color 0.2s ease, color 0.2s ease;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
             border-left: 3px solid transparent;
         }
 
         .side-menu li a:hover {
-            background-color: var(--govbr-light-gray);
-            color: var(--govbr-blue);
-            border-left-color: var(--govbr-blue);
+            background-color: transparent;
+            color: #005A9C;
+            border-left-color: #005A9C;
+        }
+
+        .side-menu li {
+            position: relative;
         }
 
         .side-menu li .submenu {
-            position: fixed;
-            left: 300px;
-            top: 0;
-            width: 300px;
-            height: 100%;
-            background-color: #f2f2f2;
-            /* cor submenu*/
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1001;
             display: none;
+            background-color: #f7f7f7;
+            padding: 0;
+            list-style: none;
         }
 
         body.dark-mode .side-menu li .submenu {
-            background-color: #1e1e1e;
+            background-color: #2a2a2a;
         }
 
         .side-menu li .submenu.open {
-            transform: translateX(0);
             display: block;
         }
 
-        .side-menu li .submenu ul {
-            padding: 0;
-            margin: 0;
-        }
-
         .side-menu li .submenu li a {
-            padding-left: 1.5rem;
+            padding-left: 3rem;
+            font-size: 0.95rem;
         }
 
         .has-submenu {
             position: relative;
         }
 
-        .has-submenu::after {
-            content: "\f054";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            position: absolute;
-            right: 1.5rem;
+        .side-menu li a .menu-icon {
+            width: 20px;
+            text-align: center;
+            color: #005A9C;
+            font-size: 1.1rem;
+        }
+
+        .side-menu li a .chevron-icon {
+            color: #4A5568;
+            font-size: 0.9rem;
             transition: transform 0.3s ease;
         }
 
-        .has-submenu.active::after {
+        .has-submenu.active .chevron-icon {
             transform: rotate(90deg);
         }
 
-        .side-menu li a .fas {
-            width: 20px;
-            text-align: center;
-            color: var(--govbr-blue);
+        .menu-divider {
+            border: 0;
+            border-top: 1px solid #E2E8F0;
+            margin: 0.5rem 1.5rem;
         }
 
         .not-working-icon {
@@ -902,13 +902,14 @@
             width: 100%;
             height: 100%;
             z-index: 1001;
-            /* Higher than overlay */
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(8px);
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
             pointer-events: none;
         }
 
@@ -919,15 +920,21 @@
         }
 
         .modal-content {
-            background: white;
+            background: #ffffff;
             padding: 2.5rem;
-            border-radius: 8px;
+            border-radius: 20px;
             max-width: 800px;
             width: 90%;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal.visible .modal-content {
+            transform: scale(1);
         }
 
         .modal-content h1,
@@ -1063,12 +1070,24 @@
         .close-button {
             position: absolute;
             top: 1rem;
-            right: 1.5rem;
-            background: none;
+            right: 1rem;
+            background: transparent;
             border: none;
-            font-size: 2rem;
+            color: #6B7280;
+            font-size: 1.5rem;
             cursor: pointer;
-            color: #333;
+            transition: all 0.2s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-button:hover {
+            color: #111827;
+            background-color: #F3F4F6;
         }
 
         /* Footer */
@@ -1114,9 +1133,10 @@
         }
 
         input[type="text"],
+        input[type="date"],
         select,
         textarea {
-            padding: 0.6rem 1rem;
+            padding: 0.5rem 0.75rem;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-size: 0.9rem;
@@ -1194,25 +1214,48 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(8px);
             z-index: 2000;
             align-items: center;
             justify-content: center;
             padding: 2rem;
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .process-modal-content {
-            background: white;
-            border-radius: 12px;
+            background: #ffffff;
+            border-radius: 20px;
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px;
             max-height: 95vh;
             overflow-y: auto;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
-            border: 1px solid #E5E7EB;
+            animation: slideUpFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .modal-header {
@@ -1237,22 +1280,27 @@
         }
 
         .modal-close {
-            background: none;
+            background: transparent;
             border: none;
-            color: #9CA3AF;
-            font-size: 1.5rem;
+            color: #6B7280;
+            font-size: 1.25rem;
             cursor: pointer;
-            transition: color 0.2s;
-            padding: 0.5rem;
-            line-height: 1;
+            transition: all 0.2s ease;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .modal-close:hover {
-            color: #374151;
+            color: #111827;
+            background-color: #F3F4F6;
         }
 
         .modal-body {
-            padding: 2rem;
+            padding: 1.5rem 2rem 1rem 2rem;
         }
 
         .modal-footer {
@@ -1268,7 +1316,7 @@
 
         /* Form Sections */
         .form-section {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-section-title {
@@ -1277,30 +1325,30 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #1452B5;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             border-bottom: 1px solid #F3F4F6;
-            padding-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem 1.5rem;
         }
 
         .form-grid-4 {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem 1.5rem;
         }
 
         .form-grid-3 {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem 2.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem 1.5rem;
         }
 
         .form-group {
@@ -1428,8 +1476,15 @@
             font-weight: 600;
         }
 
-        .badge-movement { background: #dbeafe; color: #1e40af; }
-        .badge-log { background: #d1fae5; color: #065f46; }
+        .badge-movement {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-log {
+            background: #d1fae5;
+            color: #065f46;
+        }
 
         .form-group label {
             display: block;
@@ -1441,19 +1496,53 @@
 
         .form-control {
             width: 100%;
-            padding: 0.625rem 0.75rem;
-            background-color: #FFFFFF;
+            height: 40px;
+            box-sizing: border-box;
+            background: #ffffff;
             border: 1px solid #D1D5DB;
             border-radius: 6px;
-            font-size: 0.875rem;
+            padding: 0 0.75rem;
+            font-size: 0.9rem;
             color: #111827;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
 
         .form-control:focus {
             outline: none;
             border-color: #1452B5;
             box-shadow: 0 0 0 3px rgba(20, 82, 181, 0.1);
+        }
+
+        .config-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            margin-bottom: 0.5rem;
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .config-list-item:hover {
+            background: #FFFFFF;
+            border-color: #D1D5DB;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .config-trash-icon {
+            color: #ef4444;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .config-trash-icon:hover {
+            background: #fef2f2;
+            color: #b91c1c;
         }
 
         .form-control[readonly] {
@@ -1470,22 +1559,52 @@
 
         .btn-quick-add {
             flex-shrink: 0;
-            width: 38px;
-            height: 38px;
+            width: 40px !important;
+            height: 40px !important;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #E5E7EB;
-            color: #374151;
+            background-color: #EFF6FF;
+            color: #1452B5;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
-            border: none;
+            transition: all 0.2s ease;
+            border: 1px solid #DBEAFE;
+            font-size: 1.125rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            margin: 0 !important;
         }
 
         .btn-quick-add:hover {
-            background-color: #D1D5DB;
-            color: #111827;
+            background-color: #DBEAFE;
+            color: #1E3A8A;
+            transform: translateY(-1px);
+        }
+
+        /* Choices.js Overrides for exact alignment */
+        .choices {
+            margin-bottom: 0 !important;
+            flex-grow: 1;
+        }
+        
+        .choices__inner {
+            min-height: 40px !important;
+            height: 40px !important;
+            padding: 0 0.75rem 0 0.75rem !important;
+            border-radius: 6px !important;
+            background-color: #ffffff !important;
+            border: 1px solid #D1D5DB !important;
+            display: flex;
+            align-items: center;
+        }
+        
+        .choices__list--single {
+            padding: 0 !important;
+        }
+        
+        .is-focused .choices__inner, .is-open .choices__inner {
+            border-color: #1452B5 !important;
+            box-shadow: 0 0 0 3px rgba(20, 82, 181, 0.1) !important;
         }
 
         .btn-action {
@@ -1530,15 +1649,22 @@
             background-color: #0F172A;
         }
 
-        body.dark-mode .modal-header-info h2 { color: #F1F5F9; }
-        body.dark-mode .modal-header-info p { color: #94A3B8; }
+        body.dark-mode .modal-header-info h2 {
+            color: #F1F5F9;
+        }
+
+        body.dark-mode .modal-header-info p {
+            color: #94A3B8;
+        }
 
         body.dark-mode .form-section-title {
             color: #60A5FA;
             border-color: #1E293B;
         }
 
-        body.dark-mode .form-group label { color: #CBD5E1; }
+        body.dark-mode .form-group label {
+            color: #CBD5E1;
+        }
 
         body.dark-mode .form-control {
             background-color: #0F172A;
@@ -1614,57 +1740,61 @@
 <body>
     <nav id="side-menu" class="side-menu">
         <div class="side-menu-header">
-            <h3>Painel SESME-C</h3>
+            <h3 style="font-weight: 800; letter-spacing: 0.05em;">SESME-C</h3>
         </div>
         <ul>
             <li>
-                <a href="#" class="has-submenu"><i class="fas fa-plus-square"></i> Lançamentos</a>
+                <a href="#" onclick="window.openProcessModal(); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                    <i class="fas fa-sign-in-alt menu-icon"></i> <span style="flex-grow: 1;">Novo Processo</span> <i class="fas fa-chevron-right chevron-icon"></i>
+                </a>
+            </li>
+            <li style="margin-top: auto;">
+                <a href="#" class="has-submenu">
+                    <i class="fas fa-chart-line menu-icon"></i> <span style="flex-grow: 1;">Desempenho & Registros</span> <i class="fas fa-chevron-right chevron-icon"></i>
+                </a>
                 <div class="submenu">
                     <ul>
-                        <li><a href="#" onclick="showSection('processes')"><i class="fas fa-sign-in-alt"></i>Novo
-                                Processo</a></li>
-
-
-
+                        <li><a href="#"
+                                onclick="window.showSection('dashboard'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');"><i
+                                    class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="#"
+                                onclick="window.showSection('processes'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');"><i
+                                    class="fas fa-list-alt"></i> Consulta Cadastrados</a></li>
                     </ul>
                 </div>
             </li>
-
             <li>
-
+                <hr class="menu-divider">
+            </li>
             <li>
-                <a href="#" class="has-submenu"><i class="fas fa-cog"></i> Configurações</a>
+                <a href="#" class="has-submenu">
+                    <i class="fas fa-link menu-icon"></i> <span style="flex-grow: 1;">Configurações</span> <i class="fas fa-chevron-right chevron-icon"></i>
+                </a>
                 <div class="submenu">
                     <ul>
-                        <li><a href="#" onclick="openConfigModal('users')"><i class="fas fa-user-plus"></i> Cadastro de
-                                Usuários </a></li>
-                        <li><a href="#" onclick="openConfigModal('suppliers')"><i class="fas fa-truck"></i> Cadastro de
-                                Fornecedores</a></li>
-                        <li><a href="#" onclick="openConfigModal('objects')"><i class="fas fa-boxes"></i> Cadastro de
-                                Objetos</a></li>
-                        <li><a href="#" onclick="openConfigModal('locations')"><i class="fas fa-map-marker-alt"></i>
+                        <li><a href="#" onclick="window.openConfigModal('users')"><i class="fas fa-users-cog"></i>
+                                Cadastro de Usuários</a></li>
+                        <li><a href="#" onclick="window.openConfigModal('suppliers')"><i class="fas fa-truck"></i>
+                                Cadastro de Fornecedores</a></li>
+                        <li><a href="#" onclick="window.openConfigModal('objects')"><i class="fas fa-box"></i>
+                                Cadastro de Objetos</a></li>
+                        <li><a href="#" onclick="window.openConfigModal('locations')"><i
+                                    class="fas fa-map-marker-alt"></i>
                                 Cadastro de Localização</a></li>
-                        <li><a href="#" onclick="openConfigModal('statuses')"><i class="fas fa-tasks"></i> Cadastro de
-                                Status</a></li>
-                        <li><a href="#" onclick="openConfigModal('handlers')"><i class="fas fa-user-cog"></i> Cadastro de
-                                Tratadores</a></li>
+                        <li><a href="#" onclick="window.openConfigModal('statuses')"><i class="fas fa-tags"></i>
+                                Cadastro de Status</a></li>
+                        <li><a href="#" onclick="window.openConfigModal('handlers')"><i class="fas fa-address-card"></i>
+                                Cadastro de Tratadores</a></li>
                     </ul>
                 </div>
             </li>
-
-
-
-            </div>
+            <li>
+                <hr class="menu-divider">
             </li>
-
-
-
-
-            <hr style="border: 1px solid gray; margin-bottom:5px;">
             <li>
-
-            <li>
-                <a href="#" class="has-submenu"><i class="fas fa-arrow-up-right-from-square"></i> Links Externo</a>
+                <a href="#" class="has-submenu">
+                    <i class="fas fa-external-link-square-alt menu-icon"></i> <span style="flex-grow: 1;">Links Externo</span> <i class="fas fa-chevron-right chevron-icon"></i>
+                </a>
                 <div class="submenu">
                     <ul>
                         <li><a href="https://servicos.acesso.gov.br/"><i class="fas fa-globe"></i> GOVBR</a></li>
@@ -1674,12 +1804,14 @@
             </li>
         </ul>
     </nav>
-    <div id="overlay" class="overlay"></div>
+    <div id="overlay" class="overlay"
+        onclick="document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+    </div>
 
     <header class="govbr-header">
         <div class="header-top">
             <div class="header-logo-area">
-                <img class="header-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo25.png"
+                <img class="header-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
                     alt="Prefeitura de Itaguaí">
                 <div class="logo-separator"></div>
                 <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span>
@@ -1758,8 +1890,8 @@
                 </div>
                 <div class="stat-card">
                     <p class="stat-number" id="completed-processes" data-target="0">0</p>
-                    <h3>Processos Finalizados</h3>
-                    <div class="tooltip">Total Geral de Processos Finalizados</div>
+                    <h3>Processos Liquidados</h3>
+                    <div class="tooltip">Total Geral de Processos Liquidados</div>
                 </div>
                 <div class="stat-card">
                     <p class="stat-number" id="pending-percent" data-target="0" data-suffix="%">0%</p>
@@ -1767,11 +1899,17 @@
                     <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
                 <div class="stat-card">
+                    <p class="stat-number" id="delayed-processes" data-target="0" style="color: var(--danger);">0</p>
+                    <h3>Vencidos / Atrasados</h3>
+                    <div class="tooltip">Total de Processos Vencidos</div>
+                </div>
+                <div class="stat-card">
                     <p class="stat-number" id="finance-processes" data-target="0">0</p>
                     <h3>No Financeiro</h3>
                     <div class="tooltip">Total de Processos no Financeiro</div>
                 </div>
             </div>
+            
             <div class="stats-grid" style="margin-top: 1rem;">
                 <div class="stat-card">
                     <p class="stat-number" id="cabinet-processes" data-target="0">0</p>
@@ -1799,9 +1937,9 @@
                     <div class="tooltip">Total de Processos da Nutrição</div>
                 </div>
                 <div class="stat-card">
-                    <p class="stat-number" id="delayed-processes" data-target="0" style="color: var(--danger);">0</p>
-                    <h3>Vencidos / Atrasados</h3>
-                    <div class="tooltip">Total de Processos Vencidos</div>
+                    <p class="stat-number" id="secretariat-processes" data-target="0">0</p>
+                    <h3>Na Secretaria</h3>
+                    <div class="tooltip">Total de Processos na Secretaria</div>
                 </div>
             </div>
 
@@ -1821,6 +1959,40 @@
 
         <!-- Process List Section -->
         <div id="processes-section" style="display:none;">
+            <!-- Modern 6 Insight Cards -->
+            <div class="stats-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <p class="stat-number" id="list-total-processes" data-target="0">0</p>
+                    <h3>Total de Processos</h3>
+                    <div class="tooltip">Quantidade total de Processos</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="list-treating-processes" data-target="0">0</p>
+                    <h3>Processos em Tramitação</h3>
+                    <div class="tooltip">Total de Processos em Tramitação</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="list-completed-processes" data-target="0">0</p>
+                    <h3>Processos Liquidados</h3>
+                    <div class="tooltip">Total Geral de Processos Liquidados</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="list-pending-percent" data-target="0" data-suffix="%">0%</p>
+                    <h3>Percentual de Pendências</h3>
+                    <div class="tooltip">Proporção de processos não concluídos</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="list-delayed-processes" data-target="0" style="color: var(--danger);">0</p>
+                    <h3>Vencidos / Atrasados</h3>
+                    <div class="tooltip">Total de Processos Vencidos</div>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-number" id="list-finance-processes" data-target="0">0</p>
+                    <h3>No Financeiro</h3>
+                    <div class="tooltip">Total de Processos no Financeiro</div>
+                </div>
+            </div>
+
             <div class="table-container">
                 <div class="table-header" style="flex-direction: column; align-items: flex-start;">
                     <div class="search-filters"
@@ -1847,13 +2019,19 @@
                     <table id="processTable">
                         <thead>
                             <tr>
-                                <th>PP/ANO</th>
+                                <th>Nº P.P.</th>
+                                <th>ANO</th>
+                                <th>P.P.ANO</th>
                                 <th>Fornecedor</th>
                                 <th>Objeto</th>
-                                <th>Localização</th>
+                                <th>Valor Capa</th>
+                                <th>Abertura</th>
+                                <th>Conclusão</th>
                                 <th>Status</th>
-                                <th>Prazo Restante</th>
-                                <th style="text-align: center;">Ações</th>
+                                <th>Tratado Por</th>
+                                <th>Localização</th>
+                                <th>Dt Local.</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody id="processTableBody"></tbody>
@@ -1890,7 +2068,8 @@
                             </div>
                             <div class="form-group">
                                 <label>ANO EXERCÍCIO OF</label>
-                                <input type="text" id="exerciseYear" class="form-control" required placeholder="Ex: 2025">
+                                <input type="text" id="exerciseYear" class="form-control" required
+                                    placeholder="Ex: 2025">
                             </div>
                             <div class="form-group">
                                 <label>PP ANO ATUAL</label>
@@ -1913,14 +2092,16 @@
                                 <label>FORNECEDOR</label>
                                 <div class="select-with-btn">
                                     <select id="supplierSelect" class="form-control" required></select>
-                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Fornecedor" onclick="quickAddConfig('suppliers')"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Fornecedor"
+                                        onclick="quickAddConfig('suppliers')"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>OBJETO</label>
                                 <div class="select-with-btn">
                                     <select id="objectSelect" class="form-control" required></select>
-                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Objeto" onclick="quickAddConfig('objects')"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Objeto"
+                                        onclick="quickAddConfig('objects')"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -1938,7 +2119,8 @@
                             </div>
                             <div class="form-group">
                                 <label>DATA DE CONCLUSÃO</label>
-                                <input type="date" id="deadline" class="form-control" onchange="updateModalRemainingDays()" required>
+                                <input type="date" id="deadline" class="form-control"
+                                    onchange="updateModalRemainingDays()" required>
                             </div>
                             <div class="form-group">
                                 <label>DIAS RESTANTES</label>
@@ -1957,7 +2139,8 @@
                                 <label>TRATADO POR</label>
                                 <div class="select-with-btn">
                                     <select id="treatedBy" class="form-control" required></select>
-                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Tratador" onclick="quickAddConfig('handlers')"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Tratador"
+                                        onclick="quickAddConfig('handlers')"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -1973,14 +2156,16 @@
                                 <label>STATUS</label>
                                 <div class="select-with-btn">
                                     <select id="statusSelect" class="form-control" required></select>
-                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Status" onclick="quickAddConfig('statuses')"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Status"
+                                        onclick="quickAddConfig('statuses')"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>LOCALIZAÇÃO</label>
                                 <div class="select-with-btn">
                                     <select id="locationSelect" class="form-control" required></select>
-                                    <button type="button" class="btn-quick-add" title="Adicionar Nova Localização" onclick="quickAddConfig('locations')"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Nova Localização"
+                                        onclick="quickAddConfig('locations')"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1991,10 +2176,15 @@
 
                         <!-- Manual Update Interface -->
                         <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
-                            <label style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.625rem;">NOVA ATUALIZAÇÃO / TRAMITAÇÃO</label>
+                            <label
+                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.625rem;">NOVA
+                                ATUALIZAÇÃO / TRAMITAÇÃO</label>
                             <div style="display: flex; gap: 0.75rem;">
-                                <input type="text" id="newManualUpdate" class="form-control" placeholder="Ex: Processo recebido para conferência...">
-                                <button type="button" class="btn-action btn-primary-new" style="white-space: nowrap; padding: 0.5rem 1.5rem;" onclick="launchManualUpdate()">Lançar</button>
+                                <input type="text" id="newManualUpdate" class="form-control"
+                                    placeholder="Ex: Processo recebido para conferência...">
+                                <button type="button" class="btn-action btn-primary-new"
+                                    style="white-space: nowrap; padding: 0.5rem 1.5rem;"
+                                    onclick="launchManualUpdate()">Lançar</button>
                             </div>
                         </div>
 
@@ -2012,7 +2202,8 @@
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <label>SITUAÇÃO</label>
-                                <input type="text" id="situation" class="form-control" placeholder="Descreva brevemente a situação atual do processo">
+                                <input type="text" id="situation" class="form-control"
+                                    placeholder="Descreva brevemente a situação atual do processo">
                             </div>
                         </div>
                     </div>
@@ -2025,14 +2216,16 @@
                         <div class="form-grid">
                             <div class="form-group full-width">
                                 <label>OBSERVAÇÃO</label>
-                                <textarea id="notes" class="form-control" rows="3" placeholder="Insira detalhes complementares ou observações relevantes"></textarea>
+                                <textarea id="notes" class="form-control" rows="3"
+                                    placeholder="Insira detalhes complementares ou observações relevantes"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <footer class="modal-footer">
-                    <button type="button" class="btn-action btn-secondary" onclick="closeModal('processControlModal')">Cancelar</button>
+                    <button type="button" class="btn-action btn-secondary"
+                        onclick="closeModal('processControlModal')">Cancelar</button>
                     <button type="submit" class="btn-action btn-primary-new">Salvar Processo</button>
                 </footer>
             </form>
@@ -2041,21 +2234,37 @@
 
     <!-- Config Modal -->
     <div id="processConfigModal" class="process-modal">
-        <div class="process-modal-content">
-            <div
-                style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid var(--border-color); padding-bottom:1rem;">
-                <h2 id="configModalTitle" style="color:var(--govbr-blue);">Configurações</h2>
-                <button onclick="closeModal('processConfigModal')"
-                    style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
-            </div>
-            <div class="form-group">
-                <label id="configInputLabel">Novo Item</label>
-                <div style="display:flex; gap:0.5rem;">
-                    <input type="text" id="configInput">
-                    <button class="btn btn-primary" onclick="saveConfigItem()">Adicionar</button>
+        <div class="process-modal-content" style="max-width: 500px;">
+            <header class="modal-header">
+                <div class="modal-header-info">
+                    <h2 id="configModalTitle" style="color:var(--govbr-blue);">Configurações</h2>
+                    <p>Gerencie os itens disponíveis no sistema</p>
                 </div>
+                <button type="button" class="modal-close" onclick="closeModal('processConfigModal')">&times;</button>
+            </header>
+
+            <div class="modal-body">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label id="configInputLabel">Adicionar Novo Item</label>
+                    <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                        <input type="text" id="configInput" class="form-control" placeholder="Digite o nome do item...">
+                        <button class="btn btn-primary" onclick="saveConfigItem()"
+                            style="padding: 0.75rem 1.5rem; border-radius: 8px;">Adicionar</button>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <input type="text" id="configSearchInput" class="form-control" placeholder="Pesquisar itens..."
+                        onkeyup="window.renderConfigList()">
+                </div>
+
+                <h4
+                    style="font-size: 0.875rem; color: #6B7280; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Itens Cadastrados</h4>
+                <ul id="configList"
+                    style="list-style:none; padding:0; margin:0; max-height:350px; overflow-y:auto; overflow-x:hidden; padding-right: 0.5rem;">
+                </ul>
             </div>
-            <ul id="configList" style="list-style:none; margin-top:1rem; max-height:300px; overflow-y:auto;"></ul>
         </div>
     </div>
 
@@ -2073,7 +2282,8 @@
                 <!-- Items will be rendered here -->
             </div>
             <footer class="modal-footer">
-                <button type="button" class="btn-action btn-secondary" onclick="closeModal('processHistoryModal')">Fechar Histórico</button>
+                <button type="button" class="btn-action btn-secondary"
+                    onclick="closeModal('processHistoryModal')">Fechar Histórico</button>
             </footer>
         </div>
     </div>
@@ -2194,1040 +2404,745 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Side Menu Toggle
-            const menuToggle = document.getElementById('menu-toggle');
-            const sideMenu = document.getElementById('side-menu');
+        console.log('=== SCRIPT INITIALIZING v2.0 ===');
+
+        // *** MENU TOGGLE ***
+        window.toggleMenu = function () {
+            var sideMenu = document.getElementById('side-menu');
+            var overlay = document.getElementById('overlay');
+            if (!sideMenu || !overlay) return;
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('visible');
+            if (!sideMenu.classList.contains('open')) {
+                document.querySelectorAll('.submenu').forEach(function (sub) { sub.classList.remove('open'); });
+                document.querySelectorAll('.has-submenu').forEach(function (link) { link.classList.remove('active'); });
+            }
+        };
+
+        window.closeAllModals = function () {
+            var ids = ['accessibility-modal', 'cookie-modal', 'processControlModal', 'processConfigModal', 'processHistoryModal', 'remanejamento-modal', 'comments-modal'];
+            ids.forEach(function (id) {
+                var m = document.getElementById(id);
+                if (m) { m.classList.remove('visible'); m.style.display = 'none'; }
+            });
+            var overlay = document.getElementById('overlay');
+            var sideMenu = document.getElementById('side-menu');
+            if (overlay) overlay.classList.remove('visible');
+            if (sideMenu) sideMenu.classList.remove('open');
+        };
+
+        window.closeModal = function (id) {
+            var m = document.getElementById(id);
+            if (m) { m.classList.remove('visible'); m.style.display = 'none'; }
+            var overlay = document.getElementById('overlay');
+            if (overlay) overlay.classList.remove('visible');
+        };
+
+        // --- GLOBAL CONFIG & STATE ---
+        var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
+        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+
+        var supabase;
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('Supabase client initialized');
+        } catch (e) { console.error('Supabase Client Error:', e); }
+
+        window.state = {
+            processes: [], suppliers: [], locations: [], objects: [],
+            statuses: [], handlers: [], users: [], currentConfigType: ''
+        };
+        var statusChart, locationChart;
+
+        // (toggleMenu, toggleSubmenu, closeAllModals already defined above)
+
+        // --- STATE ---
+
+        // --- 3. EVENT LISTENERS SETUP (DOM already ready at end of body) ---
+        (function setupListeners() {
+            console.log('Setting up listeners...');
+
+            const menuBtn = document.getElementById('menu-toggle');
+            if (menuBtn) menuBtn.addEventListener('click', function (e) { e.stopPropagation(); window.toggleMenu(); });
+
             const overlay = document.getElementById('overlay');
+            if (overlay) overlay.addEventListener('click', function (e) { e.stopPropagation(); window.closeAllModals(); });
 
-            const toggleMenu = () => {
-                sideMenu.classList.toggle('open');
-                overlay.classList.toggle('visible');
-                // Close any open submenus when main menu closes
-                if (!sideMenu.classList.contains('open')) {
-                    document.querySelectorAll('.submenu').forEach(sub => {
-                        sub.classList.remove('open');
-                    });
-                    document.querySelectorAll('.has-submenu').forEach(link => {
-                        link.classList.remove('active');
-                    });
-                }
-            };
+            // Submenu Logic
+            document.querySelectorAll('.has-submenu').forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Submenu clicked:', this.innerText.trim());
 
-            // Submenu hover behavior
-            document.querySelectorAll('.has-submenu').forEach(link => {
-                link.addEventListener('mouseenter', function () {
-                    const submenu = this.nextElementSibling;
+                    var submenu = this.nextElementSibling;
+                    if (!submenu || !submenu.classList.contains('submenu')) {
+                        submenu = this.parentElement.querySelector('.submenu');
+                    }
+                    if (!submenu) return;
+
+                    var isActive = this.classList.contains('active');
 
                     // Close all other submenus
-                    document.querySelectorAll('.submenu').forEach(sub => {
+                    document.querySelectorAll('.submenu').forEach(function (sub) {
                         if (sub !== submenu) sub.classList.remove('open');
                     });
-                    document.querySelectorAll('.has-submenu').forEach(otherLink => {
-                        if (otherLink !== this) otherLink.classList.remove('active');
+                    document.querySelectorAll('.has-submenu').forEach(function (other) {
+                        if (other !== link) other.classList.remove('active');
                     });
 
-                    // Open current submenu
-                    submenu.classList.add('open');
-                    this.classList.add('active');
-                });
-
-                // Keep submenu open when hovering over it
-                link.nextElementSibling?.addEventListener('mouseenter', function () {
-                    this.classList.add('open');
-                    this.previousElementSibling.classList.add('active');
-                });
-
-                // Close when mouse leaves both menu item and submenu
-                const closeSubmenu = (link, submenu) => {
-                    setTimeout(() => {
-                        if (!submenu.matches(':hover') && !link.matches(':hover')) {
-                            submenu.classList.remove('open');
-                            link.classList.remove('active');
-                        }
-                    }, 100);
-                };
-
-                link.addEventListener('mouseleave', function () {
-                    closeSubmenu(this, this.nextElementSibling);
-                });
-
-                link.nextElementSibling?.addEventListener('mouseleave', function () {
-                    closeSubmenu(this.previousElementSibling, this);
-                });
-            });
-
-            if (menuToggle && sideMenu && overlay) {
-                menuToggle.addEventListener('click', toggleMenu);
-                overlay.addEventListener('click', () => {
-                    if (sideMenu.classList.contains('open')) {
-                        toggleMenu();
-                    }
-                });
-            }
-
-            // Accessibility Modal
-            const accessibilityToggle = document.getElementById('accessibility-toggle');
-            const accessibilityModal = document.getElementById('accessibility-modal');
-            const closeModalButton = document.getElementById('close-modal-button');
-
-            const toggleAccessibilityModal = () => {
-                accessibilityModal.classList.toggle('visible');
-                overlay.classList.toggle('visible');
-            };
-
-            if (accessibilityToggle && accessibilityModal && closeModalButton && overlay) {
-                accessibilityToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    toggleAccessibilityModal();
-                });
-                closeModalButton.addEventListener('click', toggleAccessibilityModal);
-                overlay.addEventListener('click', () => {
-                    if (accessibilityModal.classList.contains('visible')) {
-                        toggleAccessibilityModal();
-                    }
-                });
-            }
-
-            // Cookie Modal
-            const cookieToggle = document.getElementById('cookie-toggle');
-            const cookieModal = document.getElementById('cookie-modal');
-            const closeCookieModalButton = document.getElementById('close-cookie-modal-button');
-
-            const toggleCookieModal = () => {
-                cookieModal.classList.toggle('visible');
-                overlay.classList.toggle('visible');
-            };
-
-            if (cookieToggle && cookieModal && closeCookieModalButton && overlay) {
-                cookieToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    toggleCookieModal();
-                });
-                closeCookieModalButton.addEventListener('click', toggleCookieModal);
-                overlay.addEventListener('click', () => {
-                    if (cookieModal.classList.contains('visible')) {
-                        toggleCookieModal();
-                    }
-                });
-            }
-
-            // Prevent navigation on editable links
-            document.querySelectorAll('a[contenteditable="true"]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    if (document.activeElement === link) {
-                        e.preventDefault();
+                    if (isActive) {
+                        submenu.classList.remove('open');
+                        this.classList.remove('active');
+                    } else {
+                        submenu.classList.add('open');
+                        this.classList.add('active');
                     }
                 });
             });
 
-            // Stat Counter Animation & Editable Cards
-            const counters = document.querySelectorAll('.stat-number');
-            const animationDuration = 2000; // 2 seconds
-
-            const animateCounter = (counter) => {
-                if (counter.parentElement.dataset.edited === 'true') return;
-
-                const target = +counter.getAttribute('data-target');
-                const suffix = counter.getAttribute('data-suffix') || '';
-                const isFloat = target % 1 !== 0;
-
-                const updateCount = (timestamp) => {
-                    if (counter.parentElement.dataset.edited === 'true') {
-                        // Ensure final value is set correctly if edited during animation.
-                        let currentText = counter.innerText.replace(suffix, '').trim().replace(',', '.');
-                        let newTarget = parseFloat(currentText);
-                        if (isNaN(newTarget)) newTarget = target; // fallback to original target
-
-                        if (isFloat) {
-                            counter.innerText = newTarget.toFixed(1).replace('.', ',') + suffix;
-                        } else {
-                            counter.innerText = Math.floor(newTarget).toLocaleString('pt-BR') + suffix;
-                        }
-                        return; // Stop animation
-                    }
-                    if (!startTime) startTime = timestamp;
-                    const progress = timestamp - startTime;
-                    const percentage = Math.min(progress / animationDuration, 1);
-
-                    let currentValue = percentage * target;
-
-                    if (isFloat) {
-                        // Keep decimal for animation, replace with comma at the end.
-                        counter.innerText = currentValue.toFixed(1) + suffix;
-                    } else {
-                        counter.innerText = Math.floor(currentValue).toLocaleString('pt-BR') + suffix;
-                    }
-
-                    if (progress < animationDuration) {
-                        requestAnimationFrame(updateCount);
-                    } else {
-                        // Ensure final value is exact
-                        if (isFloat) {
-                            counter.innerText = target.toFixed(1).replace('.', ',') + suffix;
-                        } else {
-                            counter.innerText = target.toLocaleString('pt-BR') + suffix;
-                        }
-                    }
+            // Modal Trigger Shortcuts
+            var setupTrigger = function (tid, mid) {
+                var btn = document.getElementById(tid);
+                if (btn) btn.onclick = function (e) {
+                    e.preventDefault();
+                    window.closeAllModals();
+                    var m = document.getElementById(mid);
+                    if (m) { m.classList.add('visible'); m.style.display = 'flex'; }
+                    var ov = document.getElementById('overlay');
+                    if (ov) ov.classList.add('visible');
                 };
-
-                let startTime;
-                requestAnimationFrame(updateCount);
             };
+            setupTrigger('accessibility-toggle', 'accessibility-modal');
+            setupTrigger('cookie-toggle', 'cookie-modal');
+            setupTrigger('remanejamento-link', 'remanejamento-modal');
+            setupTrigger('comments-toggle', 'comments-modal');
 
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
+            // Counter Animations via IntersectionObserver
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
-                        if (entry.target.parentElement.dataset.edited !== 'true') {
-                            animateCounter(entry.target);
-                        }
+                        var target = +entry.target.getAttribute('data-target');
+                        var suffix = entry.target.getAttribute('data-suffix') || '';
+                        var isFloat = target % 1 !== 0;
+                        var start = null;
+                        var animate = function (now) {
+                            if (!start) start = now;
+                            var progress = Math.min((now - start) / 2000, 1);
+                            var val = progress * target;
+                            entry.target.innerText = (isFloat ? val.toFixed(1) : Math.floor(val).toLocaleString('pt-BR')) + suffix;
+                            if (progress < 1) requestAnimationFrame(animate);
+                        };
+                        requestAnimationFrame(animate);
                         observer.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.5 });
+            document.querySelectorAll('.stat-number').forEach(function (el) { observer.observe(el); });
 
-            counters.forEach(counter => {
-                const card = counter.parentElement;
-                const h3 = card.querySelector('h3');
-
-                const handleEdit = (element) => {
-                    card.dataset.edited = 'true';
-                    if (element.classList.contains('stat-number')) {
-                        const suffix = element.getAttribute('data-suffix') || '';
-                        let newText = element.innerText.replace(suffix, '').trim().replace(',', '.');
-                        const newTarget = parseFloat(newText);
-
-                        if (!isNaN(newTarget)) {
-                            element.setAttribute('data-target', newTarget);
-                        }
-                        // Re-add suffix if it's not there
-                        if (suffix && !element.innerText.includes(suffix)) {
-                            element.innerText += suffix;
-                        }
+            // Dark Mode
+            var darkToggle = document.getElementById('dark-mode-toggle');
+            if (darkToggle) {
+                darkToggle.onclick = function (e) {
+                    e.preventDefault();
+                    document.body.classList.toggle('dark-mode');
+                    var icon = darkToggle.querySelector('i');
+                    if (icon) {
+                        icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-sun' : 'fas fa-moon';
                     }
                 };
-
-                counter.addEventListener('input', () => handleEdit(counter));
-                h3.addEventListener('input', () => handleEdit(h3));
-
-                observer.observe(counter);
-            });
-
-            // Dark Mode Toggle
-            const darkModeToggle = document.getElementById('dark-mode-toggle');
-            if (darkModeToggle) {
-                darkModeToggle.addEventListener('click', (e) => {
-                    e.preventDefault(); // Prevent page from jumping to top
-                    document.body.classList.toggle('dark-mode');
-
-                    const icon = darkModeToggle.querySelector('i');
-                    const isDarkMode = document.body.classList.contains('dark-mode');
-
-                    icon.classList.toggle('fa-moon', !isDarkMode);
-                    icon.classList.toggle('fa-sun', isDarkMode);
-                });
             }
 
-            // Remanejamento Modal
-            document.addEventListener('click', function (e) {
-                // Check if clicked element is specifically the remanejamento link
-                if (e.target.closest('#remanejamento-link') ||
-                    e.target.closest('#remanejamento-link i')) {
-                    e.preventDefault();
-                    const modal = document.getElementById('remanejamento-modal');
-                    const overlay = document.getElementById('overlay');
-                    modal.classList.add('visible');
-                    overlay.classList.add('visible');
-                }
+            console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
+        })();
 
-                // Handle modal close buttons
-                if (e.target.id === 'close-remanejamento-modal-button' ||
-                    e.target.id === 'cancel-remanejamento-button' ||
-                    e.target === overlay) {
-                    const modal = document.getElementById('remanejamento-modal');
-                    const overlay = document.getElementById('overlay');
-                    modal.classList.remove('visible');
-                    overlay.classList.remove('visible');
-                }
-
-                // Handle confirm button
-                if (e.target.id === 'confirm-remanejamento-button') {
-                    const modal = document.getElementById('remanejamento-modal');
-                    const overlay = document.getElementById('overlay');
-                    modal.classList.remove('visible');
-                    overlay.classList.remove('visible');
-                    // Add your continue logic here
-                    console.log("Continuar com o remanejamento");
-                }
-            });
-
-            // Handle Remanejamento Modal
-            const remanejamentoLink = document.getElementById('remanejamento-link');
-            const remanejamentoModal = document.getElementById('remanejamento-modal');
-            const closeRemanejamentoButton = document.getElementById('close-remanejamento-modal-button');
-            const cancelRemanejamentoButton = document.getElementById('cancel-remanejamento-button');
-            const confirmRemanejamentoButton = document.getElementById('confirm-remanejamento-button');
-
-            const toggleRemanejamentoModal = () => {
-                remanejamentoModal.classList.toggle('visible');
-                overlay.classList.toggle('visible');
-            };
-
-            if (remanejamentoLink && remanejamentoModal && overlay) {
-                remanejamentoLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    toggleRemanejamentoModal();
-                });
-
-                closeRemanejamentoButton.addEventListener('click', toggleRemanejamentoModal);
-                cancelRemanejamentoButton.addEventListener('click', toggleRemanejamentoModal);
-
-                confirmRemanejamentoButton.addEventListener('click', () => {
-                    toggleRemanejamentoModal();
-                    // Add your continue logic here
-                    console.log("Continuar com o remanejamento");
-                });
-
-                overlay.addEventListener('click', () => {
-                    if (remanejamentoModal.classList.contains('visible')) {
-                        toggleRemanejamentoModal();
-                    }
-                });
-            }
-
-            // Comments Modal
-            const commentsToggle = document.getElementById('comments-toggle');
-            const commentsModal = document.getElementById('comments-modal');
-            const closeCommentsModalButton = document.getElementById('close-comments-modal-button');
-
-            const toggleCommentsModal = () => {
-                commentsModal.classList.toggle('visible');
-                overlay.classList.toggle('visible');
-            };
-
-            if (commentsToggle && commentsModal && overlay) {
-                commentsToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    toggleCommentsModal();
-                });
-
-                closeCommentsModalButton.addEventListener('click', toggleCommentsModal);
-                overlay.addEventListener('click', () => {
-                    if (commentsModal.classList.contains('visible')) {
-                        toggleCommentsModal();
-                    }
-                });
-            }
-
-            // Swiper Initialization
-            const swiper = new Swiper('.swiper', {
-                loop: true,
-                slidesPerView: 1,
-                spaceBetween: 30,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                },
-
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            });
-        });
-
-        // --- PAYMENT PROCESS CONTROL LOGIC ---
-        const SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        let state = {
-            processes: [],
-            suppliers: [],
-            locations: [],
-            objects: [],
-            statuses: [],
-            handlers: [],
-            users: [],
-            currentConfigType: ''
-        };
-
-        let statusChart, locationChart;
-
-        async function initApp() {
+        // --- 4. APP INITIALIZATION ---
+        window.initApp = async function () {
+            if (!supabase) return;
+            console.log('initApp starting data fetch...');
             try {
-                // Fetch all data concurrently
-                const [
-                    { data: suppliers },
-                    { data: locations },
-                    { data: objects },
-                    { data: statuses },
-                    { data: handlers },
-                    { data: users },
-                    { data: processes }
-                ] = await Promise.all([
+                const [suppliers, locations, objects, statuses, handlers, processes] = await Promise.all([
                     supabase.from('suppliers').select('name').order('name'),
                     supabase.from('locations').select('name').order('name'),
                     supabase.from('objects').select('name').order('name'),
                     supabase.from('statuses').select('name').order('name'),
                     supabase.from('handlers').select('name').order('name'),
-                    supabase.from('users').select('name').order('name'),
                     supabase.from('processes').select('*, process_history(*)').order('created_at', { ascending: false })
                 ]);
 
-                // Map data to the state array format
-                state.suppliers = suppliers?.map(s => s.name) || [];
-                state.locations = locations?.map(l => l.name) || [];
-                state.objects = objects?.map(o => o.name) || [];
-                state.statuses = statuses?.map(s => s.name) || [];
-                state.handlers = handlers?.map(h => h.name) || [];
-                state.users = users?.map(u => u.name) || [];
-                
-                // Map processes to match the existing camelCase structure
-                state.processes = processes?.map(p => ({
-                    id: p.id,
-                    ppNumber: p.pp_number,
-                    exerciseYear: p.exercise_year,
-                    ppAno: p.pp_ano,
-                    coverValue: p.cover_value,
-                    supplier: p.supplier_name,
-                    object: p.object_name,
-                    openingDate: p.opening_date,
-                    deadline: p.deadline,
-                    treatedBy: p.treated_by,
-                    status: p.status,
-                    location: p.location,
-                    locationDate: p.location_date,
-                    situation: p.situation,
-                    notes: p.notes,
-                    history: p.process_history?.map(h => ({
-                        date: h.history_date,
-                        from: h.location_from,
-                        to: h.location_to,
-                        msg: h.message
-                    })) || []
-                })) || [];
+                window.state.suppliers = (suppliers.data || []).map(s => s.name);
+                window.state.locations = (locations.data || []).map(l => l.name);
+                window.state.objects = (objects.data || []).map(o => o.name);
+                window.state.statuses = (statuses.data || []).map(s => s.name);
+                window.state.handlers = (handlers.data || []).map(h => h.name);
+                window.state.processes = (processes.data || []).map(p => ({
+                    id: p.id, ppNumber: p.pp_number, exerciseYear: p.exercise_year, ppAno: p.pp_ano,
+                    coverValue: p.cover_value, supplier: p.supplier_name, object: p.object_name,
+                    openingDate: p.opening_date, deadline: p.deadline, treatedBy: p.treated_by,
+                    status: p.status, location: p.location, locationDate: p.location_date,
+                    situation: p.situation, notes: p.notes,
+                    history: (p.process_history || []).map(h => ({
+                        date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message
+                    }))
+                }));
 
-                updateSelects();
-                updateDashboardCounters();
-                renderProcessTable();
-            } catch (error) {
-                console.error("Error initializing app from Supabase:", error);
-                alert("Erro ao conectar com o banco de dados.");
-            }
-        }
-        window.addEventListener('load', initApp);
+                window.updateSelects(); window.updateDashboardCounters(); window.renderProcessTable();
+                console.log('initApp success');
+            } catch (err) { console.error('initApp Error:', err); }
+        };
 
-        async function saveData() {
-            // saveData will be replaced by specific remote saving logic
-            // keeping this as a no-op fallback to prevent errors during transition
-            console.log("saveData called (Local logic disabled)");
-        }
+        if (document.readyState === 'complete') window.initApp();
+        else window.addEventListener('load', window.initApp);
 
-        function showSection(sectionId) {
-            document.getElementById('dashboard-section').style.display = 'none';
-            document.getElementById('processes-section').style.display = 'none';
-            document.getElementById(`${sectionId}-section`).style.display = 'block';
+        // --- 5. LOGIC & TABLE RENDERING ---
+        window.showSection = function (id) {
+            document.querySelectorAll('[id$="-section"]').forEach(s => s.style.display = 'none');
+            const target = document.getElementById(`${id}-section`);
+            if (target) target.style.display = 'block';
+            window.closeAllModals();
+            if (id === 'dashboard') window.updateDashboardCounters();
 
-            // Close menu
-            document.getElementById('side-menu').classList.remove('open');
-            document.getElementById('overlay').classList.remove('visible');
-
-            if (sectionId === 'dashboard') updateDashboardCounters();
-        }
-
-        function updateDashboardCounters() {
-            const now = new Date();
-            const total = state.processes.length;
-            const pending = state.processes.filter(p => p.status !== 'Concluído').length;
-            const completed = total - pending;
-            const delayed = state.processes.filter(p => p.status !== 'Concluído' && new Date(p.deadline) < now).length;
-
-            setCount('total-processes', total);
-            setCount('treating-processes', pending);
-            setCount('completed-processes', completed);
-            setCount('pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
-            setCount('delayed-processes', delayed);
-
-            // Specific location counts
-            setCount('finance-processes', state.processes.filter(p => p.location === 'Finanças').length);
-            setCount('cabinet-processes', state.processes.filter(p => p.location === 'Gabinete').length);
-            setCount('purchase-processes', state.processes.filter(p => p.location === 'Compras').length);
-            setCount('warehouse-processes', state.processes.filter(p => p.location === 'Almoxarifado').length);
-            setCount('treasury-processes', state.processes.filter(p => p.location === 'Tesouraria').length);
-            setCount('nutrition-processes', state.processes.filter(p => p.location === 'Nutrição').length);
-
-            renderCharts();
-        }
-
-        function setCount(id, val) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.innerText = val + (el.getAttribute('data-suffix') || '');
-                el.setAttribute('data-target', val);
-            }
-        }
-
-        function renderCharts() {
-            const statusCtx = document.getElementById('statusChart').getContext('2d');
-            const locationCtx = document.getElementById('locationChart').getContext('2d');
-
-            const statusCounts = state.statuses.map(s => state.processes.filter(p => p.status === s).length);
-            const locationCounts = state.locations.map(l => state.processes.filter(p => p.location === l).length);
-
-            if (statusChart) statusChart.destroy();
-            if (locationChart) locationChart.destroy();
-
-            statusChart = new Chart(statusCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: state.statuses,
-                    datasets: [{
-                        data: statusCounts,
-                        backgroundColor: ['#005A9C', '#f1c40f', '#2ecc71', '#e74c3c', '#9b59b6']
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-
-            locationChart = new Chart(locationCtx, {
-                type: 'bar',
-                data: {
-                    labels: state.locations,
-                    datasets: [{
-                        label: 'Processos',
-                        data: locationCounts,
-                        backgroundColor: '#005A9C'
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-                }
-            });
-        }
-
-        function renderProcessTable(data = state.processes) {
-            const tbody = document.getElementById('processTableBody');
-            tbody.innerHTML = '';
-
-            data.sort((a, b) => new Date(a.deadline) - new Date(b.deadline)).forEach(p => {
-                const row = document.createElement('tr');
-                const remainingDays = calculateRemainingDays(p.deadline);
-                const colorClass = getDeadlineColorClass(remainingDays, p.status);
-
-                row.innerHTML = `
-                    <td><strong>${p.ppAno}</strong></td>
-                    <td>${p.supplier}</td>
-                    <td>${p.object}</td>
-                    <td>${p.location}</td>
-                    <td><span class="badge" style="background:${getStatusColor(p.status)}; color:white">${p.status}</span></td>
-                    <td>${p.status === 'Concluído' ? 'OK' : remainingDays + ' dias'}</td>
-                    <td style="display:flex; flex-direction: column; gap:4px; align-items: center;">
-                        <button class="btn btn-warning" style="padding:6px; width: 32px; height: 32px; justify-content: center;" onclick='openProcessModal(${JSON.stringify(p)})'><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-primary" style="padding:6px; width: 32px; height: 32px; justify-content: center;" onclick='showHistory(${JSON.stringify(p)})'><i class="fas fa-history"></i></button>
-                        <button class="btn btn-danger" style="padding:6px; width: 32px; height: 32px; justify-content: center; background: #333;" onclick='deleteProcess("${p.id}")'><i class="fas fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        function filterTable() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const status = document.getElementById('statusFilter').value;
-            const location = document.getElementById('locationFilter').value;
-
-            const filtered = state.processes.filter(p => {
-                const matchQuery = p.ppAno.toLowerCase().includes(query) || p.supplier.toLowerCase().includes(query);
-                const matchStatus = !status || p.status === status;
-                const matchLoc = !location || p.location === location;
-                return matchQuery && matchStatus && matchLoc;
-            });
-            renderProcessTable(filtered);
-        }
-
-        function calculateRemainingDays(deadline) {
-            const diff = new Date(deadline + 'T23:59:59') - new Date();
-            return Math.ceil(diff / (1000 * 60 * 60 * 24));
-        }
-
-        function getDeadlineColorClass(days, status) {
-            if (status === 'Concluído') return 'btn-success';
-            if (days < 0) return 'btn-danger';
-            if (days < 5) return 'btn-warning';
-            return 'btn-success';
-        }
-
-        function getStatusColor(status) {
-            const colors = { 'Em Análise': '#005A9C', 'Aguardando Assinatura': '#f1c40f', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' };
-            return colors[status] || '#95a5a6';
-        }
-
-        function updateModalRemainingDays() {
-            const deadline = document.getElementById('deadline').value;
-            if (deadline) {
-                const days = calculateRemainingDays(deadline);
-                document.getElementById('modalRemainingDays').value = days + (days === 1 ? ' dia' : ' dias');
-            } else {
-                document.getElementById('modalRemainingDays').value = '';
-            }
-        }
-
-        function renderModalHistory(history = []) {
-            const container = document.getElementById('modalTimeline');
-            if (!container) return;
-            container.innerHTML = history.length ? '' : '<p style="text-align:center; color:#94A3B8; font-size:0.75rem; margin-top:1rem;">Nenhuma atualização registrada.</p>';
-            
-            [...history].reverse().forEach(h => {
-                const item = document.createElement('div');
-                item.className = 'modal-timeline-item';
-                item.innerHTML = `
-                    <span class="modal-timeline-date">${h.date}</span>
-                    <div class="modal-timeline-content">
-                        ${h.from && h.to ? `<strong>Tramitação:</strong> ${h.from} &rarr; ${h.to}` : h.message}
-                    </div>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        async function launchManualUpdate() {
-            const input = document.getElementById('newManualUpdate');
-            const message = input.value.trim();
-            if (!message) return;
-
-            const id = document.getElementById('processId').value;
-            const update = {
-                date: new Date().toLocaleString(),
-                message: message
-            };
-
-            if (id) {
-                try {
-                    const { error } = await supabase.from('process_history').insert({
-                        process_id: id,
-                        history_date: update.date,
-                        message: message
-                    });
-                    if (error) throw error;
-
-                    const idx = state.processes.findIndex(p => p.id === id);
-                    if (idx !== -1) {
-                        state.processes[idx].history.push(update);
-                        renderModalHistory(state.processes[idx].history);
-                    }
-                } catch(e) {
-                    console.error(e);
-                    alert("Erro ao salvar atualização no banco.");
-                }
-            } else {
-                // For new processes, we store in a temporary property on the form or global
-                if (!window._tempHistory) window._tempHistory = [];
-                window._tempHistory.push(update);
-                renderModalHistory(window._tempHistory);
-            }
-
-            input.value = '';
-        }
-
-        function openProcessModal(process = null) {
-            const form = document.getElementById('processForm');
-            form.reset();
-            updateSelects();
-            document.getElementById('newManualUpdate').value = '';
-            window._tempHistory = [];
-
-            if (process && typeof process === 'object') {
-                document.getElementById('processModalTitle').innerText = 'Editar Processo';
-                document.getElementById('processId').value = process.id;
-                document.getElementById('ppNumber').value = process.ppNumber || '';
-                document.getElementById('exerciseYear').value = process.exerciseYear || '';
-                document.getElementById('ppAno').value = process.ppAno;
-                document.getElementById('coverValue').value = process.coverValue || '';
-                document.getElementById('supplierSelect').value = process.supplier;
-                document.getElementById('objectSelect').value = process.object;
-                document.getElementById('openingDate').value = process.openingDate || '';
-                document.getElementById('deadline').value = process.deadline;
-                document.getElementById('treatedBy').value = process.treatedBy || '';
-                document.getElementById('statusSelect').value = process.status;
-                document.getElementById('locationSelect').value = process.location;
-                document.getElementById('locationDate').value = process.locationDate || '';
-                document.getElementById('situation').value = process.situation || '';
-                document.getElementById('notes').value = process.notes;
-                updateModalRemainingDays();
-                renderModalHistory(process.history);
-            } else {
-                document.getElementById('processModalTitle').innerText = 'Novo Processo';
-                document.getElementById('processId').value = '';
-                document.getElementById('ppAno').value = generatePPAno();
-                document.getElementById('openingDate').value = new Date().toISOString().split('T')[0];
-                document.getElementById('locationDate').value = new Date().toISOString().split('T')[0];
-                document.getElementById('modalRemainingDays').value = '';
-                renderModalHistory([]);
-            }
-            document.getElementById('processControlModal').style.display = 'flex';
-        }
-
-        function generatePPAno() {
-            const year = new Date().getFullYear();
-            const lastId = state.processes.filter(p => p.ppAno.endsWith(`/${year}`)).length + 1;
-            return `${String(lastId).padStart(3, '0')}/${year}`;
-        }
-
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        document.getElementById('processForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('processId').value;
-            const dataBase = {
-                pp_number: document.getElementById('ppNumber').value,
-                exercise_year: document.getElementById('exerciseYear').value,
-                pp_ano: document.getElementById('ppAno').value,
-                cover_value: document.getElementById('coverValue').value,
-                supplier_name: document.getElementById('supplierSelect').value,
-                object_name: document.getElementById('objectSelect').value,
-                opening_date: document.getElementById('openingDate').value,
-                deadline: document.getElementById('deadline').value,
-                treated_by: document.getElementById('treatedBy').value,
-                status: document.getElementById('statusSelect').value,
-                location: document.getElementById('locationSelect').value,
-                location_date: document.getElementById('locationDate').value,
-                situation: document.getElementById('situation').value,
-                notes: document.getElementById('notes').value
-            };
-
-            const btn = document.querySelector('#processForm button[type="submit"]');
-            const originalText = btn.innerText;
-            btn.innerText = 'Salvando...';
-            btn.disabled = true;
-
-            try {
-                if (id) {
-                    const idx = state.processes.findIndex(p => p.id === id);
-                    const oldLoc = state.processes[idx].location;
-
-                    const { error } = await supabase.from('processes').update(dataBase).eq('id', id);
-                    if (error) throw error;
-
-                    if (oldLoc !== dataBase.location) {
-                        await supabase.from('process_history').insert({ 
-                            process_id: id,
-                            history_date: new Date().toLocaleString(),
-                            location_from: oldLoc, 
-                            location_to: dataBase.location
-                        });
-                    }
+            // Expand container width specifically for the processes table to prevent scrolling
+            const mainContainer = document.querySelector('main.container');
+            if (mainContainer) {
+                if (id === 'processes') {
+                    mainContainer.style.maxWidth = '98%';
                 } else {
-                    const { data: newProc, error } = await supabase.from('processes').insert(dataBase).select().single();
-                    if (error) throw error;
-
-                    const newHistories = [
-                        { process_id: newProc.id, history_date: new Date().toLocaleString(), location_from: 'Início', location_to: dataBase.location },
-                        ...(window._tempHistory || []).map(h => ({ process_id: newProc.id, history_date: h.date, message: h.message }))
-                    ];
-                    
-                    await supabase.from('process_history').insert(newHistories);
+                    mainContainer.style.maxWidth = ''; // Reverts to CSS default (1200px)
                 }
-                
-                await initApp();
-                closeModal('processControlModal');
-            } catch(error) {
-                console.error(error);
-                alert("Erro ao salvar o processo no banco de dados.");
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
             }
         };
 
-        function showHistory(process) {
-            const timeline = document.getElementById('historyTimeline');
-            const summary = document.getElementById('historyProcessSummary');
+        window.updateDashboardCounters = function () {
+            const total = window.state.processes.length;
+            const pending = window.state.processes.filter(p => p.status && p.status !== 'Concluído').length;
+
+            const set = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.setAttribute('data-target', val);
+                    el.innerText = val + (el.getAttribute('data-suffix') || '');
+                }
+            };
+
+            set('total-processes', total);
+            set('treating-processes', pending);
+            set('completed-processes', total - pending);
+            set('pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
             
-            summary.innerHTML = `Processo: <strong>${process.ppAno}</strong> | Fornecedor: <strong>${process.supplier}</strong>`;
-            timeline.innerHTML = '';
-            
-            const history = process.history || [];
-            if (history.length === 0) {
-                timeline.innerHTML = '<p style="text-align:center; color:#94A3B8; padding:2rem;">Nenhum registro encontrado.</p>';
-            } else {
-                [...history].reverse().forEach(h => {
-                    const item = document.createElement('div');
-                    const isMovement = h.from !== undefined;
-                    item.className = `history-item ${isMovement ? 'movement' : 'log'}`;
-                    
-                    item.innerHTML = `
-                        <div class="history-node"></div>
-                        <div class="history-date">
-                            <i class="far fa-clock"></i> ${h.date}
-                            <span class="history-badge ${isMovement ? 'badge-movement' : 'badge-log'}">
-                                ${isMovement ? 'MUDANÇA DE LOCAL' : 'REGISTRO MANUAL'}
-                            </span>
-                        </div>
-                        <div class="history-card">
-                            <div class="history-title">
-                                ${isMovement ? '<i class="fas fa-exchange-alt"></i> Tramitação de Localização' : '<i class="fas fa-comment-dots"></i> Atualização de Status'}
-                            </div>
-                            <div class="history-details">
-                                ${isMovement 
-                                    ? `<span>De: <strong>${h.from}</strong></span> <i class="fas fa-long-arrow-alt-right"></i> <span>Para: <strong>${h.to}</strong></span>`
-                                    : h.message}
-                            </div>
-                        </div>
-                    `;
-                    timeline.appendChild(item);
-                });
+            set('list-total-processes', total);
+            set('list-treating-processes', pending);
+            set('list-completed-processes', total - pending);
+            set('list-pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
+
+            const localeMap = {
+                'finance-processes': 'finanç',
+                'cabinet-processes': 'gabinete',
+                'purchase-processes': 'compras',
+                'warehouse-processes': 'almoxarifado',
+                'treasury-processes': 'tesouraria',
+                'nutrition-processes': 'nutriç',
+                'secretariat-processes': 'secretaria',
+                'protocol-processes': 'protocolo'
+            };
+
+            Object.keys(localeMap).forEach(id => {
+                const count = window.state.processes.filter(p => p.location && p.location.toLowerCase().includes(localeMap[id])).length;
+                set(id, count);
+                if (id === 'finance-processes') set('list-' + id, count);
+            });
+
+            const delayed = window.state.processes.filter(p => {
+                if (p.status === 'Concluído' || !p.deadline) return false;
+                const days = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
+                return days < 0;
+            }).length;
+            set('delayed-processes', delayed);
+            set('list-delayed-processes', delayed);
+
+            window.renderCharts();
+        };
+
+        window.renderCharts = function () {
+            const sEl = document.getElementById('statusChart');
+            const lEl = document.getElementById('locationChart');
+            if (!sEl || !lEl) return;
+            if (statusChart) statusChart.destroy();
+            if (locationChart) locationChart.destroy();
+
+            statusChart = new Chart(sEl.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: window.state.statuses, datasets: [{ data: window.state.statuses.map(s => window.state.processes.filter(p => p.status === s).length), backgroundColor: ['#005A9C', '#f39c12', '#27ae60', '#e74c3c', '#9b59b6'] }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            locationChart = new Chart(lEl.getContext('2d'), {
+                type: 'bar',
+                data: { labels: window.state.locations, datasets: [{ label: 'Processos', data: window.state.locations.map(l => window.state.processes.filter(p => p.location === l).length), backgroundColor: '#005A9C' }] },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        };
+
+        window.renderProcessTable = function (data = window.state.processes) {
+            const tbody = document.getElementById('processTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            data.sort((a, b) => new Date(a.deadline) - new Date(b.deadline)).forEach(p => {
+                const tr = document.createElement('tr');
+                const days = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
+                const color = { 'Em Análise': '#005A9C', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' }[p.status] || '#95a5a6';
+
+                const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
+
+                tr.innerHTML = `
+                    <td>${p.ppNumber || ''}</td>
+                    <td>${p.exerciseYear || ''}</td>
+                    <td><strong>${p.ppAno}</strong></td>
+                    <td title="${p.supplier}">${p.supplier ? (p.supplier.length > 20 ? p.supplier.substring(0, 20) + '...' : p.supplier) : ''}</td>
+                    <td title="${p.object}">${p.object ? (p.object.length > 20 ? p.object.substring(0, 20) + '...' : p.object) : ''}</td>
+                    <td>${p.coverValue || ''}</td>
+                    <td>${formatDate(p.openingDate)}</td>
+                    <td>${formatDate(p.deadline)}<br><small style="color:${days < 0 ? 'red' : 'gray'}">(${p.status === 'Concluído' ? 'OK' : days + 'd'})</small></td>
+                    <td><span class="badge" style="background:${color}; color:white">${p.status}</span></td>
+                    <td>${p.treatedBy || ''}</td>
+                    <td>${p.location}</td>
+                    <td>${formatDate(p.locationDate)}</td>
+                    <td style="display:flex; flex-direction: row; gap:4px; align-items:center;">
+                        <button class="btn btn-warning" style="padding:4px; width:28px; height:28px" onclick='window.openProcessModal(${JSON.stringify(p)})' title="Editar"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-primary" style="padding:4px; width:28px; height:28px" onclick='window.showHistory(${JSON.stringify(p)})' title="Histórico"><i class="fas fa-history"></i></button>
+                    </td>`;
+                tbody.appendChild(tr);
+            });
+        };
+
+        window.updateModalRemainingDays = function () {
+            const deadlineInput = document.getElementById('deadline');
+            const remainingDaysInput = document.getElementById('modalRemainingDays');
+            if (deadlineInput && remainingDaysInput && deadlineInput.value) {
+                const deadline = new Date(deadlineInput.value + 'T23:59:59');
+                const now = new Date();
+                const days = Math.ceil((deadline - now) / 86400000);
+                remainingDaysInput.value = days + ' dias';
+            } else if (remainingDaysInput) {
+                remainingDaysInput.value = '';
             }
+        };
+
+        window.openProcessModal = function (p = null) {
+            const form = document.getElementById('processForm');
+            if (!form) return;
+            form.reset(); window.updateSelects();
+            window._tempHistory = [];
+
+            // clear config search if exists
+            const sInput = document.getElementById('configSearchInput');
+            if (sInput) sInput.value = '';
+
+            if (p) {
+                document.getElementById('processModalTitle').innerText = 'Editar Processo';
+                document.getElementById('processId').value = p.id;
+                document.getElementById('ppAno').value = p.ppAno;
+                document.getElementById('supplierSelect').value = p.supplier;
+                document.getElementById('objectSelect').value = p.object;
+                document.getElementById('treatedBy').value = p.treatedBy;
+                document.getElementById('deadline').value = p.deadline;
+                document.getElementById('statusSelect').value = p.status;
+                document.getElementById('locationSelect').value = p.location;
+                document.getElementById('notes').value = p.notes;
+                window.renderModalHistory(p.history);
+                window.updateModalRemainingDays();
+            } else {
+                document.getElementById('processModalTitle').innerText = 'Novo Processo';
+                document.getElementById('processId').value = '';
+                document.getElementById('ppAno').value = `00${window.state.processes.length + 1}/${new Date().getFullYear()}`;
+                document.getElementById('openingDate').value = new Date().toISOString().split('T')[0];
+                window.renderModalHistory([]);
+            }
+            document.getElementById('processControlModal').style.display = 'flex';
+        };
+
+        window.renderModalHistory = function (history = []) {
+            const cont = document.getElementById('modalTimeline');
+            if (!cont) return;
+            cont.innerHTML = history.length ? '' : '<p style="text-align:center; color:#888; font-size:12px;">Sem histórico.</p>';
+            [...history].reverse().forEach(h => {
+                const div = document.createElement('div');
+                div.className = 'modal-timeline-item';
+                div.innerHTML = `<span class="modal-timeline-date">${h.date}</span><div class="modal-timeline-content">${h.from ? `${h.from} &rarr; ${h.to}` : h.msg || h.message}</div>`;
+                cont.appendChild(div);
+            });
+        };
+
+        window.launchManualUpdate = async function () {
+            const input = document.getElementById('newManualUpdate');
+            const msg = input.value.trim();
+            if (!msg) return;
+            const id = document.getElementById('processId').value;
+            const item = { date: new Date().toLocaleString(), msg };
+            if (id && supabase) {
+                await supabase.from('process_history').insert({ process_id: id, history_date: item.date, message: msg });
+                const p = window.state.processes.find(x => x.id === id);
+                if (p) { p.history.push(item); window.renderModalHistory(p.history); }
+            } else {
+                window._tempHistory.push(item); window.renderModalHistory(window._tempHistory);
+            }
+            input.value = '';
+        };
+
+        const procForm = document.getElementById('processForm');
+        if (procForm) procForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('processId').value;
+            const data = {
+                pp_ano: document.getElementById('ppAno').value,
+                supplier_name: document.getElementById('supplierSelect').value,
+                object_name: document.getElementById('objectSelect').value,
+                treated_by: document.getElementById('treatedBy').value,
+                deadline: document.getElementById('deadline').value,
+                status: document.getElementById('statusSelect').value,
+                location: document.getElementById('locationSelect').value,
+                notes: document.getElementById('notes').value
+            };
+            try {
+                if (id) {
+                    const p = window.state.processes.find(x => x.id === id);
+                    if (p.location !== data.location) await supabase.from('process_history').insert({ process_id: id, history_date: new Date().toLocaleString(), location_from: p.location, location_to: data.location });
+                    await supabase.from('processes').update(data).eq('id', id);
+                } else {
+                    const { data: nProc } = await supabase.from('processes').insert(data).select().single();
+                    if (window._tempHistory.length) await supabase.from('process_history').insert(window._tempHistory.map(h => ({ process_id: nProc.id, history_date: h.date, message: h.msg })));
+                }
+                await window.initApp(); window.closeAllModals();
+            } catch (err) { console.error(err); }
+        };
+
+        window.showHistory = function (p) {
+            const timeline = document.getElementById('historyTimeline');
+            const sym = document.getElementById('historyProcessSummary');
+            if (!timeline || !sym) return;
+            sym.innerHTML = `Processo: <strong>${p.ppAno}</strong>`;
+            timeline.innerHTML = '';
+            [...p.history].reverse().forEach(h => {
+                const div = document.createElement('div');
+                div.className = 'history-item log';
+                div.innerHTML = `<div class="history-node"></div><div class="history-date">${h.date}</div><div class="history-card">${h.from ? `${h.from} &rarr; ${h.to}` : h.msg || h.message}</div>`;
+                timeline.appendChild(div);
+            });
             document.getElementById('processHistoryModal').style.display = 'flex';
-        }
+        };
 
-        function openConfigModal(type) {
-            state.currentConfigType = type;
-            const labels = { suppliers: 'Fornecedores', locations: 'Localizações', objects: 'Objetos', users: 'Usuários', statuses: 'Status', handlers: 'Tratadores' };
-            document.getElementById('configModalTitle').innerText = `Gestão de ${labels[type]}`;
-            renderConfigList();
+        window.choicesInstances = {};
+
+        window.updateSelects = function () {
+            const sets = [
+                { id: 'supplierSelect', data: window.state.suppliers, searchable: true },
+                { id: 'objectSelect', data: window.state.objects, searchable: true },
+                { id: 'treatedBy', data: window.state.handlers, searchable: true },
+                { id: 'locationSelect', data: window.state.locations, searchable: true },
+                { id: 'statusSelect', data: window.state.statuses, searchable: true },
+                { id: 'statusFilter', data: window.state.statuses, opt: true, searchable: false },
+                { id: 'locationFilter', data: window.state.locations, opt: true, searchable: false }
+            ];
+
+            sets.forEach(s => {
+                const el = document.getElementById(s.id);
+                if (!el) return;
+
+                const old = el.value;
+
+                if (window.choicesInstances[s.id]) {
+                    window.choicesInstances[s.id].destroy();
+                }
+
+                el.innerHTML = s.opt ? '<option value="">Filtrar...</option>' : '';
+                s.data.forEach(d => {
+                    const o = document.createElement('option');
+                    o.value = d;
+                    o.innerText = d;
+                    el.appendChild(o);
+                });
+
+                if (old && s.data.includes(old)) {
+                    el.value = old;
+                }
+
+                if (s.searchable) {
+                    window.choicesInstances[s.id] = new Choices(el, {
+                        searchEnabled: true,
+                        itemSelectText: '',
+                        noResultsText: 'Nenhum resultado encontrado',
+                        noChoicesText: 'Sem opções para escolher',
+                        shouldSort: false
+                    });
+                }
+            });
+        };
+
+        window.openConfigModal = function (type) {
+            window.state.currentConfigType = type;
+            const titles = {
+                'users': 'Cadastro de Usuários',
+                'suppliers': 'Cadastro de Fornecedores',
+                'objects': 'Cadastro de Objetos',
+                'locations': 'Cadastro de Localização',
+                'statuses': 'Cadastro de Status',
+                'handlers': 'Cadastro de Tratadores'
+            };
+            document.getElementById('configModalTitle').innerText = titles[type] || type;
+            window.renderConfigList();
+
+            // Re-apply focus
+            const searchInput = document.getElementById('configSearchInput');
+            if (searchInput) searchInput.value = '';
+
             document.getElementById('processConfigModal').style.display = 'flex';
-        }
+        };
 
-        function renderConfigList() {
+        window.quickAddConfig = function (type) {
+            // Closes current form modal implicitly over layered logic, but here we just pop the config modal above it via z-index
+            window.openConfigModal(type);
+        };
+
+        window.renderConfigList = function () {
             const list = document.getElementById('configList');
+            const searchInput = document.getElementById('configSearchInput');
+            if (!list) return;
             list.innerHTML = '';
-            state[state.currentConfigType].forEach((item, idx) => {
+
+            let arr = window.state[window.state.currentConfigType] || [];
+
+            if (searchInput && searchInput.value) {
+                const term = searchInput.value.toLowerCase();
+                arr = arr.filter(it => it.toLowerCase().includes(term));
+            }
+
+            if (arr.length === 0) {
+                list.innerHTML = '<li style="text-align:center; padding: 2rem; color: #9CA3AF; font-size: 0.9rem;">Nenhum item cadastrado.</li>';
+                return;
+            }
+
+            // Sort alphabetically for display
+            [...arr].sort((a, b) => a.localeCompare(b)).forEach((it) => {
+                const originalIdx = window.state[window.state.currentConfigType].indexOf(it);
                 const li = document.createElement('li');
-                li.style = 'display:flex; justify-content:space-between; padding:0.5rem; border-bottom:1px solid #eee;';
-                li.innerHTML = `<span>${item}</span><i class="fas fa-trash" style="color:red; cursor:pointer" onclick="deleteConfigItem(${idx})"></i>`;
+                li.className = 'config-list-item';
+                li.innerHTML = `
+                    <span style="font-weight: 500; color: #374151;">${it}</span>
+                    <div>
+                        <i class="fas fa-edit config-edit-icon" style="color:#f59e0b; cursor:pointer; padding:0.5rem; transition:all 0.2s;" onmouseover="this.style.color='#d97706'" onmouseout="this.style.color='#f59e0b'" title="Editar" onclick="window.editConfigItem(${originalIdx})"></i>
+                        <i class="fas fa-trash config-trash-icon" title="Excluir" onclick="window.deleteConfigItem(${originalIdx})"></i>
+                    </div>
+                `;
                 list.appendChild(li);
             });
-            const inputLabel = { suppliers: 'Nome do Fornecedor', locations: 'Nome da Localização', objects: 'Nome do Objeto', users: 'Nome do Usuário', statuses: 'Status do Processo', handlers: 'Nome do Tratador do Processo' };
-            document.getElementById('configInputLabel').innerText = inputLabel[state.currentConfigType] || 'Novo Item';
-        }
+        };
 
-        async function saveConfigItem() {
-            const table = state.currentConfigType;
+        window.saveConfigItem = async function () {
             const val = document.getElementById('configInput').value.trim();
-            if (val) {
-                try {
-                    const { error } = await supabase.from(table).insert({ name: val });
-                    if (error) throw error;
-                    
-                    state[table].push(val);
-                    document.getElementById('configInput').value = '';
-                    renderConfigList(); 
-                    updateSelects();
-                } catch(e) {
-                    console.error(e);
-                    alert(`Erro ao adicionar item em ${table}.`);
-                }
-            }
-        }
-
-        async function deleteConfigItem(idx) {
-            const table = state.currentConfigType;
-            const nameToDelete = state[table][idx];
+            if (!val) return;
             try {
-                const { error } = await supabase.from(table).delete().eq('name', nameToDelete);
-                if (error) throw error;
+                await supabase.from(window.state.currentConfigType).insert({ name: val });
+                window.state[window.state.currentConfigType].push(val);
+                window.renderConfigList(); window.updateSelects();
+                document.getElementById('configInput').value = '';
+            } catch (err) { console.error('Error saving config item:', err); }
+        };
 
-                state[table].splice(idx, 1);
-                renderConfigList(); 
-                updateSelects();
-            } catch(e) {
-                console.error(e);
-                alert(`Erro ao remover item de ${table}.`);
-            }
-        }
+        window.editConfigItem = async function (idx) {
+            const oldName = window.state[window.state.currentConfigType][idx];
+            const newName = prompt(`Editar item: ${oldName}`, oldName);
+            if (!newName || newName.trim() === '' || newName === oldName) return;
 
-        async function quickAddConfig(type) {
-            const labels = { suppliers: 'Fornecedor', locations: 'Localização', objects: 'Objeto', statuses: 'Status', handlers: 'Tratador' };
-            const val = prompt(`Digite o novo ${labels[type]}:`);
-            if (val && val.trim()) {
-                const trimmed = val.trim();
-                if (state[type].includes(trimmed)) {
-                    alert('Este item já existe.');
-                    return;
-                }
-                
+            try {
+                await supabase.from(window.state.currentConfigType).update({ name: newName.trim() }).eq('name', oldName);
+                window.state[window.state.currentConfigType][idx] = newName.trim();
+                window.renderConfigList(); window.updateSelects();
+            } catch (err) { console.error('Error editing config item:', err); }
+        };
+
+        window.deleteConfigItem = async function (idx) {
+            const name = window.state[window.state.currentConfigType][idx];
+            if (confirm(`Excluir ${name}?`)) {
                 try {
-                    const { error } = await supabase.from(type).insert({ name: trimmed });
-                    if (error) throw error;
-
-                    state[type].push(trimmed);
-                    updateSelects();
-                    
-                    const selectId = type === 'suppliers' ? 'supplierSelect' : 
-                                     type === 'objects' ? 'objectSelect' : 
-                                     type === 'locations' ? 'locationSelect' : 
-                                     type === 'handlers' ? 'treatedBy' : 'statusSelect';
-                    document.getElementById(selectId).value = trimmed;
-                } catch(e) {
-                    console.error(e);
-                    alert(`Erro ao adicionar ${labels[type]}.`);
-                }
+                    await supabase.from(window.state.currentConfigType).delete().eq('name', name);
+                    window.state[window.state.currentConfigType].splice(idx, 1);
+                    window.renderConfigList(); window.updateSelects();
+                } catch (err) { console.error('Error deleting config item:', err); }
             }
-        }
+        };
 
-        async function deleteProcess(id) {
-            if (confirm('Tem certeza que deseja excluir este processo?')) {
-                try {
-                    const { error } = await supabase.from('processes').delete().eq('id', id);
-                    if (error) throw error;
-                    
-                    state.processes = state.processes.filter(p => p.id !== id);
-                    renderProcessTable();
-                    updateDashboardCounters();
-                } catch(error) {
-                    console.error(error);
-                    alert("Erro ao excluir processo do banco de dados.");
-                }
-            }
-        }
-
-        function updateSelects() {
-            const fills = [
-                { id: 'supplierSelect', data: state.suppliers },
-                { id: 'objectSelect', data: state.objects },
-                { id: 'locationSelect', data: state.locations },
-                { id: 'statusSelect', data: state.statuses },
-                { id: 'treatedBy', data: state.handlers },
-                { id: 'statusFilter', data: state.statuses, opt: true },
-                { id: 'locationFilter', data: state.locations, opt: true }
-            ];
-            fills.forEach(f => {
-                const el = document.getElementById(f.id);
-                if (!el) return;
-                const currentVal = el.value;
-                el.innerHTML = f.opt ? `<option value="">Selecione...</option>` : '';
-                f.data.forEach(item => {
-                    const opt = document.createElement('option');
-                    opt.value = item; opt.innerText = item;
-                    el.appendChild(opt);
-                });
-                if (currentVal && Array.from(el.options).some(o => o.value === currentVal)) {
-                    el.value = currentVal;
-                }
-            });
-        }
-
-        async function exportToPDF() {
+        window.exportToPDF = async function () {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('l', 'mm', 'a4'); // Landscape for better fit
-            const margin = 14;
-            const logoUrl = "https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo25.png";
-            
+            const doc = new jsPDF('l', 'mm', 'a4');
+
             try {
-                // Header Area
-                // Logo
-                doc.addImage(logoUrl, 'PNG', margin, 10, 40, 20);
-                
-                // Institutional Texts
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(10);
-                doc.setTextColor(100);
-                doc.text("ESTADO DO RIO DE JANEIRO", 60, 15);
-                doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", 60, 20);
-                doc.text("SECRETARIA MUNICIPAL DE EDUCAÇÃO", 60, 25);
-                
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(16);
-                doc.setTextColor(0);
-                doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", 60, 35);
-                
-                // Line separator
-                doc.setDrawColor(200);
-                doc.line(margin, 42, 283, 42);
-                
-                // Emission Date
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(9);
-                doc.setTextColor(150);
-                const now = new Date();
-                const emissionDate = now.toLocaleString('pt-BR');
-                doc.text(`Data de Emissão: ${emissionDate}`, margin, 48);
+                const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.src = logoUrl;
+                await new Promise((resolve) => {
+                    img.onload = resolve;
+                    img.onerror = resolve;
+                });
 
-                // Table Data
-                const head = [[
-                    'NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 
-                    'VALOR DE CAPA', 'DATA DE CONCLUSÃO', 'TRATADO POR', 
-                    'STATUS', 'Localização', 'SITUAÇÃO', 
-                    'Ano Exercício OF', 'OBSERVAÇÃO'
-                ]];
+                if (img.naturalWidth > 0) {
+                    doc.addImage(img, 'JPEG', 14, 10, 16, 20);
+                }
+            } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
-                const body = state.processes.map(p => [
-                    p.ppNumber,
-                    p.ppAno.split('/')[1] || '',
-                    p.ppAno,
-                    p.supplier,
-                    p.coverValue,
-                    p.deadline ? new Date(p.deadline + 'T12:00:00').toLocaleDateString('pt-BR') : '',
-                    p.treatedBy,
-                    p.status,
-                    `${p.location} | ${p.locationDate ? new Date(p.locationDate + 'T12:00:00').toLocaleDateString('pt-BR') : ''}`,
-                    p.situation,
-                    p.exerciseYear,
-                    p.notes
-                ]);
+            // Cabeçalho - Textos Menores
+            const pdfWidth = doc.internal.pageSize.width;
 
-                doc.autoTable({
-                    head: head,
-                    body: body,
-                    startY: 55,
-                    margin: { left: margin, right: margin },
-                    styles: {
-                        fontSize: 7,
-                        cellPadding: 2,
-                        lineColor: [200, 200, 200],
-                        lineWidth: 0.1,
-                    },
-                    headStyles: {
-                        fillColor: [0, 0, 0], // Base color
-                        textColor: [255, 255, 255],
-                        fontStyle: 'bold',
-                        halign: 'center'
-                    },
-                    columnStyles: {
-                        0: { cellWidth: 15 }, // PP Number
-                        1: { cellWidth: 12 }, // Ano
-                        2: { cellWidth: 18 }, // PPANO
-                        3: { cellWidth: 45 }, // Fornecedor
-                        4: { cellWidth: 20 }, // Valor
-                        11: { cellWidth: 35 } // Observação
-                    },
-                    didParseCell: function (data) {
-                        if (data.section === 'head') {
-                            const green = [122, 147, 66]; // #7A9342
-                            const black = [0, 0, 0];
-                            
-                            const colIndex = data.column.index;
-                            if (colIndex === 0 || colIndex === 1 || // NUMERO, ANO
-                                (colIndex >= 4 && colIndex <= 6) || // VALOR, DATA CONCLUSAO, TRATADO
-                                colIndex === 11) {                  // OBSERVACAO
-                                data.cell.styles.fillColor = green;
-                            } else {
-                                data.cell.styles.fillColor = black;
-                            }
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text("ESTADO DO RIO DE JANEIRO", pdfWidth / 2, 14, { align: 'center' });
+            doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", pdfWidth / 2, 19, { align: 'center' });
+            doc.text("SECRETARIA MUNICIPAL DE EDUCAÇÃO", pdfWidth / 2, 24, { align: 'center' });
+
+            // Cabeçalho - Título
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(16);
+            doc.setTextColor(20, 20, 20);
+            doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", pdfWidth / 2, 34, { align: 'center' });
+
+            // Linha Separadora
+            doc.setDrawColor(220, 220, 220);
+            doc.setLineWidth(0.5);
+            doc.line(14, 38, 283, 38);
+
+            // Data de Emissão
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150);
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            doc.text("Data de Emissão: " + dateStr, 14, 43);
+
+            // Tabela
+            doc.autoTable({
+                head: [['Nº P.P.', 'ANO', 'P.P.ANO', 'Fornecedor', 'Objeto', 'Valor de Capa', 'Data de Abertura', 'Data de Conclusão', 'Tratado Por', 'Status', 'Localização', 'Dt Localização']],
+                body: window.state.processes.map(p => {
+                    const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
+                    return [
+                        p.ppNumber || '',
+                        p.exerciseYear || '',
+                        p.ppAno || '',
+                        p.supplier || '',
+                        p.object || '',
+                        p.coverValue || '',
+                        formatDate(p.openingDate),
+                        formatDate(p.deadline),
+                        p.treatedBy || '',
+                        p.status || '',
+                        p.location || '',
+                        formatDate(p.locationDate)
+                    ];
+                }),
+                startY: 48,
+                theme: 'grid',
+                styles: { fontSize: 7, cellPadding: 2, overflow: 'linebreak' },
+                headStyles: { fillColor: [240, 240, 240], textColor: [50, 50, 50], fontStyle: 'bold' }
+            });
+
+            doc.save('processos.pdf');
+        };
+
+        window.exportToExcel = function () {
+            const header = ['NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSÃO', 'TRATADO POR', 'STATUS', 'Localização'];
+            
+            const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
+            const dataToExport = window.state.processes.map(p => {
+                let cover = p.coverValue || '';
+                if (cover && !cover.includes('R$')) cover = 'R$ ' + cover;
+
+                const locDate = formatDate(p.locationDate);
+                const locStr = (p.location && locDate) ? `${p.location} | ${locDate}` : (p.location || locDate);
+
+                return [
+                    p.ppNumber || '',
+                    p.exerciseYear || '',
+                    p.ppAno || '',
+                    p.supplier || '',
+                    cover,
+                    formatDate(p.deadline),
+                    p.treatedBy || '',
+                    p.status || '',
+                    locStr
+                ];
+            });
+
+            const ws_data = [header, ...dataToExport];
+            const ws = XLSX.utils.aoa_to_sheet(ws_data);
+
+            const headerStyle = {
+                font: { bold: true, color: { rgb: "FFFFFF" } },
+                fill: { fgColor: { rgb: "000000" } },
+                alignment: { horizontal: "center", vertical: "center" }
+            };
+
+            const dataStyleCenter = { alignment: { horizontal: "center", vertical: "center" } };
+            const dataStyleLeft = { alignment: { horizontal: "left", vertical: "center" } };
+
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+                for (let C = range.s.c; C <= range.e.c; ++C) {
+                    const cell_ref = XLSX.utils.encode_cell({ c: C, r: R });
+                    if (!ws[cell_ref]) continue;
+
+                    if (R === 0) {
+                        ws[cell_ref].s = headerStyle;
+                    } else {
+                        ws[cell_ref].s = dataStyleCenter;
+                        
+                        // Left align supplier string
+                        if (C === 3) {
+                            ws[cell_ref].s = dataStyleLeft;
+                        }
+
+                        // Add color to status cell
+                        if (C === 7) { 
+                            const val = ws[cell_ref].v;
+                            let color = "C6E0B4"; // default light green
+                            if (val === 'Em Análise') color = "BDD7EE";
+                            else if (val === 'Pendente') color = "F8CBAD";
+                            else if (val === 'Concluído') color = "A9D08E";
+                            else if (val === 'Aguardando Assinatura') color = "D9D9D9";
+                            else if (val === 'Atrasado' || val === 'Vencido') color = "FFC7CE";
+
+                            ws[cell_ref].s = {
+                                fill: { fgColor: { rgb: color } },
+                                alignment: { horizontal: "center", vertical: "center" },
+                                font: { color: { rgb: "333333" } }
+                            };
                         }
                     }
-                });
-
-                doc.save(`processos_pagamento_${now.getTime()}.pdf`);
-            } catch (error) {
-                console.error("Erro ao gerar PDF:", error);
-                alert("Ocorreu um erro ao gerar o PDF. Verifique o console.");
+                }
             }
-        }
 
-        function exportToExcel() {
-            const ws = XLSX.utils.json_to_sheet(state.processes);
+            ws['!cols'] = [
+                { wch: 18 }, { wch: 10 }, { wch: 15 }, { wch: 55 }, { wch: 20 }, 
+                { wch: 22 }, { wch: 20 }, { wch: 25 }, { wch: 45 }
+            ];
+
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Processos");
             XLSX.writeFile(wb, "processos.xlsx");
-        }
+        };
+
+        try { new Swiper('.swiper', { loop: true, autoplay: { delay: 3000 } }); } catch (e) { console.warn('Swiper init failed:', e); }
+
+        // Final Integration Check
+        setTimeout(() => {
+            console.log('=== FINAL INTEGRATION CHECK ===');
+            const submenus = document.querySelectorAll('.has-submenu');
+            console.log(`Submenus detected: ${submenus.length}`);
+            if (submenus.length > 0) {
+                console.log('Auto-testing first submenu...');
+                submenus[0].click();
+                setTimeout(() => submenus[0].click(), 1000);
+            }
+        }, 3000);
     </script>
     <div id="comments-modal" class="modal">
         <div class="modal-content">
@@ -3253,11 +3168,15 @@
     </div>
     <p
         style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">
-        Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo"
+        SESME-C <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+            alt="DeepSite Logo"
             style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a
-            href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;"
-            target="_blank">DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=JoeSouza/home-ruim"
-            style="color: #fff;text-decoration: underline;" target="_blank">Remix</a></p>
+            href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
+            style="color: #ffffffff;text-decoration: underline;" target="_blank">INFRA</a> - <a
+            href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
+            style="color: #fff;text-decoration: underline;" target="_blank">PMI</a></p>
+
+
 </body>
 
 </html>
