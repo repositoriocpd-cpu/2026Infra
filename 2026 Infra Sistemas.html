@@ -2184,34 +2184,19 @@
                             <div style="position: relative;">
                                 <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888;"></i>
                                 <input type="text" id="searchInput" placeholder="PP, Fornecedor, Objeto..."
-<<<<<<< Updated upstream
-                                    onkeyup="filterTable()" style="width: 100%; padding-left: 35px; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
-                            </div>
-                        </div>
-                        <div class="form-group" style="margin:0;">
-                            <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Status</label>
-                             <select id="statusFilter" onchange="filterTable()" style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
-=======
                                     onkeyup="window.filterTable(true)" style="width: 100%; padding-left: 35px; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.8rem; background-color: #fafafa;">
                             </div>
                         </div>
                         <div class="form-group" style="margin:0;">
                             <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Status:</label>
                              <select id="statusFilter" onchange="window.filterTable(true)" style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
->>>>>>> Stashed changes
                                 <option value="">Todos os Status</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin:0;">
-<<<<<<< Updated upstream
-                            <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Localização</label>
-                            <select id="locationFilter" onchange="filterTable()" style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
-                                <option value="">Todas as Localizações</option>
-=======
                             <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Localização:</label>
                             <select id="locationFilter" onchange="window.filterTable(true)" style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
                                 <option value="">Todas Localizações:</option>
->>>>>>> Stashed changes
                             </select>
                         </div>
                     </div>
@@ -2957,12 +2942,12 @@
             set('total-processes', total);
             set('treating-processes', pending);
             set('completed-processes', total - pending);
-            set('pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
+            set('pending-percent', total ? ((pending / total) * 100) : 0);
             
             set('list-total-processes', total);
             set('list-treating-processes', pending);
             set('list-completed-processes', total - pending);
-            set('list-pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
+            set('list-pending-percent', total ? ((pending / total) * 100) : 0);
 
             const localeMap = {
                 'finance-processes': 'finanç',
