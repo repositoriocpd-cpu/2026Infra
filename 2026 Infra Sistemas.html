@@ -2200,13 +2200,19 @@
                             </select>
                         </div>
                     </div>
-                    <div style="display:flex; gap: 0.5rem; margin-top: 1rem;">
-                        <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> Novo
-                            Processo</button>
-                        <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i>
-                            Excel</button>
-                        <button class="btn btn-danger" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i>
-                            PDF</button>
+                    <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                        <div style="display:flex; gap: 0.5rem; align-items: center;">
+                            <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> Novo
+                                Processo</button>
+                            <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i>
+                                Excel</button>
+                            <button class="btn btn-danger" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i>
+                                PDF</button>
+                            <button class="btn btn-secondary" onclick="window.clearFilters()" style="margin-left: 10px;" title="Limpar todos os filtros da tabela"><i class="fas fa-eraser"></i> Limpar Filtros</button>
+                        </div>
+                        <div id="filteredCountLabel" style="font-size: 0.9rem; font-weight: 600; color: var(--govbr-blue); display: none;">
+                            <!-- The filtered count will be injected here -->
+                        </div>
                     </div>
                 </div>
                 <div class="table-wrapper">
@@ -3174,6 +3180,31 @@
             });
 
             window.renderProcessTable(filtered);
+            
+            // Update Filtered Count Label
+            const countLabel = document.getElementById('filteredCountLabel');
+            if (countLabel) {
+                const totalLength = window.state.processes.length;
+                if (filtered.length < totalLength || query || status || locationArr || window._dashboardFilter) {
+                    countLabel.style.display = 'block';
+                    countLabel.innerHTML = `Total dos Processos Filtrados: <span style="background:var(--govbr-blue); color:#fff; padding:2px 8px; border-radius:12px; font-size:0.85rem;">${filtered.length}</span>`;
+                } else {
+                    countLabel.style.display = 'none';
+                }
+            }
+        };
+
+        window.clearFilters = function() {
+            window._dashboardFilter = null;
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const locationFilter = document.getElementById('locationFilter');
+            
+            if (searchInput) searchInput.value = '';
+            if (statusFilter) statusFilter.value = '';
+            if (locationFilter) locationFilter.value = '';
+            
+            window.filterTable(true);
         };
 
         window.currentSort = { field: '', asc: true };
