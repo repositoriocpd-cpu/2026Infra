@@ -3170,7 +3170,10 @@
                     matchStatus = !status || (p.status || '').trim().toLowerCase() === status.trim().toLowerCase();
                 }
 
-                const matchLoc = !locationArr || (p.location || '').trim().toLowerCase() === locationArr.trim().toLowerCase();
+                // Remove prefixos numéricos (ex: "24 - ", "25 -") para comparar corretamente processos antigos
+                const stripPrefix = (str) => (str || '').replace(/^\d+\s*[-.]*\s*/, '').trim().toLowerCase();
+                const locTarget = stripPrefix(locationArr);
+                const matchLoc = !locationArr || stripPrefix(p.location) === locTarget || (p.location || '').toLowerCase().includes(locTarget);
 
                 let matchDelayed = true;
                 if (!fromDomInteraction && window._dashboardFilter && window._dashboardFilter.type === 'delayed') {
