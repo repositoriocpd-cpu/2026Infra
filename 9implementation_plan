@@ -1,0 +1,31 @@
+# Goal: Reorganize Sidebar and Adjust Filter Field Sizes
+
+The goal is to match the sidebar layout and filter field proportions specified in the user-provided images.
+
+## Proposed Changes
+
+### [2026 Infra Sistemas.html](file:///e:/2026%20SISTEMAS/2025%20Infra%20Sistemas%20YASMIN/2026%20Infra%20Sistemas.html)
+
+#### Sidebar Reorganization
+- Move **Dashboard** to be the first top-level menu item.
+- Keep **Novo Processo** as the second top-level item.
+- Move **Consulta Cadastrados** to be the third top-level item.
+- Remove the "Desempenho & Registros" submenu wrapper.
+- Add horizontal dividers (`<hr class="menu-divider">`) between the top-level items and the submenus.
+- Ensure **Configurações** and **Links Externo** remain as submenus with arrows.
+
+#### Filter Field Adjustment
+- Update the `.search-filters` container to use a more balanced grid ratio.
+- I will change `grid-template-columns: 2fr 1fr 1fr;` to `2.5fr 1fr 1fr` (or similar) to make the 'Pesquisar' field wider as shown in the image.
+
+## Verification Plan
+
+### Automated Tests
+- Use the `browser_subagent` to:
+    1. Open the sidebar menu.
+    2. Capture a screenshot of the new organization.
+    3. Navigate to the 'Consulta Cadastrados' section to view the filters.
+    4. Capture a screenshot of the adjusted filter fields.
+
+### Manual Verification
+- The user can verify the visual layout matches the provided images.

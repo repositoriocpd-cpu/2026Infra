@@ -1927,24 +1927,19 @@
         </div>
         <ul>
             <li>
-                <a href="#" onclick="window.openProcessModal(); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
-                    <i class="fas fa-sign-in-alt menu-icon"></i> <span style="flex-grow: 1;">Novo Processo</span> <i class="fas fa-chevron-right chevron-icon"></i>
+                <a href="#" onclick="window.showSection('dashboard'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                    <i class="fas fa-tachometer-alt menu-icon"></i> <span style="flex-grow: 1;">Dashboard</span>
                 </a>
             </li>
-            <li style="margin-top: auto;">
-                <a href="#" class="has-submenu">
-                    <i class="fas fa-chart-line menu-icon"></i> <span style="flex-grow: 1;">Desempenho & Registros</span> <i class="fas fa-chevron-right chevron-icon"></i>
+            <li>
+                <a href="#" onclick="window.openProcessModal(); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                    <i class="fas fa-sign-in-alt menu-icon"></i> <span style="flex-grow: 1;">Novo Processo</span>
                 </a>
-                <div class="submenu">
-                    <ul>
-                        <li><a href="#"
-                                onclick="window.showSection('dashboard'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');"><i
-                                    class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                        <li><a href="#"
-                                onclick="window.showSection('processes'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');"><i
-                                    class="fas fa-list-alt"></i> Consulta Cadastrados</a></li>
-                    </ul>
-                </div>
+            </li>
+            <li>
+                <a href="#" onclick="window.showSection('processes'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                    <i class="fas fa-list-alt menu-icon"></i> <span style="flex-grow: 1;">Consulta Cadastrados</span>
+                </a>
             </li>
             <li>
                 <hr class="menu-divider">
@@ -2183,7 +2178,7 @@
             <div class="table-container">
                 <div class="table-header" style="flex-direction: column; align-items: flex-start;">
                     <div class="search-filters"
-                        style="width: 100%; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; align-items: end;">
+                        style="width: 100%; display: grid; grid-template-columns: 3fr 1.2fr 1.2fr; gap: 1rem; align-items: end;">
                         <div class="form-group" style="margin:0;">
                             <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Pesquisar</label>
                             <div style="position: relative;">
@@ -2810,16 +2805,30 @@
             }, { threshold: 0.1 });
 
             window.animateCounter = function(el) {
+                if (el._animating) return;
                 var target = +el.getAttribute('data-target');
+                if (isNaN(target) || target === 0) {
+                    el.innerText = el.getAttribute('data-suffix') || '0';
+                    return;
+                }
+                
+                el._animating = true;
+                console.log('Animating', el.id, 'to', target);
                 var suffix = el.getAttribute('data-suffix') || '';
                 var isFloat = target % 1 !== 0;
                 var start = null;
                 var animate = function (now) {
                     if (!start) start = now;
-                    var progress = Math.min((now - start) / 1000, 1);
+                    var progress = Math.min((now - start) / 800, 1);
                     var val = progress * target;
                     el.innerText = (isFloat ? val.toFixed(1) : Math.floor(val).toLocaleString('pt-BR')) + suffix;
-                    if (progress < 1) requestAnimationFrame(animate);
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        el._animating = false;
+                        // Final safety check: if target changed while animating, re-run
+                        if (+el.getAttribute('data-target') !== target) window.animateCounter(el);
+                    }
                 };
                 requestAnimationFrame(animate);
             };
@@ -2944,6 +2953,15 @@
                 set(id, count);
                 if (id === 'finance-processes') set('list-' + id, count);
             });
+
+            // Trigger animation for visible counters in dashboard
+            if (document.getElementById('dashboard-section').style.display !== 'none') {
+                document.querySelectorAll('#dashboard-section .stat-number').forEach(el => window.animateCounter(el));
+            }
+            // Also trigger for process list if visible
+            if (document.getElementById('processes-section').style.display !== 'none') {
+                document.querySelectorAll('#processes-section .stat-number').forEach(el => window.animateCounter(el));
+            }
 
             const delayed = window.state.processes.filter(p => {
                 if (p.status === 'Concluído' || !p.deadline) return false;
@@ -3690,16 +3708,7 @@
         try { new Swiper('.swiper', { loop: true, autoplay: { delay: 3000 } }); } catch (e) { console.warn('Swiper init failed:', e); }
 
         // Final Integration Check
-        setTimeout(() => {
-            console.log('=== FINAL INTEGRATION CHECK ===');
-            const submenus = document.querySelectorAll('.has-submenu');
-            console.log(`Submenus detected: ${submenus.length}`);
-            if (submenus.length > 0) {
-                console.log('Auto-testing first submenu...');
-                submenus[0].click();
-                setTimeout(() => submenus[0].click(), 1000);
-            }
-        }, 3000);
+        // Integration check script removed
     </script>
     <div id="comments-modal" class="modal">
         <div class="modal-content">
