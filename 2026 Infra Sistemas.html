@@ -2178,35 +2178,32 @@
             <div class="table-container">
                 <div class="table-header" style="flex-direction: column; align-items: flex-start;">
                     <div class="search-filters"
-                        style="width: 100%; display: grid; grid-template-columns: 3fr 1.2fr 1.2fr; gap: 1rem; align-items: end;">
+                        style="width: 100%; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1.5rem; align-items: end;">
                         <div class="form-group" style="margin:0;">
-                            <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Pesquisar</label>
+                            <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Pesquisar</label>
                             <div style="position: relative;">
                                 <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888;"></i>
                                 <input type="text" id="searchInput" placeholder="PP, Fornecedor, Objeto..."
-                                    onkeyup="filterTable()" style="width: 100%; padding-left: 35px; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
+                                    onkeyup="filterTable()" style="width: 100%; padding-left: 35px; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.8rem; background-color: #fafafa;">
                             </div>
                         </div>
                         <div class="form-group" style="margin:0;">
-                            <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Status</label>
-                             <select id="statusFilter" onchange="filterTable()" style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
+                            <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Status:</label>
+                             <select id="statusFilter" onchange="filterTable()" style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
                                 <option value="">Todos os Status</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin:0;">
-                            <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Localização</label>
-                            <select id="locationFilter" onchange="filterTable()" style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
-                                <option value="">Todas as Localizações</option>
+                            <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Localização:</label>
+                            <select id="locationFilter" onchange="filterTable()" style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
+                                <option value="">Todas Localizações:</option>
                             </select>
                         </div>
                     </div>
-                    <div style="display:flex; gap: 0.5rem; margin-top: 1rem;">
-                        <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> Novo
-                            Processo</button>
-                        <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i>
-                            Excel</button>
-                        <button class="btn btn-danger" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i>
-                            PDF</button>
+                    <div style="display:flex; gap: 0.5rem; margin-top: 1.5rem;">
+                        <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> Novo Processo</button>
+                        <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+                        <button class="btn btn-danger" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
                     </div>
                 </div>
                 <div class="table-wrapper">
@@ -2922,20 +2919,21 @@
                     el.setAttribute('data-target', val);
                     // Update innerText immediately to avoid blank display
                     const suffix = el.getAttribute('data-suffix') || '';
-                    const isFloat = val % 1 !== 0;
-                    el.innerText = (isFloat ? val.toFixed(1) : Math.floor(val).toLocaleString('pt-BR')) + suffix;
+                    const num = Number(val);
+                    const isFloat = num % 1 !== 0;
+                    el.innerText = (!isNaN(num) && isFloat ? num.toFixed(1) : Math.floor(num).toLocaleString('pt-BR')) + suffix;
                 }
             };
 
             set('total-processes', total);
             set('treating-processes', pending);
             set('completed-processes', total - pending);
-            set('pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
+            set('pending-percent', total ? (pending / total) * 100 : 0);
             
             set('list-total-processes', total);
             set('list-treating-processes', pending);
             set('list-completed-processes', total - pending);
-            set('list-pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
+            set('list-pending-percent', total ? (pending / total) * 100 : 0);
 
             const localeMap = {
                 'finance-processes': 'finanç',
@@ -3047,10 +3045,11 @@
                     maintainAspectRatio: false,
                     layout: {
                         padding: {
-                            top: 40 // Increased space for labels
+                            top: 60 // Increased space for labels
                         }
                     },
                     plugins: {
+                        legend: { display: false },
                         datalabels: {
                             color: (ctx) => {
                                 // If the bar is tall enough, we keep it white inside, 
@@ -3081,8 +3080,12 @@
 
         window.filterTable = function () {
             const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            const status = document.getElementById('statusFilter')?.value || '';
-            const locationArr = document.getElementById('locationFilter')?.value || '';
+            
+            const sf = document.getElementById('statusFilter');
+            const status = (sf && sf.selectedIndex > -1) ? (sf.options[sf.selectedIndex].value || '') : '';
+
+            const lf = document.getElementById('locationFilter');
+            const locationArr = (lf && lf.selectedIndex > -1) ? (lf.options[lf.selectedIndex].value || '') : '';
 
             const filtered = window.state.processes.filter(p => {
                 const matchSearch = !query || 
@@ -3090,8 +3093,8 @@
                     (p.supplier || '').toLowerCase().includes(query) ||
                     (p.object || '').toLowerCase().includes(query);
                 
-                const matchStatus = !status || p.status === status;
-                const matchLoc = !locationArr || p.location === locationArr;
+                const matchStatus = !status || (p.status || '').trim().toLowerCase() === status.trim().toLowerCase();
+                const matchLoc = !locationArr || (p.location || '').trim().toLowerCase() === locationArr.trim().toLowerCase();
 
                 return matchSearch && matchStatus && matchLoc;
             });
@@ -3223,14 +3226,37 @@
             if (p) {
                 document.getElementById('processModalTitle').innerText = 'Editar Processo';
                 document.getElementById('processId').value = p.id;
-                document.getElementById('ppAno').value = p.ppAno;
-                document.getElementById('supplierSelect').value = p.supplier;
-                document.getElementById('objectSelect').value = p.object;
-                document.getElementById('treatedBy').value = p.treatedBy;
-                document.getElementById('deadline').value = p.deadline;
-                document.getElementById('statusSelect').value = p.status;
-                document.getElementById('locationSelect').value = p.location;
-                document.getElementById('notes').value = p.notes;
+                
+                // Populate text/number/date inputs
+                document.getElementById('ppNumber').value = p.ppNumber || '';
+                document.getElementById('exerciseYear').value = p.exerciseYear || '';
+                document.getElementById('ppAno').value = p.ppAno || '';
+                document.getElementById('coverValue').value = p.coverValue || '';
+                document.getElementById('openingDate').value = p.openingDate || '';
+                document.getElementById('deadline').value = p.deadline || '';
+                document.getElementById('locationDate').value = p.locationDate || '';
+                document.getElementById('situation').value = p.situation || '';
+                document.getElementById('notes').value = p.notes || '';
+                
+                // Populate Choices selects safely
+                const setChoice = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el) el.value = val || '';
+                    if (window.choicesInstances[id]) {
+                        try { window.choicesInstances[id].setChoiceByValue(val || ''); } catch (e) {
+                            console.warn('Choice parsing error:', e);
+                        }
+                    }
+                };
+
+                const findCaseMatch = (arr, val) => val ? (arr.find(x => x && x.toLowerCase() === val.toLowerCase()) || val) : '';
+
+                setChoice('supplierSelect', findCaseMatch(window.state.suppliers, p.supplier));
+                setChoice('objectSelect', findCaseMatch(window.state.objects, p.object));
+                setChoice('treatedBy', findCaseMatch(window.state.handlers, p.treatedBy));
+                setChoice('statusSelect', findCaseMatch(window.state.statuses, p.status));
+                setChoice('locationSelect', findCaseMatch(window.state.locations, p.location));
+
                 window.renderModalHistory(p.history);
                 window.updateModalRemainingDays();
             } else {
@@ -3387,11 +3413,11 @@
 
         window.updateSelects = function () {
             const sets = [
-                { id: 'supplierSelect', data: window.state.suppliers, searchable: true },
-                { id: 'objectSelect', data: window.state.objects, searchable: true },
-                { id: 'treatedBy', data: window.state.handlers, searchable: true },
-                { id: 'locationSelect', data: window.state.locations, searchable: true },
-                { id: 'statusSelect', data: window.state.statuses, searchable: true },
+                { id: 'supplierSelect', data: window.state.suppliers, searchable: true, opt: true, placeholder: 'Selecione o Fornecedor' },
+                { id: 'objectSelect', data: window.state.objects, searchable: true, opt: true, placeholder: 'Selecione o Objeto' },
+                { id: 'treatedBy', data: window.state.handlers, searchable: true, opt: true, placeholder: 'Selecione o Tratador' },
+                { id: 'locationSelect', data: window.state.locations, searchable: true, opt: true, placeholder: 'Selecione a Localização' },
+                { id: 'statusSelect', data: window.state.statuses, searchable: true, opt: true, placeholder: 'Selecione o Status' },
                 { id: 'statusFilter', data: window.state.statuses, opt: true, placeholder: 'Todos os Status', searchable: false },
                 { id: 'locationFilter', data: window.state.locations, opt: true, placeholder: 'Todas Localizações', searchable: false }
             ];
@@ -3400,9 +3426,13 @@
                 const el = document.getElementById(s.id);
                 if (!el) return;
 
+                if (window.choicesInstances[s.id]) {
+                    window.choicesInstances[s.id].destroy();
+                }
+
                 const old = el.value;
 
-                el.innerHTML = s.opt ? `<option value="">${s.placeholder || 'Selecionar...'}</option>` : '';
+                el.innerHTML = s.opt ? `<option value="" selected>${s.placeholder || 'Selecionar...'}</option>` : '';
                 s.data.forEach(d => {
                     const o = document.createElement('option');
                     o.value = d;
