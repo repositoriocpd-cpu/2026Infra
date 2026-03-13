@@ -2908,6 +2908,20 @@
         else window.addEventListener('load', window.initApp);
 
         // --- 5. LOGIC & TABLE RENDERING ---
+        window.getStatusColor = function(status) {
+            const st = (status || '').toUpperCase();
+            if (st === 'LIQUIDADO') return '#2ecc71'; // Verde
+            if (st === 'DESPACHADO') return '#e67e22'; // Laranja
+            if (st === 'CONCLUÍDO') return '#27ae60'; // Verde Escuro
+            if (st === 'EM ANÁLISE') return '#005A9C'; // Azul
+            if (st === 'PENDENTE') return '#e74c3c'; // Vermelho
+            if (st === 'DEVOLVIDO') return '#9b59b6'; // Roxo
+            if (st === 'CANCELADO') return '#c0392b'; // Vermelho Escuro
+            if (st === 'EM PAGAMENTO') return '#3498db'; // Azul Claro
+            if (st === 'AGUARDANDO') return '#f1c40f'; // Amarelo
+            if (st === 'ARQUIVADO') return '#7f8c8d'; // Cinza
+            return '#f39c12'; // Laranja padrão fallback ou qualquer cor diferenciada para 'outros'
+        };
         window.showSection = function (id) {
             document.querySelectorAll('[id$="-section"]').forEach(s => s.style.display = 'none');
             const target = document.getElementById(`${id}-section`);
@@ -3262,7 +3276,7 @@
                     daysColor = d < 0 ? 'red' : 'gray';
                 }
 
-                const color = { 'Em Análise': '#005A9C', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' }[p.status] || '#95a5a6';
+                const color = window.getStatusColor(p.status);
 
                 const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
                 const formatCurrency = (v) => {
@@ -3450,7 +3464,7 @@
 
             // Status Badge
             const statusBadge = document.getElementById('detailsStatusBadge');
-            const statusColor = { 'Em Análise': '#005A9C', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' }[p.status] || '#95a5a6';
+            const statusColor = window.getStatusColor(p.status);
             statusBadge.innerText = p.status;
             statusBadge.style.background = statusColor;
             statusBadge.style.color = 'white';
