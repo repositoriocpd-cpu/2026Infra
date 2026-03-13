@@ -2056,32 +2056,32 @@
         <!-- Dashboard Section -->
         <div id="dashboard-section">
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number total-color" id="total-processes" data-target="0">0</p>
                     <h3>Total de Processos</h3>
                     <div class="tooltip">Quantidade total de Processos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', '!Concluído')">
                     <p class="stat-number warning-color" id="treating-processes" data-target="0">0</p>
                     <h3>Processos em Tramitação</h3>
                     <div class="tooltip">Total de Processos em Tramitação</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', 'Concluído')">
                     <p class="stat-number success-color" id="completed-processes" data-target="0">0</p>
                     <h3>Processos Liquidados</h3>
                     <div class="tooltip">Total Geral de Processos Liquidados</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number warning-color" id="pending-percent" data-target="0" data-suffix="%">0%</p>
                     <h3>Percentual de Pendências</h3>
                     <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('delayed', '')">
                     <p class="stat-number danger-color" id="delayed-processes" data-target="0">0</p>
                     <h3>Vencidos / Atrasados</h3>
                     <div class="tooltip">Total de Processos Vencidos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'finanç')">
                     <p class="stat-number total-color" id="finance-processes" data-target="0">0</p>
                     <h3>No Financeiro</h3>
                     <div class="tooltip">Total de Processos no Financeiro</div>
@@ -2089,32 +2089,32 @@
             </div>
             
             <div class="stats-grid" style="margin-top: 1rem;">
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'gabinete')">
                     <p class="stat-number total-color" id="cabinet-processes" data-target="0">0</p>
                     <h3>No Gabinete</h3>
                     <div class="tooltip">Total de Processos no Gabinete</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'compras')">
                     <p class="stat-number total-color" id="purchase-processes" data-target="0">0</p>
                     <h3>Em Compras</h3>
                     <div class="tooltip">Total de Processos em Compras</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'almoxarifado')">
                     <p class="stat-number total-color" id="warehouse-processes" data-target="0">0</p>
                     <h3>No Almoxarifado</h3>
                     <div class="tooltip">Total de Processos no Almoxarifado</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'tesouraria')">
                     <p class="stat-number total-color" id="treasury-processes" data-target="0">0</p>
                     <h3>Na Tesouraria</h3>
                     <div class="tooltip">Total de Processos na Tesouraria</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'nutriç')">
                     <p class="stat-number total-color" id="nutrition-processes" data-target="0">0</p>
                     <h3>Da Nutrição</h3>
                     <div class="tooltip">Total de Processos da Nutrição</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'secretaria')">
                     <p class="stat-number total-color" id="secretariat-processes" data-target="0">0</p>
                     <h3>Na Secretaria</h3>
                     <div class="tooltip">Total de Processos na Secretaria</div>
@@ -2143,32 +2143,32 @@
         <div id="processes-section" style="display:none;">
             <!-- Modern 6 Insight Cards -->
             <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number total-color" id="list-total-processes" data-target="0">0</p>
                     <h3>Total de Processos</h3>
                     <div class="tooltip">Quantidade total de Processos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', '!Concluído')">
                     <p class="stat-number warning-color" id="list-treating-processes" data-target="0">0</p>
                     <h3>Processos em Tramitação</h3>
                     <div class="tooltip">Total de Processos em Tramitação</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', 'Concluído')">
                     <p class="stat-number success-color" id="list-completed-processes" data-target="0">0</p>
                     <h3>Processos Liquidados</h3>
                     <div class="tooltip">Total Geral de Processos Liquidados</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number warning-color" id="list-pending-percent" data-target="0" data-suffix="%">0%</p>
                     <h3>Percentual de Pendências</h3>
                     <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('delayed', '')">
                     <p class="stat-number danger-color" id="list-delayed-processes" data-target="0">0</p>
                     <h3>Vencidos / Atrasados</h3>
                     <div class="tooltip">Total de Processos Vencidos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'finanç')">
                     <p class="stat-number total-color" id="list-finance-processes" data-target="0">0</p>
                     <h3>No Financeiro</h3>
                     <div class="tooltip">Total de Processos no Financeiro</div>
@@ -2184,19 +2184,34 @@
                             <div style="position: relative;">
                                 <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888;"></i>
                                 <input type="text" id="searchInput" placeholder="PP, Fornecedor, Objeto..."
+<<<<<<< Updated upstream
                                     onkeyup="filterTable()" style="width: 100%; padding-left: 35px; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
                             </div>
                         </div>
                         <div class="form-group" style="margin:0;">
                             <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Status</label>
                              <select id="statusFilter" onchange="filterTable()" style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
+=======
+                                    onkeyup="window.filterTable(true)" style="width: 100%; padding-left: 35px; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.8rem; background-color: #fafafa;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Status:</label>
+                             <select id="statusFilter" onchange="window.filterTable(true)" style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
+>>>>>>> Stashed changes
                                 <option value="">Todos os Status</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin:0;">
+<<<<<<< Updated upstream
                             <label style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Localização</label>
                             <select id="locationFilter" onchange="filterTable()" style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
                                 <option value="">Todas as Localizações</option>
+=======
+                            <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Localização:</label>
+                            <select id="locationFilter" onchange="window.filterTable(true)" style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
+                                <option value="">Todas Localizações:</option>
+>>>>>>> Stashed changes
                             </select>
                         </div>
                     </div>
@@ -2476,20 +2491,32 @@
                         </div>
                     </div>
 
-                    <!-- Localização Atual -->
-                    <div class="details-card">
-                        <h4><i class="fas fa-map-marker-alt"></i> Localização Atual</h4>
-                        <div class="details-item">
-                            <span class="details-label">Setor / Órgão</span>
-                            <span id="detailsLocation" class="details-value">-</span>
+                    <!-- Localização Atual e Outros Processos -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="details-card">
+                            <h4><i class="fas fa-map-marker-alt"></i> Localização Atual</h4>
+                            <div class="details-item">
+                                <span class="details-label">Setor / Órgão</span>
+                                <span id="detailsLocation" class="details-value">-</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Última Movimentação</span>
+                                <span id="detailsLocationDate" class="details-value">-</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Notas</span>
+                                <span id="detailsNotes" class="details-value">-</span>
+                            </div>
                         </div>
-                        <div class="details-item">
-                            <span class="details-label">Última Movimentação</span>
-                            <span id="detailsLocationDate" class="details-value">-</span>
-                        </div>
-                        <div class="details-item">
-                            <span class="details-label">Notas</span>
-                            <span id="detailsNotes" class="details-value">-</span>
+
+                        <div class="details-card" style="flex-grow: 1;">
+                            <h4><i class="fas fa-folder-open"></i> Outros Processos do Fornecedor</h4>
+                            <div class="details-item">
+                                <span class="details-label">P.P.ANO Relacionados</span>
+                                <div id="detailsOtherProcesses" style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                    <!-- Badges of other P.P.ANOs will appear here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3079,7 +3106,53 @@
             });
         };
 
-        window.filterTable = function () {
+        window._dashboardFilter = null;
+
+        window.filterFromDashboard = function(type, value) {
+            window.showSection('processes');
+            
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const locationFilter = document.getElementById('locationFilter');
+            
+            if (searchInput) searchInput.value = '';
+            if (statusFilter) statusFilter.value = '';
+            if (locationFilter) locationFilter.value = '';
+
+            window._dashboardFilter = null; 
+
+            if (type === 'all') {
+                // nada a fazer
+            } else if (type === 'status') {
+                if (value === '!Concluído') {
+                    window._dashboardFilter = { type: 'status_not_completed' };
+                } else {
+                    const exactStatus = window.state.statuses.find(s => s.toLowerCase() === value.toLowerCase());
+                    if (exactStatus && statusFilter) {
+                        statusFilter.value = exactStatus;
+                    }
+                }
+            } else if (type === 'location') {
+                const exactLoc = window.state.locations.find(l => l.toLowerCase().includes(value.toLowerCase()));
+                if (exactLoc && locationFilter) {
+                    locationFilter.value = exactLoc;
+                }
+            } else if (type === 'delayed') {
+                window._dashboardFilter = { type: 'delayed' };
+            }
+
+            window.filterTable(false);
+            const tableSection = document.getElementById('processes-section');
+            if (tableSection) {
+                window.scrollTo({ top: tableSection.offsetTop - 50, behavior: 'smooth' });
+            }
+        };
+
+        window.filterTable = function (fromDomInteraction = false) {
+            if (fromDomInteraction) {
+                window._dashboardFilter = null;
+            }
+
             const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
             const status = document.getElementById('statusFilter')?.value || '';
             const locationArr = document.getElementById('locationFilter')?.value || '';
@@ -3090,10 +3163,26 @@
                     (p.supplier || '').toLowerCase().includes(query) ||
                     (p.object || '').toLowerCase().includes(query);
                 
-                const matchStatus = !status || p.status === status;
-                const matchLoc = !locationArr || p.location === locationArr;
+                let matchStatus = true;
+                if (!fromDomInteraction && window._dashboardFilter && window._dashboardFilter.type === 'status_not_completed') {
+                    matchStatus = p.status !== 'Concluído';
+                } else {
+                    matchStatus = !status || (p.status || '').trim().toLowerCase() === status.trim().toLowerCase();
+                }
 
-                return matchSearch && matchStatus && matchLoc;
+                const matchLoc = !locationArr || (p.location || '').trim().toLowerCase() === locationArr.trim().toLowerCase();
+
+                let matchDelayed = true;
+                if (!fromDomInteraction && window._dashboardFilter && window._dashboardFilter.type === 'delayed') {
+                    if (p.status === 'Concluído' || !p.deadline) {
+                        matchDelayed = false;
+                    } else {
+                        const days = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
+                        matchDelayed = days < 0;
+                    }
+                }
+
+                return matchSearch && matchStatus && matchLoc && matchDelayed;
             });
 
             window.renderProcessTable(filtered);
@@ -3362,6 +3451,35 @@
                 });
             } else {
                 timeline.innerHTML = '<p style="color: #888; font-size: 0.9rem; margin-left: 10px;">Sem histórico de tramitações.</p>';
+            }
+
+            // Other Processes from same supplier
+            const otherContainer = document.getElementById('detailsOtherProcesses');
+            otherContainer.innerHTML = '';
+            if (p.supplier) {
+                const otherProcs = window.state.processes.filter(op => op.supplier === p.supplier && op.id !== p.id);
+                if (otherProcs.length > 0) {
+                    otherProcs.forEach(op => {
+                         const badge = document.createElement('span');
+                         badge.className = 'badge';
+                         badge.style.background = '#eef3fc';
+                         badge.style.color = '#1452B5';
+                         badge.style.border = '1px solid #cce0ff';
+                         badge.style.cursor = 'pointer';
+                         badge.style.fontSize = '0.8rem';
+                         badge.title = `Clique para ver o processo ${op.ppAno}`;
+                         badge.innerText = op.ppAno;
+                         badge.onclick = () => {
+                             window.closeModal('processDetailsModal');
+                             setTimeout(() => window.showProcessDetails(op), 300); // Wait for modal animation
+                         };
+                         otherContainer.appendChild(badge);
+                    });
+                } else {
+                    otherContainer.innerHTML = '<span style="color: #666; font-size: 0.85rem;">Nenhum outro processo encontrado.</span>';
+                }
+            } else {
+                otherContainer.innerHTML = '<span style="color: #666; font-size: 0.85rem;">Fornecedor não informado.</span>';
             }
 
             // Action Buttons
