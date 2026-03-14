@@ -1,0 +1,41 @@
+# Plano de Implementação - Módulo de Remanejamento
+
+Este plano detalha a criação do novo módulo **Remanejamento**, que permitirá aos gestores cruzar dados de sobra e falta de uniformes entre as unidades escolares para sugerir transferências logísticas.
+
+## Objetivos
+- Facilitar o equilíbrio de estoque de uniformes na rede municipal.
+- Automatizar a identificação de excedentes e carências.
+- Sugerir transferências otimizadas entre escolas.
+
+## Mudanças Propostas
+
+### Core / Data
+- **Algoritmo de Remanejamento N:N**: Manutenção da lógica flexível que permite múltiplas origens para um destino e vice-versa, garantindo que o estoque seja balanceado de forma global por item.
+- **Interface de Traduções**: Manutenção dos termos existentes.
+
+### UI / Componentes
+#### [MODIFY] [UniformTable.tsx](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/components/UniformTable.tsx)(file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/components/UniformTable.tsx)
+- **Novos Botões de Exportação**: Adição de "PDF (SOBRA)" e "PDF (FALTA)" visíveis apenas para administradores.
+- **Lógica de Filtragem**: Integração com as novas funções de exportação.
+
+### Core / Data
+#### [MODIFY] [exportUtils.ts](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/utils/exportUtils.ts)(file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/utils/exportUtils.ts)
+- **Exportação Filtrada**: Atualização da função [exportarParaPDF](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/utils/exportUtils.ts#53-123) para aceitar filtro de sobra ou falta e personalizar o cabeçalho.
+- **Remanejamento PDF**: Reordenação das colunas conforme visual solicitado (Tipo, Tamanho, Origem, Qtd, Destino) e aplicação de cores de fonte (Verde para Origem, Vermelho para Destino).
+
+### Navegação
+#### [MODIFY] [App.tsx](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/App.tsx)(file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/App.tsx)
+- Registro da nova rota/view e controle de acesso para administradores.
+
+#### [MODIFY] [Sidebar.tsx](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/components/Sidebar.tsx)(file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/components/Sidebar.tsx)
+- Inserção do novo item de menu logo abaixo de "Status Inventário".
+
+## Plano de Verificação
+
+### Testes Manuais
+1. Navegar até o novo módulo "Remanejamento".
+2. Verificar se o painel de resumo reflete os dados reais do banco.
+3. Validar se o algoritmo sugere transferências coerentes (Sobra em uma -> Falta em outra).
+4. Testar a exportação para PDF do plano de remanejamento.
+5. Simular uma redistribuição total e verificar se os totais são balanceados visualmente.
+6. Verificar responsividade em telas mobile.

@@ -5,12 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel SESMEC- Infra</title>
+    <link rel="icon" type="image/jpeg"
+        href="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
@@ -161,10 +164,6 @@
             background-color: #1e1e1e;
         }
 
-        body.dark-mode .swiper-button-next,
-        body.dark-mode .swiper-button-prev {
-            color: #66b3ff !important;
-        }
 
         body.dark-mode .swiper-pagination-bullet-active {
             background: #66b3ff !important;
@@ -338,6 +337,8 @@
             align-items: center;
             padding: 0.75rem 2rem;
             gap: 1rem;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1f1f1;
         }
 
         .menu-icon {
@@ -370,7 +371,10 @@
         .department-info a {
             color: var(--govbr-blue);
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.02em;
         }
 
         .department-info a:hover {
@@ -394,10 +398,26 @@
         .user-info {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-left: auto;
+            gap: 0.75rem;
             position: relative;
             cursor: pointer;
+        }
+
+        #header-dept-name {
+            color: var(--govbr-blue);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        #header-dept-name::before {
+            content: "|";
+            color: #E5E7EB;
+            margin-right: 0.5rem;
+            font-weight: 300;
         }
 
         .user-info .fa-user-circle {
@@ -502,46 +522,84 @@
 
         @media (max-width: 600px) {
             .stats-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 0.75rem;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 0.5rem;
             }
 
-            .header-actions a.header-link span {
-                display: none !important;
-            }
-
-            .header-actions a.header-link i {
-                display: inline !important;
-            }
-
-            .actions-separator {
-                margin: 0;
-            }
-
             .stat-card {
-                min-width: 0;
-                /* Allow cards to shrink properly */
-                padding: 1rem;
+                padding: 0.5rem !important;
+                text-align: center;
+            }
+
+            .stat-card i {
+                font-size: 1rem !important;
+                margin-bottom: 4px;
             }
 
             .stat-card .stat-number {
-                font-size: 1.8rem;
-                /* Slightly smaller font for mobile */
-                margin-bottom: 0.25rem;
+                font-size: 1.1rem !important;
+                margin-bottom: 2px;
             }
 
             .stat-card h3 {
-                font-size: 0.9rem;
-                /* Smaller heading for mobile */
-                margin: 0;
+                font-size: 0.65rem !important;
+                line-height: 1.1;
+                font-weight: 600;
             }
+
+            /* Ajustes gerais para mobile */
+            .header-actions {
+                gap: 0.5rem;
+            }
+
+            .container {
+                padding: 0.75rem !important;
+                padding-bottom: 80px !important;
+                /* Espaço para o bottom nav */
+            }
+
+            .bottom-nav {
+                display: flex !important;
+            }
+        }
+
+        /* Estilos do Menu Inferior Mobile */
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: var(--govbr-blue);
+            border-top: none;
+            z-index: 1500;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+            padding: 0 10px;
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 600;
+            gap: 4px;
+            flex: 1;
+            transition: all 0.2s;
+        }
+
+        .bottom-nav-item.active {
+            color: #fff;
+        }
+
+        .bottom-nav-item i {
+            font-size: 1.25rem;
         }
 
         @media (min-width: 600px) {
@@ -627,10 +685,6 @@
             line-height: 1.4;
         }
 
-        .swiper-button-next,
-        .swiper-button-prev {
-            color: var(--govbr-blue) !important;
-        }
 
         .swiper-pagination-bullet-active {
             background: var(--govbr-blue) !important;
@@ -1378,6 +1432,51 @@
             font-size: 0.8125rem;
         }
 
+        /* Ajustes Mobile para Modais */
+        @media (max-width: 600px) {
+            .process-modal {
+                padding: 0.5rem;
+            }
+
+            .process-modal-content {
+                border-radius: 12px;
+                max-height: 98vh;
+            }
+
+            .modal-header {
+                padding: 1rem 1.25rem;
+            }
+
+            .modal-body {
+                padding: 1rem 1.25rem;
+            }
+
+            .modal-footer {
+                padding: 1rem 1.25rem;
+                flex-direction: column-reverse;
+            }
+
+            .modal-footer .btn-action {
+                width: 100%;
+            }
+
+            .form-grid,
+            .form-grid-3,
+            .form-grid-4 {
+                grid-template-columns: 1fr !important;
+                gap: 1rem;
+            }
+
+            .form-section {
+                margin-bottom: 1.25rem;
+            }
+
+            .form-section-title {
+                font-size: 0.7rem;
+                padding-bottom: 0.25rem;
+            }
+        }
+
         .modal-timeline-item:last-child {
             border-bottom: none;
             margin-bottom: 0;
@@ -1587,7 +1686,7 @@
             margin-bottom: 0 !important;
             flex-grow: 1;
         }
-        
+
         .choices__inner {
             min-height: 30px !important;
             height: 30px !important;
@@ -1598,12 +1697,13 @@
             display: flex;
             align-items: center;
         }
-        
+
         .choices__list--single {
             padding: 0 !important;
         }
-        
-        .is-focused .choices__inner, .is-open .choices__inner {
+
+        .is-focused .choices__inner,
+        .is-open .choices__inner {
             border-color: #1452B5 !important;
             box-shadow: 0 0 0 3px rgba(20, 82, 181, 0.1) !important;
         }
@@ -1750,7 +1850,7 @@
             top: 0;
             z-index: 20;
             background-color: #f8fafc;
-            box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
             white-space: nowrap;
             padding: 0.75rem 0.5rem;
         }
@@ -1762,7 +1862,7 @@
 
         body.dark-mode #processTable thead th {
             background-color: #0F172A;
-            box-shadow: 0 1px 0 rgba(255,255,255,0.05);
+            box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
         }
 
         .pdf-col-check {
@@ -1773,10 +1873,21 @@
             vertical-align: middle;
         }
 
-        .stat-number.total-color { color: var(--govbr-blue); }
-        .stat-number.success-color { color: #2ecc71; }
-        .stat-number.danger-color { color: #e74c3c; }
-        .stat-number.warning-color { color: #e67e22; }
+        .stat-number.total-color {
+            color: var(--govbr-blue);
+        }
+
+        .stat-number.success-color {
+            color: #2ecc71;
+        }
+
+        .stat-number.danger-color {
+            color: #e74c3c;
+        }
+
+        .stat-number.warning-color {
+            color: #e67e22;
+        }
 
         .side-menu-header {
             display: flex;
@@ -1800,6 +1911,7 @@
         .close-sidebar:hover {
             transform: scale(1.1);
         }
+
         /* Details Modal Styles */
         .details-grid {
             display: grid;
@@ -1813,7 +1925,7 @@
             padding: 1.25rem;
             border-radius: 8px;
             border: 1px solid #e0e0e0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .details-card h4 {
@@ -1906,18 +2018,232 @@
             transition: background 0.2s;
             cursor: pointer;
         }
-        
+
         #processTable tbody tr:hover {
             background-color: #f0f7ff;
         }
-        
+
         body.dark-mode #processTable tbody tr:hover {
             background-color: #2a2a2a;
+        }
+
+        /* --- TELA DE LOGIN --- */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #f4f6f9;
+            z-index: 999999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        .login-card {
+            background: #fff;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-header {
+            background-color: #1a56b5;
+            color: #fff;
+            padding: 30px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-header img {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 50%;
+            padding: 5px;
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .login-header p {
+            font-size: 0.8rem;
+            margin: 5px 0 0;
+            font-weight: 400;
+        }
+
+        .login-body {
+            padding: 30px 40px;
+        }
+
+        .login-body h2 {
+            font-size: 1rem;
+            color: #333;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .form-group label.normal-label {
+            color: #555;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon-wrapper i.fa-envelope,
+        .input-icon-wrapper i.fa-lock {
+            position: absolute;
+            left: 15px;
+            color: #888;
+        }
+
+        .input-icon-wrapper input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #cce0f5;
+            background-color: #e6f0fa;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-icon-wrapper input:focus {
+            border-color: #1a56b5;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            color: #aaa;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-size: 1rem;
+        }
+
+        .toggle-password:hover {
+            color: #555;
+        }
+
+        .login-btn {
+            background-color: #1a56b5;
+            color: #fff;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: #144491;
+        }
+
+        .login-footer {
+            background-color: #f9f9f9;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+
+        .login-error {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none;
         }
     </style>
 </head>
 
 <body>
+    <!-- OVERLAY DE LOGIN -->
+    <div id="login-overlay">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+                    alt="Logo Prefeitura">
+                <h1>SMEDU | INFRAESTRUTURA</h1>
+                <p>Controle de Processos de Pagamentos</p>
+            </div>
+            <div class="login-body">
+                <h2>Acesso ao Sistema</h2>
+
+                <div class="login-error" id="login-error-msg">
+                    E-mail ou senha incorretos.
+                </div>
+
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">E-mail institucional</label>
+                        <div class="input-icon-wrapper">
+                            <i class="far fa-envelope"></i>
+                            <input type="email" id="login-email" required value="cpdinfra@edu.itaguai.rj.gov.br">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password" class="normal-label">Senha</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="login-password" required value="T3c4n3x0">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">
+                                <i class="far fa-eye" id="toggle-password-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-btn">Entrar</button>
+                </form>
+            </div>
+            <div class="login-footer">
+                Prefeitura Municipal de Itaguaí — SMEDU/CPD
+            </div>
+        </div>
+    </div>
+
     <nav id="side-menu" class="side-menu">
         <div class="side-menu-header">
             <h3 style="font-weight: 800; letter-spacing: 0.05em;">SESME-C</h3>
@@ -1927,26 +2253,30 @@
         </div>
         <ul>
             <li>
-                <a href="#" onclick="window.showSection('dashboard'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                <a href="#"
+                    onclick="window.showSection('dashboard'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
                     <i class="fas fa-tachometer-alt menu-icon"></i> <span style="flex-grow: 1;">Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="#" onclick="window.openProcessModal(); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                <a href="#"
+                    onclick="window.openProcessModal(); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
                     <i class="fas fa-sign-in-alt menu-icon"></i> <span style="flex-grow: 1;">Novo Processo</span>
                 </a>
             </li>
             <li>
-                <a href="#" onclick="window.showSection('processes'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                <a href="#"
+                    onclick="window.showSection('processes'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
                     <i class="fas fa-list-alt menu-icon"></i> <span style="flex-grow: 1;">Consulta Cadastrados</span>
                 </a>
             </li>
             <li>
                 <hr class="menu-divider">
             </li>
-            <li>
+            <li id="menu-settings">
                 <a href="#" class="has-submenu">
-                    <i class="fas fa-link menu-icon"></i> <span style="flex-grow: 1;">Configurações</span> <i class="fas fa-chevron-right chevron-icon"></i>
+                    <i class="fas fa-link menu-icon"></i> <span style="flex-grow: 1;">Configurações</span> <i
+                        class="fas fa-chevron-right chevron-icon"></i>
                 </a>
                 <div class="submenu">
                     <ul>
@@ -1971,7 +2301,8 @@
             </li>
             <li>
                 <a href="#" class="has-submenu">
-                    <i class="fas fa-external-link-square-alt menu-icon"></i> <span style="flex-grow: 1;">Links Externo</span> <i class="fas fa-chevron-right chevron-icon"></i>
+                    <i class="fas fa-external-link-square-alt menu-icon"></i> <span style="flex-grow: 1;">Links
+                        Externo</span> <i class="fas fa-chevron-right chevron-icon"></i>
                 </a>
                 <div class="submenu">
                     <ul>
@@ -1995,17 +2326,7 @@
                 <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span>
             </div>
             <div class="header-actions">
-                <a href="https://presenca.mec.gov.br/seb/" target="_blank" rel="noopener noreferrer" class="header-link"
-                    title="Sistema Presença"><i class="fas fa-user-check"></i><span class="hide-on-small">Sistema
-                        Presença</span></a>
-                <div class="actions-separator"></div>
-                <a href="https://acesso.inep.gov.br/auth/realms/Producao/protocol/openid-connect/auth?client_id=educacenso&redirect_uri=https%3A%2F%2Feducacenso.inep.gov.br%2Feducacenso%2F%2Fselecionar-entidade&state=b25335c3-ebc8-4a7b-bc16-f5b0e421c3ff&nonce=63283e1a-1a77-44aa-8dcb-e51cdd71d11c&response_mode=fragment&response_type=code&scope=openid"
-                    target="_blank" rel="noopener noreferrer" class="header-link" title="Educacenso"><i
-                        class="fas fa-graduation-cap"></i><span class="hide-on-small">Educacenso</span></a>
-                <div class="actions-separator"></div>
-                <a href="https://sispddeinterativo.mec.gov.br/" target="_blank" rel="noopener noreferrer"
-                    class="header-link" title="PDDE Interativo"><i class="fas fa-external-link-alt"></i><span
-                        class="hide-on-small">PDDE Interativo</span></a>
+                <!--
                 <div class="actions-separator"></div>
                 <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank"
                     rel="noopener noreferrer" class="header-link" title="Jornal Oficial"><i
@@ -2020,101 +2341,103 @@
                         class="hide-on-small"></span></a>
                 <a href="#" aria-label="Acessibilidade" id="accessibility-toggle"><i
                         class="fa-solid fa-universal-access"></i><span class="hide-on-small"></span></a>
-                <a href="#" aria-label="Menu de aplicativos" id="cookie-toggle"><i
+                <a href="#" aria-label="Privacidade" id="cookie-toggle"><i
                         class="fa-solid fa-cookie-bite"></i><span class="hide-on-small"></span></a>
-                <a href="#" id="comments-toggle" aria-label="Comentários" style="color: green;"><i
-                        class="fa-solid fa-comments"></i><span class="hide-on-small"></span></a>
+            </div> -->
             </div>
-        </div>
-        <div class="header-bottom">
-            <i id="menu-toggle" class="fa-solid fa-bars menu-icon"></i>
-            <div class="department-info">
-                <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao" class="hide-on-small">Secretaria
-                    Municipal de Educação</a>
-                <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao" class="show-on-small">SMEDU</a>
-                <span class="hide-on-small">|</span>
-                <a href="#" class="hide-on-small hide-on-medium">CONTROLE DE PROCESSOS DE PAGAMENTO</a>
-                <span class="hide-on-small hide-on-medium">|</span>
-                <a href="#" contenteditable="true">nome do departamento logado</a>
-            </div>
-            <div class="user-info">
-                <i class="fa-solid fa-user-circle"></i>
-                <span contenteditable="true">Usuário</span>
-                <div class="header-sign-in">
-                    <ul>
-                        <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                        <!-- <li><a href="#"><i class="fas fa-exchange-alt"></i> Trocar Unidade</a></li> -->
-                        <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
-                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-                    </ul>
+            <div class="header-bottom">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <i id="menu-toggle" class="fa-solid fa-bars menu-icon"></i>
+                    <div class="department-info">
+                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
+                            class="hide-on-small">Secretaria
+                            Municipal de Educação</a>
+                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
+                            class="show-on-small">SMEDU</a>
+                        <span class="hide-on-small"
+                            style="color: #E5E7EB; font-weight: 300; margin: 0 0.25rem;">|</span>
+                        <a href="#" class="hide-on-small hide-on-medium">CONTROLE DE PROCESSOS DE PAGAMENTO</a>
+                    </div>
+                </div>
+
+                <div class="user-info">
+                    <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span id="header-user-name">Usuário</span>
+                    <div class="header-sign-in">
+                        <ul>
+                            <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                            <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
+                            <li><a href="#" onclick="window.logout()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
     </header>
 
     <main class="container" style="margin-top: 2rem;">
         <!-- Dashboard Section -->
         <div id="dashboard-section">
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number total-color" id="total-processes" data-target="0">0</p>
                     <h3>Total de Processos</h3>
                     <div class="tooltip">Quantidade total de Processos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', '!Concluído')">
                     <p class="stat-number warning-color" id="treating-processes" data-target="0">0</p>
                     <h3>Processos em Tramitação</h3>
                     <div class="tooltip">Total de Processos em Tramitação</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', 'Concluído')">
                     <p class="stat-number success-color" id="completed-processes" data-target="0">0</p>
                     <h3>Processos Liquidados</h3>
                     <div class="tooltip">Total Geral de Processos Liquidados</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number warning-color" id="pending-percent" data-target="0" data-suffix="%">0%</p>
                     <h3>Percentual de Pendências</h3>
                     <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('delayed', '')">
                     <p class="stat-number danger-color" id="delayed-processes" data-target="0">0</p>
                     <h3>Vencidos / Atrasados</h3>
                     <div class="tooltip">Total de Processos Vencidos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'finanç')">
                     <p class="stat-number total-color" id="finance-processes" data-target="0">0</p>
                     <h3>No Financeiro</h3>
                     <div class="tooltip">Total de Processos no Financeiro</div>
                 </div>
             </div>
-            
+
             <div class="stats-grid" style="margin-top: 1rem;">
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'gabinete')">
                     <p class="stat-number total-color" id="cabinet-processes" data-target="0">0</p>
                     <h3>No Gabinete</h3>
                     <div class="tooltip">Total de Processos no Gabinete</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'compras')">
                     <p class="stat-number total-color" id="purchase-processes" data-target="0">0</p>
                     <h3>Em Compras</h3>
                     <div class="tooltip">Total de Processos em Compras</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'almoxarifado')">
                     <p class="stat-number total-color" id="warehouse-processes" data-target="0">0</p>
                     <h3>No Almoxarifado</h3>
                     <div class="tooltip">Total de Processos no Almoxarifado</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'tesouraria')">
                     <p class="stat-number total-color" id="treasury-processes" data-target="0">0</p>
                     <h3>Na Tesouraria</h3>
                     <div class="tooltip">Total de Processos na Tesouraria</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'nutriç')">
                     <p class="stat-number total-color" id="nutrition-processes" data-target="0">0</p>
                     <h3>Da Nutrição</h3>
                     <div class="tooltip">Total de Processos da Nutrição</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'secretaria')">
                     <p class="stat-number total-color" id="secretariat-processes" data-target="0">0</p>
                     <h3>Na Secretaria</h3>
                     <div class="tooltip">Total de Processos na Secretaria</div>
@@ -2130,10 +2453,16 @@
                         <canvas id="statusChart"></canvas>
                     </div>
                 </div>
-                <div class="table-container" style="min-height: 350px; display: flex; flex-direction: column;">
+                <div class="table-container"
+                    style="min-height: 350px; display: flex; flex-direction: column; position: relative;">
                     <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Localização</h3>
-                    <div style="flex: 1; position: relative;">
+                    <div style="flex: 1; position: relative; margin-bottom: 25px;">
                         <canvas id="locationChart"></canvas>
+                    </div>
+                    <div style="position: absolute; bottom: 15px; right: 15px;">
+                        <button class="btn btn-danger" onclick="window.exportDashboardToPDF()"
+                            style="padding: 0.5rem 1rem; border-radius: 4px; font-weight: 600;"><i
+                                class="fas fa-file-pdf"></i> PDF</button>
                     </div>
                 </div>
             </div>
@@ -2143,32 +2472,33 @@
         <div id="processes-section" style="display:none;">
             <!-- Modern 6 Insight Cards -->
             <div class="stats-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number total-color" id="list-total-processes" data-target="0">0</p>
                     <h3>Total de Processos</h3>
                     <div class="tooltip">Quantidade total de Processos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', '!Concluído')">
                     <p class="stat-number warning-color" id="list-treating-processes" data-target="0">0</p>
                     <h3>Processos em Tramitação</h3>
                     <div class="tooltip">Total de Processos em Tramitação</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', 'Concluído')">
                     <p class="stat-number success-color" id="list-completed-processes" data-target="0">0</p>
                     <h3>Processos Liquidados</h3>
                     <div class="tooltip">Total Geral de Processos Liquidados</div>
                 </div>
-                <div class="stat-card">
-                    <p class="stat-number warning-color" id="list-pending-percent" data-target="0" data-suffix="%">0%</p>
+                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
+                    <p class="stat-number warning-color" id="list-pending-percent" data-target="0" data-suffix="%">0%
+                    </p>
                     <h3>Percentual de Pendências</h3>
                     <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('delayed', '')">
                     <p class="stat-number danger-color" id="list-delayed-processes" data-target="0">0</p>
                     <h3>Vencidos / Atrasados</h3>
                     <div class="tooltip">Total de Processos Vencidos</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'finanç')">
                     <p class="stat-number total-color" id="list-finance-processes" data-target="0">0</p>
                     <h3>No Financeiro</h3>
                     <div class="tooltip">Total de Processos no Financeiro</div>
@@ -2180,48 +2510,82 @@
                     <div class="search-filters"
                         style="width: 100%; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1.5rem; align-items: end;">
                         <div class="form-group" style="margin:0;">
-                            <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Pesquisar</label>
+                            <label
+                                style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Pesquisar</label>
                             <div style="position: relative;">
-                                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888;"></i>
+                                <i class="fas fa-search"
+                                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888;"></i>
                                 <input type="text" id="searchInput" placeholder="PP, Fornecedor, Objeto..."
-                                    onkeyup="filterTable()" style="width: 100%; padding-left: 35px; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.8rem; background-color: #fafafa;">
+                                    onkeyup="filterTable()"
+                                    style="width: 100%; padding-left: 35px; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
                             </div>
                         </div>
                         <div class="form-group" style="margin:0;">
-                            <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Status:</label>
-                             <select id="statusFilter" onchange="filterTable()" style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
+                            <label
+                                style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Status</label>
+                            <select id="statusFilter" onchange="filterTable()"
+                                style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
                                 <option value="">Todos os Status</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin:0;">
-                            <label style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Localização:</label>
-                            <select id="locationFilter" onchange="filterTable()" style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
-                                <option value="">Todas Localizações:</option>
+                            <label
+                                style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Localização</label>
+                            <select id="locationFilter" onchange="filterTable()"
+                                style="width: 100%; height: 28px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.75rem;">
+                                <option value="">Todas as Localizações</option>
                             </select>
                         </div>
                     </div>
-                    <div style="display:flex; gap: 0.5rem; margin-top: 1.5rem;">
-                        <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> Novo Processo</button>
-                        <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i> Excel</button>
-                        <button class="btn btn-danger" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                    <div style="display:flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i> Novo
+                            Processo</button>
+                        <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i>
+                            Excel</button>
+                        <button class="btn btn-danger" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i>
+                            PDF</button>
                     </div>
                 </div>
                 <div class="table-wrapper">
                     <table id="processTable">
                         <thead>
                             <tr>
-                                <th onclick="window.sortTable('ppNumber')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="0"> Nº P.P. <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('exerciseYear')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="1"> ANO <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('ppAno')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="2"> P.P.ANO <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('supplier')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="3"> Fornecedor <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('object')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="4"> Objeto <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('coverValue')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="5"> Valor Capa <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('openingDate')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="6"> Abertura <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('deadline')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="7"> Conclusão <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('status')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="8"> Status <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('treatedBy')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="9"> Tratado Por <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('location')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="10"> Localização <i class="fas fa-sort"></i></th>
-                                <th onclick="window.sortTable('locationDate')" style="cursor:pointer;"><input type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="11"> Dt Local. <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('ppNumber')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="0"> Nº P.P. <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('exerciseYear')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="1"> ANO <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('ppAno')" style="cursor:pointer;"><input type="checkbox"
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="2">
+                                    P.P.ANO <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('supplier')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="3"> Fornecedor <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('object')" style="cursor:pointer;"><input type="checkbox"
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="4">
+                                    Objeto <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('coverValue')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="5"> Valor Capa <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('openingDate')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="6"> Abertura <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('deadline')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="7"> Conclusão <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('status')" style="cursor:pointer;"><input type="checkbox"
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="8">
+                                    Status <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('treatedBy')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="9"> Tratado Por <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('location')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="10"> Localização <i class="fas fa-sort"></i></th>
+                                <th onclick="window.sortTable('locationDate')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="11"> Dt Local. <i class="fas fa-sort"></i></th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -2290,7 +2654,7 @@
                             <div class="form-group">
                                 <label>OBJETO</label>
                                 <div class="select-with-btn">
-                                    <select id="objectSelect" class="form-control" required></select>
+                                    <select id="objectSelect" class="form-control"></select>
                                     <button type="button" class="btn-quick-add" title="Adicionar Novo Objeto"
                                         onclick="quickAddConfig('objects')"><i class="fas fa-plus"></i></button>
                                 </div>
@@ -2473,20 +2837,33 @@
                         </div>
                     </div>
 
-                    <!-- Localização Atual -->
-                    <div class="details-card">
-                        <h4><i class="fas fa-map-marker-alt"></i> Localização Atual</h4>
-                        <div class="details-item">
-                            <span class="details-label">Setor / Órgão</span>
-                            <span id="detailsLocation" class="details-value">-</span>
+                    <!-- Localização Atual e Outros Processos -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div class="details-card">
+                            <h4><i class="fas fa-map-marker-alt"></i> Localização Atual</h4>
+                            <div class="details-item">
+                                <span class="details-label">Setor / Órgão</span>
+                                <span id="detailsLocation" class="details-value">-</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Última Movimentação</span>
+                                <span id="detailsLocationDate" class="details-value">-</span>
+                            </div>
+                            <div class="details-item">
+                                <span class="details-label">Notas</span>
+                                <span id="detailsNotes" class="details-value">-</span>
+                            </div>
                         </div>
-                        <div class="details-item">
-                            <span class="details-label">Última Movimentação</span>
-                            <span id="detailsLocationDate" class="details-value">-</span>
-                        </div>
-                        <div class="details-item">
-                            <span class="details-label">Notas</span>
-                            <span id="detailsNotes" class="details-value">-</span>
+
+                        <div class="details-card" style="flex-grow: 1;">
+                            <h4><i class="fas fa-folder-open"></i> Outros Processos do Fornecedor</h4>
+                            <div class="details-item">
+                                <span class="details-label">P.P.ANO Relacionados</span>
+                                <div id="detailsOtherProcesses"
+                                    style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                    <!-- Badges of other P.P.ANOs will appear here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2500,7 +2877,8 @@
                 </div>
             </div>
 
-            <footer class="modal-footer" style="padding: 1.5rem 2rem; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px;">
+            <footer class="modal-footer"
+                style="padding: 1.5rem 2rem; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px;">
                 <button class="btn btn-danger" id="detailsBtnDelete"><i class="fas fa-trash"></i> Excluir</button>
                 <button class="btn btn-warning" id="detailsBtnEdit"><i class="fas fa-edit"></i> Editar</button>
                 <button class="btn btn-secondary" onclick="closeModal('processDetailsModal')">Fechar</button>
@@ -2538,7 +2916,229 @@
                 <ul id="configList"
                     style="list-style:none; padding:0; margin:0; max-height:350px; overflow-y:auto; overflow-x:hidden; padding-right: 0.5rem;">
                 </ul>
+            </div> <!-- Fim modal-body -->
+        </div> <!-- Fim process-modal-content -->
+    </div> <!-- Fim processConfigModal -->
+
+    <!-- Modal de Gerenciamento de Usuários (Refined UI) -->
+    <div id="userManagementModal" class="process-modal" style="display:none;">
+        <div class="process-modal-content"
+            style="max-width: 850px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+            <header class="modal-header"
+                style="padding: 1.5rem 2rem; background: #fff; border-bottom: 1px solid #f1f5f9; border-radius: 16px 16px 0 0;">
+                <div class="modal-header-info">
+                    <h2
+                        style="color:var(--govbr-blue); font-size: 1.5rem; display: flex; align-items: center; gap: 12px; margin:0;">
+                        <i class="fas fa-users-cog" style="font-size: 1.25rem; opacity: 0.8;"></i>
+                        Cadastro de Usuários
+                    </h2>
+                    <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.9rem;">Controle de acessos e permissões do
+                        sistema</p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeModal('userManagementModal')"
+                    style="font-size: 1.5rem; color: #94a3b8;">&times;</button>
+            </header>
+
+            <div class="modal-body" style="padding: 2rem; background: #fff;">
+                <!-- Formulário de cadastro/edição -->
+                <div id="userFormSection"
+                    style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1.5rem; margin-bottom:2rem; position: relative;">
+                    <h4 id="userFormTitle"
+                        style="color:var(--govbr-blue); margin:0 0 1.25rem 0; font-size:1rem; font-weight: 700;">
+                        <i class="fas fa-user-plus" style="margin-right: 8px;"></i> Adicionar Novo Usuário
+                    </h4>
+                    <input type="hidden" id="editingUserId">
+
+                    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:1.25rem;">
+                        <div class="form-group" style="margin:0;">
+                            <label
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Nome
+                                Completo *</label>
+                            <input type="text" id="userFullName" class="form-control" placeholder="Ex: Maria Silva"
+                                style="border-radius: 8px;" required>
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Perfil
+                                de Acesso *</label>
+                            <select id="userRole" class="form-control" style="border-radius: 8px;">
+                                <option value="usuario">Usuário Comum</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">E-mail
+                                Institucional *</label>
+                            <input type="email" id="userEmail" class="form-control" placeholder="nome@itaguai.rj.gov.br"
+                                style="border-radius: 8px;" required>
+                        </div>
+                        <div class="form-group"
+                            style="margin:0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label
+                                    style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Definir
+                                    Senha *</label>
+                                <div style="position:relative;">
+                                    <input type="password" id="userPassword" class="form-control" placeholder="••••••••"
+                                        style="padding-right:45px; border-radius: 8px;">
+                                    <button type="button"
+                                        onclick="document.getElementById('userPassword').type = document.getElementById('userPassword').type === 'password' ? 'text' : 'password'"
+                                        style="position:absolute; right:12px; top:50%; transform:translateY(-50%); border:none; background:transparent; cursor:pointer; color:#94a3b8; font-size: 1.1rem;"><i
+                                            class="far fa-eye"></i></button>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Confirmar
+                                    Senha *</label>
+                                <input type="password" id="userConfirmPassword" class="form-control"
+                                    placeholder="••••••••" style="border-radius: 8px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="userFormError"
+                        style="background: #fff1f2; color: #be123c; padding: 0.75rem 1rem; border-radius: 8px; font-size: 0.85rem; margin-top: 1.25rem; display: none; border-left: 4px solid #f43f5e; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                        <i class="fas fa-exclamation-circle" style="margin-right: 6px;"></i> <span
+                            id="userFormErrorText">Ocorreu um erro.</span>
+                    </div>
+
+                    <div
+                        style="display:flex; gap:0.75rem; margin-top:1.5rem; justify-content:flex-end; align-items: center;">
+                        <button class="btn btn-secondary" onclick="cancelUserEdit()" id="cancelUserEditBtn"
+                            style="display:none; padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 600;">Cancelar</button>
+                        <button class="btn btn-primary" id="saveUserBtn" onclick="window.saveUser()"
+                            style="padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                            <i class="fas fa-save" style="margin-right: 6px;"></i> Salvar Usuário
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Listagem de usuários com Visual Moderno -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h4
+                        style="font-size:0.75rem; color:#64748b; margin: 0; text-transform:uppercase; letter-spacing: 0.1em; font-weight: 800;">
+                        Usuários do Sistema
+                    </h4>
+                    <div style="height: 1px; flex-grow: 1; background: #f1f5f9; margin-left: 1.5rem;"></div>
+                </div>
+
+                <div id="userListContainer"
+                    style="max-height:350px; overflow-y:auto; overflow-x: hidden; border-radius: 12px; border: 1px solid #f1f5f9;">
+                    <p style="text-align:center; color:#94a3b8; padding:3rem;">
+                        <i class="fas fa-circle-notch fa-spin"
+                            style="font-size: 1.5rem; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;"></i>
+                        Sincronizando dados...
+                    </p>
+                </div>
             </div>
+
+            <style>
+                #userListContainer::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                #userListContainer::-webkit-scrollbar-track {
+                    background: #f8fafc;
+                }
+
+                #userListContainer::-webkit-scrollbar-thumb {
+                    background: #e2e8f0;
+                    border-radius: 10px;
+                }
+
+                #userListContainer::-webkit-scrollbar-thumb:hover {
+                    background: #cbd5e1;
+                }
+
+                .user-row:hover {
+                    background-color: #f8fafc !important;
+                }
+
+                .badge-role {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 4px 10px;
+                    border-radius: 6px;
+                    font-size: 0.7rem;
+                    font-weight: 700;
+                    letter-spacing: 0.02em;
+                    text-transform: uppercase;
+                }
+
+                .role-admin {
+                    background: #ecfdf5;
+                    color: #065f46;
+                    border: 1px solid #a7f3d0;
+                }
+
+                .role-user {
+                    background: #eff6ff;
+                    color: #1e40af;
+                    border: 1px solid #bfdbfe;
+                }
+
+                .status-active {
+                    background: #f0fdf4;
+                    color: #166534;
+                    border-radius: 20px;
+                    padding: 2px 10px;
+                    font-size: 0.65rem;
+                    font-weight: 800;
+                }
+
+                .status-inactive {
+                    background: #fef2f2;
+                    color: #991b1b;
+                    border-radius: 20px;
+                    padding: 2px 10px;
+                    font-size: 0.65rem;
+                    font-weight: 800;
+                }
+
+                .btn-icon-round {
+                    width: 32px;
+                    height: 32px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    transition: all 0.2s;
+                    border: none;
+                    cursor: pointer;
+                }
+
+                .btn-edit-user {
+                    background: #fff7ed;
+                    color: #9a3412;
+                }
+
+                .btn-edit-user:hover {
+                    background: #ffedd5;
+                    transform: scale(1.1);
+                }
+
+                .btn-deactivate-user {
+                    background: #fff1f2;
+                    color: #9f1239;
+                }
+
+                .btn-deactivate-user:hover {
+                    background: #ffe4e6;
+                    transform: scale(1.1);
+                }
+
+                .btn-reactivate-user {
+                    background: #f0fdf4;
+                    color: #166534;
+                }
+
+                .btn-reactivate-user:hover {
+                    background: #dcfce7;
+                    transform: scale(1.1);
+                }
+            </style>
         </div>
     </div>
 
@@ -2565,15 +3165,12 @@
 
     <!-- Add Pagination -->
     <div class="swiper-pagination"></div>
-    <!-- Add Navigation -->
-    <div class="swiper-button-prev"></div>
-    <div class="swiper-button-next"></div>
     </div>
     </section>
 
     <div id="accessibility-modal" class="modal">
         <div class="modal-content">
-            <button id="close-modal-button" class="close-button">&times;</button>
+            <button class="close-button" onclick="window.closeModal('accessibility-modal')">&times;</button>
             <h1>Acessibilidade Digital</h1>
             <p>Acessibilidade Digital é a eliminação de barreiras na Web. O conceito pressupõe que os sites e portais
                 sejam projetados de modo que todas as pessoas possam perceber, entender, navegar e interagir de maneira
@@ -2590,7 +3187,7 @@
 
     <div id="cookie-modal" class="modal">
         <div class="modal-content">
-            <button id="close-cookie-modal-button" class="close-button">&times;</button>
+            <button class="close-button" onclick="window.closeModal('cookie-modal')">&times;</button>
             <h1>Respeitamos a sua privacidade</h1>
             <p class="last-updated">Última atualização: 05/02/2024</p>
             <p>Prezamos pela sua privacidade e proteção de seus dados pessoais! Utilizamos cookies para melhorar sua
@@ -2641,6 +3238,21 @@
             </div>
         </div>
     </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="bottom-nav-item active" onclick="window.showSection('dashboard'); return false;">
+            <i class="fas fa-chart-line"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="#" class="bottom-nav-item" onclick="window.showSection('processes'); return false;">
+            <i class="fas fa-search"></i>
+            <span>Consulta</span>
+        </a>
+        <a href="#" class="bottom-nav-item" onclick="window.openProcessModal(); return false;">
+            <i class="fas fa-plus-circle"></i>
+            <span>Novo Proc.</span>
+        </a>
+    </nav>
 
     <footer class="govbr-footer">
         <div class="container footer-container">
@@ -2790,7 +3402,6 @@
             setupTrigger('accessibility-toggle', 'accessibility-modal');
             setupTrigger('cookie-toggle', 'cookie-modal');
             setupTrigger('remanejamento-link', 'remanejamento-modal');
-            setupTrigger('comments-toggle', 'comments-modal');
 
             var observer = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
@@ -2801,14 +3412,14 @@
                 });
             }, { threshold: 0.1 });
 
-            window.animateCounter = function(el) {
+            window.animateCounter = function (el) {
                 if (el._animating) return;
                 var target = +el.getAttribute('data-target');
                 if (isNaN(target) || target === 0) {
                     el.innerText = el.getAttribute('data-suffix') || '0';
                     return;
                 }
-                
+
                 el._animating = true;
                 console.log('Animating', el.id, 'to', target);
                 var suffix = el.getAttribute('data-suffix') || '';
@@ -2887,6 +3498,20 @@
         else window.addEventListener('load', window.initApp);
 
         // --- 5. LOGIC & TABLE RENDERING ---
+        window.getStatusColor = function (status) {
+            const st = (status || '').toUpperCase();
+            if (st === 'LIQUIDADO') return '#2ecc71'; // Verde
+            if (st === 'DESPACHADO') return '#e67e22'; // Laranja
+            if (st === 'CONCLUÍDO') return '#27ae60'; // Verde Escuro
+            if (st === 'EM ANÁLISE') return '#005A9C'; // Azul
+            if (st === 'PENDENTE') return '#e74c3c'; // Vermelho
+            if (st === 'DEVOLVIDO') return '#9b59b6'; // Roxo
+            if (st === 'CANCELADO') return '#c0392b'; // Vermelho Escuro
+            if (st === 'EM PAGAMENTO') return '#3498db'; // Azul Claro
+            if (st === 'AGUARDANDO') return '#f1c40f'; // Amarelo
+            if (st === 'ARQUIVADO') return '#7f8c8d'; // Cinza
+            return '#f39c12'; // Laranja padrão fallback ou qualquer cor diferenciada para 'outros'
+        };
         window.showSection = function (id) {
             document.querySelectorAll('[id$="-section"]').forEach(s => s.style.display = 'none');
             const target = document.getElementById(`${id}-section`);
@@ -2928,12 +3553,12 @@
             set('total-processes', total);
             set('treating-processes', pending);
             set('completed-processes', total - pending);
-            set('pending-percent', total ? (pending / total) * 100 : 0);
-            
+            set('pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
+
             set('list-total-processes', total);
             set('list-treating-processes', pending);
             set('list-completed-processes', total - pending);
-            set('list-pending-percent', total ? (pending / total) * 100 : 0);
+            set('list-pending-percent', total ? ((pending / total) * 100).toFixed(1) : 0);
 
             const localeMap = {
                 'finance-processes': 'finanç',
@@ -3054,7 +3679,7 @@
                             color: (ctx) => {
                                 // If the bar is tall enough, we keep it white inside, 
                                 // but the user reported values were confusing, so let's put them ABOVE the bar in dark blue.
-                                return '#1452B5'; 
+                                return '#1452B5';
                             },
                             anchor: 'end',
                             align: 'top',
@@ -3078,9 +3703,55 @@
             });
         };
 
-        window.filterTable = function () {
+        window._dashboardFilter = null;
+
+        window.filterFromDashboard = function (type, value) {
+            window.showSection('processes');
+
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const locationFilter = document.getElementById('locationFilter');
+
+            if (searchInput) searchInput.value = '';
+            if (statusFilter) statusFilter.value = '';
+            if (locationFilter) locationFilter.value = '';
+
+            window._dashboardFilter = null;
+
+            if (type === 'all') {
+                // nada a fazer
+            } else if (type === 'status') {
+                if (value === '!Concluído') {
+                    window._dashboardFilter = { type: 'status_not_completed' };
+                } else {
+                    const exactStatus = window.state.statuses.find(s => s.toLowerCase() === value.toLowerCase());
+                    if (exactStatus && statusFilter) {
+                        statusFilter.value = exactStatus;
+                    }
+                }
+            } else if (type === 'location') {
+                const exactLoc = window.state.locations.find(l => l.toLowerCase().includes(value.toLowerCase()));
+                if (exactLoc && locationFilter) {
+                    locationFilter.value = exactLoc;
+                }
+            } else if (type === 'delayed') {
+                window._dashboardFilter = { type: 'delayed' };
+            }
+
+            window.filterTable(false);
+            const tableSection = document.getElementById('processes-section');
+            if (tableSection) {
+                window.scrollTo({ top: tableSection.offsetTop - 50, behavior: 'smooth' });
+            }
+        };
+
+        window.filterTable = function (fromDomInteraction = false) {
+            if (fromDomInteraction) {
+                window._dashboardFilter = null;
+            }
+
             const query = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            
+
             const sf = document.getElementById('statusFilter');
             const status = (sf && sf.selectedIndex > -1) ? (sf.options[sf.selectedIndex].value || '') : '';
 
@@ -3088,18 +3759,53 @@
             const locationArr = (lf && lf.selectedIndex > -1) ? (lf.options[lf.selectedIndex].value || '') : '';
 
             const filtered = window.state.processes.filter(p => {
-                const matchSearch = !query || 
+                const matchSearch = !query ||
                     (p.ppNumber || '').toString().toLowerCase().includes(query) ||
                     (p.supplier || '').toLowerCase().includes(query) ||
                     (p.object || '').toLowerCase().includes(query);
-                
-                const matchStatus = !status || (p.status || '').trim().toLowerCase() === status.trim().toLowerCase();
-                const matchLoc = !locationArr || (p.location || '').trim().toLowerCase() === locationArr.trim().toLowerCase();
 
-                return matchSearch && matchStatus && matchLoc;
+                const matchStatus = !status || p.status === status;
+                const matchLoc = !locationArr || p.location === locationArr;
+
+                let matchDelayed = true;
+                if (!fromDomInteraction && window._dashboardFilter && window._dashboardFilter.type === 'delayed') {
+                    if (p.status === 'Concluído' || !p.deadline) {
+                        matchDelayed = false;
+                    } else {
+                        const days = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
+                        matchDelayed = days < 0;
+                    }
+                }
+
+                return matchSearch && matchStatus && matchLoc && matchDelayed;
             });
 
             window.renderProcessTable(filtered);
+
+            // Update Filtered Count Label
+            const countLabel = document.getElementById('filteredCountLabel');
+            if (countLabel) {
+                const totalLength = window.state.processes.length;
+                if (filtered.length < totalLength || query || status || locationArr || window._dashboardFilter) {
+                    countLabel.style.display = 'block';
+                    countLabel.innerHTML = `Total dos Processos Filtrados: <span style="background:var(--govbr-blue); color:#fff; padding:2px 8px; border-radius:12px; font-size:0.85rem;">${filtered.length}</span>`;
+                } else {
+                    countLabel.style.display = 'none';
+                }
+            }
+        };
+
+        window.clearFilters = function () {
+            window._dashboardFilter = null;
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const locationFilter = document.getElementById('locationFilter');
+
+            if (searchInput) searchInput.value = '';
+            if (statusFilter) statusFilter.value = '';
+            if (locationFilter) locationFilter.value = '';
+
+            window.filterTable(true);
         };
 
         window.currentSort = { field: '', asc: true };
@@ -3143,11 +3849,11 @@
             const tbody = document.getElementById('processTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            
+
             data.forEach(p => {
                 const tr = document.createElement('tr');
                 tr.onclick = () => window.showProcessDetails(p); // Abre detalhes ao clicar na linha
-                
+
                 let daysText = '';
                 let daysColor = 'gray';
 
@@ -3157,7 +3863,7 @@
                     daysColor = d < 0 ? 'red' : 'gray';
                 }
 
-                const color = { 'Em Análise': '#005A9C', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' }[p.status] || '#95a5a6';
+                const color = window.getStatusColor(p.status);
 
                 const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
                 const formatCurrency = (v) => {
@@ -3226,37 +3932,14 @@
             if (p) {
                 document.getElementById('processModalTitle').innerText = 'Editar Processo';
                 document.getElementById('processId').value = p.id;
-                
-                // Populate text/number/date inputs
-                document.getElementById('ppNumber').value = p.ppNumber || '';
-                document.getElementById('exerciseYear').value = p.exerciseYear || '';
-                document.getElementById('ppAno').value = p.ppAno || '';
-                document.getElementById('coverValue').value = p.coverValue || '';
-                document.getElementById('openingDate').value = p.openingDate || '';
-                document.getElementById('deadline').value = p.deadline || '';
-                document.getElementById('locationDate').value = p.locationDate || '';
-                document.getElementById('situation').value = p.situation || '';
-                document.getElementById('notes').value = p.notes || '';
-                
-                // Populate Choices selects safely
-                const setChoice = (id, val) => {
-                    const el = document.getElementById(id);
-                    if (el) el.value = val || '';
-                    if (window.choicesInstances[id]) {
-                        try { window.choicesInstances[id].setChoiceByValue(val || ''); } catch (e) {
-                            console.warn('Choice parsing error:', e);
-                        }
-                    }
-                };
-
-                const findCaseMatch = (arr, val) => val ? (arr.find(x => x && x.toLowerCase() === val.toLowerCase()) || val) : '';
-
-                setChoice('supplierSelect', findCaseMatch(window.state.suppliers, p.supplier));
-                setChoice('objectSelect', findCaseMatch(window.state.objects, p.object));
-                setChoice('treatedBy', findCaseMatch(window.state.handlers, p.treatedBy));
-                setChoice('statusSelect', findCaseMatch(window.state.statuses, p.status));
-                setChoice('locationSelect', findCaseMatch(window.state.locations, p.location));
-
+                document.getElementById('ppAno').value = p.ppAno;
+                document.getElementById('supplierSelect').value = p.supplier;
+                document.getElementById('objectSelect').value = p.object;
+                document.getElementById('treatedBy').value = p.treatedBy;
+                document.getElementById('deadline').value = p.deadline;
+                document.getElementById('statusSelect').value = p.status;
+                document.getElementById('locationSelect').value = p.location;
+                document.getElementById('notes').value = p.notes;
                 window.renderModalHistory(p.history);
                 window.updateModalRemainingDays();
             } else {
@@ -3355,7 +4038,7 @@
             document.getElementById('detailsSupplier').innerText = p.supplier || '-';
             document.getElementById('detailsObject').innerText = p.object || '-';
             document.getElementById('detailsValue').innerText = formatCurrency(p.coverValue);
-            
+
             // Dates & Personnel
             document.getElementById('detailsOpeningDate').innerText = formatDate(p.openingDate);
             document.getElementById('detailsDeadline').innerText = formatDate(p.deadline);
@@ -3368,7 +4051,7 @@
 
             // Status Badge
             const statusBadge = document.getElementById('detailsStatusBadge');
-            const statusColor = { 'Em Análise': '#005A9C', 'Concluído': '#2ecc71', 'Pendente': '#e67e22' }[p.status] || '#95a5a6';
+            const statusColor = window.getStatusColor(p.status);
             statusBadge.innerText = p.status;
             statusBadge.style.background = statusColor;
             statusBadge.style.color = 'white';
@@ -3390,15 +4073,44 @@
                 timeline.innerHTML = '<p style="color: #888; font-size: 0.9rem; margin-left: 10px;">Sem histórico de tramitações.</p>';
             }
 
+            // Other Processes from same supplier
+            const otherContainer = document.getElementById('detailsOtherProcesses');
+            otherContainer.innerHTML = '';
+            if (p.supplier) {
+                const otherProcs = window.state.processes.filter(op => op.supplier === p.supplier && op.id !== p.id);
+                if (otherProcs.length > 0) {
+                    otherProcs.forEach(op => {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge';
+                        badge.style.background = '#eef3fc';
+                        badge.style.color = '#1452B5';
+                        badge.style.border = '1px solid #cce0ff';
+                        badge.style.cursor = 'pointer';
+                        badge.style.fontSize = '0.8rem';
+                        badge.title = `Clique para ver o processo ${op.ppAno}`;
+                        badge.innerText = op.ppAno;
+                        badge.onclick = () => {
+                            window.closeModal('processDetailsModal');
+                            setTimeout(() => window.showProcessDetails(op), 300); // Wait for modal animation
+                        };
+                        otherContainer.appendChild(badge);
+                    });
+                } else {
+                    otherContainer.innerHTML = '<span style="color: #666; font-size: 0.85rem;">Nenhum outro processo encontrado.</span>';
+                }
+            } else {
+                otherContainer.innerHTML = '<span style="color: #666; font-size: 0.85rem;">Fornecedor não informado.</span>';
+            }
+
             // Action Buttons
             const btnEdit = document.getElementById('detailsBtnEdit');
             const btnDelete = document.getElementById('detailsBtnDelete');
-            
+
             btnEdit.onclick = () => {
                 window.closeModal('processDetailsModal');
                 window.openProcessModal(p);
             };
-            
+
             btnDelete.onclick = async () => {
                 if (confirm('Deseja realmente excluir este processo?')) {
                     window.closeModal('processDetailsModal');
@@ -3457,9 +4169,17 @@
         };
 
         window.openConfigModal = function (type) {
+            if (window.currentUserRole !== 'administrador') {
+                alert('Acesso negado. Apenas administradores podem acessar esta área.');
+                return;
+            }
+            // Redireciona o cadastro de usuários para o modal dedicado
+            if (type === 'users') {
+                window.openUserManagementModal();
+                return;
+            }
             window.state.currentConfigType = type;
             const titles = {
-                'users': 'Cadastro de Usuários',
                 'suppliers': 'Cadastro de Fornecedores',
                 'objects': 'Cadastro de Objetos',
                 'locations': 'Cadastro de Localização',
@@ -3549,6 +4269,265 @@
             }
         };
 
+        // ===== GERENCIAMENTO DE USUÁRIOS (Supabase Auth + profiles table) =====
+        const SUPABASE_USERS_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
+        const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+
+        window.openUserManagementModal = function () {
+            // Reset form
+            document.getElementById('editingUserId').value = '';
+            document.getElementById('userFullName').value = '';
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userRole').value = 'usuario';
+            document.getElementById('userFormTitle').innerHTML = '<i class="fas fa-user-plus"></i> Adicionar Novo Usuário';
+            document.getElementById('cancelUserEditBtn').style.display = 'none';
+            document.getElementById('userFormError').style.display = 'none';
+
+            document.getElementById('userManagementModal').style.display = 'flex';
+            window.loadUsers();
+        };
+
+        window.loadUsers = async function () {
+            const container = document.getElementById('userListContainer');
+            container.innerHTML = '<p style="text-align:center;color:#9CA3AF;padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Carregando usuários...</p>';
+            try {
+                const { data, error } = await supabase.from('user_profiles').select('*').order('full_name', { ascending: true });
+                if (error) throw error;
+                window.renderUserList(data || []);
+            } catch (err) {
+                console.error('Erro ao carregar usuários:', err);
+                container.innerHTML = `<p style="text-align:center;color:#e74c3c;padding:2rem;"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar: ${err.message}</p>`;
+            }
+        };
+
+        window.renderUserList = function (users) {
+            const container = document.getElementById('userListContainer');
+            if (!users.length) {
+                container.innerHTML = '<p style="text-align:center;color:#94a3b8;padding:3rem;font-weight:500;">Nenhum usuário cadastrado até o momento.</p>';
+                return;
+            }
+
+            const roleBadge = (role) => role === 'administrador'
+                ? '<span class="badge-role role-admin"><i class="fas fa-shield-alt" style="margin-right:5px;"></i> Administrador</span>'
+                : '<span class="badge-role role-user"><i class="fas fa-user-circle" style="margin-right:5px;"></i> Usuário</span>';
+
+            const statusIndicator = (active) => active !== false
+                ? '<span class="status-active"><i class="fas fa-check" style="font-size:0.5rem; margin-right:4px;"></i> Ativo</span>'
+                : '<span class="status-inactive"><i class="fas fa-times" style="font-size:0.5rem; margin-right:4px;"></i> Desativado</span>';
+
+            container.innerHTML = `
+                <table style="width:100%; border-collapse:collapse; min-width: 600px;">
+                    <thead>
+                        <tr style="background:#f8fafc; text-align:left; border-bottom: 1px solid #f1f5f9;">
+                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Colaborador</th>
+                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Identificação / Status</th>
+                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; text-align:right;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background: white;">
+                        ${users.map(u => `
+                        <tr class="user-row" style="border-bottom: 1px solid #f8fafc; transition: all 0.2s;">
+                            <td style="padding:1.25rem;">
+                                <div style="display:flex; flex-direction:column; gap:2px;">
+                                    <span style="font-weight:700; color:#1e293b; font-size:0.9rem;">${u.full_name || 'Usuário sem nome'}</span>
+                                    <span style="color:#64748b; font-size:0.75rem;"><i class="far fa-envelope" style="margin-right:4px;"></i> ${u.email || '-'}</span>
+                                </div>
+                            </td>
+                            <td style="padding:1.25rem;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    ${roleBadge(u.role)}
+                                    ${statusIndicator(u.active)}
+                                </div>
+                            </td>
+                            <td style="padding:1.25rem; text-align:right;">
+                                <div style="display:flex; gap:8px; justify-content:flex-end;">
+                                    <button class="btn-icon-round btn-edit-user" onclick='window.editUser(${JSON.stringify(u)})' title="Editar Informações">
+                                        <i class="fas fa-pen" style="font-size: 0.85rem;"></i>
+                                    </button>
+                                    ${u.active !== false
+                    ? `<button class="btn-icon-round btn-deactivate-user" onclick="window.deactivateUser('${u.id}', '${u.full_name}')" title="Desativar Acesso">
+                                            <i class="fas fa-user-slash" style="font-size: 0.85rem;"></i>
+                                           </button>`
+                    : `<button class="btn-icon-round btn-reactivate-user" onclick="window.reactivateUser('${u.id}', '${u.full_name}')" title="Reativar Acesso">
+                                            <i class="fas fa-user-check" style="font-size: 0.85rem;"></i>
+                                           </button>`
+                }
+                                    <button class="btn-icon-round" onclick="window.deleteUser('${u.id}', '${u.full_name}')" title="Excluir Usuário" style="background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3;">
+                                        <i class="fas fa-trash-alt" style="font-size: 0.85rem;"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>`;
+        };
+
+        window.saveUser = async function () {
+            const editingId = document.getElementById('editingUserId').value;
+            const fullName = document.getElementById('userFullName').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value;
+            const confirmPassword = document.getElementById('userConfirmPassword').value;
+            const role = document.getElementById('userRole').value;
+            const errDiv = document.getElementById('userFormError');
+            const errText = document.getElementById('userFormErrorText');
+
+            if (!fullName || !email) {
+                errText.innerText = 'Nome e e-mail são obrigatórios.';
+                errDiv.style.display = 'block';
+                return;
+            }
+            if (!editingId && !password) {
+                errText.innerText = 'Defina uma senha para o primeiro acesso.';
+                errDiv.style.display = 'block';
+                return;
+            }
+            if (!editingId && password !== confirmPassword) {
+                errText.innerText = 'As senhas digitadas não coincidem.';
+                errDiv.style.display = 'block';
+                return;
+            }
+
+            errDiv.style.display = 'none';
+            const btn = document.getElementById('saveUserBtn');
+            const originalBtnHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Processando...';
+            btn.disabled = true;
+
+            try {
+                if (editingId) {
+                    const updateData = { full_name: fullName, email: email, role: role };
+                    // Hint: password updates via admin API would go here
+                    const { error } = await supabase.from('user_profiles').update(updateData).eq('id', editingId);
+                    if (error) throw error;
+                    alert('Dados atualizados com sucesso!');
+                } else {
+                    const { data: authData, error: authError } = await supabase.auth.signUp({
+                        email: email,
+                        password: password,
+                        options: { data: { full_name: fullName } }
+                    });
+                    if (authError) throw authError;
+
+                    const userId = authData.user?.id;
+                    if (userId) {
+                        await supabase.from('user_profiles').upsert({
+                            id: userId, full_name: fullName, email: email, role: role, active: true
+                        });
+                    }
+                    alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
+                }
+
+                // Reset
+                window.cancelUserEdit();
+                window.loadUsers();
+            } catch (err) {
+                console.error('Erro no cadastro:', err);
+                errText.innerText = 'Erro: ' + (err.message || 'Falha na comunicação com o servidor');
+                errDiv.style.display = 'block';
+            } finally {
+                btn.innerHTML = originalBtnHtml;
+                btn.disabled = false;
+            }
+        };
+
+        window.editUser = function (user) {
+            document.getElementById('editingUserId').value = user.id;
+            document.getElementById('userFullName').value = user.full_name || '';
+            document.getElementById('userEmail').value = user.email || '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userConfirmPassword').value = '';
+            document.getElementById('userRole').value = user.role || 'usuario';
+
+            document.getElementById('userFormTitle').innerHTML = '<i class="fas fa-user-edit"></i> Editar Colaborador';
+            document.getElementById('saveUserBtn').innerHTML = '<i class="fas fa-sync"></i> Atualizar Dados';
+            document.getElementById('cancelUserEditBtn').style.display = 'inline-flex';
+            document.getElementById('userFormError').style.display = 'none';
+
+            document.getElementById('userFormSection').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.deleteUser = async function (id, name) {
+            if (!confirm(`ATENÇÃO: Deseja excluir permanentemente o perfil de ${name}?\nEsta ação não pode ser desfeita.`)) return;
+            const { error } = await supabase.from('user_profiles').delete().eq('id', id);
+            if (error) { alert('Erro ao excluir: ' + error.message); return; }
+            alert('Perfil removido com sucesso!');
+            window.loadUsers();
+        };
+
+        // ===== AUTH & HEADER UPDATES =====
+        async function updateUserInfo(user) {
+            const deptEl = document.getElementById('header-dept-name');
+            const userEl = document.getElementById('header-user-name');
+            const menuSettings = document.getElementById('menu-settings');
+
+            if (user) {
+                try {
+                    const { data: profile } = await supabase.from('user_profiles').select('*').eq('id', user.id).single();
+                    if (profile) {
+                        window.currentUserRole = profile.role;
+                        userEl.innerText = profile.full_name.split(' ')[0];
+                        deptEl.innerText = profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR';
+
+                        // Restrição de menu por cargo
+                        if (menuSettings) {
+                            menuSettings.style.display = profile.role === 'administrador' ? 'block' : 'none';
+                        }
+                    }
+                } catch (err) {
+                    console.error('Erro ao buscar perfil:', err);
+                }
+            } else {
+                userEl.innerText = 'Usuário';
+                deptEl.innerText = 'nome do departamento logado';
+            }
+        }
+
+        // Monitorar estado da sessão
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (session?.user) {
+                updateUserInfo(session.user);
+                document.getElementById('login-overlay').style.display = 'none';
+            } else {
+                document.getElementById('login-overlay').style.display = 'flex';
+            }
+        });
+
+        window.logout = async function () {
+            if (confirm('Deseja realmente sair?')) {
+                await supabase.auth.signOut();
+                window.location.reload();
+            }
+        };
+
+        window.deactivateUser = async function (id, name) {
+            if (!confirm(`Confirmar bloqueio de acesso para: ${name}?`)) return;
+            const { error } = await supabase.from('user_profiles').update({ active: false }).eq('id', id);
+            if (error) { alert('Erro: ' + error.message); return; }
+            window.loadUsers();
+        };
+
+        window.reactivateUser = async function (id, name) {
+            if (!confirm(`Reativar o acesso de: ${name}?`)) return;
+            const { error } = await supabase.from('user_profiles').update({ active: true }).eq('id', id);
+            if (error) { alert('Erro: ' + error.message); return; }
+            window.loadUsers();
+        };
+
+        window.cancelUserEdit = function () {
+            document.getElementById('editingUserId').value = '';
+            document.getElementById('userFullName').value = '';
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userConfirmPassword').value = '';
+            document.getElementById('userRole').value = 'usuario';
+            document.getElementById('userFormTitle').innerHTML = '<i class="fas fa-user-plus"></i> Adicionar Novo Usuário';
+            document.getElementById('saveUserBtn').innerHTML = '<i class="fas fa-save"></i> Salvar Usuário';
+            document.getElementById('cancelUserEditBtn').style.display = 'none';
+            document.getElementById('userFormError').style.display = 'none';
+        };
+
         window.exportToPDF = async function () {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('l', 'mm', 'a4');
@@ -3568,21 +4547,20 @@
                 }
             } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
-            // Cabeçalho - Textos Menores
-            const pdfWidth = doc.internal.pageSize.width;
+            // Textos do Cabeçalho - Alinhados à Esquerda
+            const startX = 35; // Position after logo
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
-            doc.setTextColor(100, 100, 100);
-            doc.text("ESTADO DO RIO DE JANEIRO", pdfWidth / 2, 14, { align: 'center' });
-            doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", pdfWidth / 2, 19, { align: 'center' });
-            doc.text("SECRETARIA MUNICIPAL DE EDUCAÇÃO", pdfWidth / 2, 24, { align: 'center' });
+            doc.setTextColor(20, 20, 20); // Preto mais escuro
+            doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", startX, 14, { align: 'left' });
+            doc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
 
-            // Cabeçalho - Título
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(16);
-            doc.setTextColor(20, 20, 20);
-            doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", pdfWidth / 2, 34, { align: 'center' });
+            // Título do Cabeçalho
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(14);
+            doc.setTextColor(20, 82, 181); // Azul do GOV.BR
+            doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", startX, 26, { align: 'left' });
 
             // Linha Separadora
             doc.setDrawColor(220, 220, 220);
@@ -3633,7 +4611,7 @@
                     p.location || '',
                     formatDate(p.locationDate)
                 ];
-                
+
                 selectedIndices.forEach(idx => {
                     row.push(fullRowData[idx]);
                 });
@@ -3652,9 +4630,122 @@
             doc.save('processos.pdf');
         };
 
+        window.exportDashboardToPDF = async function () {
+            const btn = event.currentTarget || event.target;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando PDF...';
+            btn.disabled = true;
+
+            const element = document.getElementById('dashboard-section');
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('l', 'mm', 'a4'); // Paisagem para caber o Dashboard largo
+                const pdfWidth = doc.internal.pageSize.width;
+                const pdfHeight = doc.internal.pageSize.height;
+                const startX = 35; // Position after logo
+
+                // Esconder todos os botões pdf provisoriamente
+                const pdfButtons = element.querySelectorAll('button');
+                const originalDisplays = [];
+                pdfButtons.forEach((b, i) => {
+                    originalDisplays[i] = b.style.display;
+                    if (b.innerText.includes('PDF')) b.style.display = 'none';
+                });
+
+                // Captura a tela atual do dashboard
+                const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#f2f2f2' });
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+
+                // Volta o estado normal dos botões
+                pdfButtons.forEach((b, i) => {
+                    if (b.innerText.includes('PDF')) b.style.display = originalDisplays[i];
+                });
+
+                // --- Cabeçalho e Logo ---
+                try {
+                    const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                    const imgLogo = new Image();
+                    imgLogo.crossOrigin = 'Anonymous';
+                    imgLogo.src = logoUrl;
+                    await new Promise((resolve) => {
+                        imgLogo.onload = resolve;
+                        imgLogo.onerror = resolve;
+                    });
+
+                    if (imgLogo.naturalWidth > 0) {
+                        doc.addImage(imgLogo, 'JPEG', 14, 10, 16, 20);
+                    }
+                } catch (e) {
+                    console.warn('Falha ao carregar logo no PDF:', e);
+                }
+
+                // Textos do Cabeçalho - Alinhados à Esquerda
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(10);
+                doc.setTextColor(20, 20, 20); // Preto mais escuro
+                doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", startX, 14, { align: 'left' });
+                doc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
+
+                // Título do Cabeçalho
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(14);
+                doc.setTextColor(20, 82, 181); // Azul do GOV.BR
+                doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", startX, 26, { align: 'left' });
+
+                // Linha Separadora
+                doc.setDrawColor(220, 220, 220);
+                doc.setLineWidth(0.5);
+                doc.line(14, 38, 283, 38);
+
+                // Data de Emissão
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8);
+                doc.setTextColor(150, 150, 150);
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                doc.text("Data de Emissão: " + dateStr, 14, 43);
+
+                // Imagem do Dashboard
+                // Calcula dimensões, mantendo a proporção (aspect ratio) da captura 
+                const canvasAspectRatio = canvas.width / canvas.height;
+                // Margens e Y de começo
+                const marginX = 14;
+                const startY = 48; // Após a data de emissão
+
+                // Dimensões do PDF disponíveis
+                const availablePageWidth = pdfWidth - (marginX * 2);
+                const availablePageHeight = pdfHeight - startY - 10; // 10 é margem inferior
+
+                let finalImgWidth = availablePageWidth;
+                let finalImgHeight = finalImgWidth / canvasAspectRatio;
+
+                // Redimensiona se ficar mais alto que o espaço disponível
+                if (finalImgHeight > availablePageHeight) {
+                    finalImgHeight = availablePageHeight;
+                    finalImgWidth = finalImgHeight * canvasAspectRatio;
+                }
+
+                // Centraliza horizontalmente
+                const finalImgX = (pdfWidth - finalImgWidth) / 2;
+
+                doc.addImage(imgData, 'JPEG', finalImgX, startY, finalImgWidth, finalImgHeight);
+                doc.save('dashboard.pdf');
+
+            } catch (e) {
+                console.error("Erro na exportação para PDF: ", e);
+                alert("Ocorreu um erro ao gerar o PDF. Verifique o console.");
+            } finally {
+                if (btn) {
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                }
+            }
+        };
+
         window.exportToExcel = function () {
             const header = ['NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSÃO', 'TRATADO POR', 'STATUS', 'Localização'];
-            
+
             const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
             const dataToExportSource = window._lastFiltered || window.state.processes;
             const dataToExport = dataToExportSource.map(p => {
@@ -3699,14 +4790,14 @@
                         ws[cell_ref].s = headerStyle;
                     } else {
                         ws[cell_ref].s = dataStyleCenter;
-                        
+
                         // Left align supplier string
                         if (C === 3) {
                             ws[cell_ref].s = dataStyleLeft;
                         }
 
                         // Add color to status cell
-                        if (C === 7) { 
+                        if (C === 7) {
                             const val = ws[cell_ref].v;
                             let color = "C6E0B4"; // default light green
                             if (val === 'Em Análise') color = "BDD7EE";
@@ -3726,7 +4817,7 @@
             }
 
             ws['!cols'] = [
-                { wch: 18 }, { wch: 10 }, { wch: 15 }, { wch: 55 }, { wch: 20 }, 
+                { wch: 18 }, { wch: 10 }, { wch: 15 }, { wch: 55 }, { wch: 20 },
                 { wch: 22 }, { wch: 20 }, { wch: 25 }, { wch: 45 }
             ];
 
@@ -3771,8 +4862,46 @@
             style="color: #ffffffff;text-decoration: underline;" target="_blank">INFRA</a> - <a
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
             style="color: #fff;text-decoration: underline;" target="_blank">PMI</a></p>
+    <script>
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('login-password');
+            const icon = document.getElementById('toggle-password-icon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
 
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorMsg = document.getElementById('login-error-msg');
+            const submitBtn = event.target.querySelector('button');
 
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+            errorMsg.style.display = 'none';
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                // O onAuthStateChange cuidará do resto
+            } catch (err) {
+                console.error('Erro no login:', err);
+                errorMsg.innerText = 'E-mail ou senha incorretos.';
+                errorMsg.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Entrar';
+            }
+        }
+    </script>
 </body>
 
 </html>

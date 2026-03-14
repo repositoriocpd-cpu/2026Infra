@@ -1,0 +1,20 @@
+# Fix Dashboard Pendente Status
+
+## The Issue
+The user reported that on the "Status do Inventário" dashboard, many schools are marked as "Pendente" (Pending) even though they have already launched their inventory data. 
+
+## Diagnosis
+After analyzing the components:
+1. The dashboard ([StatusInventario.tsx](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/views/StatusInventario.tsx)) checks the `registros_uniformes` table to see if a school has launched its inventory for the selected year.
+2. Previously, it matched the school records strictly based on the school's `email`.
+3. If the data in `registros_uniformes` was saved using the school's **name** instead of its **email** (which occasionally happens when users are imported or if an admin does the submission), the dashboard failed to recognize the record and mistakenly grouped the school as "Pendente".
+
+## The Fix
+I updated the logic inside [StatusInventario.tsx](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/views/StatusInventario.tsx) so that it now cross-references the `escola` field from the database against **both** the school's `email` **and** its `nome` (name).
+
+This fix directly aligns [StatusInventario.tsx](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/views/StatusInventario.tsx) with other dashboards in the system (such as [ControleRecebimento](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/views/ControleRecebimento.tsx#14-672) and [DashboardAdmin](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/views/DashboardAdmin.tsx#65-728)), ensuring an accurate "Concluído" (Completed) status for schools, regardless of which identifier was recorded in the database.
+
+### Changes Made:
+- Modified [StatusInventario.tsx](file:///e:/2026%20SISTEMAS/2026%20Uniforme/04%20mar%C3%A7o/sistema_de_controle_de_uniformes_escolares_9d3a4t_dualiteproject/src/views/StatusInventario.tsx):
+  - Adjusted the data mapping algorithm to extract and verify both `esc.email` and `esc.nome` against the `lancamentos` from `registros_uniformes`.
+  - Added robust checks to parse and compare case-insensitive identifiers.
