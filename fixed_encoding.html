@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -12,6 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @font-face {
@@ -2181,7 +2182,7 @@
                     <p>Telefone: (21) 3782-9003 | RAMAL DO CPD: 2905</p>
                     <p>Horário de Funcionamento: 8h às 17h</p>
                     <p>E-mail: cpdinfra@edu.itaguai.rj.gov.br</p>
-                    <p>E-mail: smedu@itaguai.rj.gov.br ou secretaria@edu.itaguai.rj.gov.br</p>
+                    <p>E-mail: infraestrutura@edu.itaguai.rj.gov.br</p>
                 </div>
                 <div style="text-align: right;">
                     <img class="logo-govcidades"
@@ -2237,7 +2238,7 @@
                     console.log('Submenu clicked:', this.innerText);
                     const submenu = this.nextElementSibling || this.parentElement.querySelector('.submenu');
                     console.log('Submenu found:', submenu);
-                    
+
                     if (!submenu) {
                         console.error('Submenu element not found for:', this);
                         return;
