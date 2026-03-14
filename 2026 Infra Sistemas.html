@@ -37,6 +37,73 @@
             --border-color: #e0e0e0;
         }
 
+        /* Custom Success Modal */
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .success-modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            transform: scale(0.9);
+            animation: modalPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .success-modal-icon {
+            width: 100px; height: 100px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 2rem;
+            box-shadow: 0 15px 30px rgba(46, 204, 113, 0.3);
+        }
+        .success-modal-title {
+            color: #1e293b;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .success-modal-text {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        .success-modal-btn {
+            background: #005a9c;
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .success-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        @keyframes modalPopIn {
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         body {
             font-family: 'Alexandria-Light', sans-serif;
             margin: 0;
@@ -412,7 +479,7 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         #header-dept-name::before {
             content: "|";
             color: #E5E7EB;
@@ -522,29 +589,32 @@
 
         @media (max-width: 600px) {
             .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 0.5rem;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px !important;
             }
 
             .stat-card {
-                padding: 0.5rem !important;
+                padding: 10px 4px !important;
                 text-align: center;
+                min-width: 0 !important;
             }
 
             .stat-card i {
-                font-size: 1rem !important;
-                margin-bottom: 4px;
+                font-size: 1.1rem !important;
+                margin-bottom: 4px !important;
             }
 
             .stat-card .stat-number {
-                font-size: 1.1rem !important;
+                font-size: 1.3rem !important;
                 margin-bottom: 2px;
+                font-weight: 800 !important;
             }
 
             .stat-card h3 {
-                font-size: 0.65rem !important;
-                line-height: 1.1;
+                font-size: 0.6rem !important;
+                line-height: 1.2 !important;
                 font-weight: 600;
+                white-space: normal !important;
             }
 
             /* Ajustes gerais para mobile */
@@ -553,13 +623,8 @@
             }
 
             .container {
-                padding: 0.75rem !important;
-                padding-bottom: 80px !important;
-                /* Espaço para o bottom nav */
-            }
-
-            .bottom-nav {
-                display: flex !important;
+                padding: 12px !important;
+                padding-bottom: 85px !important;
             }
         }
 
@@ -1261,7 +1326,7 @@
             font-weight: 600;
         }
 
-        /* Modal Ported Styles */
+        /* Glassmorphism V3.0 - Fiel à Referência */
         .process-modal {
             display: none;
             position: fixed;
@@ -1269,42 +1334,39 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.15);
+            /* Overlay claro e sutil */
+            backdrop-filter: blur(25px) saturate(160%);
+            -webkit-backdrop-filter: blur(25px) saturate(160%);
             z-index: 2000;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
-            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            padding: 1.5rem;
+            animation: modalBackdropFade 0.6s ease;
         }
 
         .process-modal-content {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.72);
             border-radius: 20px;
             width: 100%;
-            max-width: 1000px;
-            max-height: 95vh;
+            max-width: 900px;
+            max-height: 94vh;
             overflow-y: auto;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow:
+                0 10px 30px -10px rgba(0, 0, 0, 0.08),
+                0 4px 6px -2px rgba(0, 0, 0, 0.02),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.4);
             display: flex;
             flex-direction: column;
-            animation: slideUpFade 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+            animation: modalPopUp 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            scrollbar-width: thin;
         }
 
-        @keyframes slideUpFade {
+        @keyframes modalPopUp {
             from {
                 opacity: 0;
-                transform: translateY(20px) scale(0.98);
+                transform: translateY(10px) scale(0.99);
             }
 
             to {
@@ -1314,164 +1376,319 @@
         }
 
         .modal-header {
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid #E5E7EB;
+            padding: 1.5rem 2.5rem;
+            background: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
         }
 
         .modal-header-info h2 {
-            font-size: 1.25rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            color: #111827;
+            color: #1e293b;
             margin: 0;
+            letter-spacing: -0.02em;
         }
 
         .modal-header-info p {
-            font-size: 0.875rem;
-            color: #6B7280;
-            margin: 0.25rem 0 0 0;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin: 0.3rem 0 0 0;
         }
 
         .modal-close {
             background: transparent;
             border: none;
-            color: #6B7280;
-            font-size: 1.25rem;
+            color: #64748b;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            transition: color 0.2s;
         }
 
         .modal-close:hover {
-            color: #111827;
-            background-color: #F3F4F6;
+            color: #0f172a;
         }
 
         .modal-body {
-            padding: 1.5rem 2rem 1rem 2rem;
+            padding: 1.5rem 2.5rem;
         }
 
-        .modal-footer {
-            padding: 1.25rem 2rem;
-            border-top: 1px solid #E5E7EB;
-            background: #F9FAFB;
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-        }
-
-        /* Form Sections */
+        /* Form Pods (Cards) */
         .form-section {
-            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
         }
 
         .form-section-title {
-            font-size: 0.75rem;
-            font-weight: 700;
+            font-size: 0.65rem;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #1452B5;
-            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+            color: #475569;
+            margin-bottom: 1.25rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            border-bottom: 1px solid #F3F4F6;
-            padding-bottom: 0.5rem;
+            gap: 0.6rem;
+            padding-bottom: 0;
+            border-bottom: none;
         }
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem 1.5rem;
+        .form-section .form-group label {
+            display: block !important;
+            font-size: 0.62rem !important;
+            font-weight: 800 !important;
+            color: #475569 !important;
+            margin-bottom: 0.5rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
         }
 
-        .form-grid-4 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem 1.5rem;
-        }
-
-        .form-grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 0;
-        }
-
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-
-        /* Modal Internal Timeline */
-        .modal-timeline {
-            margin-top: 1.5rem;
-            max-height: 250px;
-            overflow-y: auto;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
+        .form-control {
+            width: 100%;
+            height: 38px;
+            padding: 0 0.75rem;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(226, 232, 240, 0.6);
             border-radius: 8px;
-            padding: 1rem;
+            font-size: 0.85rem;
+            color: #1e293b;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: #cbd5e1;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.03);
+            outline: none;
+        }
+
+        /* REFORÇO GAIA - MÁXIMA PRIORIDADE */
+        div.process-modal div.form-section div.form-group label {
+            color: #475569 !important;
+            font-family: inherit !important;
+            fill: #475569 !important;
+        }
+
+        /* Forçar colunas no Desktop */
+        div.process-modal .form-grid-4 {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr 1fr 1fr !important;
+            grid-auto-flow: column !important;
+            width: 100% !important;
+            gap: 1.25rem !important;
+        }
+
+        div.process-modal .form-grid-3 {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr 1fr !important;
+            grid-auto-flow: column !important;
+            width: 100% !important;
+            gap: 1.25rem !important;
+        }
+
+        div.process-modal .form-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            grid-auto-flow: column !important;
+            width: 100% !important;
+            gap: 1.25rem !important;
+        }
+
+        /* Buttons Style */
+        .modal-footer {
+            padding: 1.25rem 2.5rem;
+            background: transparent;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1.25rem;
+        }
+
+        .btn-glass-cancel {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            color: #475569;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-glass-cancel:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-navy-save {
+            background: linear-gradient(135deg, #2d3e5a 0%, #1a2333 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 2rem;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(26, 35, 51, 0.3);
+            transition: all 0.3s;
+        }
+
+        .btn-navy-save:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(26, 35, 51, 0.4);
+        }
+
+        /* Timeline Refined */
+        .modal-timeline {
+            margin-top: 1rem;
+            background: transparent;
+            border: none;
+            padding: 0.5rem 0;
         }
 
         .modal-timeline-item {
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-            border-bottom: 1px dashed #e2e8f0;
-            font-size: 0.8125rem;
+            display: flex;
+            gap: 1.25rem;
+            padding-bottom: 1.5rem;
+            position: relative;
         }
 
-        /* Ajustes Mobile para Modais */
-        @media (max-width: 600px) {
-            .process-modal {
-                padding: 0.5rem;
-            }
+        .modal-timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 48px;
+            width: 2px;
+            height: calc(100% - 48px);
+            background: rgba(226, 232, 240, 0.6);
+        }
 
+        .avatar-circle {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-body {
+            flex-grow: 1;
+        }
+
+        .timeline-meta {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            margin-bottom: 0.4rem;
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .timeline-content-bubble {
+            font-size: 0.85rem;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        .timeline-content-bubble strong {
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        .timeline-footer-date {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 0.4rem;
+        }
+
+        /* Registration Area */
+        .registration-input-grid {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-navy-launch {
+            background: linear-gradient(135deg, #3b4d71 0%, #26344d 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 0 2rem;
+            height: 38px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(38, 52, 77, 0.2);
+            transition: all 0.2s;
+        }
+
+        /* Dark Mode Adjustment for Glass */
+        body.dark-mode .process-modal-content {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+        }
+
+        body.dark-mode .form-section {
+            background: rgba(30, 41, 59, 0.4);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        body.dark-mode .form-control {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+        }
+
+        body.dark-mode .modal-header-info h2 {
+            color: #f8fafc;
+        }
+
+        /* Responsividade Modal */
+        @media (max-width: 768px) {
             .process-modal-content {
+                max-width: 100%;
                 border-radius: 12px;
-                max-height: 98vh;
             }
 
-            .modal-header {
-                padding: 1rem 1.25rem;
-            }
-
-            .modal-body {
-                padding: 1rem 1.25rem;
-            }
-
+            .modal-header,
+            .modal-body,
             .modal-footer {
-                padding: 1rem 1.25rem;
-                flex-direction: column-reverse;
+                padding: 1.25rem 1.5rem;
             }
 
-            .modal-footer .btn-action {
+            .modal-header-info h2 {
+                font-size: 1.25rem;
+            }
+
+            .form-grid,
+            .form-grid-3,
+            .form-grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .registration-input-grid {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-navy-launch {
                 width: 100%;
-            }
-
-            .form-grid, .form-grid-3, .form-grid-4 {
-                grid-template-columns: 1fr !important;
-                gap: 1rem;
-            }
-
-            .form-section {
-                margin-bottom: 1.25rem;
-            }
-
-            .form-section-title {
-                font-size: 0.7rem;
-                padding-bottom: 0.25rem;
             }
         }
 
@@ -2193,6 +2410,361 @@
             margin-bottom: 15px;
             display: none;
         }
+
+        /* --- ESTILOS MOBILE (SUBInfra) --- */
+        @media screen and (max-width: 768px) {
+
+            /* Cabeçalho Limpo */
+            body header.govbr-header {
+                justify-content: space-between !important;
+                padding: 10px 15px !important;
+            }
+
+            body header.govbr-header .department-info a,
+            body header.govbr-header .department-info span {
+                display: none !important;
+                /* Esconde nomes extensos */
+            }
+
+            body header.govbr-header .department-info::after {
+                content: 'SUBInfra';
+                font-size: 1.45rem !important;
+                font-weight: 800 !important;
+                color: var(--govbr-blue) !important;
+                margin-left: 10px !important;
+            }
+
+            body header.govbr-header .header-bottom {
+                justify-content: space-between !important;
+            }
+
+            /* Dashboard Cards (3x2 Grid) */
+            body #dashboard-section .stats-grid,
+            body #processes-section .stats-grid,
+            body .dashboard-stats {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px !important;
+                padding: 12px 0 !important;
+            }
+
+            body div.stat-card {
+                padding: 10px 4px !important;
+                min-width: 0 !important;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+                border-radius: 12px !important;
+                text-align: center;
+            }
+
+            body div.stat-card h3 {
+                font-size: 0.6rem !important;
+                white-space: normal !important;
+                line-height: 1.2 !important;
+                font-weight: 600;
+            }
+
+            body div.stat-card .value,
+            body div.stat-card .stat-number {
+                font-size: 1.3rem !important;
+                font-weight: 800 !important;
+                margin-bottom: 2px;
+            }
+
+            body div.stat-card i {
+                font-size: 1.1rem !important;
+                margin-bottom: 4px !important;
+            }
+
+            /* Ajustes Gráficos */
+            body .charts-grid,
+            body .table-container {
+                grid-template-columns: 1fr !important;
+                padding: 0 !important;
+            }
+
+            /* Ocultando Footer Grosso e Ajuste de Conteúdo Principal */
+            body>p[style*="background: rgba("] {
+                display: none !important;
+            }
+
+            body main.container {
+                padding-bottom: 85px !important;
+                /* Espaço para a Bottom Nav */
+            }
+
+            /* Modais (Campos Verticais no Mobile) - Especificidade Máxima */
+            body div#processControlModal form#processForm div[class*="form-grid"] {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                grid-auto-flow: row !important;
+                /* Neutraliza o column legado */
+                gap: 1rem !important;
+            }
+
+            body #processControlModal .modal-body {
+                padding: 1.25rem !important;
+            }
+
+            /* Ajuste de Botões (Table Actions) e Header no Mobile */
+            body .table-wrapper {
+                overflow-x: auto !important;
+            }
+
+            body header.govbr-header .user-info span {
+                display: none !important;
+                /* Esconde nomes de cargo e pre-login */
+            }
+
+            body #menu-settings {
+                display: none !important;
+                /* Oculta Aba de Configurações no mobile mesmo para ADMINS */
+            }
+
+            body #processes-section .search-filters {
+                grid-template-columns: 1fr !important;
+                gap: 0.75rem !important;
+                background: rgba(255, 255, 255, 0.5);
+                padding: 1rem !important;
+                border-radius: 12px;
+                border: 1px solid rgba(226, 232, 240, 0.6);
+                margin-bottom: 1rem !important;
+            }
+
+            body #processes-section .table-header>div:nth-child(2) {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.75rem !important;
+            }
+
+            body #processes-section .table-header>div:nth-child(2)>div {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                /* Grid de 2 colunas para a maioria */
+                width: 100% !important;
+                gap: 0.5rem !important;
+            }
+
+            /* Novo Processo ocupa a linha toda */
+            body #processes-section .table-header>div:nth-child(2)>div button:nth-child(1) {
+                grid-column: span 2 !important;
+                padding: 0.75rem !important;
+                font-size: 0.95rem !important;
+            }
+
+            /* Excel e PDF na mesma linha (grid padrão) */
+
+            /* Limpar e Voltar na mesma linha (grid padrão) */
+            body #processes-section .table-header>div:nth-child(2)>div button:nth-child(4),
+            body #processes-section .table-header>div:nth-child(2)>div button:nth-child(5) {
+                font-size: 0.8rem !important;
+                padding: 0.6rem !important;
+            }
+
+            /* Melhoria estética geral dos botões mobile */
+            body #processes-section .table-header .btn {
+                border-radius: 8px !important;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+                justify-content: center !important;
+            }
+
+            /* Ativação Bottom Navigation */
+            body .mobile-bottom-nav {
+                display: flex !important;
+            }
+        }
+
+        /* --- ELEMENTOS EXCLUSIVOS MOBILE --- */
+        .mobile-bottom-nav {
+            display: none;
+            /* Oculto no desktop */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.04);
+            z-index: 1000;
+            justify-content: space-around;
+            padding: 8px 0;
+            padding-bottom: env(safe-area-inset-bottom, 10px);
+        }
+
+        .mobile-bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px;
+            transition: color 0.2s, transform 0.1s;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-bottom-nav .nav-item:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-bottom-nav .nav-item i {
+            font-size: 1.35rem;
+            margin-bottom: 4px;
+        }
+
+        .mobile-bottom-nav .nav-item.active {
+            color: var(--govbr-blue);
+        }
+
+        /* Block: Listas Mobile no Dashboard */
+        .list-section-mobile {
+            display: none;
+            /* Exclusivo Mobile */
+            background: rgba(248, 250, 252, 0.85);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 12px;
+            margin: 15px 12px;
+        }
+
+        .search-filters-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .mobile-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-actions-grid {
+                display: flex;
+                gap: 0.5rem;
+                grid-template-columns: none;
+            }
+
+            .search-filters-card {
+                background: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                display: grid;
+                grid-template-columns: 3fr 1.2fr 1.2fr;
+                gap: 1rem;
+                margin-bottom: 0;
+            }
+
+            .search-filters-card .form-group {
+                margin-bottom: 0 !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .list-section-mobile {
+                display: block;
+            }
+        }
+
+        .list-section-mobile .list-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .list-section-mobile .list-subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .list-section-mobile .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: #475569;
+            border-bottom: 1px dashed rgba(226, 232, 240, 0.8);
+        }
+
+        .list-section-mobile .list-item:last-child {
+            border-bottom: none;
+            padding-bottom: 2px;
+        }
+
+        .list-section-mobile .list-item i {
+            width: 22px;
+            margin-right: 10px;
+            color: var(--govbr-blue);
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .list-badge {
+            background: #cbd5e1;
+            color: #1e293b;
+            padding: 3px 10px;
+            border-radius: 14px;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        .list-badge.red {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .list-badge.blue {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .list-badge.green {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        /* FORÇAR 3 COLUNAS NO MOBILE - REGRAS FINAIS */
+        @media (max-width: 768px) {
+
+            html body #dashboard-section div.stats-grid,
+            html body #processes-section div.stats-grid {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 6px !important;
+                width: 100% !important;
+            }
+
+            html body div.stat-card {
+                padding: 8px 2px !important;
+                min-width: 0 !important;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+                border-radius: 12px !important;
+            }
+
+            html body div.stat-card .stat-number {
+                font-size: 1.2rem !important;
+            }
+
+            html body div.stat-card h3 {
+                font-size: 0.55rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -2265,7 +2837,7 @@
             <li>
                 <a href="#"
                     onclick="window.showSection('processes'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
-                    <i class="fas fa-list-alt menu-icon"></i> <span style="flex-grow: 1;">Consulta Cadastrados</span>
+                    <i class="fas fa-list-alt menu-icon"></i> <span style="flex-grow: 1;">Consultar Cadastrados</span>
                 </a>
             </li>
             <li>
@@ -2347,14 +2919,17 @@
                 <div style="display: flex; align-items: center; gap: 1rem;">
                     <i id="menu-toggle" class="fa-solid fa-bars menu-icon"></i>
                     <div class="department-info">
-                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao" class="hide-on-small">Secretaria
+                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
+                            class="hide-on-small">Secretaria
                             Municipal de Educação</a>
-                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao" class="show-on-small">SMEDU</a>
-                        <span class="hide-on-small" style="color: #E5E7EB; font-weight: 300; margin: 0 0.25rem;">|</span>
+                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
+                            class="show-on-small">SMEDU</a>
+                        <span class="hide-on-small"
+                            style="color: #E5E7EB; font-weight: 300; margin: 0 0.25rem;">|</span>
                         <a href="#" class="hide-on-small hide-on-medium">CONTROLE DE PROCESSOS DE PAGAMENTO</a>
                     </div>
                 </div>
-                
+
                 <div class="user-info">
                     <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
                     <i class="fa-solid fa-user-circle"></i>
@@ -2363,7 +2938,7 @@
                         <ul>
                             <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
                             <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
-                            <li><a href="#" onclick="window.logout()"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                            <li><a href="#" onclick="window.logout(event)"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                         </ul>
                     </div>
                 </div>
@@ -2439,6 +3014,55 @@
                 </div>
             </div>
 
+            <!-- Listas Mobile (Estilo SUBInfra) - Preenchidas via JS -->
+            <div class="list-section-mobile" id="mobileSituationList" onclick="window.openStatusMobileModal()"
+                style="cursor: pointer;" title="Toque para ver os detalhes completos">
+                <div class="list-title">Situação do Processo</div>
+                <div class="list-item">
+                    <div><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i> Vencidos / Atrasados</div>
+                    <div class="list-badge red" id="mobile-delayed">0</div>
+                </div>
+                <div class="list-item">
+                    <div><i class="fas fa-coins" style="color:#f59e0b;"></i> No Financeiro</div>
+                    <div class="list-badge" id="mobile-finance">0</div>
+                </div>
+                <div class="list-item">
+                    <div><i class="fas fa-check-circle" style="color:#10b981;"></i> Liquidados</div>
+                    <div class="list-badge green" id="mobile-completed">0</div>
+                </div>
+            </div>
+
+            <div class="list-section-mobile" id="mobileLocationList">
+                <div class="list-title">
+                    Localização do Processo
+                    <span class="list-subtitle">Distribuição por setor</span>
+                </div>
+                <div class="list-item">
+                    <div><i class="fas fa-briefcase"></i> Gabinete</div>
+                    <div class="list-badge blue" id="mobile-cabinet">0</div>
+                </div>
+                <div class="list-item">
+                    <div><i class="fas fa-shopping-cart"></i> Em Compras</div>
+                    <div class="list-badge blue" id="mobile-purchase">0</div>
+                </div>
+                <div class="list-item">
+                    <div><i class="fas fa-box-open"></i> Almoxarifado</div>
+                    <div class="list-badge blue" id="mobile-warehouse">0</div>
+                </div>
+                <div class="list-item">
+                    <div><i class="fas fa-money-bill-wave"></i> Tesouraria</div>
+                    <div class="list-badge blue" id="mobile-treasury">0</div>
+                </div>
+                <div class="list-item">
+                    <div><i class="fas fa-apple-alt"></i> Nutrição</div>
+                    <div class="list-badge blue" id="mobile-nutrition">0</div>
+                </div>
+                <div class="list-item">
+                    <div><i class="fas fa-building"></i> Na Secretaria</div>
+                    <div class="list-badge blue" id="mobile-secretariat">0</div>
+                </div>
+            </div>
+
             <!-- Charts Section (Ported from original) -->
             <div
                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
@@ -2451,13 +3075,18 @@
                 <div class="table-container"
                     style="min-height: 350px; display: flex; flex-direction: column; position: relative;">
                     <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Localização</h3>
-                    <div style="flex: 1; position: relative; margin-bottom: 25px;">
+                    <div style="flex: 1; position: relative; margin-bottom: 85px;">
                         <canvas id="locationChart"></canvas>
                     </div>
-                    <div style="position: absolute; bottom: 15px; right: 15px;">
+                    <div style="position: absolute; bottom: 15px; left: 15px; right: 15px; display: flex; gap: 12px;">
+                        <button class="btn btn-primary" onclick="window.showSection('processes')"
+                            style="flex: 1; height: 48px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #005a9c; border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(0, 90, 156, 0.2); transition: all 0.2s;">
+                            <i class="fas fa-search"></i> Consultar Cadastrados
+                        </button>
                         <button class="btn btn-danger" onclick="window.exportDashboardToPDF()"
-                            style="padding: 0.5rem 1rem; border-radius: 4px; font-weight: 600;"><i
-                                class="fas fa-file-pdf"></i> PDF</button>
+                            style="width: 100px; height: 48px; border-radius: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; background: #ef4444; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: all 0.2s;">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2501,54 +3130,73 @@
             </div>
 
             <div class="table-container">
-                <div class="table-header" style="flex-direction: column; align-items: flex-start;">
-                    <div class="search-filters"
-                        style="width: 100%; display: grid; grid-template-columns: 3fr 1.2fr 1.2fr; gap: 1rem; align-items: end;">
-                        <div class="form-group" style="margin:0;">
+                <div class="table-header" style="flex-direction: column; align-items: stretch; gap: 1rem;">
+                    <!-- Card de Filtros Mobile -->
+                    <div class="search-filters-card">
+                        <div class="form-group" style="margin-bottom: 1rem;">
                             <label
-                                style="font-size: 0.8rem; margin-bottom: 4px; display: block; color: var(--govbr-blue);">Pesquisar</label>
-                            <div style="position: relative;">
-                                <i class="fas fa-search"
-                                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888;"></i>
-                                <input type="text" id="searchInput" placeholder="PP, Fornecedor, Objeto..."
-                                    onkeyup="window.filterTable(true)"
-                                    style="width: 100%; padding-left: 35px; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.8rem; background-color: #fafafa;">
-                            </div>
+                                style="font-size: 0.9rem; font-weight: 700; color: var(--govbr-blue); display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-search"></i> Pesquisar
+                            </label>
+                            <input type="text" id="searchInput" placeholder="PP, Fornecedor, Objeto..."
+                                onkeyup="window.filterTable(true)"
+                                style="width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; height: 45px; padding: 0 12px; font-size: 0.95rem; box-sizing: border-box !important;">
                         </div>
-                        <div class="form-group" style="margin:0;">
+
+                        <div class="form-group" style="margin-bottom: 1rem;">
                             <label
-                                style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Status:</label>
+                                style="font-size: 0.9rem; font-weight: 700; color: var(--govbr-blue); display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-tags"></i> Status
+                            </label>
                             <select id="statusFilter" onchange="window.filterTable(true)"
-                                style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
+                                style="width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; height: 45px; padding: 0 12px; font-size: 0.95rem; background: #fff; box-sizing: border-box !important;">
                                 <option value="">Todos os Status</option>
                             </select>
                         </div>
-                        <div class="form-group" style="margin:0;">
+
+                        <div class="form-group" style="margin-bottom: 0;">
                             <label
-                                style="font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; display: block; color: var(--govbr-blue);">Localização:</label>
+                                style="font-size: 0.9rem; font-weight: 700; color: var(--govbr-blue); display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-map-marker-alt"></i> Localização
+                            </label>
                             <select id="locationFilter" onchange="window.filterTable(true)"
-                                style="width: 100%; box-sizing: border-box; height: 36px; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 600; color: #333; background-color: #fafafa;">
-                                <option value="">Todas Localizações:</option>
+                                style="width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; height: 45px; padding: 0 12px; font-size: 0.95rem; background: #fff; box-sizing: border-box !important;">
+                                <option value="">Todas Localizações</option>
                             </select>
                         </div>
                     </div>
-                    <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-                        <div style="display:flex; gap: 0.5rem; align-items: center;">
-                            <button class="btn btn-primary" onclick="openProcessModal()"><i class="fas fa-plus"></i>
-                                Novo
-                                Processo</button>
-                            <button class="btn btn-success" onclick="exportToExcel()"><i class="fas fa-file-excel"></i>
-                                Excel</button>
-                            <button class="btn btn-danger" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i>
-                                PDF</button>
-                            <button class="btn btn-secondary" onclick="window.clearFilters()" style="margin-left: 10px;"
-                                title="Limpar todos os filtros da tabela"><i class="fas fa-eraser"></i> Limpar
-                                Filtros</button>
-                        </div>
-                        <div id="filteredCountLabel"
-                            style="font-size: 0.9rem; font-weight: 600; color: var(--govbr-blue); display: none;">
-                            <!-- The filtered count will be injected here -->
-                        </div>
+
+                    <!-- Grade de Ações Mobile -->
+                    <div class="mobile-actions-grid">
+                        <button class="btn btn-primary" onclick="openProcessModal()"
+                            style="grid-column: span 2; height: 50px; font-size: 1.1rem; border-radius: 12px; background: #005a9c;">
+                            <i class="fas fa-plus"></i> Novo Processo
+                        </button>
+
+                        <button class="btn btn-success" onclick="exportToExcel()"
+                            style="height: 48px; border-radius: 12px; background: #10b981; border: none;">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </button>
+
+                        <button class="btn btn-danger" onclick="exportToPDF()"
+                            style="height: 48px; border-radius: 12px; background: #ef4444; border: none;">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+
+                        <button class="btn btn-secondary" onclick="window.clearFilters()"
+                            style="height: 48px; border-radius: 12px; background: #fff; border: 1px solid #e2e8f0; color: #64748b;">
+                            <i class="fas fa-trash-alt"></i> Limpar Filtros
+                        </button>
+
+                        <button class="btn btn-navy-launch" onclick="window.showSection('dashboard')"
+                            style="height: 48px; border-radius: 12px; background: #1e293b; color: white; border: none;">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </button>
+                    </div>
+
+                    <div id="filteredCountLabel"
+                        style="font-size: 0.9rem; font-weight: 600; color: var(--govbr-blue); display: none; text-align: center; margin-top: 0.5rem;">
+                        <!-- The filtered count will be injected here -->
                     </div>
                 </div>
                 <div class="table-wrapper">
@@ -2606,34 +3254,80 @@
         <div class="process-modal-content">
             <header class="modal-header">
                 <div class="modal-header-info">
-                    <h2 id="processModalTitle">Novo Processo de Pagamento</h2>
+                    <h2 id="processModalTitle">Novo Processo</h2>
                     <p>Cadastro de processo administrativo para controle de fluxo</p>
                 </div>
-                <button type="button" class="modal-close" onclick="closeModal('processControlModal')">&times;</button>
+                <button type="button" class="modal-close" onclick="closeModal('processControlModal')" title="Fechar">
+                    <i class="fas fa-times"></i>
+                </button>
             </header>
 
             <form id="processForm">
                 <div class="modal-body">
                     <input type="hidden" id="processId">
 
-                    <!-- Section 1: Identificação -->
+                    <style>
+                        /* ESTILOS DE MÁXIMA PRIORIDADE - LAYOUT GAIA */
+                        #processControlModal .modal-body .form-section .form-group label {
+                            color: #475569 !important;
+                            font-size: 0.62rem !important;
+                            font-weight: 800 !important;
+                            text-transform: uppercase !important;
+                            letter-spacing: 0.05em !important;
+                            margin-bottom: 0.5rem !important;
+                            display: block !important;
+                        }
+
+                        #processControlModal .form-grid-4 {
+                            display: grid !important;
+                            grid-template-columns: repeat(4, 1fr) !important;
+                            gap: 1.25rem !important;
+                            width: 100% !important;
+                        }
+
+                        #processControlModal .form-grid-3 {
+                            display: grid !important;
+                            grid-template-columns: repeat(3, 1fr) !important;
+                            gap: 1.25rem !important;
+                            width: 100% !important;
+                        }
+
+                        #processControlModal .form-grid {
+                            display: grid !important;
+                            grid-template-columns: repeat(2, 1fr) !important;
+                            gap: 1.25rem !important;
+                            width: 100% !important;
+                        }
+
+                        /* Correção para garantir que o grid não quebre em resoluções desktop */
+                        @media (min-width: 769px) {
+
+                            #processControlModal .form-grid-4,
+                            #processControlModal .form-grid-3,
+                            #processControlModal .form-grid {
+                                display: grid !important;
+                            }
+                        }
+                    </style>
+
+                    <!-- Section 1: IDENTIFICAÇÃO DO PROCESSO -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-fingerprint"></i> Identificação do Processo
+                            <i class="fas fa-file-invoice"></i> IDENTIFICAÇÃO DO PROCESSO
                         </div>
                         <div class="form-grid-4">
                             <div class="form-group">
                                 <label>NÚMERO DO P.P.</label>
-                                <input type="text" id="ppNumber" class="form-control" required placeholder="Ex: 000">
+                                <input type="text" id="ppNumber" class="form-control" placeholder="Digite o N.º Proc">
                             </div>
                             <div class="form-group">
                                 <label>ANO EXERCÍCIO OF</label>
-                                <input type="text" id="exerciseYear" class="form-control" required
-                                    placeholder="Ex: 2025">
+                                <input type="text" id="exerciseYear" class="form-control"
+                                    placeholder="Digite Ano do Exercício">
                             </div>
                             <div class="form-group">
                                 <label>PP ANO ATUAL</label>
-                                <input type="text" id="ppAno" class="form-control" placeholder="Ex: 001/2025">
+                                <input type="text" id="ppAno" class="form-control" placeholder="Proc/Ano '0000/2026">
                             </div>
                             <div class="form-group">
                                 <label>VALOR DE CAPA</label>
@@ -2642,14 +3336,14 @@
                         </div>
                     </div>
 
-                    <!-- Section 2: Informações -->
+                    <!-- Section 2: INFORMAÇÕES DO PROCESSO -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-info-circle"></i> Informações do Processo
+                            <i class="fas fa-file-alt"></i> INFORMAÇÕES DO PROCESSO
                         </div>
-                        <div class="form-grid">
+                        <div class="form-grid-3">
                             <div class="form-group">
-                                <label>FORNECEDOR</label>
+                                <label>Fornecedor</label>
                                 <div class="select-with-btn">
                                     <select id="supplierSelect" class="form-control" required></select>
                                     <button type="button" class="btn-quick-add" title="Adicionar Novo Fornecedor"
@@ -2657,30 +3351,42 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>OBJETO</label>
+                                <label>Objeto</label>
                                 <div class="select-with-btn">
                                     <select id="objectSelect" class="form-control"></select>
                                     <button type="button" class="btn-quick-add" title="Adicionar Novo Objeto"
                                         onclick="quickAddConfig('objects')"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Responsável / Tratado Por</label>
+                                <div class="select-with-btn">
+                                    <select id="treatedBy" class="form-control"></select>
+                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Responsável"
+                                        onclick="quickAddConfig('handlers')"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Section 3: Datas -->
+                    <!-- Section 3: PRAZOS E DATAS -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-calendar-alt"></i> Prazos e Datas
+                            <i class="fas fa-calendar-alt"></i> PRAZOS E DATAS
                         </div>
                         <div class="form-grid-3">
                             <div class="form-group">
                                 <label>DATA DE ABERTURA</label>
-                                <input type="date" id="openingDate" class="form-control" required>
+                                <input type="date" id="openingDate" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>DATA DE CONCLUSÃO</label>
-                                <input type="date" id="deadline" class="form-control"
-                                    onchange="updateModalRemainingDays()" required>
+                                <div class="select-with-btn">
+                                    <input type="date" id="deadline" class="form-control"
+                                        onchange="updateModalRemainingDays()">
+                                    <button type="button" class="btn-quick-add" title="Hoje"><i
+                                            class="fas fa-plus"></i></button>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>DIAS RESTANTES</label>
@@ -2689,104 +3395,83 @@
                         </div>
                     </div>
 
-                    <!-- Section 4: Responsável -->
+                    <!-- Section 4: CONTROLE DE FLUXO & TRAMITAÇÃO -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-user-tie"></i> Atribuição
+                            <i class="fas fa-exchange-alt"></i> NOVA ATUALIZAÇÃO / TRAMITAÇÃO
                         </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>TRATADO POR</label>
-                                <div class="select-with-btn">
-                                    <select id="treatedBy" class="form-control" required></select>
-                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Tratador"
-                                        onclick="quickAddConfig('handlers')"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Section 5: Controle -->
-                    <div class="form-section">
-                        <div class="form-section-title">
-                            <i class="fas fa-stream"></i> Controle de Fluxo
-                        </div>
-                        <div class="form-grid-3">
+                        <div class="form-grid-3" style="margin-bottom: 1.25rem;">
                             <div class="form-group">
                                 <label>STATUS</label>
                                 <div class="select-with-btn">
-                                    <select id="statusSelect" class="form-control" required></select>
-                                    <button type="button" class="btn-quick-add" title="Adicionar Novo Status"
-                                        onclick="quickAddConfig('statuses')"><i class="fas fa-plus"></i></button>
+                                    <select id="statusSelect" class="form-control"></select>
+                                    <button type="button" class="btn-quick-add" onclick="quickAddConfig('statuses')"><i
+                                            class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>LOCALIZAÇÃO</label>
                                 <div class="select-with-btn">
-                                    <select id="locationSelect" class="form-control" required></select>
-                                    <button type="button" class="btn-quick-add" title="Adicionar Nova Localização"
-                                        onclick="quickAddConfig('locations')"><i class="fas fa-plus"></i></button>
+                                    <select id="locationSelect" class="form-control"></select>
+                                    <button type="button" class="btn-quick-add" onclick="quickAddConfig('locations')"><i
+                                            class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>DATA LOCALIZAÇÃO</label>
-                                <input type="date" id="locationDate" class="form-control" required>
+                                <input type="date" id="locationDate" class="form-control">
                             </div>
                         </div>
 
-                        <!-- Manual Update Interface -->
-                        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0;">
+                        <div
+                            style="margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(226, 232, 240, 0.6);">
                             <label
-                                style="display: block; font-size: 0.75rem; font-weight: 600; color: #374151; margin-bottom: 0.625rem;">NOVA
-                                ATUALIZAÇÃO / TRAMITAÇÃO</label>
-                            <div style="display: flex; gap: 0.75rem;">
-                                <input type="text" id="newManualUpdate" class="form-control"
+                                style="display: block; font-size: 0.62rem; font-weight: 800; color: #64748b; margin-bottom: 0.75rem; text-transform: uppercase;">
+                                <i class="fas fa-comment-dots" style="margin-right: 0.4rem;"></i> Registro de
+                                Movimentação
+                            </label>
+                            <div class="registration-input-grid">
+                                <input type="text" id="newManualUpdate" class="form-control" style="flex-grow: 1;"
                                     placeholder="Ex: Processo recebido para conferência...">
-                                <button type="button" class="btn-action btn-primary-new"
-                                    style="white-space: nowrap; padding: 0.5rem 1.5rem;"
+                                <button type="button" id="btnLaunchUpdate" class="btn-navy-launch"
                                     onclick="launchManualUpdate()">Lançar</button>
                             </div>
                         </div>
 
-                        <!-- Modal Timeline -->
                         <div id="modalTimeline" class="modal-timeline">
-                            <!-- Updates will be rendered here -->
+                            <!-- Timeline items here -->
                         </div>
                     </div>
 
-                    <!-- Section 6: Situação -->
+                    <!-- Section 5: SITUAÇÃO ATUAL -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-tag"></i> Situação Atual
+                            <i class="fas fa-chevron-circle-down"></i> SITUAÇÃO ATUAL
                         </div>
-                        <div class="form-grid">
-                            <div class="form-group full-width">
-                                <label>SITUAÇÃO</label>
-                                <input type="text" id="situation" class="form-control"
-                                    placeholder="Descreva brevemente a situação atual do processo">
-                            </div>
+                        <div class="form-group">
+                            <input type="text" id="situation" class="form-control"
+                                placeholder="Descreva brevemente a situação atual do processo">
                         </div>
                     </div>
 
-                    <!-- Section 7: Observação -->
+                    <!-- Section 6: INFORMAÇÕES ADICIONAIS -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-comment-dots"></i> Informações Adicionais
+                            <i class="fas fa-info-circle"></i> INFORMAÇÕES ADICIONAIS
                         </div>
-                        <div class="form-grid">
-                            <div class="form-group full-width">
-                                <label>OBSERVAÇÃO</label>
-                                <textarea id="notes" class="form-control" rows="3"
-                                    placeholder="Insira detalhes complementares ou observações relevantes"></textarea>
-                            </div>
+                        <div class="form-group">
+                            <label>OBSERVAÇÃO</label>
+                            <textarea id="notes" class="form-control" rows="2"
+                                placeholder="Insira detalhes complementares ou observações relevantes"></textarea>
                         </div>
                     </div>
                 </div>
 
                 <footer class="modal-footer">
-                    <button type="button" class="btn-action btn-secondary"
+                    <button type="button" class="btn-glass-cancel"
                         onclick="closeModal('processControlModal')">Cancelar</button>
-                    <button type="submit" class="btn-action btn-primary-new">Salvar Processo</button>
+                    <button type="submit" class="btn-navy-save">Salvar Processo</button>
                 </footer>
             </form>
         </div>
@@ -2956,31 +3641,49 @@
 
                     <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:1.25rem;">
                         <div class="form-group" style="margin:0;">
-                            <label style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Nome Completo *</label>
-                            <input type="text" id="userFullName" class="form-control" placeholder="Ex: Maria Silva" style="border-radius: 8px;" required>
+                            <label
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Nome
+                                Completo *</label>
+                            <input type="text" id="userFullName" class="form-control" placeholder="Ex: Maria Silva"
+                                style="border-radius: 8px;" required>
                         </div>
                         <div class="form-group" style="margin:0;">
-                            <label style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Perfil de Acesso *</label>
+                            <label
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Perfil
+                                de Acesso *</label>
                             <select id="userRole" class="form-control" style="border-radius: 8px;">
                                 <option value="usuario">Usuário Comum</option>
                                 <option value="administrador">Administrador</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin:0;">
-                            <label style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">E-mail Institucional *</label>
-                            <input type="email" id="userEmail" class="form-control" placeholder="nome@itaguai.rj.gov.br" style="border-radius: 8px;" required>
+                            <label
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">E-mail
+                                Institucional *</label>
+                            <input type="email" id="userEmail" class="form-control" placeholder="nome@itaguai.rj.gov.br"
+                                style="border-radius: 8px;" required>
                         </div>
-                        <div class="form-group" style="margin:0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group"
+                            style="margin:0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                             <div>
-                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Definir Senha *</label>
+                                <label
+                                    style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Definir
+                                    Senha *</label>
                                 <div style="position:relative;">
-                                    <input type="password" id="userPassword" class="form-control" placeholder="••••••••" style="padding-right:45px; border-radius: 8px;">
-                                    <button type="button" onclick="document.getElementById('userPassword').type = document.getElementById('userPassword').type === 'password' ? 'text' : 'password'" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); border:none; background:transparent; cursor:pointer; color:#94a3b8; font-size: 1.1rem;"><i class="far fa-eye"></i></button>
+                                    <input type="password" id="userPassword" class="form-control" placeholder="••••••••"
+                                        style="padding-right:45px; border-radius: 8px;">
+                                    <button type="button"
+                                        onclick="document.getElementById('userPassword').type = document.getElementById('userPassword').type === 'password' ? 'text' : 'password'"
+                                        style="position:absolute; right:12px; top:50%; transform:translateY(-50%); border:none; background:transparent; cursor:pointer; color:#94a3b8; font-size: 1.1rem;"><i
+                                            class="far fa-eye"></i></button>
                                 </div>
                             </div>
                             <div>
-                                <label style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Confirmar Senha *</label>
-                                <input type="password" id="userConfirmPassword" class="form-control" placeholder="••••••••" style="border-radius: 8px;">
+                                <label
+                                    style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Confirmar
+                                    Senha *</label>
+                                <input type="password" id="userConfirmPassword" class="form-control"
+                                    placeholder="••••••••" style="border-radius: 8px;">
                             </div>
                         </div>
                     </div>
@@ -3172,6 +3875,18 @@
         </div>
     </div>
 
+    <!-- Beautiful Success Modal -->
+    <div id="successModal" class="success-modal">
+        <div class="success-modal-content">
+            <div class="success-modal-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 class="success-modal-title">Sucesso!</h2>
+            <p id="successModalMessage" class="success-modal-text">Salvo com Sucesso</p>
+            <button class="success-modal-btn" onclick="window.closeAllModals()">Continuar</button>
+        </div>
+    </div>
+
     <div id="cookie-modal" class="modal">
         <div class="modal-content">
             <button class="close-button" onclick="window.closeModal('cookie-modal')">&times;</button>
@@ -3293,15 +4008,111 @@
         };
 
         window.closeAllModals = function () {
-            var ids = ['accessibility-modal', 'cookie-modal', 'processControlModal', 'processConfigModal', 'processHistoryModal', 'remanejamento-modal', 'comments-modal'];
-            ids.forEach(function (id) {
-                var m = document.getElementById(id);
-                if (m) { m.classList.remove('visible'); m.style.display = 'none'; }
+            // Fecha todos os tipos de modais do sistema
+            const modalSelectors = ['.modal', '.process-modal', '.success-modal'];
+            modalSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(m => {
+                    m.classList.remove('visible');
+                    m.style.opacity = '0';
+                    setTimeout(() => {
+                        if (!m.classList.contains('visible')) m.style.display = 'none';
+                    }, 300);
+                });
             });
-            var overlay = document.getElementById('overlay');
-            var sideMenu = document.getElementById('side-menu');
-            if (overlay) overlay.classList.remove('visible');
-            if (sideMenu) sideMenu.classList.remove('open');
+
+            const ov = document.getElementById('overlay');
+            if (ov) {
+                ov.classList.remove('visible');
+                ov.style.opacity = '0';
+                setTimeout(() => {
+                    if (!ov.classList.contains('visible')) ov.style.display = 'none';
+                }, 300);
+            }
+        };
+
+        window.openStatusMobileModal = function () {
+            console.log('--- CHAMADA: openStatusMobileModal ---');
+            const modal = document.getElementById('statusSummaryModal');
+            if (!modal) return;
+
+            const list = document.getElementById('statusModalList');
+            if (list) {
+                list.innerHTML = '';
+                const processes = window.state.processes || [];
+                const statuses = window.state.statuses || [];
+
+                console.log('Populando modal com', processes.length, 'processos e', statuses.length, 'status.');
+
+                statuses.forEach(status => {
+                    const filtered = processes.filter(p => String(p.status).trim().toLowerCase() === String(status).trim().toLowerCase());
+                    if (filtered.length === 0) return;
+
+                    const color = window.getStatusColor(status);
+                    const item = document.createElement('div');
+                    item.className = 'status-summary-item';
+                    item.style.cssText = `border-left: 5px solid ${color}; background: #ffffff; margin-bottom: 12px; padding: 12px; border-radius: 4px 12px 12px 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);`;
+
+                    let processesHtml = '';
+                    filtered.forEach(p => {
+                        processesHtml += `
+                            <div style="font-size: 0.8rem; border-top: 1px solid #f1f5f9; padding-top: 8px; margin-top: 8px; display: flex; align-items: flex-start; gap: 10px;">
+                                <div style="flex: 0 0 85px; font-weight: 800; color: var(--govbr-blue); background: #f8fafc; padding: 2px 6px; border-radius: 4px; text-align: center;">
+                                    PP ${p.ppNumber || '---'}
+                                </div>
+                                <div style="flex: 1; font-weight: 500; color: #475569; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                    ${p.object || 'Sem objeto'}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    item.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <span style="font-weight: 900; font-size: 0.85rem; color: #0f172a; text-transform: uppercase;">${status}</span>
+                            <span style="background: ${color}; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 800;">${filtered.length}</span>
+                        </div>
+                        <div class="status-inner-list">
+                            ${processesHtml}
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+
+                if (list.innerHTML === '') {
+                    list.innerHTML = '<div style="text-align:center; padding: 40px; color: #94a3b8; font-size: 0.9rem;">Nenhum processo encontrado para as situações atuais.</div>';
+                }
+            }
+
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('visible');
+                modal.style.opacity = '1';
+            }, 10);
+
+            const overlay = document.getElementById('overlay');
+            if (overlay) {
+                overlay.style.display = 'block';
+                setTimeout(() => overlay.classList.add('visible'), 10);
+            }
+            console.log('Modal de status aberto com sucesso.');
+        };
+
+        window.closeStatusMobileModal = function () {
+            const modal = document.getElementById('statusSummaryModal');
+            if (modal) {
+                modal.classList.remove('visible');
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    if (!modal.classList.contains('visible')) modal.style.display = 'none';
+                }, 300);
+            }
+            const overlay = document.getElementById('overlay');
+            if (overlay) {
+                overlay.classList.remove('visible');
+                setTimeout(() => {
+                    if (!overlay.classList.contains('visible')) overlay.style.display = 'none';
+                }, 300);
+            }
         };
 
         window.closeModal = function (id) {
@@ -3317,8 +4128,12 @@
 
         var supabase;
         try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            console.log('Supabase client initialized');
+            if (window.supabase) {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Supabase client initialized');
+            } else {
+                console.error('ERRO CRÍTICO: Biblioteca Supabase não encontrada!');
+            }
         } catch (e) { console.error('Supabase Client Error:', e); }
 
         window.state = {
@@ -3333,6 +4148,18 @@
 
         // --- 3. EVENT LISTENERS SETUP (DOM already ready at end of body) ---
         (function setupListeners() {
+            // Teclas de Atalho
+            window.addEventListener('keydown', function (e) {
+                // Alt + C -> Consulta
+                if (e.altKey && (e.key === 'c' || e.key === 'C')) {
+                    e.preventDefault();
+                    window.showSection('processes');
+                    const searchInput = document.getElementById('searchInput');
+                    if (searchInput) {
+                        setTimeout(() => searchInput.focus(), 100);
+                    }
+                }
+            });
             console.log('Setting up listeners...');
 
             const menuBtn = document.getElementById('menu-toggle');
@@ -3538,12 +4365,16 @@
 
             set('total-processes', total);
             set('treating-processes', pending);
-            set('completed-processes', total - pending);
+
+            // Correção: Contar explicitamente processos com status "Concluído"
+            const completedCount = window.state.processes.filter(p => (p.status || '').trim().toLowerCase() === 'concluído').length;
+            set('completed-processes', completedCount);
+
             set('pending-percent', total ? ((pending / total) * 100) : 0);
 
             set('list-total-processes', total);
             set('list-treating-processes', pending);
-            set('list-completed-processes', total - pending);
+            set('list-completed-processes', completedCount);
             set('list-pending-percent', total ? ((pending / total) * 100) : 0);
 
             const localeMap = {
@@ -3579,6 +4410,26 @@
             }).length;
             set('delayed-processes', delayed);
             set('list-delayed-processes', delayed);
+
+            // Popula os badges das listas exclusivas do Mobile (Estilo SUBInfra)
+            if (document.getElementById('mobile-delayed')) {
+                set('mobile-delayed', delayed);
+                set('mobile-finance', window.state.processes.filter(p => p.location && p.location.toLowerCase().includes('finanç')).length);
+                set('mobile-completed', total - pending);
+
+                Object.keys(localeMap).forEach(id => {
+                    const count = window.state.processes.filter(p => p.location && p.location.toLowerCase().includes(localeMap[id])).length;
+                    const mobileIdMap = {
+                        'cabinet-processes': 'mobile-cabinet',
+                        'purchase-processes': 'mobile-purchase',
+                        'warehouse-processes': 'mobile-warehouse',
+                        'treasury-processes': 'mobile-treasury',
+                        'nutrition-processes': 'mobile-nutrition',
+                        'secretariat-processes': 'mobile-secretariat'
+                    };
+                    if (mobileIdMap[id]) set(mobileIdMap[id], count);
+                });
+            }
 
             window.renderCharts();
         };
@@ -3660,6 +4511,7 @@
                         }
                     },
                     plugins: {
+                        legend: { display: false },
                         datalabels: {
                             color: (ctx) => {
                                 // If the bar is tall enough, we keep it white inside, 
@@ -3876,10 +4728,35 @@
                     <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
                     <td>${formatDate(p.locationDate)}</td>
                     <td onclick="event.stopPropagation();" style="display:flex; flex-direction: row; gap:4px; align-items:center;">
-                        <button class="btn btn-warning" style="padding:4px; width:28px; height:28px" onclick='window.openProcessModal(${JSON.stringify(p)})' title="Editar"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-primary" style="padding:4px; width:28px; height:28px" onclick='window.showHistory(${JSON.stringify(p)})' title="Histórico"><i class="fas fa-history"></i></button>
-                        <button class="btn btn-danger" style="padding:4px; width:28px; height:28px" onclick="window.deleteProcess('${p.id}')" title="Excluir"><i class="fas fa-trash"></i></button>
                     </td>`;
+
+                const actionsTd = tr.querySelector('td:last-child');
+
+                const btnEdit = document.createElement('button');
+                btnEdit.className = 'btn btn-warning';
+                btnEdit.style.cssText = 'padding:4px; width:28px; height:28px';
+                btnEdit.title = 'Editar';
+                btnEdit.innerHTML = '<i class="fas fa-edit"></i>';
+                btnEdit.onclick = (e) => { e.stopPropagation(); window.openProcessModal(p); };
+
+                const btnHist = document.createElement('button');
+                btnHist.className = 'btn btn-primary';
+                btnHist.style.cssText = 'padding:4px; width:28px; height:28px';
+                btnHist.title = 'Histórico';
+                btnHist.innerHTML = '<i class="fas fa-history"></i>';
+                btnHist.onclick = (e) => { e.stopPropagation(); window.showHistory(p); };
+
+                const btnDel = document.createElement('button');
+                btnDel.className = 'btn btn-danger';
+                btnDel.style.cssText = 'padding:4px; width:28px; height:28px';
+                btnDel.title = 'Excluir';
+                btnDel.innerHTML = '<i class="fas fa-trash"></i>';
+                btnDel.onclick = (e) => { e.stopPropagation(); window.deleteProcess(p.id); };
+
+                actionsTd.appendChild(btnEdit);
+                actionsTd.appendChild(btnHist);
+                actionsTd.appendChild(btnDel);
+
                 tbody.appendChild(tr);
             });
         };
@@ -3910,52 +4787,132 @@
         };
 
         window.openProcessModal = function (p = null) {
-            const form = document.getElementById('processForm');
-            if (!form) return;
-            form.reset(); window.updateSelects();
-            window._tempHistory = [];
+            try {
+                // Se p for uma string (ID), busca o processo no estado
+                if (typeof p === 'string') {
+                    const found = window.state.processes.find(proc => proc.id === p);
+                    if (found) p = found;
+                    else p = null;
+                }
 
-            // clear config search if exists
-            const sInput = document.getElementById('configSearchInput');
-            if (sInput) sInput.value = '';
+                const form = document.getElementById('processForm');
+                if (!form) return;
+                form.reset();
+                window.updateSelects(); // Se falhar aqui (ex: Choices não carregado), vai cair no catch
+                window._tempHistory = [];
 
-            if (p) {
-                document.getElementById('processModalTitle').innerText = 'Editar Processo';
-                document.getElementById('processId').value = p.id;
-                document.getElementById('ppNumber').value = p.ppNumber || '';
-                document.getElementById('exerciseYear').value = p.exerciseYear || '';
-                document.getElementById('ppAno').value = p.ppAno || '';
-                document.getElementById('coverValue').value = p.coverValue || '';
-                document.getElementById('openingDate').value = p.openingDate || '';
-                document.getElementById('supplierSelect').value = p.supplier || '';
-                document.getElementById('objectSelect').value = p.object || '';
-                document.getElementById('treatedBy').value = p.treatedBy || '';
-                document.getElementById('deadline').value = p.deadline || '';
-                document.getElementById('statusSelect').value = p.status || '';
-                document.getElementById('locationSelect').value = p.location || '';
-                document.getElementById('locationDate').value = p.locationDate || '';
-                document.getElementById('situation').value = p.situation || '';
-                document.getElementById('notes').value = p.notes || '';
-                window.renderModalHistory(p.history);
-                window.updateModalRemainingDays();
-            } else {
-                document.getElementById('processModalTitle').innerText = 'Novo Processo';
-                document.getElementById('processId').value = '';
-                document.getElementById('ppAno').value = `00${window.state.processes.length + 1}/${new Date().getFullYear()}`;
-                document.getElementById('openingDate').value = new Date().toISOString().split('T')[0];
-                window.renderModalHistory([]);
+                // Controle do Registro de Movimentação
+                const manualInput = document.getElementById('newManualUpdate');
+                const manualBtn = document.getElementById('btnLaunchUpdate');
+
+                if (p) {
+                    document.getElementById('processModalTitle').innerText = 'Editar Processo';
+                    document.getElementById('processId').value = p.id;
+                    document.getElementById('ppNumber').value = p.ppNumber || '';
+                    document.getElementById('exerciseYear').value = p.exerciseYear || '';
+                    document.getElementById('ppAno').value = p.ppAno || '';
+                    document.getElementById('coverValue').value = p.coverValue || '';
+                    document.getElementById('openingDate').value = p.openingDate || '';
+                    document.getElementById('deadline').value = p.deadline || '';
+
+                    // Atualiza Selects com Choices (se houver instância)
+                    const setChoice = (id, val) => {
+                        const inst = window.choicesInstances[id];
+                        if (inst) inst.setChoiceByValue(val || '');
+                        else document.getElementById(id).value = val || '';
+                    };
+
+                    setChoice('supplierSelect', p.supplier);
+                    setChoice('objectSelect', p.object);
+                    setChoice('treatedBy', p.treatedBy);
+                    setChoice('statusSelect', p.status);
+                    setChoice('locationSelect', p.location);
+
+                    document.getElementById('locationDate').value = p.locationDate || '';
+                    document.getElementById('situation').value = p.situation || '';
+                    document.getElementById('notes').value = p.notes || '';
+
+                    window.renderModalHistory(p.history);
+                    window.updateModalRemainingDays();
+
+                    // Habilita Registro de Movimentação para processos existentes
+                    if (manualInput && manualBtn) {
+                        manualInput.disabled = false;
+                        manualBtn.disabled = false;
+                        manualInput.style.opacity = '1';
+                        manualBtn.style.opacity = '1';
+                        manualInput.placeholder = "Ex: Processo recebido para conferência...";
+                    }
+                } else {
+                    document.getElementById('processModalTitle').innerText = 'Novo Processo';
+                    document.getElementById('processId').value = '';
+
+                    // Limpa todos os campos explicitamente (além do reset)
+                    const fields = ['ppNumber', 'exerciseYear', 'ppAno', 'coverValue', 'openingDate', 'deadline', 'locationDate', 'situation', 'notes', 'modalRemainingDays'];
+                    fields.forEach(f => {
+                        const el = document.getElementById(f);
+                        if (el) el.value = '';
+                    });
+
+                    // Limpa Choices de forma segura
+                    const choiceIds = ['supplierSelect', 'objectSelect', 'treatedBy', 'statusSelect', 'locationSelect'];
+                    choiceIds.forEach(id => {
+                        try {
+                            const inst = window.choicesInstances[id];
+                            if (inst) inst.setChoiceByValue('');
+                        } catch (e) {
+                            console.warn(`Erro ao limpar Choice ${id}:`, e);
+                        }
+                    });
+
+                    window.renderModalHistory([]);
+
+                    // Desabilita Registro de Movimentação para novos processos
+                    if (manualInput && manualBtn) {
+                        manualInput.disabled = true;
+                        manualBtn.disabled = true;
+                        manualInput.style.opacity = '0.5';
+                        manualBtn.style.opacity = '0.5';
+                        manualInput.placeholder = "Disponível após salvar o processo";
+                        manualInput.value = '';
+                    }
+                }
+                document.getElementById('processControlModal').style.display = 'flex';
+            } catch (err) {
+                console.error('Erro ao abrir modal:', err);
+                // Fallback manual se algo falhar drasticamente (ex: erro no Choices)
+                // Pelo menos tentamos mostrar o modal básico
+                document.getElementById('processControlModal').style.display = 'flex';
             }
-            document.getElementById('processControlModal').style.display = 'flex';
         };
 
         window.renderModalHistory = function (history = []) {
             const cont = document.getElementById('modalTimeline');
             if (!cont) return;
-            cont.innerHTML = history.length ? '' : '<p style="text-align:center; color:#888; font-size:12px;">Sem histórico.</p>';
+            cont.innerHTML = history.length ? '' : '<p style="text-align:center; color:#888; font-size:12px; padding: 1rem;">Nenhuma movimentação registrada.</p>';
+
             [...history].reverse().forEach(h => {
                 const div = document.createElement('div');
                 div.className = 'modal-timeline-item';
-                div.innerHTML = `<span class="modal-timeline-date">${h.date}</span><div class="modal-timeline-content">${h.from ? `${h.from} &rarr; ${h.to}` : h.msg || h.message}</div>`;
+
+                // Extração de metadados simulados ou reais
+                const userName = h.user || 'Usuário';
+                const initial = userName.charAt(0).toUpperCase();
+                const time = h.date ? h.date.split(',')[1]?.trim() || '' : '';
+                const displayDate = h.date ? h.date.split(',')[0].trim() : '';
+
+                div.innerHTML = `
+                    <div class="avatar-circle">${initial}</div>
+                    <div class="timeline-body">
+                        <div class="timeline-meta">
+                            <i class="fas fa-user-clock"></i> 1min atrás • ${time}
+                        </div>
+                        <div class="timeline-content-bubble">
+                            <strong>${userName} registrou:</strong> ${h.from ? `Movimentação de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
+                        </div>
+                        <div class="timeline-footer-date">Hoje, ${time}</div>
+                    </div>
+                `;
                 cont.appendChild(div);
             });
         };
@@ -3965,9 +4922,20 @@
             const msg = input.value.trim();
             if (!msg) return;
             const id = document.getElementById('processId').value;
-            const item = { date: new Date().toLocaleString(), msg };
+            const userName = window.currentUserName || 'Usuário';
+            const item = {
+                date: new Date().toLocaleString(),
+                msg,
+                user: userName
+            };
+
             if (id && supabase) {
-                await supabase.from('process_history').insert({ process_id: id, history_date: item.date, message: msg });
+                await supabase.from('process_history').insert({
+                    process_id: id,
+                    history_date: item.date,
+                    message: msg,
+                    user: userName // Salva quem registrou
+                });
                 const p = window.state.processes.find(x => x.id === id);
                 if (p) { p.history.push(item); window.renderModalHistory(p.history); }
             } else {
@@ -3980,33 +4948,101 @@
         if (procForm) procForm.onsubmit = async (e) => {
             e.preventDefault();
             const id = document.getElementById('processId').value;
+            const getV = (id) => {
+                const inst = window.choicesInstances && window.choicesInstances[id];
+                if (inst) {
+                    const val = inst.getValue(true);
+                    return Array.isArray(val) ? val[0] : val;
+                }
+                const el = document.getElementById(id);
+                return el ? el.value : '';
+            };
+
             const data = {
+                pp_number: document.getElementById('ppNumber').value,
+                exercise_year: document.getElementById('exerciseYear').value,
                 pp_ano: document.getElementById('ppAno').value,
-                supplier_name: document.getElementById('supplierSelect').value,
-                object_name: document.getElementById('objectSelect').value,
-                treated_by: document.getElementById('treatedBy').value,
-                deadline: document.getElementById('deadline').value,
-                status: document.getElementById('statusSelect').value,
-                location: document.getElementById('locationSelect').value,
+                cover_value: document.getElementById('coverValue').value,
+                supplier_name: getV('supplierSelect'),
+                object_name: getV('objectSelect'),
+                opening_date: document.getElementById('openingDate').value || null,
+                deadline: document.getElementById('deadline').value || null,
+                treated_by: getV('treatedBy'),
+                status: getV('statusSelect'),
+                location: getV('locationSelect'),
+                location_date: document.getElementById('locationDate').value || null,
+                situation: document.getElementById('situation').value,
                 notes: document.getElementById('notes').value
             };
+
             try {
                 if (id) {
                     const p = window.state.processes.find(x => x.id === id);
-                    if (p.location !== data.location) await supabase.from('process_history').insert({ process_id: id, history_date: new Date().toLocaleString(), location_from: p.location, location_to: data.location });
-                    await supabase.from('processes').update(data).eq('id', id);
+                    // Registro automático de movimentação se o setor mudou
+                    if (p && p.location !== data.location) {
+                        await supabase.from('process_history').insert({
+                            process_id: id,
+                            history_date: new Date().toLocaleString(),
+                            location_from: p.location || 'Não Definido',
+                            location_to: data.location || 'Não Definido',
+                            message: 'Movimentação automática por alteração de setor'
+                        });
+                    }
+                    const { data: updated, error } = await supabase.from('processes').update(data).eq('id', id).select();
+                    if (error) throw error;
+                    if (!updated || updated.length === 0) throw new Error('O registro não foi encontrado para atualização ou você não tem permissão.');
+                    window.showSuccessModal('Processo atualizado com sucesso!');
                 } else {
-                    const { data: nProc } = await supabase.from('processes').insert(data).select().single();
-                    if (window._tempHistory.length) await supabase.from('process_history').insert(window._tempHistory.map(h => ({ process_id: nProc.id, history_date: h.date, message: h.msg })));
+                    const { data: nProc, error } = await supabase.from('processes').insert(data).select().single();
+                    if (error) throw error;
+                    if (window._tempHistory.length) {
+                        await supabase.from('process_history').insert(window._tempHistory.map(h => ({
+                            process_id: nProc.id,
+                            history_date: h.date,
+                            message: h.msg,
+                            user: h.user
+                        })));
+                    }
+                    window.showSuccessModal('Novo processo cadastrado com sucesso!');
                 }
-                await window.initApp(); window.closeAllModals();
-            } catch (err) { console.error(err); }
+                
+                // Força recarregamento total dos dados e interface
+                await window.initApp();
+                
+                // O fechamento total agora é acionado pelo botão "Continuar" do modal de sucesso ou manualmente
+                // Mas fechamos o modal de controle imediatamente para evitar confusão
+                const mainModal = document.getElementById('processControlModal');
+                if (mainModal) {
+                    mainModal.classList.remove('visible');
+                    mainModal.style.display = 'none';
+                    // Também remove o overlay se necessário
+                    const ov = document.getElementById('overlay');
+                    if (ov) {
+                        ov.classList.remove('visible');
+                        ov.style.display = 'none';
+                    }
+                }
+            } catch (err) {
+                console.error('Save Error:', err);
+                alert('Erro ao salvar processo: ' + (err.message || err));
+            }
+        };
+
+        window.showSuccessModal = function (msg) {
+            document.getElementById('successModalMessage').innerText = msg || 'Salvo com Sucesso';
+            document.getElementById('successModal').style.display = 'flex';
         };
 
         window.showHistory = function (p) {
+            // Se p for uma string (ID), busca o processo no estado
+            if (typeof p === 'string') {
+                const found = window.state.processes.find(proc => proc.id === p);
+                if (found) p = found;
+            }
+
             const timeline = document.getElementById('historyTimeline');
             const sym = document.getElementById('historyProcessSummary');
-            if (!timeline || !sym) return;
+            if (!timeline || !sym || !p) return;
             sym.innerHTML = `Processo: <strong>${p.ppAno}</strong>`;
             timeline.innerHTML = '';
             [...p.history].reverse().forEach(h => {
@@ -4136,6 +5172,13 @@
 
                 const old = el.value;
 
+                // Destroy existing Choices instance if it exists
+                if (window.choicesInstances[s.id]) {
+                    window.choicesInstances[s.id].destroy();
+                    delete window.choicesInstances[s.id];
+                }
+
+                // Clear and populate options
                 el.innerHTML = s.opt ? `<option value="">${s.placeholder || 'Selecionar...'}</option>` : '';
                 s.data.forEach(d => {
                     const o = document.createElement('option');
@@ -4144,10 +5187,12 @@
                     el.appendChild(o);
                 });
 
+                // Restore old value if it's still valid
                 if (old && s.data.includes(old)) {
                     el.value = old;
                 }
 
+                // Initialize Choices if searchable
                 if (s.searchable) {
                     window.choicesInstances[s.id] = new Choices(el, {
                         searchEnabled: true,
@@ -4338,13 +5383,13 @@
                                         <i class="fas fa-pen" style="font-size: 0.85rem;"></i>
                                     </button>
                                     ${u.active !== false
-                        ? `<button class="btn-icon-round btn-deactivate-user" onclick="window.deactivateUser('${u.id}', '${u.full_name}')" title="Desativar Acesso">
+                    ? `<button class="btn-icon-round btn-deactivate-user" onclick="window.deactivateUser('${u.id}', '${u.full_name}')" title="Desativar Acesso">
                                             <i class="fas fa-user-slash" style="font-size: 0.85rem;"></i>
                                            </button>`
-                        : `<button class="btn-icon-round btn-reactivate-user" onclick="window.reactivateUser('${u.id}', '${u.full_name}')" title="Reativar Acesso">
+                    : `<button class="btn-icon-round btn-reactivate-user" onclick="window.reactivateUser('${u.id}', '${u.full_name}')" title="Reativar Acesso">
                                             <i class="fas fa-user-check" style="font-size: 0.85rem;"></i>
                                            </button>`
-                    }
+                }
                                     <button class="btn-icon-round" onclick="window.deleteUser('${u.id}', '${u.full_name}')" title="Excluir Usuário" style="background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3;">
                                         <i class="fas fa-trash-alt" style="font-size: 0.85rem;"></i>
                                     </button>
@@ -4453,19 +5498,28 @@
             const deptEl = document.getElementById('header-dept-name');
             const userEl = document.getElementById('header-user-name');
             const menuSettings = document.getElementById('menu-settings');
-            
+
             if (user) {
                 try {
-                    const { data: profile } = await supabase.from('user_profiles').select('*').eq('id', user.id).single();
+                    const { data: profile, error: profileError } = await supabase.from('user_profiles').select('*').eq('id', user.id).maybeSingle();
+
+                    if (profileError && profileError.code !== 'PGRST116') {
+                        console.error('Erro ao buscar perfil:', profileError);
+                    }
                     if (profile) {
                         window.currentUserRole = profile.role;
-                        userEl.innerText = profile.full_name.split(' ')[0];
+                        window.currentUserName = profile.full_name;
+                        userEl.innerText = (profile.full_name || user.email).split(' ')[0];
                         deptEl.innerText = profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR';
-                        
+
                         // Restrição de menu por cargo
                         if (menuSettings) {
                             menuSettings.style.display = profile.role === 'administrador' ? 'block' : 'none';
                         }
+                    } else {
+                        // Perfil não encontrado, usa dados básicos do auth
+                        userEl.innerText = user.email.split('@')[0];
+                        deptEl.innerText = 'CONVIDADO';
                     }
                 } catch (err) {
                     console.error('Erro ao buscar perfil:', err);
@@ -4476,20 +5530,32 @@
             }
         }
 
-        // Monitorar estado da sessão
-        supabase.auth.onAuthStateChange((event, session) => {
-            if (session?.user) {
-                updateUserInfo(session.user);
-                document.getElementById('login-overlay').style.display = 'none';
-            } else {
-                document.getElementById('login-overlay').style.display = 'flex';
-            }
-        });
+        // Monitorar estado da sessão com segurança
+        if (supabase && supabase.auth) {
+            supabase.auth.onAuthStateChange((event, session) => {
+                console.log('Auth event:', event);
+                const overlay = document.getElementById('login-overlay');
+                if (session?.user) {
+                    updateUserInfo(session.user);
+                    if (overlay) overlay.style.display = 'none';
+                } else {
+                    if (overlay) overlay.style.display = 'flex';
+                }
+            });
+        } else {
+            console.error('supabase.auth não disponível para monitoramento.');
+        }
 
-        window.logout = async function() {
+        window.logout = async function (e) {
+            if (e) e.preventDefault();
             if (confirm('Deseja realmente sair?')) {
-                await supabase.auth.signOut();
-                window.location.reload();
+                try {
+                    await supabase.auth.signOut();
+                    window.location.reload();
+                } catch (err) {
+                    console.error('Logout Error:', err);
+                    window.location.reload(); // Recarrega mesmo se der erro no Auth para limpar o estado local
+                }
             }
         };
 
@@ -4823,6 +5889,24 @@
         // Final Integration Check
         // Integration check script removed
     </script>
+
+    <!-- STATUS SUMMARY MODAL (MOBILE) -->
+    <div id="statusSummaryModal" class="modal" style="z-index: 9999;">
+        <div class="modal-content"
+            style="max-width: 450px; padding: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            <div
+                style="background: var(--govbr-blue); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 1.1rem; font-weight: 700; color: #fff; margin: 0;"><i class="fas fa-list-ul"
+                        style="margin-right: 8px;"></i> Detalhamento de Status</h2>
+                <button class="close-button" onclick="window.closeStatusMobileModal()"
+                    style="position: static; font-size: 1.5rem; color: #e2e8f0; line-height: 1;">&times;</button>
+            </div>
+            <div id="statusModalList" style="padding: 10px 20px 20px 20px; max-height: 60vh; overflow-y: auto;">
+                <!-- Linhas populadas dinamicamente aqui -->
+            </div>
+        </div>
+    </div>
+
     <div id="comments-modal" class="modal">
         <div class="modal-content">
             <button id="close-comments-modal-button" class="close-button">&times;</button>
@@ -4875,7 +5959,7 @@
             const password = document.getElementById('login-password').value;
             const errorMsg = document.getElementById('login-error-msg');
             const submitBtn = event.target.querySelector('button');
-            
+
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
             errorMsg.style.display = 'none';
@@ -4892,6 +5976,31 @@
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Entrar';
             }
+        }
+    </script>
+
+    <!-- Bottom Navigation Mobile (SUBInfra Style) -->
+    <nav class="mobile-bottom-nav">
+        <button class="nav-item active" onclick="window.showSection('dashboard'); updateMobileNav(this)">
+            <i class="fas fa-chart-line"></i>
+            <span>Dashboard</span>
+        </button>
+        <button class="nav-item" onclick="window.showSection('processes'); updateMobileNav(this)">
+            <i class="fas fa-search"></i>
+            <span>Consulta</span>
+        </button>
+        <button class="nav-item" onclick="window.openProcessModal(); updateMobileNav(this)">
+            <i class="fas fa-plus-circle"></i>
+            <span>Novo Proc.</span>
+        </button>
+    </nav>
+
+    <script>
+        function updateMobileNav(clickedEl) {
+            document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (clickedEl) clickedEl.classList.add('active');
         }
     </script>
 </body>
