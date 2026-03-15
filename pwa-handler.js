@@ -165,7 +165,8 @@
             if (navigator.serviceWorker.controller) {
                 navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
             }
-            window.location.reload();
+            // window.location.reload() REMOVIDO para evitar loop. 
+            // O evento controllerchange cuidará do recarregamento no momento certo.
         };
     }
 })();
