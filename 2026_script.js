@@ -386,27 +386,35 @@
                     plugins: {
                         datalabels: {
                             color: (ctx) => {
-                                // If the bar is tall enough, we keep it white inside, 
-                                // but the user reported values were confusing, so let's put them ABOVE the bar in dark blue.
-                                return '#1452B5'; 
+                                return document.body.classList.contains('dark-mode') ? '#60A5FA' : '#1452B5';
                             },
                             anchor: 'end',
-                            align: 'top',
-                            offset: 4,
+                            align: 'end',
+                            offset: 5,
                             fontWeight: 'bold',
-                            font: { size: 11 },
+                            font: { size: 10 },
                             formatter: (value, ctx) => {
                                 if (!value || value === 0) return null;
                                 let sum = 0;
                                 let dataArr = ctx.chart.data.datasets[0].data;
-                                dataArr.map(data => { sum += data; });
-                                let percentage = (value * 100 / sum).toFixed(1) + "%";
+                                dataArr.forEach(data => { sum += data; });
+                                let percentage = (value * 100 / sum).toFixed(0) + "%";
                                 return `${value} (${percentage})`;
                             }
                         }
                     },
                     scales: {
-                        y: { beginAtZero: true }
+                        y: { 
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
                     }
                 }
             });
