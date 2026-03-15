@@ -77,9 +77,90 @@
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js').then(reg => {
                 console.log('SW registrado com sucesso!', reg);
+
+                // Verificar atualizações
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            showUpdateBanner();
+                        }
+                    });
+                });
             }).catch(err => {
                 console.log('Falha ao registrar SW:', err);
             });
         });
+
+        // Garantir que a página recarregue quando o novo service worker assumir
+        let refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!refreshing) {
+                window.location.reload();
+                refreshing = true;
+            }
+        });
+    }
+
+    function showUpdateBanner() {
+        const versionMeta = document.querySelector('meta[name="version"]');
+        const version = versionMeta ? versionMeta.content : '1.0.1';
+        
+        const updateBanner = document.createElement('div');
+        updateBanner.id = 'pwa-update-banner';
+        updateBanner.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            background: #1e293b;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: slideInDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        `;
+
+        updateBanner.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-sync-alt fa-spin"></i>
+                </div>
+                <div>
+                    <h5 style="margin: 0; font-size: 14px; font-weight: 700;">Nova Atualização!</h5>
+                    <p style="margin: 2px 0 0; font-size: 12px; opacity: 0.8;">Versão ${version} disponível</p>
+                </div>
+            </div>
+            <button id="pwa-refresh-btn" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; transition: background 0.2s;">
+                Atualizar Agora
+            </button>
+        `;
+
+        // Adicionar animação se não existir
+        if (!document.getElementById('pwa-animations')) {
+            const style = document.createElement('style');
+            style.id = 'pwa-animations';
+            style.textContent = `
+                @keyframes slideInDown {
+                    from { transform: translateY(-150%); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(updateBanner);
+
+        document.getElementById('pwa-refresh-btn').onclick = () => {
+            if (navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+            }
+            window.location.reload();
+        };
     }
 })();
