@@ -1,4 +1,4 @@
-const CACHE_NAME = 'infrasmedu-cache-v3';
+const CACHE_NAME = 'infrasmedu-cache-v4';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -9,12 +9,18 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // Forçar ativação imediata quando solicitado
+  // REMOVIDO: self.skipWaiting() automático
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {

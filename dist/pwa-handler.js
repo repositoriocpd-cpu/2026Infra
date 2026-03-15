@@ -78,7 +78,12 @@
             navigator.serviceWorker.register('/sw.js').then(reg => {
                 console.log('SW registrado com sucesso!', reg);
 
-                // Verificar atualizações
+                // Caso já exista um worker esperando (ex: user recarregou mas não clicou em atualizar)
+                if (reg.waiting) {
+                    showUpdateBanner();
+                }
+
+                // Verificar atualizações futuras
                 reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;
                     newWorker.addEventListener('statechange', () => {
