@@ -162,11 +162,17 @@
         document.body.appendChild(updateBanner);
 
         document.getElementById('pwa-refresh-btn').onclick = () => {
-            if (navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
-            }
-            // window.location.reload() REMOVIDO para evitar loop. 
-            // O evento controllerchange cuidará do recarregamento no momento certo.
+            // Esconder banner imediatamente para feedback visual
+            const banner = document.getElementById('pwa-update-banner');
+            if (banner) banner.style.transform = 'translateY(-150%)';
+            
+            setTimeout(() => {
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+                }
+                // Se não recarregar via controllerchange em 1s, força reload
+                setTimeout(() => window.location.reload(), 1000);
+            }, 300);
         };
     }
 })();
