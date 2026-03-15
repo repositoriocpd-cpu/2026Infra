@@ -108,6 +108,12 @@
     }
 
     function showUpdateBanner() {
+        if (document.getElementById('pwa-update-banner')) return;
+        if (sessionStorage.getItem('pwa-update-dismissed') === '1') {
+            sessionStorage.removeItem('pwa-update-dismissed');
+            return;
+        }
+
         const versionMeta = document.querySelector('meta[name="version"]');
         const version = versionMeta ? versionMeta.content : '1.0.1';
         
@@ -162,7 +168,7 @@
         document.body.appendChild(updateBanner);
 
         document.getElementById('pwa-refresh-btn').onclick = () => {
-            // Esconder banner imediatamente para feedback visual
+            sessionStorage.setItem('pwa-update-dismissed', '1');
             const banner = document.getElementById('pwa-update-banner');
             if (banner) banner.style.transform = 'translateY(-150%)';
             
@@ -170,7 +176,6 @@
                 if (navigator.serviceWorker.controller) {
                     navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
                 }
-                // Se não recarregar via controllerchange em 1s, força reload
                 setTimeout(() => window.location.reload(), 1000);
             }, 300);
         };
