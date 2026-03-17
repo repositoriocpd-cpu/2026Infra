@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel SESMEC- Infra</title>
+    <title>Painel SUB INFRA</title>
     <link rel="icon" type="image/jpeg"
         href="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg">
-    
+
     <!-- PWA Settings -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#064e3b">
@@ -195,7 +195,8 @@
             }
         }
 
-        html, body {
+        html,
+        body {
             overflow-x: hidden;
             width: 100%;
             position: relative;
@@ -2181,20 +2182,134 @@
         .table-wrapper {
             max-height: 65vh;
             overflow-y: auto;
+            overflow-x: auto;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             background-color: white;
             position: relative;
         }
 
-        #processTable thead th {
+        /* Tabela principal de processos - layout fixo e responsivo */
+        #process-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        #process-table thead th,
+        #process-table tbody td {
+            padding: 0.5rem 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.78rem;
+        }
+
+        #process-table thead th {
             position: sticky;
             top: 0;
             z-index: 20;
             background-color: #f8fafc;
             box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
             white-space: nowrap;
-            padding: 0.75rem 0.5rem;
+        }
+
+        /* Hover amigável para linhas */
+        #process-table tbody tr:hover {
+            background: #f5f7fa;
+        }
+
+        /* Larguras das colunas em px (1-based) */
+        #process-table th:nth-child(1),
+        #process-table td:nth-child(1) {
+            width: 120px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(2),
+        #process-table td:nth-child(2) {
+            width: 80px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(3),
+        #process-table td:nth-child(3) {
+            width: 70px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(4),
+        #process-table td:nth-child(4) {
+            width: 100px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(5),
+        #process-table td:nth-child(5) {
+            width: 260px;
+            text-align: left;
+        }
+
+        #process-table th:nth-child(6),
+        #process-table td:nth-child(6) {
+            width: 120px;
+            text-align: left;
+        }
+
+        #process-table th:nth-child(7),
+        #process-table td:nth-child(7) {
+            width: 140px;
+            text-align: right;
+        }
+
+        #process-table th:nth-child(8),
+        #process-table td:nth-child(8),
+        #process-table th:nth-child(9),
+        #process-table td:nth-child(9),
+        #process-table th:nth-child(13),
+        #process-table td:nth-child(13) {
+            width: 120px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(10),
+        #process-table td:nth-child(10) {
+            width: 160px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(11),
+        #process-table td:nth-child(11) {
+            width: 140px;
+            text-align: left;
+        }
+
+        #process-table th:nth-child(12),
+        #process-table td:nth-child(12) {
+            width: 180px;
+            text-align: left;
+        }
+
+        #process-table th:nth-child(14),
+        #process-table td:nth-child(14) {
+            width: 120px;
+            text-align: center;
+        }
+
+        /* Texto longo com reticências */
+        #process-table td:nth-child(5),
+        #process-table td:nth-child(6),
+        #process-table td:nth-child(10),
+        #process-table td:nth-child(12) {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Coluna de ações com botões centralizados */
+        #process-table td:last-child>div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
         }
 
         body.dark-mode .table-wrapper {
@@ -2202,7 +2317,7 @@
             border-color: #334155;
         }
 
-        body.dark-mode #processTable thead th {
+        body.dark-mode #process-table thead th {
             background-color: #0F172A;
             box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
         }
@@ -2288,9 +2403,10 @@
 
         .details-label {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            color: #666;
+            color: #94a3b8;
+            font-weight: 600;
             letter-spacing: 0.05em;
             margin-bottom: 2px;
         }
@@ -2897,10 +3013,10 @@
     <div id="login-overlay">
         <div class="login-card">
             <div class="login-header">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
-                    alt="Logo Prefeitura">
-                <h1>SMEDU | INFRAESTRUTURA</h1>
-                <p>Controle de Processos de Pagamentos</p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+                    alt="Logo Prefeitura" style="max-height: 80px; margin-bottom: 1rem;">
+                <h1>SUB INFRA | SMEDU </h1>
+                <p>Secretaria Municipal de Educação de Itaguaí</p>
             </div>
             <div class="login-body">
                 <h2>Acesso ao Sistema</h2>
@@ -2939,8 +3055,10 @@
     </div>
 
     <nav id="side-menu" class="side-menu">
-        <div class="side-menu-header">
-            <h3 style="font-weight: 800; letter-spacing: 0.05em;">SESME-C</h3>
+        <div class="side-menu-header" style="display: flex; align-items: center; gap: 10px; padding: 1.5rem 1rem;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg" 
+                 alt="Logo" style="height: 40px; border-radius: 4px;">
+            <h3 style="font-weight: 800; letter-spacing: 0.05em; margin: 0; font-size: 1.2rem; color: #fff;">SUB INFRA</h3>
             <button class="close-sidebar" onclick="window.toggleMenu()" title="Recolher Menu">
                 <i class="fas fa-times"></i>
             </button>
@@ -2962,6 +3080,27 @@
                 <a href="#"
                     onclick="window.showSection('processes'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
                     <i class="fas fa-list-alt menu-icon"></i> <span style="flex-grow: 1;">Consultar Cadastrados</span>
+                </a>
+            </li>
+            <li>
+                <hr class="menu-divider">
+            </li>
+            <li>
+                <a href="#"
+                    onclick="window.showSection('backup'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                    <i class="fas fa-database menu-icon"></i> <span style="flex-grow: 1;">Backup e Restauração</span>
+                </a>
+            </li>
+            <li>
+                <a href="#"
+                    onclick="window.showSection('logs'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                    <i class="fas fa-clipboard-list menu-icon"></i> <span style="flex-grow: 1;">Logs do Sistema</span>
+                </a>
+            </li>
+            <li>
+                <a href="#"
+                    onclick="window.showSection('about'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
+                    <i class="fas fa-info-circle menu-icon"></i> <span style="flex-grow: 1;">Sobre o Sistema</span>
                 </a>
             </li>
             <li>
@@ -3340,47 +3479,295 @@
                     <table id="process-table">
                         <thead>
                             <tr>
+                                <th onclick="window.sortTable('parentProc')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="0"> Nº PROC. MÃE <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('ppNumber')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="0"> Nº P.P. <i class="fas fa-sort"></i></th>
+                                        data-col="1"> Nº P.P. <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('exerciseYear')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="1"> ANO <i class="fas fa-sort"></i></th>
+                                        data-col="2"> ANO <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('ppAno')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="2">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="3">
                                     P.P.ANO <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('supplier')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="3"> Fornecedor <i class="fas fa-sort"></i></th>
+                                        data-col="4"> Fornecedor <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('object')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="4">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="5">
                                     Objeto <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('coverValue')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="5"> Valor Capa <i class="fas fa-sort"></i></th>
+                                        data-col="6"> Valor Capa <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('openingDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="6"> Abertura <i class="fas fa-sort"></i></th>
+                                        data-col="7"> Abertura <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('deadline')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="7"> Conclusão <i class="fas fa-sort"></i></th>
+                                        data-col="8"> Conclusão <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('status')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="8">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="9">
                                     Status <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('treatedBy')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="9"> Tratado Por <i class="fas fa-sort"></i></th>
+                                        data-col="10"> Tratado Por <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('location')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="10"> Localização <i class="fas fa-sort"></i></th>
+                                        data-col="11"> Localização <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('locationDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="11"> Dt Local. <i class="fas fa-sort"></i></th>
+                                        data-col="12"> Dt Local. <i class="fas fa-sort"></i></th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody id="processTableBody"></tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backup & Restore Section -->
+        <div id="backup-section" style="display:none; margin-top:2rem;">
+            <div class="details-card section-header-card"
+                style="margin-bottom:1.5rem; background: linear-gradient(135deg, #005A9C, #0a3d62); color: white;">
+                <div style="display:flex; align-items:center; gap:1.5rem;">
+                    <div style="font-size:2.5rem; opacity:0.9;"><i class="fas fa-database"></i></div>
+                    <div>
+                        <h2 style="font-size:1.8rem; margin:0; color: white;">Backup e Restauração</h2>
+                        <p style="margin:0.25rem 0 0 0; opacity:0.8; font-weight:400;">Gerenciamento de segurança e
+                            integridade dos dados</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <div class="details-card feature-card">
+                    <div class="card-icon" style="color: #005A9C;"><i class="fas fa-file-export"></i></div>
+                    <h3>Backup Manual</h3>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">Crie uma cópia de segurança completa de todos os
+                        processos, fornecedores, objetos e configurações em um único arquivo JSON.</p>
+                    <button class="btn btn-primary" onclick="window.downloadFullBackup()"
+                        style="width:100%; justify-content: center; padding: 0.8rem;">
+                        <i class="fas fa-download"></i>&nbsp;Exportar Base de Dados
+                    </button>
+                    <div
+                        style="margin-top: 1rem; font-size: 0.75rem; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-info-circle"></i> Recomendado realizar semanalmente.
+                    </div>
+                </div>
+
+                <div class="details-card feature-card danger-zone" style="border-top: 4px solid #ef4444;">
+                    <div class="card-icon" style="color: #ef4444;"><i class="fas fa-file-import"></i></div>
+                    <h3 style="color: #b91c1c;">Zona de Restauração</h3>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">Importe um arquivo de backup para restaurar o
+                        estado anterior do sistema. <strong style="color: #dc2626;">Aviso: Todos os dados atuais serão
+                            substituídos permanentemente.</strong></p>
+
+                    <div
+                        style="background: #fef2f2; border: 1px dashed #fee2e2; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <input type="file" id="restoreFileInput" accept="application/json"
+                            style="font-size: 0.8rem; width: 100%;">
+                    </div>
+
+                    <button class="btn btn-danger" onclick="window.restoreFromBackup()"
+                        style="width:100%; justify-content: center; padding: 0.8rem; background: #ef4444;">
+                        <i class="fas fa-history"></i>&nbsp;Executar Restauração
+                    </button>
+                </div>
+            </div>
+
+            <div class="details-card" style="margin-top:1.5rem; background: #f8fafc; border: 1px solid #e2e8f0;">
+                <h4 style="display:flex; align-items:center; gap:0.5rem; margin-top:0; color:#475569;"><i
+                        class="fas fa-shield-alt"></i> Política de Backup</h4>
+                <p style="font-size:0.9rem; color:#64748b; line-height:1.6; margin-bottom:0;">
+                    Devido à arquitetura web cliente-servidor deste painel, os backups são processados localmente.
+                    <strong>Sempre armazene seus arquivos de backup em um local seguro fora desta máquina</strong> (ex:
+                    Google Drive, OneDrive ou Servidor de Arquivos da SME).
+                    O arquivo gerado contém a estrutura completa necessária para reconstruir o banco de dados em caso de
+                    falha crítica.
+                </p>
+            </div>
+        </div>
+
+        <!-- System Logs Section -->
+        <div id="logs-section" style="display:none; margin-top:2rem;">
+            <div class="details-card section-header-card"
+                style="margin-bottom:1.5rem; background: linear-gradient(135deg, #475569, #1e293b); color: white;">
+                <div style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
+                    <div style="display:flex; align-items:center; gap:1.5rem;">
+                        <div style="font-size:2.5rem; opacity:0.9;"><i class="fas fa-list-ul"></i></div>
+                        <div>
+                            <h2 style="font-size:1.8rem; margin:0; color: white;">Auditoria do Sistema</h2>
+                            <p style="margin:0.25rem 0 0 0; opacity:0.8; font-weight:400;">Rastreamento de ações, erros
+                                e eventos importantes</p>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <button class="btn" onclick="window.clearLogsFilters()"
+                            style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 0.8rem;">
+                            <i class="fas fa-filter-circle-xmark"></i> Limpar Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-card" style="padding: 1.5rem;">
+                <div
+                    style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div class="form-group">
+                        <label
+                            style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Pesquisar</label>
+                        <div style="position:relative;">
+                            <i class="fas fa-search"
+                                style="position:absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.8rem;"></i>
+                            <input type="text" id="logsSearch" class="form-control" placeholder="Usuário ou ação..."
+                                style="padding-left: 30px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label
+                            style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Nível</label>
+                        <select id="logsLevel" class="form-control">
+                            <option value="">Todos os Eventos</option>
+                            <option value="info">ℹ️ Informação</option>
+                            <option value="warning">⚠️ Aviso</option>
+                            <option value="error">❌ Erro Crítico</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label
+                            style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Data</label>
+                        <input type="date" id="logsDate" class="form-control">
+                    </div>
+                </div>
+
+                <div id="logsContainer" class="custom-scrollbar"
+                    style="background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; max-height: 500px; overflow-y: auto; padding: 0.5rem;">
+                    <!-- Logs will be rendered here -->
+                    <div style="padding: 3rem; text-align: center; color: #94a3b8;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Carregando registros de auditoria...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div id="about-section" style="display:none; margin-top:2rem;">
+            <div class="details-card section-header-card"
+                style="margin-bottom:1.5rem; background: linear-gradient(135deg, #005A9C, #005A9C); color: white;">
+                <div style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
+                    <div style="display:flex; align-items:center; gap:1.5rem;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+                            alt="SUB INFRA Logo" style="height: 60px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div>
+                            <h2 style="font-size:1.8rem; margin:0; color: white;">SUB INFRA</h2>
+                            <p style="margin:0.25rem 0 0 0; opacity:0.8; font-weight:400;">Secretaria Municipal de
+                                Educação de Itaguaí</p>
+                        </div>
+                    </div>
+                    <div
+                        style="background:rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                        <span id="about-version-badge" style="font-weight: 700; color: #38bdf8;">v1.0.6 Stable</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div class="details-card">
+                        <h3 style="display:flex; align-items:center; gap:0.75rem; color:#005A9C; margin-top:0;"><i
+                                class="fas fa-eye" style="color:#005A9C;"></i> Visão Geral</h3>
+                        <p style="color:#475569; line-height:1.7;">O <strong>SUB INFRA</strong> é uma plataforma
+                            estratégica desenvolvida para centralizar e otimizar o fluxo de gestão de infraestrutura e
+                            processos de pagamentos. Projetado especificamente para as necessidades da SMEDU-Itaguaí, o
+                            sistema oferece transparência total sobre a tramitação de cada processo administrativo.</p>
+
+                        <h4 style="margin: 1.5rem 0 0.75rem 0; color:#1e293b; font-size: 0.95rem;">Objetivos
+                            Estratégicos:</h4>
+                        <ul style="color:#475569; padding-left: 1.25rem; line-height: 1.6;">
+                            <li>Monitoramento de prazos e alertas de vencimento em tempo real.</li>
+                            <li>Rastreabilidade histórica completa através de timelines automatizadas.</li>
+                            <li>Análise de desempenho setorial por meio de KPIs visuais.</li>
+                            <li>Segurança e integridade via autenticação robusta e criptografia.</li>
+                        </ul>
+                    </div>
+
+                    <div class="details-card">
+                        <h3 style="display:flex; align-items:center; gap:0.75rem; color:#1e293b; margin-top:0;"><i
+                                class="fas fa-layer-group" style="color:#005A9C;"></i> Arquitetura & Stack</h3>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                            <div style="background:#f1f5f9; padding:1rem; border-radius:8px; text-align:center;">
+                                <i class="fab fa-js" style="font-size:1.5rem; color:#eab308; margin-bottom:0.5rem;"></i>
+                                <div style="font-weight:700; font-size:0.8rem;">JS Engine</div>
+                                <div style="font-size:0.7rem; color:#64748b;">ES6+ High Perf</div>
+                            </div>
+                            <div style="background:#f1f5f9; padding:1rem; border-radius:8px; text-align:center;">
+                                <i class="fas fa-database"
+                                    style="font-size:1.5rem; color:#3ecf8e; margin-bottom:0.5rem;"></i>
+                                <div style="font-weight:700; font-size:0.8rem;">Supabase</div>
+                                <div style="font-size:0.7rem; color:#64748b;">PostgreSQL Layer</div>
+                            </div>
+                            <div style="background:#f1f5f9; padding:1rem; border-radius:8px; text-align:center;">
+                                <i class="fas fa-chart-pie"
+                                    style="font-size:1.5rem; color:#ff6384; margin-bottom:0.5rem;"></i>
+                                <div style="font-weight:700; font-size:0.8rem;">Chart.js</div>
+                                <div style="font-size:0.7rem; color:#64748b;">Data Viz</div>
+                            </div>
+                            <div style="background:#f1f5f9; padding:1rem; border-radius:8px; text-align:center;">
+                                <i class="fas fa-mobile-alt"
+                                    style="font-size:1.5rem; color:#005A9C; margin-bottom:0.5rem;"></i>
+                                <div style="font-weight:700; font-size:0.8rem;">PWA</div>
+                                <div style="font-size:0.7rem; color:#64748b;">Offline Ready</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div class="details-card" style="background:#f8fafc;">
+                        <h3
+                            style="font-size:1.1rem; color:#1e293b; margin-top:0; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem;">
+                            Status do Sistema</h3>
+                        <div id="about-system-status"
+                            style="display:flex; flex-direction:column; gap:1rem; margin-top:1rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:0.85rem; color:#64748b;">Ambiente:</span>
+                                <span style="font-size:0.85rem; font-weight:700; color:#188038;">PRODUÇÃO</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:0.85rem; color:#64748b;">Conexão BD:</span>
+                                <span style="font-size:0.85rem; font-weight:700; color:#188038;"
+                                    id="db-status-label">ONLINE</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:0.85rem; color:#64748b;">Total de Processos:</span>
+                                <span style="font-size:0.85rem; font-weight:700; color:#005A9C;"
+                                    id="about-total-proc">0</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:0.85rem; color:#64748b;">Seu Usuário:</span>
+                                <span
+                                    style="font-size:0.75rem; font-weight:700; color:#475569; overflow:hidden; text-overflow:ellipsis; max-width:120px;"
+                                    id="about-user-email">...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-card" style="border-left: 4px solid #005A9C;">
+                        <h3 style="font-size:1.1rem; color:#1e293b; margin-top:0;"><i class="fas fa-shield-halved"></i>
+                            Segurança</h3>
+                        <p style="font-size:0.85rem; color:#64748b; line-height:1.6;">Dados protegidos em trânsito via
+                            criptografia TLS 1.3. Acesso autenticado via e-mail institucional gerenciado pelo Supabase
+                            Auth, garantindo que apenas técnicos autorizados visualizem processos de infraestrutura.</p>
+                    </div>
+
+                    <div style="text-align: center; margin-top: auto; padding: 1rem;">
+                        <p style="font-size: 0.75rem; color: #94a3b8;">&copy; 2026 SUB INFRA<br>Secretaria de
+                            Educação - Itaguaí/RJ</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3456,6 +3843,10 @@
                         </div>
                         <div class="form-grid-4">
                             <div class="form-group">
+                                <label>Nº PROC. MÃE</label>
+                                <input type="text" id="parentProc" class="form-control" placeholder="Ex: 1234/2025">
+                            </div>
+                            <div class="form-group">
                                 <label>NÚMERO DO P.P.</label>
                                 <input type="text" id="ppNumber" class="form-control" placeholder="Digite o N.º Proc">
                             </div>
@@ -3520,12 +3911,8 @@
                             </div>
                             <div class="form-group">
                                 <label>DATA DE CONCLUSÃO</label>
-                                <div class="select-with-btn">
-                                    <input type="date" id="deadline" class="form-control"
-                                        onchange="updateModalRemainingDays()">
-                                    <button type="button" class="btn-quick-add" title="Hoje"><i
-                                            class="fas fa-plus"></i></button>
-                                </div>
+                                <input type="date" id="deadline" class="form-control"
+                                    onchange="updateModalRemainingDays()">
                             </div>
                             <div class="form-group">
                                 <label>DIAS RESTANTES</label>
@@ -3632,10 +4019,11 @@
             </header>
 
             <div class="modal-body" style="padding: 2rem;">
-                <div class="details-grid">
+                <!-- Cards Grid -->
+                <div class="details-grid" style="margin-bottom: 1.5rem;">
                     <!-- Informações Gerais -->
                     <div class="details-card">
-                        <h4><i class="fas fa-info-circle"></i> Informações Gerais</h4>
+                        <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> Informações Gerais</h4>
                         <div class="details-item">
                             <span class="details-label">Fornecedor</span>
                             <span id="detailsSupplier" class="details-value">-</span>
@@ -3652,7 +4040,7 @@
 
                     <!-- Datas e Prazos -->
                     <div class="details-card">
-                        <h4><i class="fas fa-calendar-alt"></i> Datas e Prazos</h4>
+                        <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i class="fas fa-calendar-alt"></i> Datas e Prazos</h4>
                         <div class="details-item">
                             <span class="details-label">Data de Abertura</span>
                             <span id="detailsOpeningDate" class="details-value">-</span>
@@ -3667,51 +4055,61 @@
                         </div>
                     </div>
 
-                    <!-- Localização Atual e Outros Processos -->
-                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                        <div class="details-card">
-                            <h4><i class="fas fa-map-marker-alt"></i> Localização Atual</h4>
-                            <div class="details-item">
-                                <span class="details-label">Setor / Órgão</span>
-                                <span id="detailsLocation" class="details-value">-</span>
-                            </div>
-                            <div class="details-item">
-                                <span class="details-label">Última Movimentação</span>
-                                <span id="detailsLocationDate" class="details-value">-</span>
-                            </div>
-                            <div class="details-item">
-                                <span class="details-label">Notas</span>
-                                <span id="detailsNotes" class="details-value">-</span>
-                            </div>
+                    <!-- Localização Atual -->
+                    <div class="details-card">
+                        <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i class="fas fa-map-marker-alt"></i> Localização Atual</h4>
+                        <div class="details-item">
+                            <span class="details-label">Setor / Órgão</span>
+                            <span id="detailsLocation" class="details-value">-</span>
                         </div>
+                        <div class="details-item">
+                            <span class="details-label">Última Movimentação</span>
+                            <span id="detailsLocationDate" class="details-value">-</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="details-label">Notas</span>
+                            <span id="detailsNotes" class="details-value">Sem observações.</span>
+                        </div>
+                    </div>
 
-                        <div class="details-card" style="flex-grow: 1;">
-                            <h4><i class="fas fa-folder-open"></i> Outros Processos do Fornecedor</h4>
-                            <div class="details-item">
-                                <span class="details-label">P.P.ANO Relacionados</span>
-                                <div id="detailsOtherProcesses"
-                                    style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                                    <!-- Badges of other P.P.ANOs will appear here -->
-                                </div>
+                    <!-- Outros Processos do Fornecedor -->
+                    <div class="details-card">
+                        <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i class="fas fa-folder-open"></i> Outros Processos do Fornecedor</h4>
+                        <div class="details-item">
+                            <span class="details-label">P.P.ANO Relacionados</span>
+                            <div id="detailsOtherProcesses"
+                                style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                <!-- Badges will appear here -->
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Ações principais (Excluir / Editar) -->
+                <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-bottom: 2rem;">
+                    <button class="btn btn-danger" id="detailsBtnDelete"
+                        style="min-width: 130px; padding: 0.8rem; font-weight: 600; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
+                        <i class="fas fa-trash"></i>&nbsp;Excluir
+                    </button>
+                    <button class="btn btn-warning" id="detailsBtnEdit"
+                        style="min-width: 130px; padding: 0.8rem; font-weight: 600; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
+                        <i class="fas fa-edit"></i>&nbsp;Editar
+                    </button>
+                </div>
+
                 <!-- Histórico / Timeline -->
                 <div class="details-card" style="margin-bottom: 0;">
-                    <h4><i class="fas fa-history"></i> Histórico de Tramitações</h4>
-                    <div id="detailsTimeline" class="timeline-vertical">
+                    <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i class="fas fa-history"></i> Histórico de Tramitações</h4>
+                    <div id="detailsTimeline" class="timeline-vertical" style="padding-top: 1rem;">
                         <!-- Timeline items will be injected here -->
                     </div>
                 </div>
             </div>
 
             <footer class="modal-footer"
-                style="padding: 1.5rem 2rem; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="btn btn-danger" id="detailsBtnDelete"><i class="fas fa-trash"></i> Excluir</button>
-                <button class="btn btn-warning" id="detailsBtnEdit"><i class="fas fa-edit"></i> Editar</button>
-                <button class="btn btn-secondary" onclick="window.closeModal('processDetailsModal')">Fechar</button>
+                style="padding: 1.5rem 2rem; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; border-radius: 0 0 16px 16px;">
+                <button class="btn btn-secondary" onclick="window.closeModal('processDetailsModal')"
+                    style="min-width: 110px; background: white; color: #64748b; border: 1px solid #e2e8f0;">Fechar</button>
             </footer>
         </div>
     </div>
@@ -4269,7 +4667,7 @@
         };
 
         // --- GLOBAL CONFIG & STATE ---
-        console.log("%c--- SESMEC INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
+        console.log("%c--- SUB INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
@@ -4511,11 +4909,22 @@
                 window.state.statuses = (statuses.data || []).map(s => s.name);
                 window.state.handlers = (handlers.data || []).map(h => h.name);
                 window.state.processes = (processes.data || []).map(p => ({
-                    id: p.id, ppNumber: p.pp_number, exerciseYear: p.exercise_year, ppAno: p.pp_ano,
-                    coverValue: p.cover_value, supplier: p.supplier_name, object: p.object_name,
-                    openingDate: p.opening_date, deadline: p.deadline, treatedBy: p.treated_by,
-                    status: p.status, location: p.location, locationDate: p.location_date,
-                    situation: p.situation, notes: p.notes,
+                    id: p.id,
+                    parentProc: p.parent_proc,
+                    ppNumber: p.pp_number,
+                    exerciseYear: p.exercise_year,
+                    ppAno: p.pp_ano,
+                    coverValue: p.cover_value,
+                    supplier: p.supplier_name,
+                    object: p.object_name,
+                    openingDate: p.opening_date,
+                    deadline: p.deadline,
+                    treatedBy: p.treated_by,
+                    status: p.status,
+                    location: p.location,
+                    locationDate: p.location_date,
+                    situation: p.situation,
+                    notes: p.notes,
                     history: null // Será carregado sob demanda (lazy-load)
                 }));
 
@@ -4554,10 +4963,14 @@
             const target = document.getElementById(`${id}-section`);
             if (target) target.style.display = 'block';
             window.closeAllModals();
+
             if (id === 'dashboard') {
                 window.updateDashboardCounters();
-                // Re-run counters for visible cards immediately
                 document.querySelectorAll('#dashboard-section .stat-number').forEach(el => window.animateCounter(el));
+            } else if (id === 'about') {
+                window.updateAboutInfo();
+            } else if (id === 'logs') {
+                window.fetchAndRenderLogs();
             }
 
             // Expand container width specifically for the processes table to prevent scrolling
@@ -4917,6 +5330,185 @@
             window.renderProcessTable(sorted);
         };
 
+        // ===== BACKUP & RESTORE UTILITIES =====
+        window.downloadFullBackup = async function () {
+            if (!supabase) {
+                alert('Supabase não inicializado. Verifique sua conexão.');
+                return;
+            }
+
+            const btn = document.querySelector('button[onclick*="downloadFullBackup"]');
+            const originalHtml = btn ? btn.innerHTML : null;
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>&nbsp;Gerando backup...';
+            }
+
+            try {
+                const tables = [
+                    'processes',
+                    'process_history',
+                    'suppliers',
+                    'locations',
+                    'objects',
+                    'statuses',
+                    'handlers',
+                    'user_profiles'
+                ];
+
+                const backup = { generated_at: new Date().toISOString(), tables: {} };
+
+                for (const table of tables) {
+                    try {
+                        const { data, error } = await supabase.from(table).select('*');
+                        if (error) {
+                            console.error('Erro ao ler tabela', table, error);
+                            backup.tables[table] = { error: error.message || String(error) };
+                        } else {
+                            backup.tables[table] = data || [];
+                        }
+                    } catch (err) {
+                        console.error('Exceção ao ler tabela', table, err);
+                        backup.tables[table] = { error: err.message || String(err) };
+                    }
+                }
+
+                const json = JSON.stringify(backup, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+
+                const ts = new Date();
+                const pad = (n) => String(n).padStart(2, '0');
+                const fileName = `backup_infrasmedu_${ts.getFullYear()}-${pad(ts.getMonth() + 1)}-${pad(ts.getDate())}_${pad(ts.getHours())}-${pad(ts.getMinutes())}.json`;
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error('Erro ao gerar backup:', err);
+                alert('Ocorreu um erro ao gerar o backup. Veja o console para mais detalhes.');
+            } finally {
+                if (btn && originalHtml) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
+            }
+        };
+
+        window.restoreFromBackup = function () {
+            alert('Por segurança, a restauração automática ainda não está habilitada nesta versão.\n\nUse este backup apenas para consulta ou para restauração assistida por suporte técnico.');
+        };
+
+
+        // ===== ABOUT & LOGS ENHANCEMENTS =====
+        window.updateAboutInfo = function () {
+            const totalProcEl = document.getElementById('about-total-proc');
+            const userEmailEl = document.getElementById('about-user-email');
+
+            if (totalProcEl) totalProcEl.innerText = window.state.processes.length;
+
+            if (userEmailEl && supabase && supabase.auth) {
+                const user = supabase.auth.user ? supabase.auth.user() : null; // Compatibility handle
+                // Fallback for newer modular API if available
+                const email = user ? user.email : (window.currentUserName || 'Usuário Autenticado');
+                userEmailEl.innerText = email;
+                userEmailEl.title = email;
+            }
+        };
+
+        window.fetchAndRenderLogs = async function () {
+            const container = document.getElementById('logsContainer');
+            if (!container) return;
+
+            try {
+                // Fetch from process_history as system logs
+                const { data, error } = await supabase
+                    .from('process_history')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(100);
+
+                if (error) throw error;
+                window._cachedLogs = data || [];
+                window.renderLogs(window._cachedLogs);
+            } catch (err) {
+                console.error('Logs Error:', err);
+                container.innerHTML = `<div style="padding:2rem; text-align:center; color:#ef4444;"><i class="fas fa-exclamation-circle"></i> Erro ao carrergar logs: ${err.message}</div>`;
+            }
+        };
+
+        window.renderLogs = function (logs) {
+            const container = document.getElementById('logsContainer');
+            const search = (document.getElementById('logsSearch')?.value || '').toLowerCase();
+            const level = document.getElementById('logsLevel')?.value || '';
+            const dateStr = document.getElementById('logsDate')?.value || '';
+
+            const filtered = logs.filter(l => {
+                const msg = (l.message || '').toLowerCase();
+                const matchSearch = !search || msg.includes(search);
+                const matchLevel = !level || (level === 'info' && !msg.includes('erro') && !msg.includes('aviso')) ||
+                    (level === 'error' && msg.includes('erro')) ||
+                    (level === 'warning' && msg.includes('aviso'));
+                const logDate = l.created_at ? l.created_at.split('T')[0] : '';
+                const matchDate = !dateStr || logDate === dateStr;
+                return matchSearch && matchLevel && matchDate;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div style="padding:3rem; text-align:center; color:#94a3b8;">Nenhum registro encontrado para os filtros selecionados.</div>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(l => {
+                const isError = (l.message || '').toLowerCase().includes('erro');
+                const isWarning = (l.message || '').toLowerCase().includes('aviso');
+                let icon = '<i class="fas fa-info-circle" style="color:#3b82f6;"></i>';
+                let bgColor = 'transparent';
+
+                if (isError) {
+                    icon = '<i class="fas fa-times-circle" style="color:#ef4444;"></i>';
+                    bgColor = 'rgba(239, 68, 68, 0.05)';
+                } else if (isWarning) {
+                    icon = '<i class="fas fa-exclamation-triangle" style="color:#f59e0b;"></i>';
+                    bgColor = 'rgba(245, 158, 11, 0.05)';
+                }
+
+                return `
+                    <div style="padding:0.75rem 1rem; border-bottom:1px solid #f1f5f9; display:flex; align-items:flex-start; gap:1rem; background:${bgColor};">
+                        <div style="font-size:1.1rem; margin-top:2px;">${icon}</div>
+                        <div style="flex:1;">
+                            <div style="font-size:0.85rem; color:#1e293b; line-height:1.4;">${l.message || 'Movimentação Processual'}</div>
+                            <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px; display:flex; gap:1rem;">
+                                <span><i class="far fa-clock"></i> ${new Date(l.created_at).toLocaleString('pt-BR')}</span>
+                                ${l.user_email ? `<span><i class="far fa-user"></i> ${l.user_email}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.clearLogsFilters = function () {
+            if (document.getElementById('logsSearch')) document.getElementById('logsSearch').value = '';
+            if (document.getElementById('logsLevel')) document.getElementById('logsLevel').value = '';
+            if (document.getElementById('logsDate')) document.getElementById('logsDate').value = '';
+            window.fetchAndRenderLogs();
+        };
+
+        // Listeners para os filtros de log
+        document.addEventListener('DOMContentLoaded', () => {
+            const ls = document.getElementById('logsSearch');
+            const ll = document.getElementById('logsLevel');
+            const ld = document.getElementById('logsDate');
+
+            if (ls) ls.addEventListener('input', () => window.renderLogs(window._cachedLogs || []));
+            if (ll) ll.addEventListener('change', () => window.renderLogs(window._cachedLogs || []));
+            if (ld) ld.addEventListener('change', () => window.renderLogs(window._cachedLogs || []));
+        });
 
         window.renderProcessTable = function (data = window.state.processes) {
             window._lastFiltered = data;
@@ -4945,7 +5537,9 @@
                     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
                 };
 
+                const parentDisplay = p.parentProc || p.ppNumber || '';
                 tr.innerHTML = `
+                    <td>${parentDisplay}</td>
                     <td>${p.ppNumber || ''}</td>
                     <td>${p.exerciseYear || ''}</td>
                     <td><strong>${p.ppAno}</strong></td>
@@ -5091,6 +5685,8 @@
                     if (p) {
                         document.getElementById('processModalTitle').innerText = 'Editar Processo';
                         document.getElementById('processId').value = p.id;
+                        const parentField = document.getElementById('parentProc');
+                        if (parentField) parentField.value = p.parentProc || '';
                         document.getElementById('ppNumber').value = p.ppNumber || '';
                         document.getElementById('exerciseYear').value = p.exerciseYear || '';
                         document.getElementById('ppAno').value = p.ppAno || '';
@@ -5142,6 +5738,8 @@
                     } else {
                         document.getElementById('processModalTitle').innerText = 'Novo Processo';
                         document.getElementById('processId').value = '';
+                        const parentFieldNew = document.getElementById('parentProc');
+                        if (parentFieldNew) parentFieldNew.value = '';
 
                         // Limpa Choices
                         ['supplierSelect', 'objectSelect', 'treatedBy', 'statusSelect', 'locationSelect'].forEach(id => {
@@ -5256,6 +5854,7 @@
             var exerciseYearVal = exerciseYearEl ? String(exerciseYearEl.value || '').trim() : '';
 
             const data = {
+                parent_proc: (document.getElementById('parentProc') && document.getElementById('parentProc').value) || '',
                 pp_number: (document.getElementById('ppNumber') && document.getElementById('ppNumber').value) || '',
                 exercise_year: exerciseYearVal,
                 pp_ano: (document.getElementById('ppAno') && document.getElementById('ppAno').value) || '',
