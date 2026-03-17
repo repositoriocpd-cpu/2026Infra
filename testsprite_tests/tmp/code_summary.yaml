@@ -1,0 +1,37 @@
+version: "2"
+type: frontend
+tech_stack:
+  - HTML
+  - Vanilla JavaScript
+  - CSS
+  - Supabase
+  - Chart.js
+routes:
+  - path: /
+    file: index.html
+    auth_required: false
+    description: Dashoard and Process Management application
+features:
+  - name: Dashboard
+    description: Visual metrics of processes using Chart.js
+    files:
+      - index.html
+      - 2026_script.js
+    entry_route: /
+    user_interactions:
+      - View doughnut chart of process statuses
+      - View bar chart of process locations
+  - name: Process Management
+    description: CRUD operations for administrative processes
+    files:
+      - index.html
+      - 2026_script.js
+    entry_route: /
+    user_interactions:
+      - Search processes by number, supplier or object
+      - Filter processes by status and location
+      - Open "Novo Processo" modal
+      - Open "Editar Processo" modal
+      - View "Histórico de Processo" modal
+      - Export processes to PDF and Excel
+known_limitations: []

@@ -7,7 +7,7 @@
     <title>Painel SESMEC- Infra</title>
     <link rel="icon" type="image/jpeg"
         href="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg">
-    
+
     <!-- PWA Settings -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#064e3b">
@@ -195,7 +195,8 @@
             }
         }
 
-        html, body {
+        html,
+        body {
             overflow-x: hidden;
             width: 100%;
             position: relative;
@@ -2181,20 +2182,134 @@
         .table-wrapper {
             max-height: 65vh;
             overflow-y: auto;
+            overflow-x: auto;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             background-color: white;
             position: relative;
         }
 
-        #processTable thead th {
+        /* Tabela principal de processos - layout fixo e responsivo */
+        #process-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        #process-table thead th,
+        #process-table tbody td {
+            padding: 0.5rem 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.78rem;
+        }
+
+        #process-table thead th {
             position: sticky;
             top: 0;
             z-index: 20;
             background-color: #f8fafc;
             box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
             white-space: nowrap;
-            padding: 0.75rem 0.5rem;
+        }
+
+        /* Hover amigável para linhas */
+        #process-table tbody tr:hover {
+            background: #f5f7fa;
+        }
+
+        /* Larguras das colunas em px (1-based) */
+        #process-table th:nth-child(1),
+        #process-table td:nth-child(1) {
+            width: 120px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(2),
+        #process-table td:nth-child(2) {
+            width: 80px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(3),
+        #process-table td:nth-child(3) {
+            width: 70px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(4),
+        #process-table td:nth-child(4) {
+            width: 100px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(5),
+        #process-table td:nth-child(5) {
+            width: 260px;
+            text-align: left;
+        }
+
+        #process-table th:nth-child(6),
+        #process-table td:nth-child(6) {
+            width: 120px;
+            text-align: left;
+        }
+
+        #process-table th:nth-child(7),
+        #process-table td:nth-child(7) {
+            width: 140px;
+            text-align: right;
+        }
+
+        #process-table th:nth-child(8),
+        #process-table td:nth-child(8),
+        #process-table th:nth-child(9),
+        #process-table td:nth-child(9),
+        #process-table th:nth-child(13),
+        #process-table td:nth-child(13) {
+            width: 120px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(10),
+        #process-table td:nth-child(10) {
+            width: 160px;
+            text-align: center;
+        }
+
+        #process-table th:nth-child(11),
+        #process-table td:nth-child(11) {
+            width: 140px;
+            text-align: left;
+        }
+
+        #process-table th:nth-child(12),
+        #process-table td:nth-child(12) {
+            width: 180px;
+            text-align: left;
+        }
+
+        #process-table th:nth-child(14),
+        #process-table td:nth-child(14) {
+            width: 120px;
+            text-align: center;
+        }
+
+        /* Texto longo com reticências */
+        #process-table td:nth-child(5),
+        #process-table td:nth-child(6),
+        #process-table td:nth-child(10),
+        #process-table td:nth-child(12) {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Coluna de ações com botões centralizados */
+        #process-table td:last-child>div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
         }
 
         body.dark-mode .table-wrapper {
@@ -2202,7 +2317,7 @@
             border-color: #334155;
         }
 
-        body.dark-mode #processTable thead th {
+        body.dark-mode #process-table thead th {
             background-color: #0F172A;
             box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
         }
@@ -3340,42 +3455,45 @@
                     <table id="process-table">
                         <thead>
                             <tr>
+                                <th onclick="window.sortTable('parentProc')" style="cursor:pointer;"><input
+                                        type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
+                                        data-col="0"> Nº PROC. MÃE <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('ppNumber')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="0"> Nº P.P. <i class="fas fa-sort"></i></th>
+                                        data-col="1"> Nº P.P. <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('exerciseYear')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="1"> ANO <i class="fas fa-sort"></i></th>
+                                        data-col="2"> ANO <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('ppAno')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="2">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="3">
                                     P.P.ANO <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('supplier')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="3"> Fornecedor <i class="fas fa-sort"></i></th>
+                                        data-col="4"> Fornecedor <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('object')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="4">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="5">
                                     Objeto <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('coverValue')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="5"> Valor Capa <i class="fas fa-sort"></i></th>
+                                        data-col="6"> Valor Capa <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('openingDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="6"> Abertura <i class="fas fa-sort"></i></th>
+                                        data-col="7"> Abertura <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('deadline')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="7"> Conclusão <i class="fas fa-sort"></i></th>
+                                        data-col="8"> Conclusão <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('status')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="8">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="9">
                                     Status <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('treatedBy')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="9"> Tratado Por <i class="fas fa-sort"></i></th>
+                                        data-col="10"> Tratado Por <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('location')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="10"> Localização <i class="fas fa-sort"></i></th>
+                                        data-col="11"> Localização <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('locationDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="11"> Dt Local. <i class="fas fa-sort"></i></th>
+                                        data-col="12"> Dt Local. <i class="fas fa-sort"></i></th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -4269,7 +4387,7 @@
         };
 
         // --- GLOBAL CONFIG & STATE ---
-        console.log("%c--- SESMEC INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
+        console.log("%c--- SUB INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
@@ -4511,11 +4629,22 @@
                 window.state.statuses = (statuses.data || []).map(s => s.name);
                 window.state.handlers = (handlers.data || []).map(h => h.name);
                 window.state.processes = (processes.data || []).map(p => ({
-                    id: p.id, ppNumber: p.pp_number, exerciseYear: p.exercise_year, ppAno: p.pp_ano,
-                    coverValue: p.cover_value, supplier: p.supplier_name, object: p.object_name,
-                    openingDate: p.opening_date, deadline: p.deadline, treatedBy: p.treated_by,
-                    status: p.status, location: p.location, locationDate: p.location_date,
-                    situation: p.situation, notes: p.notes,
+                    id: p.id,
+                    parentProc: p.parent_proc,
+                    ppNumber: p.pp_number,
+                    exerciseYear: p.exercise_year,
+                    ppAno: p.pp_ano,
+                    coverValue: p.cover_value,
+                    supplier: p.supplier_name,
+                    object: p.object_name,
+                    openingDate: p.opening_date,
+                    deadline: p.deadline,
+                    treatedBy: p.treated_by,
+                    status: p.status,
+                    location: p.location,
+                    locationDate: p.location_date,
+                    situation: p.situation,
+                    notes: p.notes,
                     history: null // Será carregado sob demanda (lazy-load)
                 }));
 
@@ -4945,7 +5074,9 @@
                     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
                 };
 
+                const parentDisplay = p.parentProc || p.ppNumber || '';
                 tr.innerHTML = `
+                    <td>${parentDisplay}</td>
                     <td>${p.ppNumber || ''}</td>
                     <td>${p.exerciseYear || ''}</td>
                     <td><strong>${p.ppAno}</strong></td>
@@ -5256,6 +5387,7 @@
             var exerciseYearVal = exerciseYearEl ? String(exerciseYearEl.value || '').trim() : '';
 
             const data = {
+                parent_proc: (document.getElementById('parentProc') && document.getElementById('parentProc').value) || '',
                 pp_number: (document.getElementById('ppNumber') && document.getElementById('ppNumber').value) || '',
                 exercise_year: exerciseYearVal,
                 pp_ano: (document.getElementById('ppAno') && document.getElementById('ppAno').value) || '',
@@ -6315,7 +6447,7 @@
             </div>
         </div>
     </div>
-    <p
+    <!-- <p
         style="border-radius: 8px; text-align: center; font-size: 11px; color: #fff; margin-top: 16px; position: fixed; left: 50%; transform: translateX(-50%); bottom: 75px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 12px; white-space: nowrap; width: auto; max-width: 90vw;">
         SESME-C <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
             alt="DeepSite Logo"
@@ -6323,7 +6455,7 @@
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
             style="color: #ffffff; text-decoration: underline;" target="_blank">INFRA</a> - <a
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
-            style="color: #fff; text-decoration: underline;" target="_blank">PMI</a></p>
+            style="color: #fff; text-decoration: underline;" target="_blank">PMI</a></p>-->
     <script>
         function togglePasswordVisibility() {
             const pwdInput = document.getElementById('login-password');

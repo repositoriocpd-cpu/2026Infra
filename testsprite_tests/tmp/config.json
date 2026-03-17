@@ -1,0 +1,20 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:8080",
+  "loginUser": "cpdinfra@edu.itaguai.rj.gov.br",
+  "loginPassword": "T3c4n3x0",
+  "executionArgs": {
+    "projectName": "2025 Infra Sistemas YASMIN",
+    "projectPath": "h:\\2026 SISTEMAS\\2025 Infra Sistemas YASMIN",
+    "testIds": [],
+    "additionalInstruction": "O computador reiniciou. Por favor, tente executar os testes novamente. Foco em validar a abertura dos modais e o cabeçalho fixo da tabela.",
+    "serverMode": "development",
+    "envs": {
+      "API_KEY": "sk-user--BEEkq22_e6j92znpoSkLOHTibnimCvXhlD01rYSPtk3Jqx1SzksX7s8mmEqh3x_O4D3xJXvuOcEHey4zVwQ7Od3wYZLGEua9sMMPe9DWm9dJwMIbwWyKa7jZpTP_ckz1pI"
+    }
+  },
+  "serverPort": 63600,
+  "proxy": "http://54bf0a8d-6f55-4481-bd83-c59157c311f5:ROFRqNeReF3KWAA5miivnxTAIME4QqFj@tun.testsprite.com:8080"
+}

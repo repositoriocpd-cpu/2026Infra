@@ -1,0 +1,120 @@
+{"timestamp":"2026-03-15T20:30:48.825Z","level":"debug","message":"Generate code and execute params","context":{"projectName":"2025 Infra Sistemas YASMIN","projectPath":"h:\\2026 SISTEMAS\\2025 Infra Sistemas YASMIN","testIds":[],"serverMode":"development"}}
+{"timestamp":"2026-03-15T20:30:48.848Z","level":"info","message":"HTTP server started successfully on port 62647"}
+{"timestamp":"2026-03-15T20:30:48.882Z","level":"info","message":"HTTP proxy started successfully on port 62650"}
+{"timestamp":"2026-03-15T20:30:48.841Z","level":"info","message":"Attempting to start server (attempt 1/3)"}
+{"timestamp":"2026-03-15T20:30:48.875Z","level":"info","message":"Attempting to start HTTP proxy (attempt 1/3)"}
+{"timestamp":"2026-03-15T20:30:49.479Z","level":"info","message":"📋 Config: localhost:62650 -> tun.testsprite.com:7300"}
+{"timestamp":"2026-03-15T20:30:49.479Z","level":"info","message":"⏱️ Network timeout: 10000ms, Auth: enabled"}
+{"timestamp":"2026-03-15T20:30:49.479Z","level":"info","message":"🔗 Establishing control connection..."}
+{"timestamp":"2026-03-15T20:30:49.479Z","level":"info","message":"🚀 Starting tunnel client: d2e7fc2a-3959-40ba-8b54-12961a963af8"}
+{"timestamp":"2026-03-15T20:36:29.865Z","level":"debug","message":"Generate code and execute params","context":{"projectName":"2025 Infra Sistemas YASMIN","projectPath":"h:\\2026 SISTEMAS\\2025 Infra Sistemas YASMIN","testIds":[],"serverMode":"development"}}
+{"timestamp":"2026-03-15T20:36:29.879Z","level":"info","message":"Attempting to start server (attempt 1/3)"}
+{"timestamp":"2026-03-15T20:36:29.916Z","level":"info","message":"HTTP proxy started successfully on port 62316"}
+{"timestamp":"2026-03-15T20:36:29.885Z","level":"info","message":"HTTP server started successfully on port 62313"}
+{"timestamp":"2026-03-15T20:36:29.916Z","level":"info","message":"Attempting to start HTTP proxy (attempt 1/3)"}
+{"timestamp":"2026-03-15T20:36:30.800Z","level":"info","message":"GET /favicon.ico 404 0ms"}
+{"timestamp":"2026-03-15T20:36:31.490Z","level":"info","message":"⏱️ Network timeout: 10000ms, Auth: enabled"}
+{"timestamp":"2026-03-15T20:36:31.491Z","level":"info","message":"🔗 Establishing control connection..."}
+{"timestamp":"2026-03-15T20:36:31.490Z","level":"info","message":"📋 Config: localhost:62316 -> tun.testsprite.com:7300"}
+{"timestamp":"2026-03-15T20:36:31.828Z","level":"info","message":"Pre-flight probe succeeded on attempt 1: status=200"}
+{"timestamp":"2026-03-15T20:36:31.816Z","level":"info","message":"proxy: [REDACTED]tun.testsprite.com:8080"}
+{"timestamp":"2026-03-15T20:36:32.106Z","level":"info","message":"✅ Tunnel established, remote port: 8080"}
+{"timestamp":"2026-03-15T20:36:31.816Z","level":"info","message":"Pre-flight probe attempt 1/3 to http://localhost:8080..."}
+{"timestamp":"2026-03-15T20:36:31.490Z","level":"info","message":"🚀 Starting tunnel client: b3fa47b3-278a-4e9f-b32f-53730ea22bba"}
+{"timestamp":"2026-03-15T20:36:32.276Z","level":"info","message":"TIME: connection-1"}
+{"timestamp":"2026-03-15T20:36:32.276Z","level":"info","message":"🔄 [1] New connection request: f3769a8a-a80a-4858-b177-9901fc8dfa16"}
+{"timestamp":"2026-03-15T20:36:32.401Z","level":"info","message":"TIME END: remote-connect-1"}
+{"timestamp":"2026-03-15T20:36:32.408Z","level":"info","message":"✅ [1] Remote connection established"}
+{"timestamp":"2026-03-15T20:36:32.534Z","level":"info","message":"✅ [1] Authentication completed"}
+{"timestamp":"2026-03-15T20:36:31.828Z","level":"info","message":"Verifying tunnel connectivity..."}
+{"timestamp":"2026-03-15T20:36:31.828Z","level":"info","message":"Tunnel probe attempt 1/2 through tun.testsprite.com:8080 to http://localhost:8080..."}
+{"timestamp":"2026-03-15T20:36:32.276Z","level":"info","message":"TIME: remote-connect-1"}
+{"timestamp":"2026-03-15T20:36:32.535Z","level":"info","message":"🔄 [1] Starting data proxy"}
+{"timestamp":"2026-03-15T20:36:32.409Z","level":"info","message":"TIME END: local-connect-1"}
+{"timestamp":"2026-03-15T20:36:32.535Z","level":"info","message":"✅ [1] Connection f3769a8a-a80a-4858-b177-9901fc8dfa16 fully established and proxying"}
+{"timestamp":"2026-03-15T20:36:32.276Z","level":"info","message":"🔗 [1] Starting handleConnection for f3769a8a-a80a-4858-b177-9901fc8dfa16"}
+{"timestamp":"2026-03-15T20:36:32.276Z","level":"info","message":"🌐 [1] Connecting to remote tun.testsprite.com:7300"}
+{"timestamp":"2026-03-15T20:36:32.410Z","level":"info","message":"👋 [1] Hello message sent"}
+{"timestamp":"2026-03-15T20:36:32.408Z","level":"info","message":"📡 [1] Connecting to local localhost:62316"}
+{"timestamp":"2026-03-15T20:36:32.410Z","level":"info","message":"✅ [1] Local connection established"}
+{"timestamp":"2026-03-15T20:36:32.408Z","level":"info","message":"local-connect-1"}
+{"timestamp":"2026-03-15T20:36:32.410Z","level":"info","message":"🤝 [1] Starting handshake"}
+{"timestamp":"2026-03-15T20:36:32.410Z","level":"info","message":"🔐 [1] Performing authentication"}
+{"timestamp":"2026-03-15T20:36:32.535Z","level":"info","message":"TIME END: connection-1"}
+{"timestamp":"2026-03-15T20:36:32.535Z","level":"info","message":"✋ [1] Sending Accept message for f3769a8a-a80a-4858-b177-9901fc8dfa16"}
+{"timestamp":"2026-03-15T20:36:33.686Z","level":"info","message":"Tunnel probe succeeded on attempt 1: status=200"}
+{"timestamp":"2026-03-15T20:36:33.686Z","level":"info","message":"Tunnel connectivity verified."}
+{"timestamp":"2026-03-15T21:13:29.669Z","level":"debug","message":"Generate code and execute params","context":{"projectName":"2025 Infra Sistemas YASMIN","projectPath":"h:\\2026 SISTEMAS\\2025 Infra Sistemas YASMIN","testIds":[],"serverMode":"development"}}
+{"timestamp":"2026-03-15T21:13:29.689Z","level":"info","message":"HTTP server started successfully on port 57192"}
+{"timestamp":"2026-03-15T21:13:29.717Z","level":"info","message":"Attempting to start HTTP proxy (attempt 1/3)"}
+{"timestamp":"2026-03-15T21:13:29.684Z","level":"info","message":"Attempting to start server (attempt 1/3)"}
+{"timestamp":"2026-03-15T21:13:29.718Z","level":"info","message":"HTTP proxy started successfully on port 57195"}
+{"timestamp":"2026-03-15T21:13:30.283Z","level":"info","message":"📋 Config: localhost:57195 -> tun.testsprite.com:7300"}
+{"timestamp":"2026-03-15T21:13:30.282Z","level":"info","message":"🚀 Starting tunnel client: da65e0de-cefc-45e5-b6dd-a547f8a8351e"}
+{"timestamp":"2026-03-15T21:13:30.283Z","level":"info","message":"🔗 Establishing control connection..."}
+{"timestamp":"2026-03-15T21:13:30.613Z","level":"info","message":"Pre-flight probe attempt 1/3 to http://localhost:8080..."}
+{"timestamp":"2026-03-15T21:13:30.624Z","level":"info","message":"Verifying tunnel connectivity..."}
+{"timestamp":"2026-03-15T21:13:30.654Z","level":"info","message":"GET /favicon.ico 404 2ms"}
+{"timestamp":"2026-03-15T21:13:30.612Z","level":"info","message":"proxy: [REDACTED]tun.testsprite.com:8080"}
+{"timestamp":"2026-03-15T21:13:30.624Z","level":"info","message":"Tunnel probe attempt 1/2 through tun.testsprite.com:8080 to http://localhost:8080..."}
+{"timestamp":"2026-03-15T21:13:30.889Z","level":"info","message":"✅ Tunnel established, remote port: 8080"}
+{"timestamp":"2026-03-15T21:13:30.624Z","level":"info","message":"Pre-flight probe succeeded on attempt 1: status=200"}
+{"timestamp":"2026-03-15T21:13:30.283Z","level":"info","message":"⏱️ Network timeout: 10000ms, Auth: enabled"}
+{"timestamp":"2026-03-15T21:13:31.064Z","level":"info","message":"🔄 [1] New connection request: 2c144416-cbcd-4544-a270-d7c54b5afb9c"}
+{"timestamp":"2026-03-15T21:13:31.065Z","level":"info","message":"🔗 [1] Starting handleConnection for 2c144416-cbcd-4544-a270-d7c54b5afb9c"}
+{"timestamp":"2026-03-15T21:13:31.194Z","level":"info","message":"✅ [1] Remote connection established"}
+{"timestamp":"2026-03-15T21:13:31.194Z","level":"info","message":"📡 [1] Connecting to local localhost:57195"}
+{"timestamp":"2026-03-15T21:13:31.320Z","level":"info","message":"✅ [1] Authentication completed"}
+{"timestamp":"2026-03-15T21:13:31.065Z","level":"info","message":"TIME: remote-connect-1"}
+{"timestamp":"2026-03-15T21:13:31.321Z","level":"info","message":"✋ [1] Sending Accept message for 2c144416-cbcd-4544-a270-d7c54b5afb9c"}
+{"timestamp":"2026-03-15T21:13:31.189Z","level":"info","message":"TIME END: remote-connect-1"}
+{"timestamp":"2026-03-15T21:13:31.322Z","level":"info","message":"✅ [1] Connection 2c144416-cbcd-4544-a270-d7c54b5afb9c fully established and proxying"}
+{"timestamp":"2026-03-15T21:13:31.064Z","level":"info","message":"TIME: connection-1"}
+{"timestamp":"2026-03-15T21:13:31.065Z","level":"info","message":"🌐 [1] Connecting to remote tun.testsprite.com:7300"}
+{"timestamp":"2026-03-15T21:13:31.194Z","level":"info","message":"local-connect-1"}
+{"timestamp":"2026-03-15T21:13:31.195Z","level":"info","message":"TIME END: local-connect-1"}
+{"timestamp":"2026-03-15T21:13:31.197Z","level":"info","message":"🤝 [1] Starting handshake"}
+{"timestamp":"2026-03-15T21:13:31.196Z","level":"info","message":"✅ [1] Local connection established"}
+{"timestamp":"2026-03-15T21:13:31.197Z","level":"info","message":"👋 [1] Hello message sent"}
+{"timestamp":"2026-03-15T21:13:31.197Z","level":"info","message":"🔐 [1] Performing authentication"}
+{"timestamp":"2026-03-15T21:13:31.322Z","level":"info","message":"TIME END: connection-1"}
+{"timestamp":"2026-03-15T21:13:31.322Z","level":"info","message":"🔄 [1] Starting data proxy"}
+{"timestamp":"2026-03-15T21:13:32.444Z","level":"info","message":"Tunnel probe succeeded on attempt 1: status=200"}
+{"timestamp":"2026-03-15T21:13:32.444Z","level":"info","message":"Tunnel connectivity verified."}
+{"timestamp":"2026-03-15T21:14:05.277Z","level":"debug","message":"Generate code and execute params","context":{"projectName":"2025 Infra Sistemas YASMIN","projectPath":"h:\\2026 SISTEMAS\\2025 Infra Sistemas YASMIN","testIds":[],"serverMode":"development"}}
+{"timestamp":"2026-03-15T21:14:05.299Z","level":"info","message":"HTTP server started successfully on port 63600"}
+{"timestamp":"2026-03-15T21:14:05.327Z","level":"info","message":"Attempting to start HTTP proxy (attempt 1/3)"}
+{"timestamp":"2026-03-15T21:14:05.292Z","level":"info","message":"Attempting to start server (attempt 1/3)"}
+{"timestamp":"2026-03-15T21:14:05.327Z","level":"info","message":"HTTP proxy started successfully on port 63603"}
+{"timestamp":"2026-03-15T21:14:05.896Z","level":"info","message":"🚀 Starting tunnel client: 54bf0a8d-6f55-4481-bd83-c59157c311f5"}
+{"timestamp":"2026-03-15T21:14:05.896Z","level":"info","message":"🔗 Establishing control connection..."}
+{"timestamp":"2026-03-15T21:14:06.160Z","level":"info","message":"Pre-flight probe attempt 1/3 to http://localhost:8080..."}
+{"timestamp":"2026-03-15T21:14:06.172Z","level":"info","message":"Verifying tunnel connectivity..."}
+{"timestamp":"2026-03-15T21:14:05.896Z","level":"info","message":"⏱️ Network timeout: 10000ms, Auth: enabled"}
+{"timestamp":"2026-03-15T21:14:06.263Z","level":"info","message":"GET /favicon.ico 404 1ms"}
+{"timestamp":"2026-03-15T21:14:06.172Z","level":"info","message":"Pre-flight probe succeeded on attempt 1: status=200"}
+{"timestamp":"2026-03-15T21:14:06.450Z","level":"info","message":"✅ Tunnel established, remote port: 8080"}
+{"timestamp":"2026-03-15T21:14:06.160Z","level":"info","message":"proxy: [REDACTED]tun.testsprite.com:8080"}
+{"timestamp":"2026-03-15T21:14:06.173Z","level":"info","message":"Tunnel probe attempt 1/2 through tun.testsprite.com:8080 to http://localhost:8080..."}
+{"timestamp":"2026-03-15T21:14:05.896Z","level":"info","message":"📋 Config: localhost:63603 -> tun.testsprite.com:7300"}
+{"timestamp":"2026-03-15T21:14:06.627Z","level":"info","message":"🔄 [1] New connection request: 9dc7e89f-5f5f-4eb4-b295-03b6c2bd7900"}
+{"timestamp":"2026-03-15T21:14:06.627Z","level":"info","message":"TIME: connection-1"}
+{"timestamp":"2026-03-15T21:14:06.754Z","level":"info","message":"TIME END: remote-connect-1"}
+{"timestamp":"2026-03-15T21:14:06.754Z","level":"info","message":"✅ [1] Remote connection established"}
+{"timestamp":"2026-03-15T21:14:06.885Z","level":"info","message":"✅ [1] Authentication completed"}
+{"timestamp":"2026-03-15T21:14:06.628Z","level":"info","message":"🔗 [1] Starting handleConnection for 9dc7e89f-5f5f-4eb4-b295-03b6c2bd7900"}
+{"timestamp":"2026-03-15T21:14:06.885Z","level":"info","message":"✋ [1] Sending Accept message for 9dc7e89f-5f5f-4eb4-b295-03b6c2bd7900"}
+{"timestamp":"2026-03-15T21:14:06.755Z","level":"info","message":"local-connect-1"}
+{"timestamp":"2026-03-15T21:14:06.886Z","level":"info","message":"✅ [1] Connection 9dc7e89f-5f5f-4eb4-b295-03b6c2bd7900 fully established and proxying"}
+{"timestamp":"2026-03-15T21:14:06.628Z","level":"info","message":"🌐 [1] Connecting to remote tun.testsprite.com:7300"}
+{"timestamp":"2026-03-15T21:14:06.628Z","level":"info","message":"TIME: remote-connect-1"}
+{"timestamp":"2026-03-15T21:14:06.756Z","level":"info","message":"TIME END: local-connect-1"}
+{"timestamp":"2026-03-15T21:14:06.762Z","level":"info","message":"🤝 [1] Starting handshake"}
+{"timestamp":"2026-03-15T21:14:06.754Z","level":"info","message":"📡 [1] Connecting to local localhost:63603"}
+{"timestamp":"2026-03-15T21:14:06.762Z","level":"info","message":"🔐 [1] Performing authentication"}
+{"timestamp":"2026-03-15T21:14:06.762Z","level":"info","message":"👋 [1] Hello message sent"}
+{"timestamp":"2026-03-15T21:14:06.761Z","level":"info","message":"✅ [1] Local connection established"}
+{"timestamp":"2026-03-15T21:14:06.886Z","level":"info","message":"TIME END: connection-1"}
+{"timestamp":"2026-03-15T21:14:06.885Z","level":"info","message":"🔄 [1] Starting data proxy"}
+{"timestamp":"2026-03-15T21:14:08.030Z","level":"info","message":"Tunnel connectivity verified."}
+{"timestamp":"2026-03-15T21:14:08.030Z","level":"info","message":"Tunnel probe succeeded on attempt 1: status=200"}

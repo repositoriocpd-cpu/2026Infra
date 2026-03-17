@@ -1,0 +1,438 @@
+[
+  {
+    "id": "TC001",
+    "title": "Dashboard shows total and status counters on initial load",
+    "description": "Verifies the dashboard loads and displays the key counters for total processes and per-status counts.",
+    "category": "Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Total\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a numeric value for the total processes counter is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Em Tramitação\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Concluído\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Pendente\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Doughnut status chart is visible and renders status legend/labels",
+    "description": "Verifies the doughnut chart for process statuses is present and appears rendered with visible status labels/legend.",
+    "category": "Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Status\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Doughnut chart\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Em Tramitação\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Concluído\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Pendente\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Bar chart for process locations is visible and renders location labels",
+    "description": "Verifies the bar chart for process locations is present and appears rendered with visible location labels.",
+    "category": "Dashboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Local\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Bar chart\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Bar chart axes\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"At least one bar in the bar chart\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Filter main table by clicking the 'Em Tramitação' dashboard card",
+    "description": "Verifies clicking the 'Em Tramitação' card filters the main table to show only processes in that status.",
+    "category": "Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Em Tramitação dashboard card\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Em Tramitação\" dashboard card"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Em Tramitação\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Main processes table\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that a status indicator \"Em Tramitação\" is visible in at least one table row"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Open 'Editar Processo' modal from a filtered table row",
+    "description": "Verifies that after filtering to 'Em Tramitação', clicking a table row opens the 'Editar Processo' modal with process details.",
+    "category": "Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Em Tramitação\" dashboard card"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Main processes table\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first row in the main processes table"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Editar Processo\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Process details section in the modal\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Dashboard charts show an empty/error state when data cannot be loaded",
+    "description": "Verifies that when chart data cannot be loaded, the UI shows a visible empty/error message with guidance to retry or check connection.",
+    "category": "Dashboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for element \"Doughnut chart\" to appear"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that either text \"Erro\" is visible or text \"Sem dados\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Tentar novamente\" is visible or Verify text \"Verifique a conexão\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Bar chart\" is visible or Verify that an empty/error message near the bar chart is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Search for an existing process by number and edit supplier (Fornecedor) successfully",
+    "description": "Verifies a user can search for a process, open edit modal, update Fornecedor, and see confirmation plus updated value.",
+    "category": "Process Management",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the search input"
+      },
+      {
+        "type": "action",
+        "description": "Type \"12345\" into the search input"
+      },
+      {
+        "type": "action",
+        "description": "Press Enter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"12345\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the process row that contains text \"12345\""
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Editar Processo\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Editar Processo\" modal is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Fornecedor Editado\" into the \"Fornecedor\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Save\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a success notification is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Search for a non-existent process number shows 'No processes found'",
+    "description": "Verifies searching for an unknown process number returns an empty state message.",
+    "category": "Process Management",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the search input"
+      },
+      {
+        "type": "action",
+        "description": "Type \"00000\" into the search input"
+      },
+      {
+        "type": "action",
+        "description": "Press Enter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No processes found\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Create a new process successfully from 'Novo Processo' modal",
+    "description": "Verifies a user can open the create modal, fill required fields, submit, and see success confirmation.",
+    "category": "Process Management",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Novo Processo\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Novo Processo\" modal is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Fornecedor Teste\" into the \"Fornecedor\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Objeto Teste\" into the \"Objeto\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"1000\" into the \"Valor da Capa\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2026-03-13\" into the \"Data de Abertura\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"30\" into the \"Prazo\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Submit\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a success notification is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Create process validation: missing Fornecedor shows required-field error",
+    "description": "Verifies the create form blocks submission and displays a validation message when Fornecedor is empty.",
+    "category": "Process Management",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Novo Processo\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Novo Processo\" modal is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Objeto Teste\" into the \"Objeto\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"1000\" into the \"Valor da Capa\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"2026-03-13\" into the \"Data de Abertura\" field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"30\" into the \"Prazo\" field"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Submit\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Fornecedor\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Filter by Status and Location and view process timeline entries",
+    "description": "Verifies filtering updates the table and the history modal displays timeline entries for a selected process.",
+    "category": "Process Management",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Select an option from the Status filter dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select an option from the Location filter dropdown"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"processes\" table is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on the first process row in the filtered results"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Histórico de Processo\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Histórico de Processo\" modal is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"timeline\" entries list is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "History modal shows empty state when there are no history entries",
+    "description": "Verifies the history modal provides a clear message when a process has no timeline/history entries.",
+    "category": "Process Management",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on a process row expected to have no history entries"
+      },
+      {
+        "type": "action",
+        "description": "Click on the \"Histórico de Processo\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Histórico de Processo\" modal is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"No history entries\" is visible"
+      }
+    ]
+  }
+]
