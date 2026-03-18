@@ -1,4 +1,4 @@
-const CACHE_NAME = 'infrasmedu-cache-v7';
+const CACHE_NAME = 'infrasmedu-cache-v8';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -53,6 +53,11 @@ self.addEventListener('fetch', (event) => {
         .catch(() => caches.match(event.request))
     );
     return;
+  }
+
+  // Ignorar requisições de vídeo (Service Workers padrões não lidam bem com Range Requests)
+  if (url.pathname.match(/\.(mp4|webm|ogg|mov)$/i)) {
+    return; // Deixa o navegador lidar com a requisição normalmente
   }
 
   event.respondWith(
