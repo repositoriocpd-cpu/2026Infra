@@ -22,6 +22,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -2485,93 +2487,339 @@
             background-color: #2a2a2a;
         }
 
-        /* --- TELA DE LOGIN --- */
+        /* ═══════════════════════════════════════════
+           TELA DE LOGIN — SUBINFRA PAINEL SMEDU
+           Design polished v2 (ref-image match)
+        ═══════════════════════════════════════════ */
         #login-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100vw;
             height: 100vh;
-            background-color: #f4f6f9;
             z-index: 999999;
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-        }
-
-        .login-card {
-            background: #fff;
-            width: 100%;
-            max-width: 400px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: radial-gradient(circle at top left, #dcfce7 0, #075985 55%, #020617 100%);
+            font-family: 'Sora', 'Inter', 'Segoe UI', sans-serif;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
-        .login-header {
-            background-color: #1a56b5;
-            color: #fff;
-            padding: 30px 20px;
-            text-align: center;
+        /* ── Animations ── */
+        @keyframes lgin-fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes lgin-glow-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 32px 6px rgba(34, 197, 94, 0.35);
+            }
+
+            50% {
+                box-shadow: 0 0 56px 14px rgba(34, 197, 94, 0.6);
+            }
+        }
+
+        @keyframes lgin-dot-active {
+
+            0%,
+            100% {
+                transform: scaleX(1);
+            }
+
+            50% {
+                transform: scaleX(2.6);
+            }
+        }
+
+        /* ── Shell ── */
+        .login-shell {
+            width: min(1140px, 100% - 2rem);
+            height: min(660px, 100svh - 2rem);
+            border-radius: 28px;
+            padding: 2px;
+            background: linear-gradient(145deg, #22c55e 0%, #0f172a 60%);
+            box-shadow:
+                0 50px 100px rgba(0, 0, 0, 0.75),
+                0 0 0 1px rgba(34, 197, 94, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            animation: lgin-fade-up 0.7s cubic-bezier(.22, .68, 0, 1.2) both;
+        }
+
+        .login-layout {
+            display: grid;
+            grid-template-columns: 55% 45%;
+            height: 100%;
+            border-radius: 26px;
+            overflow: hidden;
+        }
+
+        /* ── LEFT HERO PANEL (refactor to match mock) ── */
+        .login-hero {
+            position: relative;
             display: flex;
             flex-direction: column;
+            justify-content: stretch;
+            padding: 2.5rem 2.75rem 2.25rem;
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 12% 0%, rgba(190, 242, 100, 0.5) 0, transparent 50%),
+                radial-gradient(circle at 80% 100%, rgba(21, 128, 61, 0.6) 0, transparent 55%),
+                linear-gradient(150deg, #16a34a 0%, #0f5132 55%, #052e16 100%);
+            overflow: hidden;
+        }
+
+        /* subtle mesh / glass overlay */
+        .login-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 75% 80%, rgba(74, 222, 128, 0.22) 0, transparent 52%),
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.06) 0, transparent 42%);
+            pointer-events: none;
+        }
+
+        /* video container fills bottom-right of hero */
+        .login-hero-video-wrap {
+            position: absolute;
+            bottom: 4%;
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+            width: 105%;
+            height: 78%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .login-hero-video-wrap video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center bottom;
+            display: block;
+            filter: drop-shadow(0 18px 35px rgba(15, 23, 42, 0.6));
+        }
+
+        /* gradient mask so video fades into background */
+        .login-hero-video-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to right, #0f5132 0%, transparent 35%),
+                linear-gradient(to top, transparent 60%, #13622d 100%);
+            z-index: 2;
+        }
+
+        /* content sits above video */
+        .login-hero-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            color: #f0fdf4;
+            font-family: 'Sora', sans-serif;
+        }
+
+        /* ─ top badge ─ */
+        .login-pill {
+            display: inline-flex;
             align-items: center;
+            gap: 0.45rem;
+            background: rgba(6, 95, 70, 0.55);
+            border: 1px solid rgba(209, 250, 229, 0.5);
+            color: #bbf7d0;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.95rem;
+            border-radius: 999px;
+            width: fit-content;
+            backdrop-filter: blur(10px);
         }
 
-        .login-header img {
-            width: 60px;
-            height: 60px;
-            background: #fff;
-            border-radius: 50%;
-            padding: 5px;
-            margin-bottom: 15px;
+        .login-pill span {
+            padding-top: 1px;
         }
 
-        .login-header h1 {
-            font-size: 1.1rem;
+        /* ─ title + copy ─ */
+        .login-hero-main {
+            margin-top: 1.9rem;
+            max-width: 340px;
+        }
+
+        .login-hero-main h1 {
+            margin: 0 0 0.9rem;
+            line-height: 1.06;
+            font-weight: 900;
+            font-size: 2.05rem;
+            color: #ffffff;
+            text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .login-hero-main h1 span {
+            display: block;
+        }
+
+        .login-hero-main p {
             margin: 0;
+            font-size: 0.86rem;
+            color: rgba(226, 252, 233, 0.9);
+            line-height: 1.6;
+        }
+
+        .login-hero-main p strong {
             font-weight: 700;
-            letter-spacing: 0.5px;
+            color: #bbf7d0;
         }
 
-        .login-header p {
-            font-size: 0.8rem;
-            margin: 5px 0 0;
-            font-weight: 400;
-        }
-
-        .login-body {
-            padding: 30px 40px;
-        }
-
-        .login-body h2 {
-            font-size: 1rem;
-            color: #333;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 25px;
+        /* ─ footer ─ */
+        .login-hero-footer {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            margin-top: auto;
+            padding-top: 1.75rem;
+            font-size: 0.76rem;
+            color: rgba(209, 250, 229, 0.95);
             font-weight: 600;
         }
 
+        .login-hero-footer-dots {
+            display: flex;
+            gap: 0.3rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(6, 78, 59, 0.85);
+            box-shadow: 0 10px 24px rgba(6, 78, 59, 0.75);
+        }
+
+        .login-hero-footer-dots span {
+            height: 7px;
+            width: 7px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.5);
+            transition: all 0.25s;
+        }
+
+        .login-hero-footer-dots span.active {
+            width: 18px;
+            background: #f9fafb;
+        }
+
+        /* ── RIGHT CARD ── */
+        .login-card {
+            position: relative;
+            background:
+                radial-gradient(ellipse at 50% 0%, rgba(22, 101, 52, 0.12) 0%, transparent 55%),
+                linear-gradient(180deg, #0b1120 0%, #070d1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2.5rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .login-card-inner {
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+            animation: lgin-fade-up 0.7s 0.15s both;
+        }
+
+        /* ─ logo + heading ─ */
+        .login-header {
+            margin-bottom: 1.6rem;
+            text-align: center;
+        }
+
+        .login-header-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #0f172a;
+            border: 1.5px solid rgba(74, 222, 128, 0.35);
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.5),
+                0 0 0 4px rgba(74, 222, 128, 0.08);
+            margin-bottom: 1rem;
+            animation: lgin-glow-pulse 4s ease-in-out infinite;
+        }
+
+        .login-header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .login-header h1 {
+            margin: 0 0 0.3rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            color: #f1f5f9;
+        }
+
+        .login-header h1 .accent {
+            color: #4ade80;
+        }
+
+        .login-header p {
+            font-size: 0.78rem;
+            margin: 0;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* ─ welcome copy ─ */
+        .login-body h2 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0 0 1.4rem;
+            line-height: 1.45;
+            text-align: center;
+        }
+
+        /* ─ form ─ */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
             position: relative;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 0.8rem;
-            color: #e74c3c;
+            margin-bottom: 0.4rem;
+            font-size: 0.74rem;
             font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.03em;
+            text-align: center;
         }
 
         .form-group label.normal-label {
-            color: #555;
+            color: #94a3b8;
         }
 
         .input-icon-wrapper {
@@ -2583,75 +2831,116 @@
         .input-icon-wrapper i.fa-envelope,
         .input-icon-wrapper i.fa-lock {
             position: absolute;
-            left: 15px;
-            color: #888;
+            left: 14px;
+            color: #475569;
+            font-size: 0.82rem;
+            pointer-events: none;
         }
 
         .input-icon-wrapper input {
             width: 100%;
-            padding: 10px 15px 10px 40px;
-            border: 1px solid #cce0f5;
-            background-color: #e6f0fa;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            color: #333;
+            box-sizing: border-box;
+            padding: 11px 38px 11px 36px;
+            border-radius: 12px;
+            border: 1.5px solid rgba(148, 163, 184, 0.15);
+            background: rgba(15, 23, 42, 0.7);
+            font-size: 0.88rem;
+            font-family: 'Sora', sans-serif;
+            color: #e2e8f0;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        .input-icon-wrapper input::placeholder {
+            color: #475569;
         }
 
         .input-icon-wrapper input:focus {
-            border-color: #1a56b5;
+            border-color: rgba(74, 222, 128, 0.5);
+            box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.12), 0 8px 24px rgba(22, 163, 74, 0.2);
+            background: rgba(7, 13, 26, 0.9);
         }
 
         .toggle-password {
             position: absolute;
-            right: 15px;
-            color: #aaa;
+            right: 13px;
+            color: #475569;
             cursor: pointer;
             border: none;
             background: transparent;
             padding: 0;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            transition: color 0.15s;
         }
 
         .toggle-password:hover {
-            color: #555;
+            color: #94a3b8;
         }
 
+        /* ─ CTA button ─ */
         .login-btn {
-            background-color: #1a56b5;
-            color: #fff;
-            border: none;
             width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 4px;
+            padding: 0.88rem 1rem;
+            margin-top: 0.75rem;
+            border: none;
+            border-radius: 999px;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
             cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.2s;
+            color: #022c22;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow:
+                0 10px 28px rgba(22, 163, 74, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: transform 0.18s, box-shadow 0.18s, filter 0.18s;
         }
 
         .login-btn:hover {
-            background-color: #144491;
+            transform: translateY(-2px);
+            box-shadow: 0 18px 40px rgba(22, 163, 74, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            filter: brightness(1.06);
         }
 
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ─ footer text ─ */
         .login-footer {
-            background-color: #f9f9f9;
-            padding: 15px;
+            padding-top: 1.5rem;
+            font-size: 0.68rem;
+            color: #334155;
             text-align: center;
-            font-size: 0.75rem;
-            color: #888;
-            border-top: 1px solid #eee;
+            line-height: 1.5;
         }
 
+        /* ─ error banner ─ */
         .login-error {
-            color: #e74c3c;
-            font-size: 0.8rem;
-            text-align: center;
-            margin-top: -10px;
-            margin-bottom: 15px;
             display: none;
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            padding: 0.65rem 0.8rem;
+            font-size: 0.76rem;
+            border-radius: 10px;
+            margin-bottom: 0.9rem;
+            border: 1px solid rgba(248, 113, 113, 0.35);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .login-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .login-hero {
+                display: none;
+            }
+
+            .login-card {
+                padding: 2rem 1.5rem;
+            }
         }
 
         /* --- ESTILOS MOBILE (SUBInfra) --- */
@@ -3011,45 +3300,102 @@
 <body>
     <!-- OVERLAY DE LOGIN -->
     <div id="login-overlay">
-        <div class="login-card">
-            <div class="login-header">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
-                    alt="Logo Prefeitura" style="max-height: 80px; margin-bottom: 1rem;">
-                <h1>SUB INFRA | SMEDU </h1>
-                <p>Secretaria Municipal de Educação de Itaguaí</p>
-            </div>
-            <div class="login-body">
-                <h2>Acesso ao Sistema</h2>
+        <div class="login-shell">
+            <div class="login-layout">
 
-                <div class="login-error" id="login-error-msg">
-                    E-mail ou senha incorretos.
-                </div>
-
-                <form id="login-form" onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label for="login-email">E-mail institucional</label>
-                        <div class="input-icon-wrapper">
-                            <i class="far fa-envelope"></i>
-                            <input type="email" id="login-email" required value="cpdinfra@edu.itaguai.rj.gov.br">
-                        </div>
+                <!-- ═══ PAINEL ESQUERDO: HERO VERDE ═══ -->
+                <section class="login-hero" aria-label="Apresentação do sistema SMEDU SubInfraestrutura">
+                    <!-- vídeo dos mascotes no fundo -->
+                    <div class="login-hero-video-wrap" aria-hidden="true">
+                        <video src="public/assets/images/videologin.mp4" autoplay muted loop playsinline></video>
                     </div>
 
-                    <div class="form-group">
-                        <label for="login-password" class="normal-label">Senha</label>
-                        <div class="input-icon-wrapper">
-                            <i class="fas fa-lock"></i>
-                            <input type="password" id="login-password" required value="T3c4n3x0">
-                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">
-                                <i class="far fa-eye" id="toggle-password-icon"></i>
-                            </button>
+                    <div class="login-hero-content">
+                        <!-- badge topo -->
+                        <div class="login-pill">
+                            <span>Sistema Online</span>
+                        </div>
+
+                        <!-- bloco principal de texto -->
+                        <div class="login-hero-main">
+                            <h1>
+                                <span>SMEDU</span>
+                                <span>SubInfraestrutura</span>
+                            </h1>
+                            <p>
+                                Gerencie os lançamentos de processos relacionados à
+                                <strong>Subsecretaria de Infraestrutura</strong> da SMEDU.
+                            </p>
+                        </div>
+
+                        <!-- rodapé com dots e contador -->
+                        <div class="login-hero-footer">
+                            <div class="login-hero-footer-dots" aria-hidden="true">
+                                <span class="active"></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <span>Processos ativos +150&nbsp;|&nbsp;Unidades atendidas</span>
                         </div>
                     </div>
+                </section>
 
-                    <button type="submit" class="login-btn">Entrar</button>
-                </form>
-            </div>
-            <div class="login-footer">
-                Prefeitura Municipal de Itaguaí — SMEDU/CPD
+                <!-- ═══ PAINEL DIREITO: FORMULÁRIO ═══ -->
+                <section class="login-card" aria-label="Autenticação no sistema SUBInfra">
+                    <div class="login-card-inner">
+
+                        <header class="login-header">
+                            <div class="login-header-logo">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+                                    alt="Brasão da Prefeitura de Itaguaí">
+                            </div>
+                            <h1><span class="accent">SUBINFRA</span>&nbsp;• PAINEL SMEDU</h1>
+                            <p>Plataforma de gestão de infraestrutura da Secretaria<br>Municipal de Educação de Itaguaí.
+                            </p>
+                        </header>
+
+                        <div class="login-body">
+                            <h2>Bem-vindo de volta! Use seu e-mail<br>institucional para acessar o painel.</h2>
+
+                            <div class="login-error" id="login-error-msg">
+                                <i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>
+                                E-mail ou senha incorretos.
+                            </div>
+
+                            <form id="login-form" onsubmit="handleLogin(event)">
+                                <div class="form-group">
+                                    <label for="login-email">E-mail corporativo</label>
+                                    <div class="input-icon-wrapper">
+                                        <i class="far fa-envelope"></i>
+                                        <input type="email" id="login-email" required
+                                            placeholder="cpdinfra@edu.itaguai.rj.gov.br"
+                                            value="cpdinfra@edu.itaguai.rj.gov.br">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="login-password" class="normal-label">Senha</label>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="login-password" required placeholder="••••••••"
+                                            value="T3c4n3x0">
+                                        <button type="button" class="toggle-password"
+                                            onclick="togglePasswordVisibility()" title="Mostrar/ocultar senha">
+                                            <i class="far fa-eye" id="toggle-password-icon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="login-btn">Entrar na Plataforma</button>
+                            </form>
+
+                            <div class="login-footer">
+                                Prefeitura Municipal de Itaguaí — SMEDU / SUBInfra
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </div>
     </div>
