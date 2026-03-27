@@ -648,6 +648,40 @@
             color: var(--govbr-blue);
         }
 
+        .header-sign-in .menu-section {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-sign-in .menu-section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .header-sign-in .menu-header {
+            padding: 0.5rem 1rem 0.25rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .header-sign-in .logout-link {
+            color: #dc2626;
+        }
+
+        .header-sign-in .logout-link .fas {
+            color: #dc2626;
+        }
+
+        .header-sign-in .logout-link:hover {
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+
         body.dark-mode .header-sign-in {
             background-color: #1e1e1e;
             border: 1px solid #333;
@@ -660,6 +694,23 @@
         body.dark-mode .header-sign-in li a:hover {
             background-color: #333;
             color: #66b3ff;
+        }
+
+        body.dark-mode .header-sign-in .menu-header {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .header-sign-in .logout-link {
+            color: #f87171;
+        }
+
+        body.dark-mode .header-sign-in .logout-link .fas {
+            color: #f87171;
+        }
+
+        body.dark-mode .header-sign-in .logout-link:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
         }
 
         .header-content h1 {
@@ -1545,6 +1596,89 @@
 
         .modal-body {
             padding: 1.5rem 2.5rem;
+        }
+
+        /* Info Modal Styles */
+        #infoModal .process-modal-content {
+            max-width: 700px;
+        }
+
+        #infoModal .modal-header {
+            background: linear-gradient(135deg, #1452B5 0%, #0d3485 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 20px 20px 0 0;
+        }
+
+        #infoModal .modal-header h2 {
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        #infoModal .modal-header-info p {
+            color: rgba(255,255,255,0.85) !important;
+        }
+
+        #infoModal .modal-close {
+            color: white !important;
+            font-size: 2rem;
+        }
+
+        #infoModal .modal-close:hover {
+            color: #cbd5e1 !important;
+        }
+
+        #infoModal .info-content {
+            padding: 2rem;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        #infoModal .info-content h3 {
+            color: #1452B5;
+            margin: 1.5rem 0 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        #infoModal .info-content h3:first-child {
+            margin-top: 0;
+        }
+
+        #infoModal .info-content p {
+            margin-bottom: 1rem;
+        }
+
+        #infoModal .info-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #infoModal .info-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        #infoModal .info-content .highlight-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid #1452B5;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        body.dark-mode #infoModal .info-content {
+            color: #cbd5e1;
+        }
+
+        body.dark-mode #infoModal .info-content h3 {
+            color: #60a5fa;
+        }
+
+        body.dark-mode #infoModal .info-content .highlight-box {
+            background: linear-gradient(135deg, #1e3a5f 0%, #172554 100%);
+            border-left-color: #60a5fa;
         }
 
         /* Form Pods (Cards) */
@@ -3542,16 +3676,32 @@
                     </div>
                 </div>
 
+                <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-right: 1rem;">
+                    <button id="global-tour-btn"
+                        class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                        title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
+                        onclick="window.startProcessTour()">
+                        <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
+                    </button>
+                </div>
                 <div class="user-info">
                     <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
                     <i class="fa-solid fa-user-circle"></i>
                     <span id="header-user-name">Usuário</span>
                     <div class="header-sign-in">
-                        <ul>
+                        <ul class="menu-section">
+                            <li class="menu-header">Sua Conta</li>
                             <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
                             <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
-                            <li><a href="#" onclick="window.logout(event)"><i class="fas fa-sign-out-alt"></i> Sair</a>
-                            </li>
+                        </ul>
+                        <ul class="menu-section">
+                            <li class="menu-header">Links Externo</li>
+                            <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas Frequentes</a></li>
+                            <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a></li>
+                            <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a></li>
+                        </ul>
+                        <ul class="menu-section">
+                            <li><a href="#" onclick="window.logout(event)" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                         </ul>
                     </div>
                 </div>
@@ -3692,6 +3842,10 @@
                         <canvas id="locationChart"></canvas>
                     </div>
                     <div style="position: absolute; bottom: 15px; left: 15px; right: 15px; display: flex; gap: 12px;">
+                        <button class="btn btn-success" onclick="window.openProcessModal()"
+                            style="height: 48px; display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.2s; padding: 0 1.5rem;">
+                            <i class="fas fa-plus"></i> Novo Processo
+                        </button>
                         <button class="btn btn-primary" onclick="window.showSection('processes')"
                             style="flex: 1; height: 48px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #005a9c; border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(0, 90, 156, 0.2); transition: all 0.2s;">
                             <i class="fas fa-search"></i> Consultar Cadastrados
@@ -7393,6 +7547,246 @@
             </footer>
         </div>
     </div>
+
+    <!-- Info Modal (FAQ, Manual, Termos) -->
+    <div id="infoModal" class="process-modal" onclick="if(event.target===this) window.closeModal('infoModal')">
+        <div class="process-modal-content">
+            <header class="modal-header">
+                <div class="modal-header-info">
+                    <h2 id="infoModalTitle"><i class="fas fa-question-circle"></i> Informações</h2>
+                    <p id="infoModalSubtitle">Detalhes e orientações</p>
+                </div>
+                <button type="button" class="modal-close" onclick="window.closeModal('infoModal')">&times;</button>
+            </header>
+            <div class="info-content" id="infoModalContent">
+                <!-- Content will be dynamically inserted -->
+            </div>
+            <footer class="modal-footer">
+                <button class="btn-glass-cancel" onclick="window.closeModal('infoModal')">Fechar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Tour Styles -->
+    <style>
+        .tour-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tour-tooltip {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: tourPopIn 0.3s ease;
+        }
+        .tour-tooltip h3 {
+            margin: 0 0 0.5rem 0;
+            color: #005A9C;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .tour-tooltip p {
+            margin: 0 0 1rem 0;
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .tour-tooltip .tour-field-name {
+            background: #f0f7ff;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #005A9C;
+            margin-bottom: 0.75rem;
+        }
+        .tour-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+        .tour-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .tour-btn-skip {
+            background: #e5e7eb;
+            color: #555;
+        }
+        .tour-btn-skip:hover {
+            background: #d1d5db;
+        }
+        .tour-btn-next {
+            background: #005A9C;
+            color: white;
+        }
+        .tour-btn-next:hover {
+            background: #004a80;
+        }
+        .tour-highlight {
+            position: relative;
+            z-index: 10001;
+            box-shadow: 0 0 0 4px #005A9C, 0 0 20px rgba(0, 90, 156, 0.5);
+            border-radius: 8px;
+        }
+        .tour-progress {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        @keyframes tourPopIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
+    <!-- Tour Container -->
+    <div id="tour-container" style="display: none;"></div>
+
+    <script>
+        // Detecção de ambiente de teste para desativar tours intrusivos
+        if (window.location.search.includes('test=true') || (window.location.hostname === 'localhost' && window.location.search.includes('disable_tour=true'))) {
+            window.DISABLE_TOUR = true;
+            console.log('%c SMEDU TEST MODE: ON ', 'background: #222; color: #bada55');
+        }
+
+        window.TOUR_STEPS = [
+            { target: '#parentProc', title: 'Nº Proc. Mãe', description: 'Número do processo original (quando for uma complementação ou aditivo). Preencha apenas se houver processo pai.' },
+            { target: '#ppNumber', title: 'Número do P.P.', description: 'Número do Processo de Pagamento. Este campo é gerado automaticamente ao salvar.' },
+            { target: '#exerciseYear', title: 'Ano de Exercício', description: 'Ano de referência do exercício financeiro (ex: 2025, 2026).' },
+            { target: '#ppAno', title: 'P.P. Ano Atual', description: 'Combinação do número do processo com o ano atual (ex: 0125/2026).' },
+            { target: '#coverValue', title: 'Valor de Capa', description: 'Valor total constante na capa do processo. Use formato: 1.234,56' },
+            { target: '#openingDate', title: 'Data de Abertura', description: 'Data em que o processo foi aberto/criado no sistema.' },
+            { target: '#deadline', title: 'Prazo', description: 'Data limite para tramitação do processo. Processo vence após esta data.' },
+            { target: '#supplierSelect', title: 'Fornecedor', description: 'Empresa ou pessoa física fornecedora. Selecione na lista ou adicione novo fornecedor.' },
+            { target: '#objectSelect', title: 'Objeto', description: 'Descrição do objeto/produto/serviço do processo. Selecione ou cadastre novo objeto.' },
+            { target: '#treatedBy', title: 'Responsável', description: 'Servidor responsável pelo tratamento do processo.' },
+            { target: '#statusSelect', title: 'Status', description: 'Status atual do processo (Pendente, Em Andamento, Concluído, etc).' },
+            { target: '#locationSelect', title: 'Localização Atual', description: 'Setor onde o processo está atualmente (Gabinete, Compras, Tesouraria, etc).' },
+            { target: '#locationDate', title: 'Data Localização', description: 'Data da última movimentação/localização do processo.' },
+            { target: '#situation', title: 'Situação', description: 'Descrição resumida da situação atual do processo.' },
+            { target: '#notes', title: 'Observações', description: 'Campo para observações adicionais, informações complementares ou histórico.' }
+        ];
+
+        window.currentTourStep = 0;
+        window.tourActive = false;
+
+        window.startProcessTour = function() {
+            if (window.DISABLE_TOUR) return;
+            
+            const modal = document.getElementById('processControlModal');
+            if (!modal || !modal.classList.contains('visible')) {
+                window.openProcessModal();
+                setTimeout(() => window.runTour(), 800);
+            } else {
+                window.runTour();
+            }
+        };
+
+        window.runTour = function() {
+            if (window.DISABLE_TOUR) return;
+            
+            window.tourActive = true;
+            window.currentTourStep = 0;
+            window.showTourStep();
+        };
+
+        window.showTourStep = function() {
+            if (!window.tourActive) return;
+            
+            const container = document.getElementById('tour-container');
+            const step = window.TOUR_STEPS[window.currentTourStep];
+            
+            if (!step) {
+                window.endTour();
+                return;
+            }
+
+            const targetEl = document.querySelector(step.target);
+            if (!targetEl) {
+                window.currentTourStep++;
+                window.showTourStep();
+                return;
+            }
+
+            // Remove highlight anterior
+            document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+            
+            // Adiciona highlight ao elemento atual
+            targetEl.classList.add('tour-highlight');
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            const progress = (window.currentTourStep + 1) + ' de ' + window.TOUR_STEPS.length;
+            
+            container.innerHTML = `
+                <div class="tour-overlay" onclick="window.handleTourOverlayClick(event)">
+                    <div class="tour-tooltip" onclick="event.stopPropagation()">
+                        <div class="tour-progress">${progress}</div>
+                        ${step.title ? `<div class="tour-field-name">${step.title}</div>` : ''}
+                        <h3>${step.title}</h3>
+                        <p>${step.description}</p>
+                        <div class="tour-buttons">
+                            <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular Tour</button>
+                            <button class="tour-btn tour-btn-next" onclick="window.nextTourStep()">
+                                ${window.currentTourStep === window.TOUR_STEPS.length - 1 ? 'Finalizar' : 'Próximo'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.style.display = 'block';
+        };
+
+        window.nextTourStep = function() {
+            document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+            window.currentTourStep++;
+            window.showTourStep();
+        };
+
+        window.endTour = function() {
+            window.tourActive = false;
+            document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+            document.getElementById('tour-container').style.display = 'none';
+        };
+
+        window.handleTourOverlayClick = function(event) {
+            if (event.target.classList.contains('tour-overlay')) {
+                window.endTour();
+            }
+        };
+
+        // Auto-start tour on new process (only if not disabled and not editing)
+        const originalOpenProcessModal = window.openProcessModal;
+        window.openProcessModal = function(p = null) {
+            const isNewProcess = p === null || p === undefined;
+            
+            originalOpenProcessModal.apply(this, arguments);
+            
+            if (isNewProcess && !window.DISABLE_TOUR && !window._tourShownThisSession) {
+                window._tourShownThisSession = true;
+                setTimeout(() => {
+                    if (!window.DISABLE_TOUR) {
+                        window.runTour();
+                    }
+                }, 1200);
+            }
+        };
+    </script>
 </body>
 
 </html>
