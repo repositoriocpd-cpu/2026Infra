@@ -61,3 +61,20 @@ O **SUB INFRA** é uma aplicação web interna desenvolvida para a Secretaria Mu
 - Redução no tempo de localização de processos físicos.
 - Acurácia de 100% no histórico de tramitação.
 - Visualização imediata de gargalos operacionais via Dashboard.
+
+## 8. Segurança e Auditoria de Acesso
+
+### 8.1. Controle de Acesso Baseado em Cargos (RBAC)
+- **Administrador**: Acesso total a configurações, gestão de usuários, backup e logs.
+- **Usuário Colaborador**: Acesso restrito apenas ao Dashboard e Consulta de Processos.
+- **Convidado (Padrão)**: Perfil de acesso de leitura básica; menus administrativos são ocultados por padrão.
+
+### 8.2. Medidas de Segurança Implementadas
+- **Ocultação de UI**: Menus críticos (`Configurações`, `Backup`, `Logs`) são removidos da barra lateral para não-administradores.
+- **Proteção de Funções (Trava Lógica)**: Verificação de `currentUserRole` em todas as funções administrativas (`openConfigModal`, `deleteUser`, etc.) para impedir execução via console.
+- **Gestão de Sessão Segura**: Limpeza total de tokens no `localStorage` e reset de variáveis de estado durante o logout.
+- **Proteção de Credenciais**: Scripts de manutenção e chaves de API sensíveis isolados em diretórios ignorados pelo controle de versão.
+
+### 8.3. Auditoria e Verificação
+- Testes de intrusão realizados para validar a eficácia do bloqueio de UI e o isolamento de funções administrativas.
+- Screenshots de auditoria capturados para demonstrar a conformidade da barra lateral protegida.

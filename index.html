@@ -518,67 +518,52 @@
         .department-info {
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
-            flex-wrap: wrap;
-            gap: 0.25rem;
-        }
-
-        @media (min-width: 600px) {
-            .department-info {
-                font-size: 1rem;
-                gap: 0.5rem;
-            }
-        }
-
-        @media (min-width: 900px) {
-            .department-info {
-                font-size: 1.1rem;
-            }
-        }
-
-        .department-info a {
+            font-size: 1rem;
+            flex-wrap: nowrap;
+            gap: 1.25rem;
             color: var(--govbr-blue);
-            text-decoration: none;
-            font-weight: 500;
+        }
+
+        .department-info .main-title {
+            font-weight: 700;
+            text-transform: none;
+            color: var(--govbr-blue);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .department-info .sub-title {
+            font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.02em;
+            color: var(--govbr-blue);
+            font-size: 0.95rem;
+            letter-spacing: 0.03em;
         }
 
-        .department-info a:hover {
-            text-decoration: underline;
-        }
-
-        .department-info a[contenteditable="true"]:focus {
-            outline: none;
-            background-color: #eef3fc;
-            box-shadow: 0 0 2px 1px var(--govbr-blue);
-            border-radius: 4px;
-            padding: 0 4px;
-            text-decoration: none;
-        }
-
-        .department-info span {
+        .header-separator {
+            color: #E5E7EB;
+            font-weight: 300;
             margin: 0 0.5rem;
-            color: var(--border-color);
+            font-size: 1.2rem;
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
             position: relative;
             cursor: pointer;
+            color: var(--govbr-blue);
         }
 
         #header-dept-name {
             color: var(--govbr-blue);
             font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 0.9rem;
+            margin-right: -0.25rem;
         }
 
         #header-dept-name::before {
@@ -3171,6 +3156,15 @@
                 padding: 1.25rem !important;
             }
 
+            body #processControlModal.modal .modal-content {
+                width: 95% !important;
+                max-width: 95% !important;
+                margin: 0 auto !important;
+                padding: 1.5rem 1rem !important;
+                border-radius: 16px !important;
+                max-height: 88vh !important;
+            }
+
             /* Ajuste de Botões (Table Actions) e Header no Mobile */
             body .table-wrapper {
                 overflow-x: auto !important;
@@ -3566,13 +3560,13 @@
             <li>
                 <hr class="menu-divider">
             </li>
-            <li>
+            <li id="menu-backup" style="display: none;">
                 <a href="#"
                     onclick="window.showSection('backup'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
                     <i class="fas fa-database menu-icon"></i> <span style="flex-grow: 1;">Backup e Restauração</span>
                 </a>
             </li>
-            <li>
+            <li id="menu-logs" style="display: none;">
                 <a href="#"
                     onclick="window.showSection('logs'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
                     <i class="fas fa-clipboard-list menu-icon"></i> <span style="flex-grow: 1;">Logs do Sistema</span>
@@ -3587,7 +3581,7 @@
             <li>
                 <hr class="menu-divider">
             </li>
-            <li id="menu-settings">
+            <li id="menu-settings" style="display: none;">
                 <a href="#" class="has-submenu">
                     <i class="fas fa-link menu-icon"></i> <span style="flex-grow: 1;">Configurações</span> <i
                         class="fas fa-chevron-right chevron-icon"></i>
@@ -3664,33 +3658,37 @@
             </div> -->
             </div>
             <div class="header-bottom">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <i id="menu-toggle" class="fa-solid fa-bars menu-icon"></i>
-                    <div class="department-info">
-                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
-                            class="hide-on-small">Secretaria
-                            Municipal de Educação</a>
-                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
-                            class="show-on-small">SMEDU</a>
-                        <span class="hide-on-small"
-                            style="color: #E5E7EB; font-weight: 300; margin: 0 0.25rem;">|</span>
-                        <a href="#" class="hide-on-small hide-on-medium">CONTROLE DE PROCESSOS DE PAGAMENTO</a>
+                <div class="department-info">
+                    <i id="menu-toggle" class="fa-solid fa-bars menu-icon" style="font-size: 1.4rem; margin-right: 0.5rem;"></i>
+                    
+                    <div class="main-title">
+                        <span class="hide-on-small">Secretaria Municipal de Educação</span>
+                        <span class="show-on-small">SMEDU</span>
+                    </div>
+
+                    <span class="header-separator hide-on-small">|</span>
+                    
+                    <div class="sub-title hide-on-small hide-on-medium">
+                        CONTROLE DE PROCESSOS DE PAGAMENTO
                     </div>
                 </div>
 
-                <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-right: 1rem;">
-                    <button id="global-tour-btn"
-                        class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                        title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
-                        onclick="window.startProcessTour()">
-                        <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
-                    </button>
-                </div>
-                <div class="user-info">
-                    <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
-                    <i class="fa-solid fa-user-circle"></i>
-                    <span id="header-user-name">Usuário</span>
-                    <div class="header-sign-in">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <button id="global-tour-btn"
+                            class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                            title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
+                            onclick="window.startProcessTour()">
+                            <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
+                        </button>
+                    </div>
+
+                    <div class="user-info">
+                        <span class="header-separator hide-on-small">|</span>
+                        <span id="header-dept-name" class="hide-on-small">DIRETORIA</span>
+                        <i class="fa-solid fa-user-circle" style="font-size: 1.8rem;"></i>
+                        <span id="header-user-name" style="font-weight: 300;">Usuário</span>
+                        <div class="header-sign-in">
                         <ul class="menu-section">
                             <li class="menu-header">Sua Conta</li>
                             <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
@@ -5212,6 +5210,7 @@
             processes: [], suppliers: [], locations: [], objects: [], departments: [],
             statuses: [], handlers: [], users: [], currentConfigType: ''
         };
+        window.currentUserRole = 'convidado'; // Default safe role
 
         /**
          * Inicializa os event listeners principais (Event Delegation).
@@ -6811,8 +6810,10 @@
         };
 
         window.openConfigModal = function (type) {
-            if (window.currentUserRole != null && window.currentUserRole !== 'administrador') {
-                alert('Acesso negado. Apenas administradores podem acessar esta área.');
+            // Enhanced security: check if user is admin
+            if (window.currentUserRole !== 'administrador') {
+                alert('Acesso negado. Apenas administradores podem acessar esta área de configuração.');
+                console.warn('Tentativa de acesso não autorizado a área de configuração detectada.');
                 return;
             }
             // Redireciona o cadastro de usuários para o modal dedicado
@@ -7027,6 +7028,10 @@
         const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
         window.openUserManagementModal = function () {
+            if (window.currentUserRole !== 'administrador') {
+                alert('Acesso negado. Apenas administradores podem gerenciar usuários.');
+                return;
+            }
             var editingUserId = document.getElementById('editingUserId');
             if (editingUserId) editingUserId.value = '';
             var userFullName = document.getElementById('userFullName');
@@ -7237,6 +7242,10 @@
         };
 
         window.deleteUser = async function (id, name) {
+            if (window.currentUserRole !== 'administrador') {
+                alert('Acesso negado.');
+                return;
+            }
             if (!confirm(`ATENÇÃO: Deseja excluir permanentemente o perfil de ${name}?\nEsta ação não pode ser desfeita.`)) return;
             const { error } = await supabase.from('user_profiles').delete().eq('id', id);
             if (error) { alert('Erro ao excluir: ' + error.message); return; }
@@ -7249,31 +7258,47 @@
             const deptEl = document.getElementById('header-dept-name');
             const userEl = document.getElementById('header-user-name');
             const menuSettings = document.getElementById('menu-settings');
+            const menuBackup = document.getElementById('menu-backup');
+            const menuLogs = document.getElementById('menu-logs');
 
             if (user) {
                 try {
+                    const isSuperAdmin = user.email === 'cpdinfra@edu.itaguai.rj.gov.br';
                     const { data: profile, error: profileError } = await supabase.from('user_profiles').select('*').eq('id', user.id).maybeSingle();
 
                     if (profileError && profileError.code !== 'PGRST116') {
                         console.error('Erro ao buscar perfil:', profileError);
                     }
-                    if (profile) {
-                        window.currentUserRole = profile.role;
-                        window.currentUserName = profile.full_name;
-                        userEl.innerText = (profile.full_name || user.email).split(' ')[0];
-                        deptEl.innerText = profile.department || (profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR');
 
-                        // Restrição de menu por cargo
-                        if (menuSettings) {
-                            menuSettings.style.display = profile.role === 'administrador' ? 'block' : 'none';
+                    if (profile || isSuperAdmin) {
+                        // Se for Super Admin, força cargo de administrador mesmo sem perfil no banco
+                        if (isSuperAdmin) {
+                            window.currentUserRole = 'administrador';
+                            window.currentUserName = (profile?.full_name || 'CPD INFRA');
+                        } else {
+                            window.currentUserRole = (profile.role || 'convidado').toLowerCase().trim();
+                            window.currentUserName = profile.full_name;
                         }
+
+                        userEl.innerText = (window.currentUserName || user.email).split(' ')[0];
+                        deptEl.innerText = profile?.department || (window.currentUserRole === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR');
+
+                        // Garantir visibilidade das ferramentas administrativas
+                        const isAdmin = window.currentUserRole === 'administrador';
+                        if (menuSettings) menuSettings.style.display = isAdmin ? 'block' : 'none';
+                        if (menuBackup) menuBackup.style.display = isAdmin ? 'block' : 'none';
+                        if (menuLogs) menuLogs.style.display = isAdmin ? 'block' : 'none';
                     } else {
-                        // Perfil não encontrado, usa dados básicos do auth
+                        // Perfil não encontrado e não é super admin
+                        window.currentUserRole = 'convidado';
                         userEl.innerText = user.email.split('@')[0];
                         deptEl.innerText = 'CONVIDADO';
+                        if (menuSettings) menuSettings.style.display = 'none';
+                        if (menuBackup) menuBackup.style.display = 'none';
+                        if (menuLogs) menuLogs.style.display = 'none';
                     }
                 } catch (err) {
-                    console.error('Erro ao buscar perfil:', err);
+                    console.error('Erro ao atualizar UI do perfil:', err);
                 }
             } else {
                 userEl.innerText = 'Usuário';
@@ -7315,18 +7340,29 @@
 
         window.logout = async function (e) {
             if (e) e.preventDefault();
-            if (confirm('Deseja realmente sair?')) {
+            // Using a cleaner confirm message and ensuring state is reset
+            if (confirm('Você tem certeza que deseja sair do sistema?')) {
                 try {
+                    // Explicitly reset role before sign out to prevent UI flickers or lingering access
+                    window.currentUserRole = 'convidado';
                     await supabase.auth.signOut();
+                    
+                    // Clear any sensitive local storage data if any exists (PWA/custom)
+                    localStorage.removeItem('supabase.auth.token'); 
+                    
                     window.location.reload();
                 } catch (err) {
                     console.error('Logout Error:', err);
-                    window.location.reload(); // Recarrega mesmo se der erro no Auth para limpar o estado local
+                    window.location.reload();
                 }
             }
         };
 
         window.deactivateUser = async function (id, name) {
+            if (window.currentUserRole !== 'administrador') {
+                alert('Acesso negado.');
+                return;
+            }
             if (!confirm(`Confirmar bloqueio de acesso para: ${name}?`)) return;
             const { error } = await supabase.from('user_profiles').update({ active: false }).eq('id', id);
             if (error) { alert('Erro: ' + error.message); return; }
@@ -7334,6 +7370,10 @@
         };
 
         window.reactivateUser = async function (id, name) {
+            if (window.currentUserRole !== 'administrador') {
+                alert('Acesso negado.');
+                return;
+            }
             if (!confirm(`Reativar o acesso de: ${name}?`)) return;
             const { error } = await supabase.from('user_profiles').update({ active: true }).eq('id', id);
             if (error) { alert('Erro: ' + error.message); return; }
@@ -8014,7 +8054,6 @@
                     <div class="tour-tooltip" onclick="event.stopPropagation()">
                         <div class="tour-progress">${progress}</div>
                         ${step.title ? `<div class="tour-field-name">${step.title}</div>` : ''}
-                        <h3>${step.title}</h3>
                         <p>${step.description}</p>
                         <div class="tour-buttons">
                             <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular Tour</button>
