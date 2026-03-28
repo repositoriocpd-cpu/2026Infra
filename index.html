@@ -12,7 +12,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#064e3b">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <meta name="version" content="1.0.7">
+    <meta name="version" content="1.0.9">
     <script src="pwa-handler.js" defer></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -648,6 +648,40 @@
             color: var(--govbr-blue);
         }
 
+        .header-sign-in .menu-section {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-sign-in .menu-section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .header-sign-in .menu-header {
+            padding: 0.5rem 1rem 0.25rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            font-weight: 600;
+        }
+
+        .header-sign-in .logout-link {
+            color: #dc2626;
+        }
+
+        .header-sign-in .logout-link .fas {
+            color: #dc2626;
+        }
+
+        .header-sign-in .logout-link:hover {
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+
         body.dark-mode .header-sign-in {
             background-color: #1e1e1e;
             border: 1px solid #333;
@@ -660,6 +694,23 @@
         body.dark-mode .header-sign-in li a:hover {
             background-color: #333;
             color: #66b3ff;
+        }
+
+        body.dark-mode .header-sign-in .menu-header {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .header-sign-in .logout-link {
+            color: #f87171;
+        }
+
+        body.dark-mode .header-sign-in .logout-link .fas {
+            color: #f87171;
+        }
+
+        body.dark-mode .header-sign-in .logout-link:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
         }
 
         .header-content h1 {
@@ -1545,6 +1596,89 @@
 
         .modal-body {
             padding: 1.5rem 2.5rem;
+        }
+
+        /* Info Modal Styles */
+        #infoModal .process-modal-content {
+            max-width: 700px;
+        }
+
+        #infoModal .modal-header {
+            background: linear-gradient(135deg, #1452B5 0%, #0d3485 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 20px 20px 0 0;
+        }
+
+        #infoModal .modal-header h2 {
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        #infoModal .modal-header-info p {
+            color: rgba(255,255,255,0.85) !important;
+        }
+
+        #infoModal .modal-close {
+            color: white !important;
+            font-size: 2rem;
+        }
+
+        #infoModal .modal-close:hover {
+            color: #cbd5e1 !important;
+        }
+
+        #infoModal .info-content {
+            padding: 2rem;
+            line-height: 1.8;
+            color: #334155;
+        }
+
+        #infoModal .info-content h3 {
+            color: #1452B5;
+            margin: 1.5rem 0 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        #infoModal .info-content h3:first-child {
+            margin-top: 0;
+        }
+
+        #infoModal .info-content p {
+            margin-bottom: 1rem;
+        }
+
+        #infoModal .info-content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #infoModal .info-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        #infoModal .info-content .highlight-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid #1452B5;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        body.dark-mode #infoModal .info-content {
+            color: #cbd5e1;
+        }
+
+        body.dark-mode #infoModal .info-content h3 {
+            color: #60a5fa;
+        }
+
+        body.dark-mode #infoModal .info-content .highlight-box {
+            background: linear-gradient(135deg, #1e3a5f 0%, #172554 100%);
+            border-left-color: #60a5fa;
         }
 
         /* Form Pods (Cards) */
@@ -3462,6 +3596,8 @@
                     <ul>
                         <li><a href="#" onclick="window.openConfigModal('users')"><i class="fas fa-users-cog"></i>
                                 Cadastro de Usuários</a></li>
+                        <li><a href="#" onclick="window.openConfigModal('departments')"><i class="fas fa-building"></i>
+                                Cadastrar Departamento</a></li>
                         <li><a href="#" onclick="window.openConfigModal('suppliers')"><i class="fas fa-truck"></i>
                                 Cadastro de Fornecedores</a></li>
                         <li><a href="#" onclick="window.openConfigModal('objects')"><i class="fas fa-box"></i>
@@ -3542,16 +3678,32 @@
                     </div>
                 </div>
 
+                <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-right: 1rem;">
+                    <button id="global-tour-btn"
+                        class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                        title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
+                        onclick="window.startProcessTour()">
+                        <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
+                    </button>
+                </div>
                 <div class="user-info">
                     <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
                     <i class="fa-solid fa-user-circle"></i>
                     <span id="header-user-name">Usuário</span>
                     <div class="header-sign-in">
-                        <ul>
+                        <ul class="menu-section">
+                            <li class="menu-header">Sua Conta</li>
                             <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
                             <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
-                            <li><a href="#" onclick="window.logout(event)"><i class="fas fa-sign-out-alt"></i> Sair</a>
-                            </li>
+                        </ul>
+                        <ul class="menu-section">
+                            <li class="menu-header">Links Externo</li>
+                            <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas Frequentes</a></li>
+                            <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a></li>
+                            <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a></li>
+                        </ul>
+                        <ul class="menu-section">
+                            <li><a href="#" onclick="window.logout(event)" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
                         </ul>
                     </div>
                 </div>
@@ -3692,6 +3844,10 @@
                         <canvas id="locationChart"></canvas>
                     </div>
                     <div style="position: absolute; bottom: 15px; left: 15px; right: 15px; display: flex; gap: 12px;">
+                        <button class="btn btn-success" onclick="window.openProcessModal()"
+                            style="height: 48px; display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.2s; padding: 0 1.5rem;">
+                            <i class="fas fa-plus"></i> Novo Processo
+                        </button>
                         <button class="btn btn-primary" onclick="window.showSection('processes')"
                             style="flex: 1; height: 48px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #005a9c; border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(0, 90, 156, 0.2); transition: all 0.2s;">
                             <i class="fas fa-search"></i> Consultar Cadastrados
@@ -4468,7 +4624,7 @@
     </div>
     <div id="processConfigModal" class="process-modal"
         onclick="if(event.target===this) window.closeModal('processConfigModal')">
-        <div class="process-modal-content" style="max-width: 500px;">
+        <div class="process-modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
             <header class="modal-header">
                 <div class="modal-header-info">
                     <h2 id="configModalTitle" style="color:var(--govbr-blue);">Configurações</h2>
@@ -4483,7 +4639,7 @@
                     <label id="configInputLabel">Adicionar Novo Item</label>
                     <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
                         <input type="text" id="configInput" class="form-control" placeholder="Digite o nome do item...">
-                        <button class="btn btn-primary" onclick="saveConfigItem()"
+                        <button class="btn btn-primary" onclick="window.saveConfigItem()"
                             style="padding: 0.75rem 1.5rem; border-radius: 8px;">Adicionar</button>
                     </div>
                 </div>
@@ -4552,6 +4708,13 @@
                         </div>
                         <div class="form-group" style="margin:0;">
                             <label
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Departamento / Setor *</label>
+                            <select id="userDepartment" class="form-control" style="border-radius: 8px;">
+                                <option value="">Selecionar Departamento...</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label
                                 style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">E-mail
                                 Institucional *</label>
                             <input type="email" id="userEmail" class="form-control" placeholder="nome@itaguai.rj.gov.br"
@@ -4606,6 +4769,16 @@
                         Usuários do Sistema
                     </h4>
                     <div style="height: 1px; flex-grow: 1; background: #f1f5f9; margin-left: 1.5rem;"></div>
+                </div>
+
+                <!-- Filtros da Listagem -->
+                <div style="display:flex; gap:1rem; align-items:flex-end; margin-bottom:1.5rem; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0;">
+                    <div style="flex-grow:1;">
+                        <label style="display:block; font-size:0.65rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.05em;">Filtrar por Departamento</label>
+                        <select id="userFilterDept" class="form-control" style="border-radius:8px; font-size:0.85rem;" onchange="window.applyUserFilters()">
+                            <option value="">Todos os Departamentos</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div id="userListContainer"
@@ -5036,7 +5209,7 @@
 
         // --- STATE ---
         window.state = {
-            processes: [], suppliers: [], locations: [], objects: [],
+            processes: [], suppliers: [], locations: [], objects: [], departments: [],
             statuses: [], handlers: [], users: [], currentConfigType: ''
         };
 
@@ -5056,6 +5229,19 @@
                     e.preventDefault();
                     console.log('Botão Novo Processo clicado');
                     window.openProcessModal();
+                });
+            });
+
+            // Setup click handlers for data-route links (Help/FAQ/Manual)
+            const routeLinks = document.querySelectorAll('[data-route]');
+            routeLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const route = this.getAttribute('data-route');
+                    if (window.openInfoModal) {
+                        window.openInfoModal(route);
+                    }
                 });
             });
 
@@ -5247,12 +5433,13 @@
             window._appLoaded = true;
             console.log('initApp starting data fetch...');
             try {
-                const [suppliers, locations, objects, statuses, handlers, processes] = await Promise.all([
+                const [suppliers, locations, objects, statuses, handlers, departments, processes] = await Promise.all([
                     supabase.from('suppliers').select('name').order('name'),
                     supabase.from('locations').select('name').order('name'),
                     supabase.from('objects').select('name').order('name'),
                     supabase.from('statuses').select('name').order('name'),
                     supabase.from('handlers').select('name').order('name'),
+                    supabase.from('departments').select('name').order('name'),
                     supabase.from('processes').select('*').order('created_at', { ascending: false })
                 ]);
 
@@ -5261,6 +5448,7 @@
                 window.state.objects = (objects.data || []).map(o => o.name);
                 window.state.statuses = (statuses.data || []).map(s => s.name);
                 window.state.handlers = (handlers.data || []).map(h => h.name);
+                window.state.departments = (departments.data || []).map(d => d.name);
                 window.state.processes = (processes.data || []).map(p => ({
                     id: p.id,
                     parentProc: p.parent_proc,
@@ -5297,6 +5485,136 @@
         // else window.addEventListener('load', window.initApp);
 
         // --- 5. LOGIC & TABLE RENDERING ---
+        const infoContent = {
+            faq: {
+                title: '<i class="fas fa-question-circle"></i> Perguntas Frequentes',
+                subtitle: 'Tire suas dúvidas sobre o sistema',
+                content: `
+                    <h3>Como fazer login no sistema?</h3>
+                    <p>Utilize seu e-mail institucional e senha cadastrada. Em caso de primeiro acesso, entre em contato com o administrador.</p>
+                    
+                    <h3>Como cadastrar um novo processo?</h3>
+                    <p>Clique no botão "Novo Processo" no menu lateral ou na navegação inferior (mobile). Preencha todos os campos obrigatórios e clique em salvar.</p>
+                    
+                    <h3>Como rastrear um processo?</h3>
+                    <p>Na seção de Consulta, utilize os filtros disponíveis (número, status, data, tipo) para encontrar o processo desejado. Clique no ícone de histórico para ver a tramitação.</p>
+                    
+                    <h3>Como alterar minha senha?</h3>
+                    <p>Acesse "Minha Conta" no menu do usuário e selecione "Alterar Senha".</p>
+                    
+                    <h3>O que fazer quando um processo está atrasado?</h3>
+                    <p>Processos atrasados aparecem destacados em vermelho. Verifique o motivo do atraso na aba "Observações" e tome as providências necessárias.</p>
+                    
+                    <div class="highlight-box">
+                        <strong>Precisa de mais ajuda?</strong><br>
+                        Entre em contato com o suporte através do e-mail: suporte@itaguai.rj.gov.br
+                    </div>
+                `
+            },
+            manual: {
+                title: '<i class="fas fa-book-open"></i> Manual do Usuário',
+                subtitle: 'Guia completo de utilização do sistema',
+                content: `
+                    <h3>1. Login e Autenticação</h3>
+                    <p>O sistema utiliza autenticação segura. Cada usuário possui credenciais únicas fornecidas pelo administrador.</p>
+                    
+                    <h3>2. Dashboard</h3>
+                    <p>A tela inicial mostra estatísticas em tempo real:</p>
+                    <ul>
+                        <li><strong>Total de Processos:</strong> Quantidade geral de processos cadastrados</li>
+                        <li><strong>Em Tramitação:</strong> Processos ativos no momento</li>
+                        <li><strong>Liquidados:</strong> Processos concluídos com sucesso</li>
+                        <li><strong>Pendências:</strong> Percentual de processos não finalizados</li>
+                        <li><strong>Vencidos:</strong> Processos com prazo excedido</li>
+                    </ul>
+                    
+                    <h3>3. Cadastro de Processos</h3>
+                    <p>Para cadastrar um novo processo, clique em "Novo Processo" e preencha:</p>
+                    <ul>
+                        <li>Número do processo</li>
+                        <li>Tipo de processo</li>
+                        <li>Objeto/Descrição</li>
+                        <li>Fornecedor</li>
+                        <li>Local de entrega</li>
+                        <li>Valor</li>
+                        <li>Data de vencimento</li>
+                    </ul>
+                    
+                    <h3>4. Consulta e Filtros</h3>
+                    <p>Use os filtros avanzados para buscar processos específicos por status, data, departamento ou fornecedor.</p>
+                    
+                    <h3>5. Relatórios</h3>
+                    <p>Exporte dados para Excel ou gere relatórios PDF diretamente do sistema.</p>
+                `
+            },
+            termos: {
+                title: '<i class="fas fa-file-contract"></i> Política de Uso',
+                subtitle: 'Termos e condições de uso do sistema',
+                content: `
+                    <h3>1. Objetivo</h3>
+                    <p>O Sistema de Controle de Processos de Pagamento tem como objetivo gerenciar e rastrear todos os processos administrativos da Secretaria Municipal de Educação.</p>
+                    
+                    <h3>2. Usuários Autorizados</h3>
+                    <p>O acesso é restrito a servidores municipais devidamente cadastrados e autorizados pela administração.</p>
+                    
+                    <h3>3. Responsabilidades do Usuário</h3>
+                    <ul>
+                        <li>Manter suas credenciais de acesso em sigilo</li>
+                        <li>Registrar processos de forma completa e verdadeira</li>
+                        <li>Atualizar o status dos processos em tempo hábil</li>
+                        <li>Reportar irregularidades ao administrador</li>
+                    </ul>
+                    
+                    <h3>4. Boas Práticas</h3>
+                    <ul>
+                        <li>Verificar diariamente os processos pendentes</li>
+                        <li>Manter os dados sempre atualizados</li>
+                        <li>Usar o sistema de forma ética e profissional</li>
+                        <li>Respeitar os prazos estabelecidos</li>
+                    </ul>
+                    
+                    <h3>5. Penalidades</h3>
+                    <p>O uso indevido do sistema pode resultar em:</p>
+                    <ul>
+                        <li>Suspensão temporária de acesso</li>
+                        <li>Cancelamento definitivo de cadastro</li>
+                        <li>Medidas administrativas cabíveis</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <strong>Aviso Legal:</strong><br>
+                        O uso deste sistema implica aceitação completa destes termos. Em caso de dúvidas, consulte o regulamento interno.
+                    </div>
+                `
+            }
+        };
+
+        window.openInfoModal = function(route) {
+            const modal = document.getElementById('infoModal');
+            const titleEl = document.getElementById('infoModalTitle');
+            const subtitleEl = document.getElementById('infoModalSubtitle');
+            const contentEl = document.getElementById('infoModalContent');
+            
+            if (!modal || !titleEl || !contentEl) return;
+
+            const content = infoContent[route];
+            if (content) {
+                titleEl.innerHTML = content.title;
+                if (subtitleEl) subtitleEl.innerText = content.subtitle;
+                contentEl.innerHTML = content.content;
+                
+                modal.style.display = 'flex';
+                modal.style.opacity = '1';
+                modal.classList.add('visible');
+                
+                const overlay = document.getElementById('overlay');
+                if (overlay) {
+                    overlay.style.display = 'block';
+                    setTimeout(() => overlay.classList.add('visible'), 10);
+                }
+            }
+        };
+
         window.getStatusColor = function (status) {
             const st = (status || '').toUpperCase();
             if (st === 'LIQUIDADO') return '#2ecc71'; // Verde
@@ -6434,6 +6752,8 @@
                 { id: 'treatedBy', data: window.state.handlers, searchable: true },
                 { id: 'locationSelect', data: window.state.locations, searchable: true },
                 { id: 'statusSelect', data: window.state.statuses, searchable: true },
+                { id: 'userDepartment', data: window.state.departments, searchable: false },
+                { id: 'userFilterDept', data: window.state.departments, opt: true, placeholder: 'Todos os Departamentos', searchable: false, isFilter: true },
                 { id: 'statusFilter', data: window.state.statuses, opt: true, placeholder: 'Todos os Status', searchable: false, isFilter: true },
                 { id: 'locationFilter', data: window.state.locations, opt: true, placeholder: 'Todas Localizações', searchable: false, isFilter: true },
                 { id: 'handlerFilter', data: window.state.handlers, opt: true, placeholder: 'Todos os Tratadores', searchable: false, isFilter: true }
@@ -6515,6 +6835,7 @@
                 'suppliers': 'Cadastro de Fornecedores',
                 'objects': 'Cadastro de Objetos',
                 'locations': 'Cadastro de Localização',
+                'departments': 'Cadastro de Departamentos',
                 'statuses': 'Cadastro de Status',
                 'handlers': 'Cadastro de Tratadores'
             };
@@ -6536,6 +6857,36 @@
                 overlay.style.display = 'block';
                 overlay.classList.add('visible');
             }
+            
+            // Debug sidebar item just in case it disappeared
+            const deptLink = document.querySelector('a[onclick*="departments"]');
+            if (!deptLink) {
+                console.warn('Department link missing from sidebar, re-injecting...');
+                const configList = document.querySelector('#menu-settings ul');
+                if (configList && !configList.querySelector('a[onclick*="departments"]')) {
+                   const li = document.createElement('li');
+                   li.innerHTML = '<a href="#" onclick="window.openConfigModal(\'departments\')"><i class="fas fa-building"></i> Cadastrar Departamento</a>';
+                   configList.insertBefore(li, configList.children[1]);
+                }
+            }
+        };
+        
+        window.saveConfigItem = async function () {
+            const input = document.getElementById('configInput');
+            const val = input.value.trim();
+            if (!val) return;
+            try {
+                const type = window.state.currentConfigType;
+                const { error } = await supabase.from(type).insert({ name: val });
+                if (error) throw error;
+                if (!window.state[type]) window.state[type] = [];
+                window.state[type].push(val);
+                input.value = '';
+                window.renderConfigList(); window.updateSelects();
+            } catch (err) { 
+                console.error('Error saving config item:', err); 
+                alert('Erro ao salvar: ' + (err.message || 'Falha na comunicação'));
+            }
         };
 
         window.quickAddConfig = function (type) {
@@ -6549,7 +6900,8 @@
             if (!list) return;
             list.innerHTML = '';
 
-            let arr = window.state[window.state.currentConfigType] || [];
+            const type = window.state.currentConfigType;
+            let arr = window.state[type] || [];
 
             if (searchInput && searchInput.value) {
                 const term = searchInput.value.toLowerCase();
@@ -6557,59 +6909,118 @@
             }
 
             if (arr.length === 0) {
-                list.innerHTML = '<li style="text-align:center; padding: 2rem; color: #9CA3AF; font-size: 0.9rem;">Nenhum item cadastrado.</li>';
+                list.innerHTML = `<li style="text-align:center; padding: 2rem; color: #9CA3AF; font-size: 0.9rem;">Nenhum item cadastrado.</li>`;
                 return;
             }
 
-            // Sort alphabetically for display
             [...arr].sort((a, b) => a.localeCompare(b)).forEach((it) => {
-                const originalIdx = window.state[window.state.currentConfigType].indexOf(it);
                 const li = document.createElement('li');
                 li.className = 'config-list-item';
+                // Safe unique ID for DOM selection
+                const safeKey = btoa(unescape(encodeURIComponent(it))).replace(/=/g, '');
+                li.setAttribute('data-id', safeKey);
+                li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 15px; border-bottom:1px solid #f3f4f6;';
+                
                 li.innerHTML = `
-                    <span style="font-weight: 500; color: #374151;">${it}</span>
-                    <div>
-                        <i class="fas fa-edit config-edit-icon" style="color:#f59e0b; cursor:pointer; padding:0.5rem; transition:all 0.2s;" onmouseover="this.style.color='#d97706'" onmouseout="this.style.color='#f59e0b'" title="Editar" onclick="window.editConfigItem(${originalIdx})"></i>
-                        <i class="fas fa-trash config-trash-icon" title="Excluir" onclick="window.deleteConfigItem(${originalIdx})"></i>
+                    <span class="item-display-name" style="font-weight: 500; color: #374151;">${it}</span>
+                    <div class="item-actions-row" style="display: flex; gap: 12px;">
+                        <button type="button" class="btn-edit-item" title="Editar" style="background:none; border:none; color:#f59e0b; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn-delete-item" title="Excluir" style="background:none; border:none; color:#ef4444; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 `;
+
+                li.querySelector('.btn-edit-item').onclick = (e) => { e.stopPropagation(); window.editConfigItemByElement(li, it); };
+                li.querySelector('.btn-delete-item').onclick = (e) => { e.stopPropagation(); window.deleteConfigItemByElement(li, it); };
+
                 list.appendChild(li);
             });
         };
 
-        window.saveConfigItem = async function () {
-            const val = document.getElementById('configInput').value.trim();
-            if (!val) return;
-            try {
-                await supabase.from(window.state.currentConfigType).insert({ name: val });
-                window.state[window.state.currentConfigType].push(val);
-                window.renderConfigList(); window.updateSelects();
-                document.getElementById('configInput').value = '';
-            } catch (err) { console.error('Error saving config item:', err); }
+        window.editConfigItemByElement = function (li, oldName) {
+            console.log('Edit initiated for:', oldName);
+            li.innerHTML = `
+                <div class="edit-ui" style="display:flex; gap:8px; width:100%; align-items:center;" onclick="event.stopPropagation()">
+                    <input type="text" class="form-control edit-input" value="${oldName}" style="flex-grow:1; padding:4px 8px; font-size:0.9rem;">
+                    <button type="button" class="btn btn-primary btn-save-edit" style="padding:4px 8px; font-size:0.8rem;">OK</button>
+                    <button type="button" class="btn btn-secondary btn-cancel-edit" style="padding:4px 8px; font-size:0.8rem;">X</button>
+                </div>
+            `;
+            
+            const input = li.querySelector('.edit-input');
+            input.focus();
+            input.select();
+            
+            li.querySelector('.btn-save-edit').onclick = async (e) => {
+                e.stopPropagation();
+                const newName = input.value.trim();
+                if (newName && newName !== oldName) {
+                    try {
+                        const type = window.state.currentConfigType;
+                        const { error } = await supabase.from(type).update({ name: newName }).eq('name', oldName);
+                        if (error) throw error;
+                        const idx = window.state[type].indexOf(oldName);
+                        if (idx !== -1) window.state[type][idx] = newName;
+                    } catch (err) {
+                        console.error('Save error:', err);
+                        alert('Erro ao salvar: ' + err.message);
+                    }
+                }
+                window.renderConfigList();
+                window.updateSelects();
+            };
+            
+            li.querySelector('.btn-cancel-edit').onclick = (e) => {
+                e.stopPropagation();
+                window.renderConfigList();
+            };
+            
+            input.onkeyup = (e) => {
+                if (e.key === 'Enter') li.querySelector('.btn-save-edit').click();
+                if (e.key === 'Escape') window.renderConfigList();
+            };
         };
 
-        window.editConfigItem = async function (idx) {
-            const oldName = window.state[window.state.currentConfigType][idx];
-            const newName = prompt(`Editar item: ${oldName}`, oldName);
-            if (!newName || newName.trim() === '' || newName === oldName) return;
-
-            try {
-                await supabase.from(window.state.currentConfigType).update({ name: newName.trim() }).eq('name', oldName);
-                window.state[window.state.currentConfigType][idx] = newName.trim();
-                window.renderConfigList(); window.updateSelects();
-            } catch (err) { console.error('Error editing config item:', err); }
-        };
-
-        window.deleteConfigItem = async function (idx) {
-            const name = window.state[window.state.currentConfigType][idx];
-            if (confirm(`Excluir ${name}?`)) {
+        window.deleteConfigItemByElement = function (li, name) {
+            console.log('Delete initiated for:', name);
+            li.innerHTML = `
+                <div class="delete-ui" style="display:flex; justify-content:space-between; align-items:center; width:100%; background:#fee2e2; padding:5px 10px; border-radius:4px;" onclick="event.stopPropagation()">
+                    <span style="font-size:0.85rem; color:#b91c1c; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:60%;">Excluir?</span>
+                    <div style="display:flex; gap:5px;">
+                        <button type="button" class="btn btn-danger btn-confirm-delete" style="padding:2px 8px; font-size:0.75rem;">Sim</button>
+                        <button type="button" class="btn btn-secondary btn-cancel-delete" style="padding:2px 8px; font-size:0.75rem;">Não</button>
+                    </div>
+                </div>
+            `;
+            
+            li.querySelector('.btn-confirm-delete').onclick = async (e) => {
+                e.stopPropagation();
+                console.log('Final confirm delete for:', name);
                 try {
-                    await supabase.from(window.state.currentConfigType).delete().eq('name', name);
-                    window.state[window.state.currentConfigType].splice(idx, 1);
-                    window.renderConfigList(); window.updateSelects();
-                } catch (err) { console.error('Error deleting config item:', err); }
-            }
+                    const type = window.state.currentConfigType;
+                    const { error } = await supabase.from(type).delete().eq('name', name);
+                    if (error) throw error;
+                    const idx = window.state[type].indexOf(name);
+                    if (idx !== -1) window.state[type].splice(idx, 1);
+                    console.log('Delete success');
+                    window.renderConfigList(); 
+                    window.updateSelects();
+                } catch (err) { 
+                    console.error('Delete failed:', err); 
+                    alert('Erro ao excluir: ' + (err.message || 'Falha na comunicação'));
+                    window.renderConfigList();
+                }
+            };
+            
+            li.querySelector('.btn-cancel-delete').onclick = (e) => {
+                e.stopPropagation();
+                window.renderConfigList();
+            };
         };
+
 
         // ===== GERENCIAMENTO DE USUÁRIOS (Supabase Auth + profiles table) =====
         const SUPABASE_USERS_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
@@ -6626,6 +7037,8 @@
             if (userPassword) userPassword.value = '';
             var userRole = document.getElementById('userRole');
             if (userRole) userRole.value = 'usuario';
+            var userDepartment = document.getElementById('userDepartment');
+            if (userDepartment) userDepartment.value = '';
             var userFormTitle = document.getElementById('userFormTitle');
             if (userFormTitle) userFormTitle.innerHTML = '<i class="fas fa-user-plus"></i> Adicionar Novo Usuário';
             var cancelUserEditBtn = document.getElementById('cancelUserEditBtn');
@@ -6653,11 +7066,21 @@
             try {
                 const { data, error } = await supabase.from('user_profiles').select('*').order('full_name', { ascending: true });
                 if (error) throw error;
-                window.renderUserList(data || []);
+                window.state.allUsers = data || [];
+                window.applyUserFilters();
             } catch (err) {
                 console.error('Erro ao carregar usuários:', err);
                 container.innerHTML = `<p style="text-align:center;color:#e74c3c;padding:2rem;"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar: ${err.message}</p>`;
             }
+        };
+
+        window.applyUserFilters = function() {
+            const dept = document.getElementById('userFilterDept').value;
+            let filtered = window.state.allUsers || [];
+            if (dept) {
+                filtered = filtered.filter(u => u.department === dept);
+            }
+            window.renderUserList(filtered);
         };
 
         window.renderUserList = function (users) {
@@ -6680,7 +7103,8 @@
                     <thead>
                         <tr style="background:#f8fafc; text-align:left; border-bottom: 1px solid #f1f5f9;">
                             <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Colaborador</th>
-                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Identificação / Status</th>
+                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Departamento</th>
+                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Perfil / Status</th>
                             <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; text-align:right;">Ações</th>
                         </tr>
                     </thead>
@@ -6692,6 +7116,9 @@
                                     <span style="font-weight:700; color:#1e293b; font-size:0.9rem;">${u.full_name || 'Usuário sem nome'}</span>
                                     <span style="color:#64748b; font-size:0.75rem;"><i class="far fa-envelope" style="margin-right:4px;"></i> ${u.email || '-'}</span>
                                 </div>
+                            </td>
+                            <td style="padding:1.25rem;">
+                                <span style="font-size:0.85rem; color:#475569; font-weight:500;">${u.department || '<em style="color:#94a3b8;">Não vinculado</em>'}</span>
                             </td>
                             <td style="padding:1.25rem;">
                                 <div style="display:flex; align-items:center; gap:10px;">
@@ -6729,6 +7156,7 @@
             const password = document.getElementById('userPassword').value;
             const confirmPassword = document.getElementById('userConfirmPassword').value;
             const role = document.getElementById('userRole').value;
+            const department = document.getElementById('userDepartment').value;
             const errDiv = document.getElementById('userFormError');
             const errText = document.getElementById('userFormErrorText');
 
@@ -6756,7 +7184,7 @@
 
             try {
                 if (editingId) {
-                    const updateData = { full_name: fullName, email: email, role: role };
+                    const updateData = { full_name: fullName, email: email, role: role, department: department };
                     // Hint: password updates via admin API would go here
                     const { error } = await supabase.from('user_profiles').update(updateData).eq('id', editingId);
                     if (error) throw error;
@@ -6772,7 +7200,7 @@
                     const userId = authData.user?.id;
                     if (userId) {
                         await supabase.from('user_profiles').upsert({
-                            id: userId, full_name: fullName, email: email, role: role, active: true
+                            id: userId, full_name: fullName, email: email, role: role, department: department, active: true
                         });
                     }
                     alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
@@ -6798,6 +7226,7 @@
             document.getElementById('userPassword').value = '';
             document.getElementById('userConfirmPassword').value = '';
             document.getElementById('userRole').value = user.role || 'usuario';
+            document.getElementById('userDepartment').value = user.department || '';
 
             document.getElementById('userFormTitle').innerHTML = '<i class="fas fa-user-edit"></i> Editar Colaborador';
             document.getElementById('saveUserBtn').innerHTML = '<i class="fas fa-sync"></i> Atualizar Dados';
@@ -6832,7 +7261,7 @@
                         window.currentUserRole = profile.role;
                         window.currentUserName = profile.full_name;
                         userEl.innerText = (profile.full_name || user.email).split(' ')[0];
-                        deptEl.innerText = profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR';
+                        deptEl.innerText = profile.department || (profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR');
 
                         // Restrição de menu por cargo
                         if (menuSettings) {
@@ -6918,6 +7347,7 @@
             document.getElementById('userPassword').value = '';
             document.getElementById('userConfirmPassword').value = '';
             document.getElementById('userRole').value = 'usuario';
+            document.getElementById('userDepartment').value = '';
             document.getElementById('userFormTitle').innerHTML = '<i class="fas fa-user-plus"></i> Adicionar Novo Usuário';
             document.getElementById('saveUserBtn').innerHTML = '<i class="fas fa-save"></i> Salvar Usuário';
             document.getElementById('cancelUserEditBtn').style.display = 'none';
@@ -7393,6 +7823,246 @@
             </footer>
         </div>
     </div>
+
+    <!-- Info Modal (FAQ, Manual, Termos) -->
+    <div id="infoModal" class="process-modal" onclick="if(event.target===this) window.closeModal('infoModal')">
+        <div class="process-modal-content">
+            <header class="modal-header">
+                <div class="modal-header-info">
+                    <h2 id="infoModalTitle"><i class="fas fa-question-circle"></i> Informações</h2>
+                    <p id="infoModalSubtitle">Detalhes e orientações</p>
+                </div>
+                <button type="button" class="modal-close" onclick="window.closeModal('infoModal')">&times;</button>
+            </header>
+            <div class="info-content" id="infoModalContent">
+                <!-- Content will be dynamically inserted -->
+            </div>
+            <footer class="modal-footer">
+                <button class="btn-glass-cancel" onclick="window.closeModal('infoModal')">Fechar</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Tour Styles -->
+    <style>
+        .tour-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tour-tooltip {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: tourPopIn 0.3s ease;
+        }
+        .tour-tooltip h3 {
+            margin: 0 0 0.5rem 0;
+            color: #005A9C;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .tour-tooltip p {
+            margin: 0 0 1rem 0;
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .tour-tooltip .tour-field-name {
+            background: #f0f7ff;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #005A9C;
+            margin-bottom: 0.75rem;
+        }
+        .tour-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+        .tour-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .tour-btn-skip {
+            background: #e5e7eb;
+            color: #555;
+        }
+        .tour-btn-skip:hover {
+            background: #d1d5db;
+        }
+        .tour-btn-next {
+            background: #005A9C;
+            color: white;
+        }
+        .tour-btn-next:hover {
+            background: #004a80;
+        }
+        .tour-highlight {
+            position: relative;
+            z-index: 10001;
+            box-shadow: 0 0 0 4px #005A9C, 0 0 20px rgba(0, 90, 156, 0.5);
+            border-radius: 8px;
+        }
+        .tour-progress {
+            font-size: 0.75rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+        @keyframes tourPopIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+
+    <!-- Tour Container -->
+    <div id="tour-container" style="display: none;"></div>
+
+    <script>
+        // Detecção de ambiente de teste para desativar tours intrusivos
+        if (window.location.search.includes('test=true') || (window.location.hostname === 'localhost' && window.location.search.includes('disable_tour=true'))) {
+            window.DISABLE_TOUR = true;
+            console.log('%c SMEDU TEST MODE: ON ', 'background: #222; color: #bada55');
+        }
+
+        window.TOUR_STEPS = [
+            { target: '#parentProc', title: 'Nº Proc. Mãe', description: 'Número do processo original (quando for uma complementação ou aditivo). Preencha apenas se houver processo pai.' },
+            { target: '#ppNumber', title: 'Número do P.P.', description: 'Número do Processo de Pagamento. Este campo é gerado automaticamente ao salvar.' },
+            { target: '#exerciseYear', title: 'Ano de Exercício', description: 'Ano de referência do exercício financeiro (ex: 2025, 2026).' },
+            { target: '#ppAno', title: 'P.P. Ano Atual', description: 'Combinação do número do processo com o ano atual (ex: 0125/2026).' },
+            { target: '#coverValue', title: 'Valor de Capa', description: 'Valor total constante na capa do processo. Use formato: 1.234,56' },
+            { target: '#openingDate', title: 'Data de Abertura', description: 'Data em que o processo foi aberto/criado no sistema.' },
+            { target: '#deadline', title: 'Prazo', description: 'Data limite para tramitação do processo. Processo vence após esta data.' },
+            { target: '#supplierSelect', title: 'Fornecedor', description: 'Empresa ou pessoa física fornecedora. Selecione na lista ou adicione novo fornecedor.' },
+            { target: '#objectSelect', title: 'Objeto', description: 'Descrição do objeto/produto/serviço do processo. Selecione ou cadastre novo objeto.' },
+            { target: '#treatedBy', title: 'Responsável', description: 'Servidor responsável pelo tratamento do processo.' },
+            { target: '#statusSelect', title: 'Status', description: 'Status atual do processo (Pendente, Em Andamento, Concluído, etc).' },
+            { target: '#locationSelect', title: 'Localização Atual', description: 'Setor onde o processo está atualmente (Gabinete, Compras, Tesouraria, etc).' },
+            { target: '#locationDate', title: 'Data Localização', description: 'Data da última movimentação/localização do processo.' },
+            { target: '#situation', title: 'Situação', description: 'Descrição resumida da situação atual do processo.' },
+            { target: '#notes', title: 'Observações', description: 'Campo para observações adicionais, informações complementares ou histórico.' }
+        ];
+
+        window.currentTourStep = 0;
+        window.tourActive = false;
+
+        window.startProcessTour = function() {
+            if (window.DISABLE_TOUR) return;
+            
+            const modal = document.getElementById('processControlModal');
+            if (!modal || !modal.classList.contains('visible')) {
+                window.openProcessModal();
+                setTimeout(() => window.runTour(), 800);
+            } else {
+                window.runTour();
+            }
+        };
+
+        window.runTour = function() {
+            if (window.DISABLE_TOUR) return;
+            
+            window.tourActive = true;
+            window.currentTourStep = 0;
+            window.showTourStep();
+        };
+
+        window.showTourStep = function() {
+            if (!window.tourActive) return;
+            
+            const container = document.getElementById('tour-container');
+            const step = window.TOUR_STEPS[window.currentTourStep];
+            
+            if (!step) {
+                window.endTour();
+                return;
+            }
+
+            const targetEl = document.querySelector(step.target);
+            if (!targetEl) {
+                window.currentTourStep++;
+                window.showTourStep();
+                return;
+            }
+
+            // Remove highlight anterior
+            document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+            
+            // Adiciona highlight ao elemento atual
+            targetEl.classList.add('tour-highlight');
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            const progress = (window.currentTourStep + 1) + ' de ' + window.TOUR_STEPS.length;
+            
+            container.innerHTML = `
+                <div class="tour-overlay" onclick="window.handleTourOverlayClick(event)">
+                    <div class="tour-tooltip" onclick="event.stopPropagation()">
+                        <div class="tour-progress">${progress}</div>
+                        ${step.title ? `<div class="tour-field-name">${step.title}</div>` : ''}
+                        <h3>${step.title}</h3>
+                        <p>${step.description}</p>
+                        <div class="tour-buttons">
+                            <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular Tour</button>
+                            <button class="tour-btn tour-btn-next" onclick="window.nextTourStep()">
+                                ${window.currentTourStep === window.TOUR_STEPS.length - 1 ? 'Finalizar' : 'Próximo'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.style.display = 'block';
+        };
+
+        window.nextTourStep = function() {
+            document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+            window.currentTourStep++;
+            window.showTourStep();
+        };
+
+        window.endTour = function() {
+            window.tourActive = false;
+            document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
+            document.getElementById('tour-container').style.display = 'none';
+        };
+
+        window.handleTourOverlayClick = function(event) {
+            if (event.target.classList.contains('tour-overlay')) {
+                window.endTour();
+            }
+        };
+
+        // Auto-start tour on new process (only if not disabled and not editing)
+        const originalOpenProcessModal = window.openProcessModal;
+        window.openProcessModal = function(p = null) {
+            const isNewProcess = p === null || p === undefined;
+            
+            originalOpenProcessModal.apply(this, arguments);
+            
+            if (isNewProcess && !window.DISABLE_TOUR && !window._tourShownThisSession) {
+                window._tourShownThisSession = true;
+                setTimeout(() => {
+                    if (!window.DISABLE_TOUR) {
+                        window.runTour();
+                    }
+                }, 1200);
+            }
+        };
+    </script>
 </body>
 
 </html>
