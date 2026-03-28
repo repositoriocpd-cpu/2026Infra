@@ -1008,7 +1008,7 @@
 
         window.deleteConfigItem = async function (idx) {
             const name = window.state[window.state.currentConfigType][idx];
-            if (confirm(`Excluir ${name}?`)) {
+            if (true) {
                 try {
                     await supabase.from(window.state.currentConfigType).delete().eq('name', name);
                     window.state[window.state.currentConfigType].splice(idx, 1);
@@ -1442,5 +1442,136 @@
         } else {
             initSwiperSafe();
         }
+
+        // Info Modal Content
+        const infoContent = {
+            faq: {
+                title: '<i class="fas fa-question-circle"></i> Perguntas Frequentes',
+                subtitle: 'Tire suas dúvidas sobre o sistema',
+                content: `
+                    <h3>Como fazer login no sistema?</h3>
+                    <p>Utilize seu e-mail institucional e senha cadastrada. Em caso de primeiro acesso, entre em contato com o administrador.</p>
+                    
+                    <h3>Como cadastrar um novo processo?</h3>
+                    <p>Clique no botão "Novo Processo" no menu lateral ou na navegação inferior (mobile). Preencha todos os campos obrigatórios e clique em salvar.</p>
+                    
+                    <h3>Como rastrear um processo?</h3>
+                    <p>Na seção de Consulta, utilize os filtros disponíveis (número, status, data, tipo) para encontrar o processo desejado. Clique no ícone de histórico para ver a tramitação.</p>
+                    
+                    <h3>Como alterar minha senha?</h3>
+                    <p>Acesse "Minha Conta" no menu do usuário e selecione "Alterar Senha".</p>
+                    
+                    <h3>O que fazer quando um processo está atrasado?</h3>
+                    <p>Processos atrasados aparecem destacados em vermelho. Verifique o motivo do atraso na aba "Observações" e tome as providências necessárias.</p>
+                    
+                    <div class="highlight-box">
+                        <strong>Precisa de mais ajuda?</strong><br>
+                        Entre em contato com o suporte através do e-mail: suporte@itaguai.rj.gov.br
+                    </div>
+                `
+            },
+            manual: {
+                title: '<i class="fas fa-book-open"></i> Manual do Usuário',
+                subtitle: 'Guia completo de utilização do sistema',
+                content: `
+                    <h3>1. Login e Autenticação</h3>
+                    <p>O sistema utiliza autenticação segura. Cada usuário possui credenciais únicas fornecidas pelo administrador.</p>
+                    
+                    <h3>2. Dashboard</h3>
+                    <p>A tela inicial mostra estatísticas em tempo real:</p>
+                    <ul>
+                        <li><strong>Total de Processos:</strong> Quantidade geral de processos cadastrados</li>
+                        <li><strong>Em Tramitação:</strong> Processos ativos no momento</li>
+                        <li><strong>Liquidados:</strong> Processos concluídos com sucesso</li>
+                        <li><strong>Pendências:</strong> Percentual de processos não finalizados</li>
+                        <li><strong>Vencidos:</strong> Processos com prazo excedido</li>
+                    </ul>
+                    
+                    <h3>3. Cadastro de Processos</h3>
+                    <p>Para cadastrar um novo processo, clique em "Novo Processo" e preencha:</p>
+                    <ul>
+                        <li>Número do processo</li>
+                        <li>Tipo de processo</li>
+                        <li>Objeto/Descrição</li>
+                        <li>Fornecedor</li>
+                        <li>Local de entrega</li>
+                        <li>Valor</li>
+                        <li>Data de vencimento</li>
+                    </ul>
+                    
+                    <h3>4. Consulta e Filtros</h3>
+                    <p>Use os filtros avanzados para buscar processos específicos por status, data, departamento ou fornecedor.</p>
+                    
+                    <h3>5. Relatórios</h3>
+                    <p>Exporte dados para Excel ou gere relatórios PDF diretamente do sistema.</p>
+                `
+            },
+            termos: {
+                title: '<i class="fas fa-file-contract"></i> Política de Uso',
+                subtitle: 'Termos e condições de uso do sistema',
+                content: `
+                    <h3>1. Objetivo</h3>
+                    <p>O Sistema de Controle de Processos de Pagamento tem como objetivo gerenciar e rastrear todos os processos administrativos da Secretaria Municipal de Educação.</p>
+                    
+                    <h3>2. Usuários Autorizados</h3>
+                    <p>O acesso é restrito a servidores municipais devidamente cadastrados e autorizados pela administração.</p>
+                    
+                    <h3>3. Responsabilidades do Usuário</h3>
+                    <ul>
+                        <li>Manter suas credenciais de acesso em sigilo</li>
+                        <li>Registrar processos de forma completa e verdadeira</li>
+                        <li>Atualizar o status dos processos em tempo hábil</li>
+                        <li>Reportar irregularidades ao administrador</li>
+                    </ul>
+                    
+                    <h3>4. Boas Práticas</h3>
+                    <ul>
+                        <li>Verificar diariamente os processos pendentes</li>
+                        <li>Manter os dados sempre atualizados</li>
+                        <li>Usar o sistema de forma ética e profissional</li>
+                        <li>Respeitar os prazos estabelecidos</li>
+                    </ul>
+                    
+                    <h3>5. Penalidades</h3>
+                    <p>O uso indevido do sistema pode resultar em:</p>
+                    <ul>
+                        <li>Suspensão temporária de acesso</li>
+                        <li>Cancelamento definitivo de cadastro</li>
+                        <li>Medidas administrativas cabíveis</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <strong>Aviso Legal:</strong><br>
+                        O uso deste sistema implica aceitação completa destes termos. Em caso de dúvidas, consulte o regulamento interno.
+                    </div>
+                `
+            }
+        };
+
+        // Info Modal Functions
+        window.openInfoModal = function(route) {
+            const modal = document.getElementById('infoModal');
+            const titleEl = document.getElementById('infoModalTitle');
+            const subtitleEl = document.getElementById('infoModalSubtitle');
+            const contentEl = document.getElementById('infoModalContent');
+            
+            const content = infoContent[route];
+            if (content) {
+                titleEl.innerHTML = content.title;
+                subtitleEl.innerText = content.subtitle;
+                contentEl.innerHTML = content.content;
+                modal.classList.add('visible');
+                modal.style.display = 'flex';
+            }
+        };
+
+        // Setup click handlers for data-route links
+        document.querySelectorAll('[data-route]').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const route = this.getAttribute('data-route');
+                window.openInfoModal(route);
+            });
+        });
 
     

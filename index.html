@@ -12,7 +12,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#064e3b">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <meta name="version" content="1.0.7">
+    <meta name="version" content="1.0.9">
     <script src="pwa-handler.js" defer></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -3596,6 +3596,8 @@
                     <ul>
                         <li><a href="#" onclick="window.openConfigModal('users')"><i class="fas fa-users-cog"></i>
                                 Cadastro de Usuários</a></li>
+                        <li><a href="#" onclick="window.openConfigModal('departments')"><i class="fas fa-building"></i>
+                                Cadastrar Departamento</a></li>
                         <li><a href="#" onclick="window.openConfigModal('suppliers')"><i class="fas fa-truck"></i>
                                 Cadastro de Fornecedores</a></li>
                         <li><a href="#" onclick="window.openConfigModal('objects')"><i class="fas fa-box"></i>
@@ -4622,7 +4624,7 @@
     </div>
     <div id="processConfigModal" class="process-modal"
         onclick="if(event.target===this) window.closeModal('processConfigModal')">
-        <div class="process-modal-content" style="max-width: 500px;">
+        <div class="process-modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
             <header class="modal-header">
                 <div class="modal-header-info">
                     <h2 id="configModalTitle" style="color:var(--govbr-blue);">Configurações</h2>
@@ -4637,7 +4639,7 @@
                     <label id="configInputLabel">Adicionar Novo Item</label>
                     <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
                         <input type="text" id="configInput" class="form-control" placeholder="Digite o nome do item...">
-                        <button class="btn btn-primary" onclick="saveConfigItem()"
+                        <button class="btn btn-primary" onclick="window.saveConfigItem()"
                             style="padding: 0.75rem 1.5rem; border-radius: 8px;">Adicionar</button>
                     </div>
                 </div>
@@ -4706,6 +4708,13 @@
                         </div>
                         <div class="form-group" style="margin:0;">
                             <label
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Departamento / Setor *</label>
+                            <select id="userDepartment" class="form-control" style="border-radius: 8px;">
+                                <option value="">Selecionar Departamento...</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;">
+                            <label
                                 style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">E-mail
                                 Institucional *</label>
                             <input type="email" id="userEmail" class="form-control" placeholder="nome@itaguai.rj.gov.br"
@@ -4760,6 +4769,16 @@
                         Usuários do Sistema
                     </h4>
                     <div style="height: 1px; flex-grow: 1; background: #f1f5f9; margin-left: 1.5rem;"></div>
+                </div>
+
+                <!-- Filtros da Listagem -->
+                <div style="display:flex; gap:1rem; align-items:flex-end; margin-bottom:1.5rem; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0;">
+                    <div style="flex-grow:1;">
+                        <label style="display:block; font-size:0.65rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.05em;">Filtrar por Departamento</label>
+                        <select id="userFilterDept" class="form-control" style="border-radius:8px; font-size:0.85rem;" onchange="window.applyUserFilters()">
+                            <option value="">Todos os Departamentos</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div id="userListContainer"
@@ -5190,7 +5209,7 @@
 
         // --- STATE ---
         window.state = {
-            processes: [], suppliers: [], locations: [], objects: [],
+            processes: [], suppliers: [], locations: [], objects: [], departments: [],
             statuses: [], handlers: [], users: [], currentConfigType: ''
         };
 
@@ -5210,6 +5229,19 @@
                     e.preventDefault();
                     console.log('Botão Novo Processo clicado');
                     window.openProcessModal();
+                });
+            });
+
+            // Setup click handlers for data-route links (Help/FAQ/Manual)
+            const routeLinks = document.querySelectorAll('[data-route]');
+            routeLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const route = this.getAttribute('data-route');
+                    if (window.openInfoModal) {
+                        window.openInfoModal(route);
+                    }
                 });
             });
 
@@ -5401,12 +5433,13 @@
             window._appLoaded = true;
             console.log('initApp starting data fetch...');
             try {
-                const [suppliers, locations, objects, statuses, handlers, processes] = await Promise.all([
+                const [suppliers, locations, objects, statuses, handlers, departments, processes] = await Promise.all([
                     supabase.from('suppliers').select('name').order('name'),
                     supabase.from('locations').select('name').order('name'),
                     supabase.from('objects').select('name').order('name'),
                     supabase.from('statuses').select('name').order('name'),
                     supabase.from('handlers').select('name').order('name'),
+                    supabase.from('departments').select('name').order('name'),
                     supabase.from('processes').select('*').order('created_at', { ascending: false })
                 ]);
 
@@ -5415,6 +5448,7 @@
                 window.state.objects = (objects.data || []).map(o => o.name);
                 window.state.statuses = (statuses.data || []).map(s => s.name);
                 window.state.handlers = (handlers.data || []).map(h => h.name);
+                window.state.departments = (departments.data || []).map(d => d.name);
                 window.state.processes = (processes.data || []).map(p => ({
                     id: p.id,
                     parentProc: p.parent_proc,
@@ -5451,6 +5485,136 @@
         // else window.addEventListener('load', window.initApp);
 
         // --- 5. LOGIC & TABLE RENDERING ---
+        const infoContent = {
+            faq: {
+                title: '<i class="fas fa-question-circle"></i> Perguntas Frequentes',
+                subtitle: 'Tire suas dúvidas sobre o sistema',
+                content: `
+                    <h3>Como fazer login no sistema?</h3>
+                    <p>Utilize seu e-mail institucional e senha cadastrada. Em caso de primeiro acesso, entre em contato com o administrador.</p>
+                    
+                    <h3>Como cadastrar um novo processo?</h3>
+                    <p>Clique no botão "Novo Processo" no menu lateral ou na navegação inferior (mobile). Preencha todos os campos obrigatórios e clique em salvar.</p>
+                    
+                    <h3>Como rastrear um processo?</h3>
+                    <p>Na seção de Consulta, utilize os filtros disponíveis (número, status, data, tipo) para encontrar o processo desejado. Clique no ícone de histórico para ver a tramitação.</p>
+                    
+                    <h3>Como alterar minha senha?</h3>
+                    <p>Acesse "Minha Conta" no menu do usuário e selecione "Alterar Senha".</p>
+                    
+                    <h3>O que fazer quando um processo está atrasado?</h3>
+                    <p>Processos atrasados aparecem destacados em vermelho. Verifique o motivo do atraso na aba "Observações" e tome as providências necessárias.</p>
+                    
+                    <div class="highlight-box">
+                        <strong>Precisa de mais ajuda?</strong><br>
+                        Entre em contato com o suporte através do e-mail: suporte@itaguai.rj.gov.br
+                    </div>
+                `
+            },
+            manual: {
+                title: '<i class="fas fa-book-open"></i> Manual do Usuário',
+                subtitle: 'Guia completo de utilização do sistema',
+                content: `
+                    <h3>1. Login e Autenticação</h3>
+                    <p>O sistema utiliza autenticação segura. Cada usuário possui credenciais únicas fornecidas pelo administrador.</p>
+                    
+                    <h3>2. Dashboard</h3>
+                    <p>A tela inicial mostra estatísticas em tempo real:</p>
+                    <ul>
+                        <li><strong>Total de Processos:</strong> Quantidade geral de processos cadastrados</li>
+                        <li><strong>Em Tramitação:</strong> Processos ativos no momento</li>
+                        <li><strong>Liquidados:</strong> Processos concluídos com sucesso</li>
+                        <li><strong>Pendências:</strong> Percentual de processos não finalizados</li>
+                        <li><strong>Vencidos:</strong> Processos com prazo excedido</li>
+                    </ul>
+                    
+                    <h3>3. Cadastro de Processos</h3>
+                    <p>Para cadastrar um novo processo, clique em "Novo Processo" e preencha:</p>
+                    <ul>
+                        <li>Número do processo</li>
+                        <li>Tipo de processo</li>
+                        <li>Objeto/Descrição</li>
+                        <li>Fornecedor</li>
+                        <li>Local de entrega</li>
+                        <li>Valor</li>
+                        <li>Data de vencimento</li>
+                    </ul>
+                    
+                    <h3>4. Consulta e Filtros</h3>
+                    <p>Use os filtros avanzados para buscar processos específicos por status, data, departamento ou fornecedor.</p>
+                    
+                    <h3>5. Relatórios</h3>
+                    <p>Exporte dados para Excel ou gere relatórios PDF diretamente do sistema.</p>
+                `
+            },
+            termos: {
+                title: '<i class="fas fa-file-contract"></i> Política de Uso',
+                subtitle: 'Termos e condições de uso do sistema',
+                content: `
+                    <h3>1. Objetivo</h3>
+                    <p>O Sistema de Controle de Processos de Pagamento tem como objetivo gerenciar e rastrear todos os processos administrativos da Secretaria Municipal de Educação.</p>
+                    
+                    <h3>2. Usuários Autorizados</h3>
+                    <p>O acesso é restrito a servidores municipais devidamente cadastrados e autorizados pela administração.</p>
+                    
+                    <h3>3. Responsabilidades do Usuário</h3>
+                    <ul>
+                        <li>Manter suas credenciais de acesso em sigilo</li>
+                        <li>Registrar processos de forma completa e verdadeira</li>
+                        <li>Atualizar o status dos processos em tempo hábil</li>
+                        <li>Reportar irregularidades ao administrador</li>
+                    </ul>
+                    
+                    <h3>4. Boas Práticas</h3>
+                    <ul>
+                        <li>Verificar diariamente os processos pendentes</li>
+                        <li>Manter os dados sempre atualizados</li>
+                        <li>Usar o sistema de forma ética e profissional</li>
+                        <li>Respeitar os prazos estabelecidos</li>
+                    </ul>
+                    
+                    <h3>5. Penalidades</h3>
+                    <p>O uso indevido do sistema pode resultar em:</p>
+                    <ul>
+                        <li>Suspensão temporária de acesso</li>
+                        <li>Cancelamento definitivo de cadastro</li>
+                        <li>Medidas administrativas cabíveis</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <strong>Aviso Legal:</strong><br>
+                        O uso deste sistema implica aceitação completa destes termos. Em caso de dúvidas, consulte o regulamento interno.
+                    </div>
+                `
+            }
+        };
+
+        window.openInfoModal = function(route) {
+            const modal = document.getElementById('infoModal');
+            const titleEl = document.getElementById('infoModalTitle');
+            const subtitleEl = document.getElementById('infoModalSubtitle');
+            const contentEl = document.getElementById('infoModalContent');
+            
+            if (!modal || !titleEl || !contentEl) return;
+
+            const content = infoContent[route];
+            if (content) {
+                titleEl.innerHTML = content.title;
+                if (subtitleEl) subtitleEl.innerText = content.subtitle;
+                contentEl.innerHTML = content.content;
+                
+                modal.style.display = 'flex';
+                modal.style.opacity = '1';
+                modal.classList.add('visible');
+                
+                const overlay = document.getElementById('overlay');
+                if (overlay) {
+                    overlay.style.display = 'block';
+                    setTimeout(() => overlay.classList.add('visible'), 10);
+                }
+            }
+        };
+
         window.getStatusColor = function (status) {
             const st = (status || '').toUpperCase();
             if (st === 'LIQUIDADO') return '#2ecc71'; // Verde
@@ -6588,6 +6752,8 @@
                 { id: 'treatedBy', data: window.state.handlers, searchable: true },
                 { id: 'locationSelect', data: window.state.locations, searchable: true },
                 { id: 'statusSelect', data: window.state.statuses, searchable: true },
+                { id: 'userDepartment', data: window.state.departments, searchable: false },
+                { id: 'userFilterDept', data: window.state.departments, opt: true, placeholder: 'Todos os Departamentos', searchable: false, isFilter: true },
                 { id: 'statusFilter', data: window.state.statuses, opt: true, placeholder: 'Todos os Status', searchable: false, isFilter: true },
                 { id: 'locationFilter', data: window.state.locations, opt: true, placeholder: 'Todas Localizações', searchable: false, isFilter: true },
                 { id: 'handlerFilter', data: window.state.handlers, opt: true, placeholder: 'Todos os Tratadores', searchable: false, isFilter: true }
@@ -6669,6 +6835,7 @@
                 'suppliers': 'Cadastro de Fornecedores',
                 'objects': 'Cadastro de Objetos',
                 'locations': 'Cadastro de Localização',
+                'departments': 'Cadastro de Departamentos',
                 'statuses': 'Cadastro de Status',
                 'handlers': 'Cadastro de Tratadores'
             };
@@ -6690,6 +6857,36 @@
                 overlay.style.display = 'block';
                 overlay.classList.add('visible');
             }
+            
+            // Debug sidebar item just in case it disappeared
+            const deptLink = document.querySelector('a[onclick*="departments"]');
+            if (!deptLink) {
+                console.warn('Department link missing from sidebar, re-injecting...');
+                const configList = document.querySelector('#menu-settings ul');
+                if (configList && !configList.querySelector('a[onclick*="departments"]')) {
+                   const li = document.createElement('li');
+                   li.innerHTML = '<a href="#" onclick="window.openConfigModal(\'departments\')"><i class="fas fa-building"></i> Cadastrar Departamento</a>';
+                   configList.insertBefore(li, configList.children[1]);
+                }
+            }
+        };
+        
+        window.saveConfigItem = async function () {
+            const input = document.getElementById('configInput');
+            const val = input.value.trim();
+            if (!val) return;
+            try {
+                const type = window.state.currentConfigType;
+                const { error } = await supabase.from(type).insert({ name: val });
+                if (error) throw error;
+                if (!window.state[type]) window.state[type] = [];
+                window.state[type].push(val);
+                input.value = '';
+                window.renderConfigList(); window.updateSelects();
+            } catch (err) { 
+                console.error('Error saving config item:', err); 
+                alert('Erro ao salvar: ' + (err.message || 'Falha na comunicação'));
+            }
         };
 
         window.quickAddConfig = function (type) {
@@ -6703,7 +6900,8 @@
             if (!list) return;
             list.innerHTML = '';
 
-            let arr = window.state[window.state.currentConfigType] || [];
+            const type = window.state.currentConfigType;
+            let arr = window.state[type] || [];
 
             if (searchInput && searchInput.value) {
                 const term = searchInput.value.toLowerCase();
@@ -6711,59 +6909,118 @@
             }
 
             if (arr.length === 0) {
-                list.innerHTML = '<li style="text-align:center; padding: 2rem; color: #9CA3AF; font-size: 0.9rem;">Nenhum item cadastrado.</li>';
+                list.innerHTML = `<li style="text-align:center; padding: 2rem; color: #9CA3AF; font-size: 0.9rem;">Nenhum item cadastrado.</li>`;
                 return;
             }
 
-            // Sort alphabetically for display
             [...arr].sort((a, b) => a.localeCompare(b)).forEach((it) => {
-                const originalIdx = window.state[window.state.currentConfigType].indexOf(it);
                 const li = document.createElement('li');
                 li.className = 'config-list-item';
+                // Safe unique ID for DOM selection
+                const safeKey = btoa(unescape(encodeURIComponent(it))).replace(/=/g, '');
+                li.setAttribute('data-id', safeKey);
+                li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 15px; border-bottom:1px solid #f3f4f6;';
+                
                 li.innerHTML = `
-                    <span style="font-weight: 500; color: #374151;">${it}</span>
-                    <div>
-                        <i class="fas fa-edit config-edit-icon" style="color:#f59e0b; cursor:pointer; padding:0.5rem; transition:all 0.2s;" onmouseover="this.style.color='#d97706'" onmouseout="this.style.color='#f59e0b'" title="Editar" onclick="window.editConfigItem(${originalIdx})"></i>
-                        <i class="fas fa-trash config-trash-icon" title="Excluir" onclick="window.deleteConfigItem(${originalIdx})"></i>
+                    <span class="item-display-name" style="font-weight: 500; color: #374151;">${it}</span>
+                    <div class="item-actions-row" style="display: flex; gap: 12px;">
+                        <button type="button" class="btn-edit-item" title="Editar" style="background:none; border:none; color:#f59e0b; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="btn-delete-item" title="Excluir" style="background:none; border:none; color:#ef4444; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 `;
+
+                li.querySelector('.btn-edit-item').onclick = (e) => { e.stopPropagation(); window.editConfigItemByElement(li, it); };
+                li.querySelector('.btn-delete-item').onclick = (e) => { e.stopPropagation(); window.deleteConfigItemByElement(li, it); };
+
                 list.appendChild(li);
             });
         };
 
-        window.saveConfigItem = async function () {
-            const val = document.getElementById('configInput').value.trim();
-            if (!val) return;
-            try {
-                await supabase.from(window.state.currentConfigType).insert({ name: val });
-                window.state[window.state.currentConfigType].push(val);
-                window.renderConfigList(); window.updateSelects();
-                document.getElementById('configInput').value = '';
-            } catch (err) { console.error('Error saving config item:', err); }
+        window.editConfigItemByElement = function (li, oldName) {
+            console.log('Edit initiated for:', oldName);
+            li.innerHTML = `
+                <div class="edit-ui" style="display:flex; gap:8px; width:100%; align-items:center;" onclick="event.stopPropagation()">
+                    <input type="text" class="form-control edit-input" value="${oldName}" style="flex-grow:1; padding:4px 8px; font-size:0.9rem;">
+                    <button type="button" class="btn btn-primary btn-save-edit" style="padding:4px 8px; font-size:0.8rem;">OK</button>
+                    <button type="button" class="btn btn-secondary btn-cancel-edit" style="padding:4px 8px; font-size:0.8rem;">X</button>
+                </div>
+            `;
+            
+            const input = li.querySelector('.edit-input');
+            input.focus();
+            input.select();
+            
+            li.querySelector('.btn-save-edit').onclick = async (e) => {
+                e.stopPropagation();
+                const newName = input.value.trim();
+                if (newName && newName !== oldName) {
+                    try {
+                        const type = window.state.currentConfigType;
+                        const { error } = await supabase.from(type).update({ name: newName }).eq('name', oldName);
+                        if (error) throw error;
+                        const idx = window.state[type].indexOf(oldName);
+                        if (idx !== -1) window.state[type][idx] = newName;
+                    } catch (err) {
+                        console.error('Save error:', err);
+                        alert('Erro ao salvar: ' + err.message);
+                    }
+                }
+                window.renderConfigList();
+                window.updateSelects();
+            };
+            
+            li.querySelector('.btn-cancel-edit').onclick = (e) => {
+                e.stopPropagation();
+                window.renderConfigList();
+            };
+            
+            input.onkeyup = (e) => {
+                if (e.key === 'Enter') li.querySelector('.btn-save-edit').click();
+                if (e.key === 'Escape') window.renderConfigList();
+            };
         };
 
-        window.editConfigItem = async function (idx) {
-            const oldName = window.state[window.state.currentConfigType][idx];
-            const newName = prompt(`Editar item: ${oldName}`, oldName);
-            if (!newName || newName.trim() === '' || newName === oldName) return;
-
-            try {
-                await supabase.from(window.state.currentConfigType).update({ name: newName.trim() }).eq('name', oldName);
-                window.state[window.state.currentConfigType][idx] = newName.trim();
-                window.renderConfigList(); window.updateSelects();
-            } catch (err) { console.error('Error editing config item:', err); }
-        };
-
-        window.deleteConfigItem = async function (idx) {
-            const name = window.state[window.state.currentConfigType][idx];
-            if (confirm(`Excluir ${name}?`)) {
+        window.deleteConfigItemByElement = function (li, name) {
+            console.log('Delete initiated for:', name);
+            li.innerHTML = `
+                <div class="delete-ui" style="display:flex; justify-content:space-between; align-items:center; width:100%; background:#fee2e2; padding:5px 10px; border-radius:4px;" onclick="event.stopPropagation()">
+                    <span style="font-size:0.85rem; color:#b91c1c; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:60%;">Excluir?</span>
+                    <div style="display:flex; gap:5px;">
+                        <button type="button" class="btn btn-danger btn-confirm-delete" style="padding:2px 8px; font-size:0.75rem;">Sim</button>
+                        <button type="button" class="btn btn-secondary btn-cancel-delete" style="padding:2px 8px; font-size:0.75rem;">Não</button>
+                    </div>
+                </div>
+            `;
+            
+            li.querySelector('.btn-confirm-delete').onclick = async (e) => {
+                e.stopPropagation();
+                console.log('Final confirm delete for:', name);
                 try {
-                    await supabase.from(window.state.currentConfigType).delete().eq('name', name);
-                    window.state[window.state.currentConfigType].splice(idx, 1);
-                    window.renderConfigList(); window.updateSelects();
-                } catch (err) { console.error('Error deleting config item:', err); }
-            }
+                    const type = window.state.currentConfigType;
+                    const { error } = await supabase.from(type).delete().eq('name', name);
+                    if (error) throw error;
+                    const idx = window.state[type].indexOf(name);
+                    if (idx !== -1) window.state[type].splice(idx, 1);
+                    console.log('Delete success');
+                    window.renderConfigList(); 
+                    window.updateSelects();
+                } catch (err) { 
+                    console.error('Delete failed:', err); 
+                    alert('Erro ao excluir: ' + (err.message || 'Falha na comunicação'));
+                    window.renderConfigList();
+                }
+            };
+            
+            li.querySelector('.btn-cancel-delete').onclick = (e) => {
+                e.stopPropagation();
+                window.renderConfigList();
+            };
         };
+
 
         // ===== GERENCIAMENTO DE USUÁRIOS (Supabase Auth + profiles table) =====
         const SUPABASE_USERS_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
@@ -6780,6 +7037,8 @@
             if (userPassword) userPassword.value = '';
             var userRole = document.getElementById('userRole');
             if (userRole) userRole.value = 'usuario';
+            var userDepartment = document.getElementById('userDepartment');
+            if (userDepartment) userDepartment.value = '';
             var userFormTitle = document.getElementById('userFormTitle');
             if (userFormTitle) userFormTitle.innerHTML = '<i class="fas fa-user-plus"></i> Adicionar Novo Usuário';
             var cancelUserEditBtn = document.getElementById('cancelUserEditBtn');
@@ -6807,11 +7066,21 @@
             try {
                 const { data, error } = await supabase.from('user_profiles').select('*').order('full_name', { ascending: true });
                 if (error) throw error;
-                window.renderUserList(data || []);
+                window.state.allUsers = data || [];
+                window.applyUserFilters();
             } catch (err) {
                 console.error('Erro ao carregar usuários:', err);
                 container.innerHTML = `<p style="text-align:center;color:#e74c3c;padding:2rem;"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar: ${err.message}</p>`;
             }
+        };
+
+        window.applyUserFilters = function() {
+            const dept = document.getElementById('userFilterDept').value;
+            let filtered = window.state.allUsers || [];
+            if (dept) {
+                filtered = filtered.filter(u => u.department === dept);
+            }
+            window.renderUserList(filtered);
         };
 
         window.renderUserList = function (users) {
@@ -6834,7 +7103,8 @@
                     <thead>
                         <tr style="background:#f8fafc; text-align:left; border-bottom: 1px solid #f1f5f9;">
                             <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Colaborador</th>
-                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Identificação / Status</th>
+                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Departamento</th>
+                            <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em;">Perfil / Status</th>
                             <th style="padding:1rem 1.25rem; font-size:0.7rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; text-align:right;">Ações</th>
                         </tr>
                     </thead>
@@ -6846,6 +7116,9 @@
                                     <span style="font-weight:700; color:#1e293b; font-size:0.9rem;">${u.full_name || 'Usuário sem nome'}</span>
                                     <span style="color:#64748b; font-size:0.75rem;"><i class="far fa-envelope" style="margin-right:4px;"></i> ${u.email || '-'}</span>
                                 </div>
+                            </td>
+                            <td style="padding:1.25rem;">
+                                <span style="font-size:0.85rem; color:#475569; font-weight:500;">${u.department || '<em style="color:#94a3b8;">Não vinculado</em>'}</span>
                             </td>
                             <td style="padding:1.25rem;">
                                 <div style="display:flex; align-items:center; gap:10px;">
@@ -6883,6 +7156,7 @@
             const password = document.getElementById('userPassword').value;
             const confirmPassword = document.getElementById('userConfirmPassword').value;
             const role = document.getElementById('userRole').value;
+            const department = document.getElementById('userDepartment').value;
             const errDiv = document.getElementById('userFormError');
             const errText = document.getElementById('userFormErrorText');
 
@@ -6910,7 +7184,7 @@
 
             try {
                 if (editingId) {
-                    const updateData = { full_name: fullName, email: email, role: role };
+                    const updateData = { full_name: fullName, email: email, role: role, department: department };
                     // Hint: password updates via admin API would go here
                     const { error } = await supabase.from('user_profiles').update(updateData).eq('id', editingId);
                     if (error) throw error;
@@ -6926,7 +7200,7 @@
                     const userId = authData.user?.id;
                     if (userId) {
                         await supabase.from('user_profiles').upsert({
-                            id: userId, full_name: fullName, email: email, role: role, active: true
+                            id: userId, full_name: fullName, email: email, role: role, department: department, active: true
                         });
                     }
                     alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
@@ -6952,6 +7226,7 @@
             document.getElementById('userPassword').value = '';
             document.getElementById('userConfirmPassword').value = '';
             document.getElementById('userRole').value = user.role || 'usuario';
+            document.getElementById('userDepartment').value = user.department || '';
 
             document.getElementById('userFormTitle').innerHTML = '<i class="fas fa-user-edit"></i> Editar Colaborador';
             document.getElementById('saveUserBtn').innerHTML = '<i class="fas fa-sync"></i> Atualizar Dados';
@@ -6986,7 +7261,7 @@
                         window.currentUserRole = profile.role;
                         window.currentUserName = profile.full_name;
                         userEl.innerText = (profile.full_name || user.email).split(' ')[0];
-                        deptEl.innerText = profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR';
+                        deptEl.innerText = profile.department || (profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR');
 
                         // Restrição de menu por cargo
                         if (menuSettings) {
@@ -7072,6 +7347,7 @@
             document.getElementById('userPassword').value = '';
             document.getElementById('userConfirmPassword').value = '';
             document.getElementById('userRole').value = 'usuario';
+            document.getElementById('userDepartment').value = '';
             document.getElementById('userFormTitle').innerHTML = '<i class="fas fa-user-plus"></i> Adicionar Novo Usuário';
             document.getElementById('saveUserBtn').innerHTML = '<i class="fas fa-save"></i> Salvar Usuário';
             document.getElementById('cancelUserEditBtn').style.display = 'none';
