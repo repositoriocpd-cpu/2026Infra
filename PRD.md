@@ -70,11 +70,12 @@ O **SUB INFRA** é uma aplicação web interna desenvolvida para a Secretaria Mu
 - **Convidado (Padrão)**: Perfil de acesso de leitura básica; menus administrativos são ocultados por padrão.
 
 ### 8.2. Medidas de Segurança Implementadas
-- **Ocultação de UI**: Menus críticos (`Configurações`, `Backup`, `Logs`) são removidos da barra lateral para não-administradores.
-- **Proteção de Funções (Trava Lógica)**: Verificação de `currentUserRole` em todas as funções administrativas (`openConfigModal`, `deleteUser`, etc.) para impedir execução via console.
+- **Row-Level Security (RLS) no Banco**: Toda a base de dados (Supabase PostgreSQL) foi blindada com políticas RLS estritas, permitindo que apenas administradores (mapeados estruturalmente na tabela `user_profiles`) insiram, atualizem ou apaguem processos e configurações.
+- **Ocultação de UI (RBAC Visual)**: Menus críticos (`Configurações`, `Backup`, `Logs`) são removidos da barra lateral dinamicamente quando o usuário não é reconhecido como Administrador.
+- **Proteção de Funções (Trava Lógica)**: O bypass Front-End foi neutralizado. Se uma chave de comando for injetada no Console (`window.currentUserRole = 'administrador'`), o Servidor atua como "Muralha", rejeitando a comunicação no endpoint e alertando no Front (`Erro 42501`) sobre a restrição de "Acesso Negado".
 - **Gestão de Sessão Segura**: Limpeza total de tokens no `localStorage` e reset de variáveis de estado durante o logout.
-- **Proteção de Credenciais**: Scripts de manutenção e chaves de API sensíveis isolados em diretórios ignorados pelo controle de versão.
+- **Perfis Unificados Backend**: Papéis autorizados transitam do front para o back por meio da tabela primária associada à nuvem da autenticação (`auth.users`).
 
 ### 8.3. Auditoria e Verificação
-- Testes de intrusão realizados para validar a eficácia do bloqueio de UI e o isolamento de funções administrativas.
-- Screenshots de auditoria capturados para demonstrar a conformidade da barra lateral protegida.
+- Auditoria de injeção E2E (Fase 1) bem-sucedida, registrando barreiras intransponíveis (Erro HTTP 403 Forbidden) para visitantes atuando sobre API Keys.
+- Scripts utilitários obsoletos e vazados foram removidos do histórico vulnerável de versionamento ou estão restritos.

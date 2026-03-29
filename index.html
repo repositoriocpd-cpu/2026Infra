@@ -6879,7 +6879,12 @@
             try {
                 const type = window.state.currentConfigType;
                 const { error } = await supabase.from(type).insert({ name: val });
-                if (error) throw error;
+                if (error) {
+                    if (error.code === '42501' || error.message?.includes('row-level security')) {
+                        throw new Error('Acesso negado pelo Servidor: Privilégios insuficientes.');
+                    }
+                    throw error;
+                }
                 if (!window.state[type]) window.state[type] = [];
                 window.state[type].push(val);
                 input.value = '';
@@ -6962,12 +6967,17 @@
                     try {
                         const type = window.state.currentConfigType;
                         const { error } = await supabase.from(type).update({ name: newName }).eq('name', oldName);
-                        if (error) throw error;
+                        if (error) {
+                            if (error.code === '42501' || error.message?.includes('row-level security')) {
+                                throw new Error('Acesso negado pelo Servidor: Privilégios insuficientes.');
+                            }
+                            throw error;
+                        }
                         const idx = window.state[type].indexOf(oldName);
                         if (idx !== -1) window.state[type][idx] = newName;
                     } catch (err) {
                         console.error('Save error:', err);
-                        alert('Erro ao salvar: ' + err.message);
+                        alert('Erro ao salvar: ' + (err.message || 'Falha na comunicação'));
                     }
                 }
                 window.renderConfigList();
@@ -7003,7 +7013,12 @@
                 try {
                     const type = window.state.currentConfigType;
                     const { error } = await supabase.from(type).delete().eq('name', name);
-                    if (error) throw error;
+                    if (error) {
+                        if (error.code === '42501' || error.message?.includes('row-level security')) {
+                            throw new Error('Acesso negado pelo Servidor: Privilégios insuficientes.');
+                        }
+                        throw error;
+                    }
                     const idx = window.state[type].indexOf(name);
                     if (idx !== -1) window.state[type].splice(idx, 1);
                     console.log('Delete success');
