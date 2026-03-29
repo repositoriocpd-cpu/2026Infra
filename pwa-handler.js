@@ -2,9 +2,17 @@
     let deferredPrompt;
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    const isAlreadyInstalled = localStorage.getItem('pwa_installed') === 'true';
 
-    // Criar o HTML do Banner se não for standalone
-    if (!isStandalone) {
+    // Salvar estado quando o app for instalado
+    window.addEventListener('appinstalled', () => {
+        localStorage.setItem('pwa_installed', 'true');
+        const banner = document.getElementById('pwa-install-banner');
+        if (banner) banner.style.transform = 'translateY(150%)';
+    });
+
+    // Criar o HTML do Banner se não for standalone e não estiver instalado
+    if (!isStandalone && !isAlreadyInstalled) {
         window.addEventListener('load', () => {
             const banner = document.createElement('div');
             banner.id = 'pwa-install-banner';
@@ -121,33 +129,35 @@
         updateBanner.id = 'pwa-update-banner';
         updateBanner.style.cssText = `
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             left: 20px;
             right: 20px;
-            background: #1e293b;
-            color: white;
+            background: rgba(6, 78, 59, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
             padding: 16px;
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 16px;
             z-index: 10000;
+            color: white;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-            animation: slideInDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideInUpPWA 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         `;
 
         updateBanner.innerHTML = `
             <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-sync-alt fa-spin"></i>
+                <div style="background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-sync-alt fa-spin" style="font-size: 18px;"></i>
                 </div>
                 <div>
                     <h5 style="margin: 0; font-size: 14px; font-weight: 700;">Nova Atualização!</h5>
                     <p style="margin: 2px 0 0; font-size: 12px; opacity: 0.8;">Versão ${version} disponível</p>
                 </div>
             </div>
-            <button id="pwa-refresh-btn" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; transition: background 0.2s;">
+            <button id="pwa-refresh-btn" style="background: white; color: #064e3b; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; transition: transform 0.2s;">
                 Atualizar Agora
             </button>
         `;
@@ -157,8 +167,8 @@
             const style = document.createElement('style');
             style.id = 'pwa-animations';
             style.textContent = `
-                @keyframes slideInDown {
-                    from { transform: translateY(-150%); opacity: 0; }
+                @keyframes slideInUpPWA {
+                    from { transform: translateY(150%); opacity: 0; }
                     to { transform: translateY(0); opacity: 1; }
                 }
             `;

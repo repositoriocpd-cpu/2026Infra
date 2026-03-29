@@ -61,3 +61,21 @@ O **SUB INFRA** é uma aplicação web interna desenvolvida para a Secretaria Mu
 - Redução no tempo de localização de processos físicos.
 - Acurácia de 100% no histórico de tramitação.
 - Visualização imediata de gargalos operacionais via Dashboard.
+
+## 8. Segurança e Auditoria de Acesso
+
+### 8.1. Controle de Acesso Baseado em Cargos (RBAC)
+- **Administrador**: Acesso total a configurações, gestão de usuários, backup e logs.
+- **Usuário Colaborador**: Acesso restrito apenas ao Dashboard e Consulta de Processos.
+- **Convidado (Padrão)**: Perfil de acesso de leitura básica; menus administrativos são ocultados por padrão.
+
+### 8.2. Medidas de Segurança Implementadas
+- **Row-Level Security (RLS) no Banco**: Toda a base de dados (Supabase PostgreSQL) foi blindada com políticas RLS estritas, permitindo que apenas administradores (mapeados estruturalmente na tabela `user_profiles`) insiram, atualizem ou apaguem processos e configurações.
+- **Ocultação de UI (RBAC Visual)**: Menus críticos (`Configurações`, `Backup`, `Logs`) são removidos da barra lateral dinamicamente quando o usuário não é reconhecido como Administrador.
+- **Proteção de Funções (Trava Lógica)**: O bypass Front-End foi neutralizado. Se uma chave de comando for injetada no Console (`window.currentUserRole = 'administrador'`), o Servidor atua como "Muralha", rejeitando a comunicação no endpoint e alertando no Front (`Erro 42501`) sobre a restrição de "Acesso Negado".
+- **Gestão de Sessão Segura**: Limpeza total de tokens no `localStorage` e reset de variáveis de estado durante o logout.
+- **Perfis Unificados Backend**: Papéis autorizados transitam do front para o back por meio da tabela primária associada à nuvem da autenticação (`auth.users`).
+
+### 8.3. Auditoria e Verificação
+- Auditoria de injeção E2E (Fase 1) bem-sucedida, registrando barreiras intransponíveis (Erro HTTP 403 Forbidden) para visitantes atuando sobre API Keys.
+- Scripts utilitários obsoletos e vazados foram removidos do histórico vulnerável de versionamento ou estão restritos.
