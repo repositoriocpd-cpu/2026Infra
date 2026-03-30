@@ -1,0 +1,129 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║             DIAGRAMA DE ARQUITETURA - SUB INFRA PANEL                        ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+
+═══════════════════════════════════════════════════════════════════════════════
+1. VISÃO DE ALTO NÍVEL (High-Level Architecture)
+═══════════════════════════════════════════════════════════════════════════════
+
+                    ┌─────────────────────────────┐
+                    │                             │
+                    │    User Browser/Mobile      │
+                    │   (SUB INFRA PANEL)         │
+                    │                             │
+                    └──────────────┬──────────────┘
+                                   │
+                 ┌─────────────────┼─────────────────┐
+                 │                 │                 │
+         ┌───────▼─────────┐   ┌───▼────────┐  ┌───▼─────┐
+         │   HTML5 UI      │   │ JavaScript │  │  PWA    │
+         │   - Header      │   │  Logic     │  │ - SW    │
+         │   - Sidebar     │   │  - CRUD    │  │ - Cache │
+         │   - Modals      │   │  - Export  │  │ - Offline
+         │   - Tables      │   │            │  │         │
+         │   - Charts      │   │            │  │         │
+         └────────┬────────┘   └────────────┘  └─────────┘
+                  │
+          HTTP/REST API (JSON)
+                  │
+                  ▼
+         ┌─────────────────────────────────┐
+         │   Supabase API Gateway          │
+         │   (Auth + REST Endpoints)       │
+         └────────────┬────────────────────┘
+                      │
+        ┌─────────────┼──────────────┐
+        │             │              │
+    ┌───▼─────┐  ┌───▼──────┐  ┌──▼────────┐
+    │ Auth    │  │  Realtime│  │  REST API │
+    │ Service │  │ (WebSock)│  │  (CRUD)   │
+    └─────────┘  └──────────┘  └──────┬────┘
+                                       │
+                            PostgreSQL Queries
+                                       │
+                      ┌────────────────▼───────────────┐
+                      │   PostgreSQL Database          │
+                      │   (Supabase Cloud)             │
+                      │   - 9 Tables                   │
+                      │   - RLS Policies               │
+                      │   - Auth.users                 │
+                      └────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+2. ARQUITETURA DE CAMADAS (Layered Architecture)
+═══════════════════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                         PRESENTATION LAYER (Client)                          │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  [index.html - 8,121 linhas]                                                │
+│    ├─ Header: Logo, Menu Toggle, Dark Mode, User Info                      │
+│    ├─ Sidebar: Menu Navigation (Dashboard, Consulta, Config, Admin)        │
+│    ├─ Main Content Area: Dinâmico (views diferentes por menu)              │
+│    │   ├─ Dashboard View: 5 cards + 2 gráficos                            │
+│    │   ├─ Process Table View: Tabela com filtros                          │
+│    │   ├─ Config Tables View: 6 tabelas CRUD                              │
+│    │   └─ Settings View: Gestão de usuários                                │
+│    └─ Modals Ocultos: 8 modais dinâmicos                                  │
+│                                                                              │
+│  [CSS Inline - 3,000+ linhas]                                               │
+│    ├─ Variáveis CSS: cores, fonts, tema                                   │
+│    ├─ Layout: Flexbox, Grid                                               │
+│    ├─ Responsividade: Mobile breakpoints                                  │
+│    ├─ Dark Mode: media queries + CSS variables                            │
+│    └─ Componentes: Cards, Modals, Tables, Forms                           │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+                                    ▲
+                                    │ (DOM interaction)
+                                    │
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                      APPLICATION LOGIC LAYER (Frontend JS)                   │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  [2026_script.js - 1,577 linhas]                                            │
+│    ├─ State Management: window.state = { processes, suppliers, ... }      │
+│    ├─ Event Listeners: Menu, Modal, Form, Button handlers                 │
+│    ├─ CRUD Operations: Create, Read, Update, Delete via Supabase         │
+│    ├─ UI Rendering: renderTable(), updateCharts(), animateCounters()      │
+│    ├─ Export Functions: exportToPDF(), exportToExcel()                     │
+│    ├─ Utility Functions: getStatusColor(), formatDate(), validate()       │
+│    └─ Error Handling: try-catch, validation, user feedback                │
+│                                                                              │
+│  [pwa-handler.js - 193 linhas]                                              │
+│    └─ PWA Install Banner: Detecta plataforma, mostra install prompt        │
+│                                                                              │
+│  [sw.js - 68 linhas]                                                        │
+│    ├─ Install Event: Cache assets estáticos                               │
+│    ├─ Fetch Event: Serve from cache, fallback to network                  │
+│    └─ Activate Event: Cleanup de caches antigos                           │
+│                                                                              │
+│  [Bibliotecas CDN]                                                           │
+│    ├─ Chart.js: Renderização de gráficos dinâmicos                        │
+│    ├─ Choices.js: Selects pesquisáveis                                     │
+│    ├─ jsPDF + html2canvas: Geração de PDF                                 │
+│    ├─ xlsx-js-style: Exportação para Excel                                │
+│    └─ Supabase SDK: Cliente JavaScript para API                           │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+                                    ▲
+                                    │ (HTTP REST + WebSocket)
+                                    │
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                        SERVICE LAYER (API Gateway)                           │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  Supabase API Gateway (Multi-Protocol)                                      │
+│    ├─ REST API (HTTP)      /v1/rest/...                                    │
+│    ├─ Auth API             /auth/v1/...                                    │
+│    ├─ Realtime (WebSocket) ws://...                                        │
+│    └─ Storage API (S3-like)                                                 │
+│                                                                              │
+│  Request Flow:                                                               │
+│    1. Frontend: supabase.from('table').select()                            │
+│    2. Supabase S

@@ -1,0 +1,182 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                      REFERÊNCIA RÁPIDA - SUB INFRA                          ║
+║                                                                              ║
+║              Guia de Consulta Rápida do Codebase (Cheat Sheet)              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+
+📖 TABELA DE REFERÊNCIA RÁPIDA
+════════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────┬──────────────────────┬─────────────────────────────┐
+│ O QUE PROCURO?          │ ONDE ENCONTRAR?      │ SEÇÃO/ARQUIVO               │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Visão Geral do Projeto  │ Rápido               │ RESUMO_EXECUTIVO.txt        │
+│                         │ (5 minutos)          │ Seção 1 - Propósito         │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Arquitetura Técnica     │ Médio                │ ANALISE_CODEBASE_COMPLETA   │
+│                         │ (15 minutos)         │ Seção 2 + Seção 6           │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Diagramas & Fluxos      │ Visual               │ DIAGRAMA_ARQUITETURA.txt    │
+│                         │ (5 minutos)          │ Seções 1-5                  │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Stack Tecnológico       │ Tabelas              │ RESUMO_EXECUTIVO.txt        │
+│                         │ (2 minutos)          │ Seção 2                     │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Funcionalidades         │ Lista                │ RESUMO_EXECUTIVO.txt        │
+│                         │ (5 minutos)          │ Seção 6                     │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Segurança               │ Detalhado            │ DIAGRAMA_ARQUITETURA.txt    │
+│                         │ (10 minutos)         │ Seção 6 + security_report   │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Estrutura de Arquivos   │ Organizado           │ ANALISE_CODEBASE_COMPLETA   │
+│                         │ (5 minutos)          │ Seção 1                     │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Componentes/Módulos     │ Hierárquico          │ DIAGRAMA_ARQUITETURA.txt    │
+│                         │ (5 minutos)          │ Seção 3                     │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Dados & Banco           │ Schema SQL           │ supabase_schema.sql         │
+│                         │ (10 minutos)         │ arquivo original            │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Performance             │ Métricas             │ RESUMO_EXECUTIVO.txt        │
+│                         │ (3 minutos)          │ Seção 8                     │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Recomendações Futuras   │ Roadmap              │ ANALISE_CODEBASE_COMPLETA   │
+│                         │ (5 minutos)          │ Seção 16                    │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Padrões de Arquitetura  │ Conceitual           │ ANALISE_CODEBASE_COMPLETA   │
+│                         │ (10 minutos)         │ Seção 6                     │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Deploy & Pipeline       │ Procedural           │ DIAGRAMA_ARQUITETURA.txt    │
+│                         │ (3 minutos)          │ Seção 7                     │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Vulnerabilidades        │ Crítico              │ security_report.md          │
+│                         │ (10 minutos)         │ arquivo original            │
+├─────────────────────────┼──────────────────────┼─────────────────────────────┤
+│ Índice Completo         │ Navegação            │ INDICE_ANALISE.md           │
+│                         │ (2 minutos)          │ Este arquivo                │
+└─────────────────────────┴──────────────────────┴─────────────────────────────┘
+
+
+📋 RESUMO DO PROJETO EM 1 PÁGINA
+════════════════════════════════════════════════════════════════════════════════
+
+NOME:           SUB INFRA PANEL (SISTEMA INFRASMEDU)
+VERSÃO:         1.0.6
+TIPO:           Painel de Gestão de Processos de Pagamento
+CLIENTE:        Secretaria Municipal de Educação - Itaguaí (SMEDU)
+PROPÓSITO:      Centralizar e monitorar o fluxo de tramitação de processos
+STATUS:         ⭐⭐⭐⭐⭐ Pronto para Produção
+
+ARQUITETURA:    SPA Monolítica (HTML + CSS + JS puro)
+BACKEND:        Supabase (PostgreSQL + Auth + RLS)
+DEPLOY:         Netlify + npm scripts
+
+FUNCIONALIDADES PRINCIPAIS:
+  • Dashboard com 5 cards + 2 gráficos
+  • CRUD de processos (tabela dinâmica)
+  • 6 tabelas de configuração
+  • Autenticação com RBAC (3 roles)
+  • Exportação PDF + Excel
+  • Timeline de movimentações
+  • PWA (instalável em mobile)
+  • Dark Mode
+
+TAMANHO:        241 MB total (com node_modules)
+                 8,121 linhas HTML
+                 1,577 linhas JavaScript
+                 3,000+ linhas CSS
+
+SEGURANÇA:      ✅ JWT Auth + RLS + RBAC
+                ⚠️ 3 vulnerabilidades identificadas (documentadas)
+
+PERFORMANCE:    Lighthouse: 85-100 (todas as categorias)
+
+
+🔑 TECNOLOGIAS PRINCIPAIS
+════════════════════════════════════════════════════════════════════════════════
+
+FRONTEND:
+  • HTML5, CSS3, JavaScript ES6+
+  • Chart.js (gráficos)
+  • Choices.js (selects dinâmicos)
+  • jsPDF + html2canvas (PDF)
+  • xlsx (Excel)
+  • Swiper (carrossel)
+
+BACKEND:
+  • Supabase (@supabase/supabase-js v2.99.1)
+  • PostgreSQL (9 tabelas)
+  • RLS (Row Level Security)
+  • Auth (Email/Senha)
+
+PWA & DEPLOY:
+  • Service Worker (offline)
+  • Manifest.json (instalação)
+  • Netlify (hospedagem)
+  • npm scripts (build)
+
+
+📂 ARQUIVOS CRÍTICOS
+════════════════════════════════════════════════════════════════════════════════
+
+ARQUIVO                     LINHAS    TAMANHO    DESCRIÇÃO
+─────────────────────────   ──────    ────────   ──────────────────────────────
+index.html                  8,121     344 KB     Arquivo HTML principal
+2026_script.js              1,577     79.9 KB    Script JavaScript
+pwa-handler.js                193     8.6 KB     Handler PWA
+sw.js                          68     1.7 KB     Service Worker
+package.json                   11     366 B      Config npm
+manifest.json                  27     615 B      PWA manifest
+supabase_schema.sql           210     ~8 KB      Schema SQL
+netlify.toml                    8     120 B      Deploy config
+
+
+🛠️ CONFIGURAÇÃO DO AMBIENTE
+════════════════════════════════════════════════════════════════════════════════
+
+INSTALAÇÃO:
+  $ npm install
+
+BUILD:
+  $ npm run build
+  └─ Output: /dist (pronto para deploy)
+
+DEPLOY:
+  $ git push origin Infra2026
+  └─ Netlify faz deploy automático
+
+DESENVOLVIMENTO LOCAL:
+  $ python -m http.server 8000
+  └─ Acesse: http://localhost:8000
+
+
+🔐 SEGURANÇA - CHECKLIST
+════════════════════════════════════════════════════════════════════════════════
+
+IMPLEMENTADO:
+  ✅ Supabase Auth (JWT tokens)
+  ✅ RLS (Row Level Security) em todas as tabelas
+  ✅ RBAC (3 roles: admin, operador, convidado)
+  ✅ Menu visibility baseada em role
+  ✅ Super Admin (email hardcoded)
+  ✅ Proteção de API (RLS enforce)
+
+VULNERABILIDADES:
+  ⚠️ Anon key do Supabase exposta (mitigado por RLS)
+  ⚠️ RBAC quebrado para convidado (quando profile === null)
+  ⚠️ Menu bypass via DevTools (proteção real em RLS)
+
+RECOMENDAÇÕES:
+  □ Corrigir bug RBAC de convidado
+  □ Usar .env para credenciais
+  □ Testar RLS com usuários reais
+  □ Adicionar proteção em openConfigModal
+
+
+📊 DADOS DO BANCO (PostgreSQL)
+════════════════════════════════════════════════════════════════════════════════
+
+TABELAS DE CONFIGURAÇÃO:
+  • suppliers (fornecedores)
+  • locations (localizações/setores)
