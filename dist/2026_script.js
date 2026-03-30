@@ -647,7 +647,7 @@
         };
 
         window.deleteProcess = async function (id) {
-            if (!confirm('Deseja realmente excluir este processo? Esta ação não pode ser desfeita.')) return;
+            if (!(await ConfirmModal.show('Deseja realmente excluir este processo? Esta ação não pode ser desfeita.', {isDangerous: true}))) return;
             try {
                 const { error } = await supabase.from('processes').delete().eq('id', id);
                 if (error) throw error;
@@ -870,11 +870,11 @@
                 window.closeModal('processDetailsModal');
                 window.openProcessModal(p);
             };
-            
-            btnDelete.onclick = async () => {
-                if (confirm('Deseja realmente excluir este processo?')) {
-                    window.closeModal('processDetailsModal');
-                    await window.deleteProcess(p.id);
+             
+             btnDelete.onclick = async () => {
+                 if (await ConfirmModal.show('Deseja realmente excluir este processo?', {isDangerous: true})) {
+                     window.closeModal('processDetailsModal');
+                     await window.deleteProcess(p.id);
                 }
             };
 
@@ -1319,7 +1319,7 @@
         };
 
         window.deleteUser = async function (id, name) {
-            if (confirm(`Excluir ${name}?`)) {
+            if (await ConfirmModal.show(`Excluir ${name}?`, {isDangerous: true})) {
                 await supabase.from('user_profiles').delete().eq('id', id);
                 window.loadUsers();
             }
@@ -1363,7 +1363,7 @@
         });
 
         window.logout = async function () {
-            if (confirm('Sair?')) { await supabase.auth.signOut(); window.location.reload(); }
+            if (await ConfirmModal.show('Sair?', {title: 'Logout'})) { await supabase.auth.signOut(); window.location.reload(); }
         };
 
         window.togglePasswordVisibility = function () {

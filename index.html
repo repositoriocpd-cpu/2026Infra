@@ -35,6 +35,8 @@
      <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
      <!-- Configuration Management -->
      <script defer src="config.js"></script>
+     <!-- Confirmation Modal -->
+     <script defer src="confirm-modal.js"></script>
      <!-- UI Kit (tokens + componentes base) -->
      <link rel="stylesheet" href="ui-kit.css">
      <script defer src="ui-kit.js"></script>
@@ -6330,7 +6332,7 @@
         };
 
         window.deleteProcess = async function (id) {
-            if (!confirm('Deseja realmente excluir este processo? Esta ação não pode ser desfeita.')) return;
+            if (!(await ConfirmModal.show('Deseja realmente excluir este processo? Esta ação não pode ser desfeita.', {isDangerous: true}))) return;
             try {
                 const { error } = await supabase.from('processes').delete().eq('id', id);
                 if (error) throw error;
@@ -6766,9 +6768,9 @@
                 window.openProcessModal(p);
             };
 
-            btnDelete.onclick = async () => {
-                if (confirm('Deseja realmente excluir este processo?')) {
-                    window.closeModal('processDetailsModal');
+             btnDelete.onclick = async () => {
+                 if (await ConfirmModal.show('Deseja realmente excluir este processo?', {isDangerous: true})) {
+                     window.closeModal('processDetailsModal');
                     await window.deleteProcess(p.id);
                 }
             };
@@ -7293,9 +7295,9 @@
         window.deleteUser = async function (id, name) {
             if (window.currentUserRole !== 'administrador') {
                 alert('Acesso negado.');
-                return;
-            }
-            if (!confirm(`ATENÇÃO: Deseja excluir permanentemente o perfil de ${name}?\nEsta ação não pode ser desfeita.`)) return;
+                 return;
+             }
+             if (!(await ConfirmModal.show(`ATENÇÃO: Deseja excluir permanentemente o perfil de ${name}?\nEsta ação não pode ser desfeita.`, {isDangerous: true}))) return;
             const { error } = await supabase.from('user_profiles').delete().eq('id', id);
             if (error) { alert('Erro ao excluir: ' + error.message); return; }
             alert('Perfil removido com sucesso!');
@@ -7388,11 +7390,11 @@
         }
 
         window.logout = async function (e) {
-            if (e) e.preventDefault();
-            // Using a cleaner confirm message and ensuring state is reset
-            if (confirm('Você tem certeza que deseja sair do sistema?')) {
-                try {
-                    // Explicitly reset role before sign out to prevent UI flickers or lingering access
+             if (e) e.preventDefault();
+             // Using a cleaner confirm message and ensuring state is reset
+             if (await ConfirmModal.show('Você tem certeza que deseja sair do sistema?', {title: 'Logout'})) {
+                 try {
+                     // Explicitly reset role before sign out to prevent UI flickers or lingering access
                     window.currentUserRole = 'convidado';
                     await supabase.auth.signOut();
                     
@@ -7410,9 +7412,9 @@
         window.deactivateUser = async function (id, name) {
             if (window.currentUserRole !== 'administrador') {
                 alert('Acesso negado.');
-                return;
-            }
-            if (!confirm(`Confirmar bloqueio de acesso para: ${name}?`)) return;
+                 return;
+             }
+             if (!(await ConfirmModal.show(`Confirmar bloqueio de acesso para: ${name}?`, {isDangerous: true}))) return;
             const { error } = await supabase.from('user_profiles').update({ active: false }).eq('id', id);
             if (error) { alert('Erro: ' + error.message); return; }
             window.loadUsers();
@@ -7421,9 +7423,9 @@
         window.reactivateUser = async function (id, name) {
             if (window.currentUserRole !== 'administrador') {
                 alert('Acesso negado.');
-                return;
-            }
-            if (!confirm(`Reativar o acesso de: ${name}?`)) return;
+                 return;
+             }
+             if (!(await ConfirmModal.show(`Reativar o acesso de: ${name}?`))) return;
             const { error } = await supabase.from('user_profiles').update({ active: true }).eq('id', id);
             if (error) { alert('Erro: ' + error.message); return; }
             window.loadUsers();

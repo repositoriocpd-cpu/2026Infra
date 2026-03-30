@@ -13,6 +13,7 @@ const FILES_TO_COPY = [
   'index.html',
   '2026_script.js',
   'config.js',
+  'confirm-modal.js',
   'pwa-handler.js',
   'ui-kit.css',
   'ui-kit.js',
