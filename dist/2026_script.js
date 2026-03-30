@@ -1,6 +1,6 @@
 // Script 0
 
-        console.log('=== SCRIPT INITIALIZING v2.0 ===');
+        if (window.AppConfig && !window.AppConfig.isProduction()) console.log('=== SCRIPT INITIALIZING v2.0 ===');
 
         // *** MENU TOGGLE ***
         window.toggleMenu = function () {
@@ -41,7 +41,7 @@
         var supabase;
         try {
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            console.log('Supabase client initialized');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Supabase client initialized');
         } catch (e) { console.error('Supabase Client Error:', e); }
 
         window.state = {
@@ -56,7 +56,7 @@
 
         // --- 3. EVENT LISTENERS SETUP (DOM already ready at end of body) ---
         (function setupListeners() {
-            console.log('Setting up listeners...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Setting up listeners...');
 
             const menuBtn = document.getElementById('menu-toggle');
             if (menuBtn) menuBtn.addEventListener('click', function (e) { e.stopPropagation(); window.toggleMenu(); });
@@ -69,7 +69,7 @@
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Submenu clicked:', this.innerText.trim());
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Submenu clicked:', this.innerText.trim());
 
                     var submenu = this.nextElementSibling;
                     if (!submenu || !submenu.classList.contains('submenu')) {
@@ -132,7 +132,7 @@
                 }
                 
                 el._animating = true;
-                console.log('Animating', el.id, 'to', target);
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Animating', el.id, 'to', target);
                 var suffix = el.getAttribute('data-suffix') || '';
                 var isFloat = target % 1 !== 0;
                 var start = null;
@@ -167,21 +167,31 @@
                 };
             }
 
-            console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
         })();
 
         // --- 4. APP INITIALIZATION ---
         window.initApp = async function () {
             if (!supabase) return;
-            console.log('initApp starting data fetch...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
+            
+            // Check for existing session and hide overlay early
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Existing session found in initApp, hiding overlay.');
+                const overlay = document.getElementById('login-overlay');
+                if (overlay) overlay.style.display = 'none';
+                updateUserInfo(session.user);
+            }
+
             try {
                 const [suppliers, locations, objects, statuses, handlers, processes] = await Promise.all([
                     supabase.from('suppliers').select('name').order('name'),
                     supabase.from('locations').select('name').order('name'),
                     supabase.from('objects').select('name').order('name'),
                     supabase.from('statuses').select('name').order('name'),
-                    supabase.from('handlers').select('name').order('name'),
-                    supabase.from('processes').select('*, process_history(*)').order('created_at', { ascending: false })
+                    supabase.from('handlers').select('full_name').order('full_name'),
+                    supabase.from('processes').select('*').order('created_at', { ascending: false })
                 ]);
 
                 window.state.suppliers = (suppliers.data || []).map(s => s.name);
@@ -190,7 +200,11 @@
                 window.state.statuses = (statuses.data || []).map(s => s.name);
                 window.state.handlers = (handlers.data || []).map(h => h.name);
                 window.state.processes = (processes.data || []).map(p => ({
-                    id: p.id, ppNumber: p.pp_number, exerciseYear: p.exercise_year, ppAno: p.pp_ano,
+                    id: p.id,
+                    parentProc: p.parent_proc,
+                    ppNumber: p.pp_number,
+                    exerciseYear: p.exercise_year,
+                    ppAno: p.pp_ano,
                     coverValue: p.cover_value, supplier: p.supplier_name, object: p.object_name,
                     openingDate: p.opening_date, deadline: p.deadline, treatedBy: p.treated_by,
                     status: p.status, location: p.location, locationDate: p.location_date,
@@ -201,7 +215,7 @@
                 }));
 
                 window.updateSelects(); window.updateDashboardCounters(); window.renderProcessTable();
-                console.log('initApp success');
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp success');
             } catch (err) { console.error('initApp Error:', err); }
         };
 
@@ -572,9 +586,11 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Rendering table with', data.length, 'processes. Columns: 14 expected.');
+
             data.forEach(p => {
                 const tr = document.createElement('tr');
-                tr.onclick = () => window.showProcessDetails(p); // Abre detalhes ao clicar na linha
+                tr.onclick = () => window.showProcessDetails(p);
                 
                 let daysText = '';
                 let daysColor = 'gray';
@@ -585,8 +601,17 @@
                     daysColor = d < 0 ? 'red' : 'gray';
                 }
 
-                const color = window.getStatusColor(p.status);
+                // Garantir valor para a coluna ANO
+                let anoExibicao = p.exerciseYear;
+                if (!anoExibicao && p.ppAno && p.ppAno.includes('/')) {
+                    anoExibicao = p.ppAno.split('/').pop();
+                } else if (!anoExibicao && p.openingDate) {
+                    anoExibicao = p.openingDate.split('-')[0];
+                } else if (!anoExibicao) {
+                    anoExibicao = new Date().getFullYear();
+                }
 
+                const color = window.getStatusColor(p.status);
                 const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
                 const formatCurrency = (v) => {
                     const num = parseFloat(v);
@@ -594,23 +619,28 @@
                     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(num);
                 };
 
+                // Montagem da linha com EXATAMENTE 13 colunas de dados + 1 de ações = 14 totais
+                const parentDisplay = p.parentProc || p.ppNumber || '';
                 tr.innerHTML = `
+                    <td>${parentDisplay}</td>
                     <td>${p.ppNumber || ''}</td>
-                    <td>${p.exerciseYear || ''}</td>
-                    <td><strong>${p.ppAno}</strong></td>
-                    <td title="${p.supplier}">${p.supplier ? (p.supplier.length > 20 ? p.supplier.substring(0, 20) + '...' : p.supplier) : ''}</td>
-                    <td title="${p.object}">${p.object ? (p.object.length > 20 ? p.object.substring(0, 20) + '...' : p.object) : ''}</td>
+                    <td>${anoExibicao}</td>
+                    <td><strong>${p.ppAno || ''}</strong></td>
+                    <td title="${p.supplier || ''}">${p.supplier ? (p.supplier.length > 20 ? p.supplier.substring(0, 20) + '...' : p.supplier) : ''}</td>
+                    <td title="${p.object || ''}">${p.object ? (p.object.length > 20 ? p.object.substring(0, 20) + '...' : p.object) : ''}</td>
                     <td>${formatCurrency(p.coverValue)}</td>
                     <td>${formatDate(p.openingDate)}</td>
                     <td>${formatDate(p.deadline)}${daysText ? `<br><small style="color:${daysColor}">(${daysText})</small>` : ''}</td>
-                    <td><span class="badge" style="background:${color}; color:white">${p.status}</span></td>
+                    <td><span class="badge" style="background:${color}; color:white">${p.status || ''}</span></td>
                     <td>${p.treatedBy || ''}</td>
                     <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
                     <td>${formatDate(p.locationDate)}</td>
-                    <td onclick="event.stopPropagation();" style="display:flex; flex-direction: row; gap:4px; align-items:center;">
-                        <button class="btn btn-warning" style="padding:4px; width:28px; height:28px" onclick='window.openProcessModal(${JSON.stringify(p)})' title="Editar"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-primary" style="padding:4px; width:28px; height:28px" onclick='window.showHistory(${JSON.stringify(p)})' title="Histórico"><i class="fas fa-history"></i></button>
-                        <button class="btn btn-danger" style="padding:4px; width:28px; height:28px" onclick="window.deleteProcess('${p.id}')" title="Excluir"><i class="fas fa-trash"></i></button>
+                    <td onclick="event.stopPropagation();">
+                        <div style="display:flex; flex-direction: row; gap:4px; align-items:center;">
+                            <button class="btn btn-warning" style="padding:4px; width:28px; height:28px" onclick='window.openProcessModal(${JSON.stringify(p)})' title="Editar"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-primary" style="padding:4px; width:28px; height:28px" onclick='window.showHistory(${JSON.stringify(p)})' title="Histórico"><i class="fas fa-history"></i></button>
+                            <button class="btn btn-danger" style="padding:4px; width:28px; height:28px" onclick="window.deleteProcess('${p.id}')" title="Excluir"><i class="fas fa-trash"></i></button>
+                        </div>
                     </td>`;
                 tbody.appendChild(tr);
             });
@@ -673,6 +703,7 @@
             } else {
                 document.getElementById('processModalTitle').innerText = 'Novo Processo';
                 document.getElementById('processId').value = '';
+                document.getElementById('parentProc').value = '';
                 document.getElementById('ppAno').value = `00${window.state.processes.length + 1}/${new Date().getFullYear()}`;
                 document.getElementById('openingDate').value = new Date().toISOString().split('T')[0];
                 window.renderModalHistory([]);
@@ -713,6 +744,7 @@
             e.preventDefault();
             const id = document.getElementById('processId').value;
             const data = {
+                parent_proc: document.getElementById('parentProc').value,
                 pp_ano: document.getElementById('ppAno').value,
                 supplier_name: document.getElementById('supplierSelect').value,
                 object_name: document.getElementById('objectSelect').value,
@@ -976,7 +1008,7 @@
 
         window.deleteConfigItem = async function (idx) {
             const name = window.state[window.state.currentConfigType][idx];
-            if (confirm(`Excluir ${name}?`)) {
+            if (true) {
                 try {
                     await supabase.from(window.state.currentConfigType).delete().eq('name', name);
                     window.state[window.state.currentConfigType].splice(idx, 1);
@@ -1004,28 +1036,22 @@
                 }
             } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
-            // Cabeçalho - Textos Menores
-            const pdfWidth = doc.internal.pageSize.width;
-
+            const startX = 35; 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
-            doc.setTextColor(100, 100, 100);
-            doc.text("ESTADO DO RIO DE JANEIRO", pdfWidth / 2, 14, { align: 'center' });
-            doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", pdfWidth / 2, 19, { align: 'center' });
-            doc.text("SECRETARIA MUNICIPAL DE EDUCAÇÃO", pdfWidth / 2, 24, { align: 'center' });
-
-            // Cabeçalho - Título
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(16);
             doc.setTextColor(20, 20, 20);
-            doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", pdfWidth / 2, 34, { align: 'center' });
+            doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", startX, 14, { align: 'left' });
+            doc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
 
-            // Linha Separadora
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(14);
+            doc.setTextColor(20, 82, 181);
+            doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", startX, 26, { align: 'left' });
+
             doc.setDrawColor(220, 220, 220);
             doc.setLineWidth(0.5);
             doc.line(14, 38, 283, 38);
 
-            // Data de Emissão
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
             doc.setTextColor(150, 150, 150);
@@ -1033,11 +1059,9 @@
             const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
             doc.text("Data de Emissão: " + dateStr, 14, 43);
 
-            // Tabela com Colunas Seletivas
             const allChecks = document.querySelectorAll('.pdf-col-check');
             const selectedIndices = [];
             const selectedHeaders = [];
-
             allChecks.forEach((check, index) => {
                 if (check.checked) {
                     selectedIndices.push(index);
@@ -1056,6 +1080,7 @@
             const tableBody = dataToExport.map(p => {
                 const row = [];
                 const fullRowData = [
+                    p.parentProc || '',
                     p.ppNumber || '',
                     p.exerciseYear || '',
                     p.ppAno || '',
@@ -1069,10 +1094,7 @@
                     p.location || '',
                     formatDate(p.locationDate)
                 ];
-                
-                selectedIndices.forEach(idx => {
-                    row.push(fullRowData[idx]);
-                });
+                selectedIndices.forEach(idx => row.push(fullRowData[idx]));
                 return row;
             });
 
@@ -1084,7 +1106,6 @@
                 styles: { fontSize: 7, cellPadding: 2, overflow: 'linebreak' },
                 headStyles: { fillColor: [20, 82, 181], textColor: [255, 255, 255], fontStyle: 'bold' }
             });
-
             doc.save('processos.pdf');
         };
 
@@ -1093,21 +1114,29 @@
             const originalHtml = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando PDF...';
             btn.disabled = true;
-
             const element = document.getElementById('dashboard-section');
 
             try {
-                // Captura a tela atual do dashboard
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('l', 'mm', 'a4');
+                const pdfWidth = doc.internal.pageSize.width;
+                const pdfHeight = doc.internal.pageSize.height;
+                const startX = 35;
+
+                const pdfButtons = element.querySelectorAll('button');
+                const originalDisplays = [];
+                pdfButtons.forEach((b, i) => {
+                    originalDisplays[i] = b.style.display;
+                    if (b.innerText.includes('PDF')) b.style.display = 'none';
+                });
+
                 const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#f2f2f2' });
                 const imgData = canvas.toDataURL('image/jpeg', 1.0);
 
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('l', 'mm', 'a4'); // Paisagem para caber o Dashboard largo
-                
-                const pdfWidth = doc.internal.pageSize.width;
-                const pdfHeight = doc.internal.pageSize.height;
+                pdfButtons.forEach((b, i) => {
+                    if (b.innerText.includes('PDF')) b.style.display = originalDisplays[i];
+                });
 
-                // --- Cabeçalho e Logo ---
                 try {
                     const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
                     const imgLogo = new Image();
@@ -1117,34 +1146,24 @@
                         imgLogo.onload = resolve;
                         imgLogo.onerror = resolve;
                     });
+                    if (imgLogo.naturalWidth > 0) doc.addImage(imgLogo, 'JPEG', 14, 10, 16, 20);
+                } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
-                    if (imgLogo.naturalWidth > 0) {
-                        doc.addImage(imgLogo, 'JPEG', 14, 10, 16, 20);
-                    }
-                } catch (e) {
-                    console.warn('Falha ao carregar logo no PDF:', e);
-                }
-
-                // Textos do Cabeçalho
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(10);
-                doc.setTextColor(100, 100, 100);
-                doc.text("ESTADO DO RIO DE JANEIRO", pdfWidth / 2, 14, { align: 'center' });
-                doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", pdfWidth / 2, 19, { align: 'center' });
-                doc.text("SECRETARIA MUNICIPAL DE EDUCAÇÃO", pdfWidth / 2, 24, { align: 'center' });
-
-                // Título do Cabeçalho
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(16);
                 doc.setTextColor(20, 20, 20);
-                doc.text("DASHBOARD - PROCESSOS DE PAGAMENTOS", pdfWidth / 2, 34, { align: 'center' });
+                doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", startX, 14, { align: 'left' });
+                doc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
 
-                // Linha Separadora
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(14);
+                doc.setTextColor(20, 82, 181);
+                doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", startX, 26, { align: 'left' });
+
                 doc.setDrawColor(220, 220, 220);
                 doc.setLineWidth(0.5);
                 doc.line(14, 38, 283, 38);
 
-                // Data de Emissão
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(8);
                 doc.setTextColor(150, 150, 150);
@@ -1152,126 +1171,407 @@
                 const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 doc.text("Data de Emissão: " + dateStr, 14, 43);
 
-                // Imagem do Dashboard
-                // Calcula dimensões, mantendo a proporção (aspect ratio) da captura 
                 const canvasAspectRatio = canvas.width / canvas.height;
-                // Margens e Y de começo
                 const marginX = 14;
-                const startY = 48; // Após a data de emissão
-                
-                // Dimensões do PDF disponíveis
+                const startY = 48;
                 const availablePageWidth = pdfWidth - (marginX * 2);
-                const availablePageHeight = pdfHeight - startY - 10; // 10 é margem inferior
-
+                const availablePageHeight = pdfHeight - startY - 10;
                 let finalImgWidth = availablePageWidth;
                 let finalImgHeight = finalImgWidth / canvasAspectRatio;
-
-                // Redimensiona se ficar mais alto que o espaço disponível
-                if(finalImgHeight > availablePageHeight) {
+                if (finalImgHeight > availablePageHeight) {
                     finalImgHeight = availablePageHeight;
                     finalImgWidth = finalImgHeight * canvasAspectRatio;
                 }
-                
-                // Centraliza horizontalmente
                 const finalImgX = (pdfWidth - finalImgWidth) / 2;
-
                 doc.addImage(imgData, 'JPEG', finalImgX, startY, finalImgWidth, finalImgHeight);
                 doc.save('dashboard.pdf');
-
-            } catch(e) {
+            } catch (e) {
                 console.error("Erro na exportação para PDF: ", e);
-                alert("Ocorreu um erro ao gerar o PDF. Verifique o console.");
+                alert("Ocorreu um erro ao gerar o PDF.");
             } finally {
-                btn.innerHTML = originalHtml;
-                btn.disabled = false;
+                if (btn) { btn.innerHTML = originalHtml; btn.disabled = false; }
             }
         };
 
         window.exportToExcel = function () {
-            const header = ['NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSÃO', 'TRATADO POR', 'STATUS', 'Localização'];
-            
+            const header = ['Nº PROC. MÃE', 'NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSÃO', 'TRATADO POR', 'STATUS', 'Localização'];
             const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
             const dataToExportSource = window._lastFiltered || window.state.processes;
             const dataToExport = dataToExportSource.map(p => {
                 let cover = p.coverValue || '';
                 if (cover && !cover.includes('R$')) cover = 'R$ ' + cover;
-
                 const locDate = formatDate(p.locationDate);
                 const locStr = (p.location && locDate) ? `${p.location} | ${locDate}` : (p.location || locDate);
-
                 return [
-                    p.ppNumber || '',
-                    p.exerciseYear || '',
-                    p.ppAno || '',
-                    p.supplier || '',
-                    cover,
-                    formatDate(p.deadline),
-                    p.treatedBy || '',
-                    p.status || '',
-                    locStr
+                    p.parentProc || '', p.ppNumber || '', p.exerciseYear || '', p.ppAno || '', p.supplier || '',
+                    cover, formatDate(p.deadline), p.treatedBy || '', p.status || '', locStr
                 ];
             });
-
             const ws_data = [header, ...dataToExport];
             const ws = XLSX.utils.aoa_to_sheet(ws_data);
-
-            const headerStyle = {
-                font: { bold: true, color: { rgb: "FFFFFF" } },
-                fill: { fgColor: { rgb: "000000" } },
-                alignment: { horizontal: "center", vertical: "center" }
-            };
-
+            const headerStyle = { font: { bold: true, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "000000" } }, alignment: { horizontal: "center", vertical: "center" } };
             const dataStyleCenter = { alignment: { horizontal: "center", vertical: "center" } };
             const dataStyleLeft = { alignment: { horizontal: "left", vertical: "center" } };
-
             const range = XLSX.utils.decode_range(ws['!ref']);
             for (let R = range.s.r; R <= range.e.r; ++R) {
                 for (let C = range.s.c; C <= range.e.c; ++C) {
                     const cell_ref = XLSX.utils.encode_cell({ c: C, r: R });
                     if (!ws[cell_ref]) continue;
-
-                    if (R === 0) {
-                        ws[cell_ref].s = headerStyle;
-                    } else {
+                    if (R === 0) ws[cell_ref].s = headerStyle;
+                    else {
                         ws[cell_ref].s = dataStyleCenter;
-                        
-                        // Left align supplier string
-                        if (C === 3) {
-                            ws[cell_ref].s = dataStyleLeft;
-                        }
-
-                        // Add color to status cell
+                        if (C === 3) ws[cell_ref].s = dataStyleLeft;
                         if (C === 7) { 
                             const val = ws[cell_ref].v;
-                            let color = "C6E0B4"; // default light green
+                            let color = "C6E0B4";
                             if (val === 'Em Análise') color = "BDD7EE";
                             else if (val === 'Pendente') color = "F8CBAD";
                             else if (val === 'Concluído') color = "A9D08E";
                             else if (val === 'Aguardando Assinatura') color = "D9D9D9";
                             else if (val === 'Atrasado' || val === 'Vencido') color = "FFC7CE";
-
-                            ws[cell_ref].s = {
-                                fill: { fgColor: { rgb: color } },
-                                alignment: { horizontal: "center", vertical: "center" },
-                                font: { color: { rgb: "333333" } }
-                            };
+                            ws[cell_ref].s = { fill: { fgColor: { rgb: color } }, alignment: { horizontal: "center", vertical: "center" }, font: { color: { rgb: "333333" } } };
                         }
                     }
                 }
             }
-
-            ws['!cols'] = [
-                { wch: 18 }, { wch: 10 }, { wch: 15 }, { wch: 55 }, { wch: 20 }, 
-                { wch: 22 }, { wch: 20 }, { wch: 25 }, { wch: 45 }
-            ];
-
+            ws['!cols'] = [{ wch: 18 }, { wch: 10 }, { wch: 15 }, { wch: 55 }, { wch: 20 }, { wch: 22 }, { wch: 20 }, { wch: 25 }, { wch: 45 }];
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Processos");
             XLSX.writeFile(wb, "processos.xlsx");
         };
 
-        try { new Swiper('.swiper', { loop: true, autoplay: { delay: 3000 } }); } catch (e) { console.warn('Swiper init failed:', e); }
+        // --- USER AND AUTH MANAGEMENT ---
+        window.openUserManagementModal = function () {
+            document.getElementById('editingUserId').value = '';
+            document.getElementById('userFullName').value = '';
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userRole').value = 'usuario';
+            document.getElementById('userFormTitle').innerHTML = '<i class="fas fa-user-plus"></i> Adicionar Novo Usuário';
+            document.getElementById('cancelUserEditBtn').style.display = 'none';
+            document.getElementById('userFormError').style.display = 'none';
+            document.getElementById('userManagementModal').style.display = 'flex';
+            window.loadUsers();
+        };
 
-        // Final Integration Check
-        // Integration check script removed
+        window.loadUsers = async function () {
+            const container = document.getElementById('userListContainer');
+            if(!container) return;
+            container.innerHTML = '<p style="text-align:center;color:#9CA3AF;padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Carregando...</p>';
+            try {
+                const { data, error } = await supabase.from('user_profiles').select('*').order('full_name', { ascending: true });
+                if (error) throw error;
+                window.renderUserList(data || []);
+            } catch (err) { container.innerHTML = `<p>Erro: ${err.message}</p>`; }
+        };
+
+        window.renderUserList = function (users) {
+            const container = document.getElementById('userListContainer');
+            if (!container) return;
+            if (!users.length) { container.innerHTML = '<p>Nenhum usuário cadastrado.</p>'; return; }
+            const roleBadge = (role) => role === 'administrador' ? '<span class="badge-role role-admin"><i class="fas fa-shield-alt"></i> ADM</span>' : '<span class="badge-role role-user"><i class="fas fa-user-circle"></i> USER</span>';
+            const statusIndicator = (active) => active !== false ? '<span class="status-active">Ativo</span>' : '<span class="status-inactive">Inativo</span>';
+            container.innerHTML = `
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead><tr style="background:#f8fafc; text-align:left;"><th>Colaborador</th><th>Status</th><th style="text-align:right;">Ações</th></tr></thead>
+                    <tbody>${users.map(u => `
+                        <tr class="user-row">
+                            <td style="padding:1rem;"><strong>${u.full_name}</strong><br><small>${u.email}</small></td>
+                            <td>${roleBadge(u.role)} ${statusIndicator(u.active)}</td>
+                            <td style="text-align:right;">
+                                <button class="btn btn-warning" onclick='window.editUser(${JSON.stringify(u)})'><i class="fas fa-pen"></i></button>
+                                <button class="btn btn-danger" onclick="window.deleteUser('${u.id}', '${u.full_name}')"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>`;
+        };
+
+        window.saveUser = async function () {
+            const editingId = document.getElementById('editingUserId').value;
+            const fullName = document.getElementById('userFullName').value.trim();
+            const email = document.getElementById('userEmail').value.trim();
+            const password = document.getElementById('userPassword').value;
+            const role = document.getElementById('userRole').value;
+            const errDiv = document.getElementById('userFormError');
+            if (!fullName || !email) { errDiv.innerText = 'Preencha tudo.'; errDiv.style.display='block'; return; }
+            try {
+                if (editingId) {
+                    await supabase.from('user_profiles').update({ full_name: fullName, email: email, role: role }).eq('id', editingId);
+                    alert('Usuário atualizado!');
+                } else {
+                    const { data: authData, error: authError } = await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
+                    if (authError) throw authError;
+                    if (authData.user?.id) await supabase.from('user_profiles').upsert({ id: authData.user.id, full_name: fullName, email, role, active: true });
+                    alert('Usuário cadastrado!');
+                }
+                window.cancelUserEdit(); window.loadUsers();
+            } catch (err) { alert('Erro: ' + err.message); }
+        };
+
+        window.editUser = function (user) {
+            document.getElementById('editingUserId').value = user.id;
+            document.getElementById('userFullName').value = user.full_name || '';
+            document.getElementById('userEmail').value = user.email || '';
+            document.getElementById('userRole').value = user.role || 'usuario';
+            document.getElementById('userFormTitle').innerHTML = 'Editar Colaborador';
+            document.getElementById('cancelUserEditBtn').style.display = 'inline-flex';
+        };
+
+        window.deleteUser = async function (id, name) {
+            if (confirm(`Excluir ${name}?`)) {
+                await supabase.from('user_profiles').delete().eq('id', id);
+                window.loadUsers();
+            }
+        };
+
+        window.cancelUserEdit = function () {
+            document.getElementById('editingUserId').value = '';
+            document.getElementById('userFullName').value = '';
+            document.getElementById('userEmail').value = '';
+            document.getElementById('userPassword').value = '';
+            document.getElementById('userRole').value = 'usuario';
+            document.getElementById('cancelUserEditBtn').style.display = 'none';
+        };
+
+        async function updateUserInfo(user) {
+            if (!user) return;
+            try {
+                const { data: profile } = await supabase.from('user_profiles').select('*').eq('id', user.id).single();
+                if (profile) {
+                    window.currentUserRole = profile.role;
+                    document.getElementById('header-user-name').innerText = profile.full_name.split(' ')[0];
+                    document.getElementById('header-dept-name').innerText = profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR';
+                    const menuS = document.getElementById('menu-settings');
+                    if (menuS) menuS.style.display = profile.role === 'administrador' ? 'block' : 'none';
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth State Change:', event);
+            const overlay = document.getElementById('login-overlay');
+            if (session?.user) {
+                updateUserInfo(session.user);
+                if (overlay) {
+                    overlay.style.setProperty('display', 'none', 'important');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Login overlay hidden via AuthStateChange');
+                }
+            } else {
+                if (overlay) overlay.style.display = 'flex';
+            }
+        });
+
+        window.logout = async function () {
+            if (confirm('Sair?')) { await supabase.auth.signOut(); window.location.reload(); }
+        };
+
+        window.togglePasswordVisibility = function () {
+            const pwd = document.getElementById('login-password');
+            const icon = document.getElementById('toggle-password-icon');
+            if (pwd.type === 'password') { pwd.type = 'text'; icon.classList.replace('fa-eye', 'fa-eye-slash'); }
+            else { pwd.type = 'password'; icon.classList.replace('fa-eye-slash', 'fa-eye'); }
+        };
+
+        window.handleLogin = async function (event) {
+            if (event) event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const btn = document.querySelector('.login-btn');
+            const errorMsg = document.getElementById('login-error-msg');
+            
+            if (errorMsg) errorMsg.style.display = 'none';
+            if (btn) { btn.disabled = true; btn.innerText = 'Entrando...'; }
+            
+            try {
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Attempting login for:', email);
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Login success, user:', data.user.email);
+                
+                // FORCE HIDE OVERLAY
+                const overlay = document.getElementById('login-overlay');
+                if (overlay) {
+                    overlay.style.setProperty('display', 'none', 'important');
+                    overlay.classList.add('hidden-overlay'); // Backup method
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Login overlay hidden explicitly in handleLogin');
+                }
+                
+                // Ensure data is initialized
+                if (!window.state.processes.length) {
+                    await window.initApp();
+                }
+                
+            } catch (err) { 
+                console.error('Login Error:', err);
+                if (errorMsg) {
+                    errorMsg.innerText = 'Erro no login: ' + err.message;
+                    errorMsg.style.display = 'block';
+                } else {
+                    alert('Erro no login: ' + err.message);
+                }
+            }
+            finally { 
+                if (btn) { btn.disabled = false; btn.innerText = 'Entrar'; }
+            }
+            return false;
+        };
+
+        // Initialize Swiper ONLY if available
+        function initSwiperSafe() {
+            if (typeof Swiper !== 'undefined') {
+                try { 
+                    new Swiper('.swiper', { 
+                        loop: true, 
+                        autoplay: { delay: 3000 },
+                        pagination: { el: '.swiper-pagination', clickable: true },
+                        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
+                    }); 
+                } catch (e) {
+                    console.warn('Swiper initialization failed:', e);
+                }
+            } else {
+                console.warn('Swiper not loaded yet, skipping initialization.');
+            }
+        }
+
+        // Call initialization on load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initSwiperSafe);
+        } else {
+            initSwiperSafe();
+        }
+
+        // Info Modal Content
+        const infoContent = {
+            faq: {
+                title: '<i class="fas fa-question-circle"></i> Perguntas Frequentes',
+                subtitle: 'Tire suas dúvidas sobre o sistema',
+                content: `
+                    <h3>Como fazer login no sistema?</h3>
+                    <p>Utilize seu e-mail institucional e senha cadastrada. Em caso de primeiro acesso, entre em contato com o administrador.</p>
+                    
+                    <h3>Como cadastrar um novo processo?</h3>
+                    <p>Clique no botão "Novo Processo" no menu lateral ou na navegação inferior (mobile). Preencha todos os campos obrigatórios e clique em salvar.</p>
+                    
+                    <h3>Como rastrear um processo?</h3>
+                    <p>Na seção de Consulta, utilize os filtros disponíveis (número, status, data, tipo) para encontrar o processo desejado. Clique no ícone de histórico para ver a tramitação.</p>
+                    
+                    <h3>Como alterar minha senha?</h3>
+                    <p>Acesse "Minha Conta" no menu do usuário e selecione "Alterar Senha".</p>
+                    
+                    <h3>O que fazer quando um processo está atrasado?</h3>
+                    <p>Processos atrasados aparecem destacados em vermelho. Verifique o motivo do atraso na aba "Observações" e tome as providências necessárias.</p>
+                    
+                    <div class="highlight-box">
+                        <strong>Precisa de mais ajuda?</strong><br>
+                        Entre em contato com o suporte através do e-mail: suporte@itaguai.rj.gov.br
+                    </div>
+                `
+            },
+            manual: {
+                title: '<i class="fas fa-book-open"></i> Manual do Usuário',
+                subtitle: 'Guia completo de utilização do sistema',
+                content: `
+                    <h3>1. Login e Autenticação</h3>
+                    <p>O sistema utiliza autenticação segura. Cada usuário possui credenciais únicas fornecidas pelo administrador.</p>
+                    
+                    <h3>2. Dashboard</h3>
+                    <p>A tela inicial mostra estatísticas em tempo real:</p>
+                    <ul>
+                        <li><strong>Total de Processos:</strong> Quantidade geral de processos cadastrados</li>
+                        <li><strong>Em Tramitação:</strong> Processos ativos no momento</li>
+                        <li><strong>Liquidados:</strong> Processos concluídos com sucesso</li>
+                        <li><strong>Pendências:</strong> Percentual de processos não finalizados</li>
+                        <li><strong>Vencidos:</strong> Processos com prazo excedido</li>
+                    </ul>
+                    
+                    <h3>3. Cadastro de Processos</h3>
+                    <p>Para cadastrar um novo processo, clique em "Novo Processo" e preencha:</p>
+                    <ul>
+                        <li>Número do processo</li>
+                        <li>Tipo de processo</li>
+                        <li>Objeto/Descrição</li>
+                        <li>Fornecedor</li>
+                        <li>Local de entrega</li>
+                        <li>Valor</li>
+                        <li>Data de vencimento</li>
+                    </ul>
+                    
+                    <h3>4. Consulta e Filtros</h3>
+                    <p>Use os filtros avanzados para buscar processos específicos por status, data, departamento ou fornecedor.</p>
+                    
+                    <h3>5. Relatórios</h3>
+                    <p>Exporte dados para Excel ou gere relatórios PDF diretamente do sistema.</p>
+                `
+            },
+            termos: {
+                title: '<i class="fas fa-file-contract"></i> Política de Uso',
+                subtitle: 'Termos e condições de uso do sistema',
+                content: `
+                    <h3>1. Objetivo</h3>
+                    <p>O Sistema de Controle de Processos de Pagamento tem como objetivo gerenciar e rastrear todos os processos administrativos da Secretaria Municipal de Educação.</p>
+                    
+                    <h3>2. Usuários Autorizados</h3>
+                    <p>O acesso é restrito a servidores municipais devidamente cadastrados e autorizados pela administração.</p>
+                    
+                    <h3>3. Responsabilidades do Usuário</h3>
+                    <ul>
+                        <li>Manter suas credenciais de acesso em sigilo</li>
+                        <li>Registrar processos de forma completa e verdadeira</li>
+                        <li>Atualizar o status dos processos em tempo hábil</li>
+                        <li>Reportar irregularidades ao administrador</li>
+                    </ul>
+                    
+                    <h3>4. Boas Práticas</h3>
+                    <ul>
+                        <li>Verificar diariamente os processos pendentes</li>
+                        <li>Manter os dados sempre atualizados</li>
+                        <li>Usar o sistema de forma ética e profissional</li>
+                        <li>Respeitar os prazos estabelecidos</li>
+                    </ul>
+                    
+                    <h3>5. Penalidades</h3>
+                    <p>O uso indevido do sistema pode resultar em:</p>
+                    <ul>
+                        <li>Suspensão temporária de acesso</li>
+                        <li>Cancelamento definitivo de cadastro</li>
+                        <li>Medidas administrativas cabíveis</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <strong>Aviso Legal:</strong><br>
+                        O uso deste sistema implica aceitação completa destes termos. Em caso de dúvidas, consulte o regulamento interno.
+                    </div>
+                `
+            }
+        };
+
+        // Info Modal Functions
+        window.openInfoModal = function(route) {
+            const modal = document.getElementById('infoModal');
+            const titleEl = document.getElementById('infoModalTitle');
+            const subtitleEl = document.getElementById('infoModalSubtitle');
+            const contentEl = document.getElementById('infoModalContent');
+            
+            const content = infoContent[route];
+            if (content) {
+                titleEl.innerHTML = content.title;
+                subtitleEl.innerText = content.subtitle;
+                contentEl.innerHTML = content.content;
+                modal.classList.add('visible');
+                modal.style.display = 'flex';
+            }
+        };
+
+        // Setup click handlers for data-route links
+        document.querySelectorAll('[data-route]').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const route = this.getAttribute('data-route');
+                window.openInfoModal(route);
+            });
+        });
+
     

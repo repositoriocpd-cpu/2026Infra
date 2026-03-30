@@ -32,10 +32,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <!-- UI Kit (tokens + componentes base) -->
-    <link rel="stylesheet" href="ui-kit.css">
-    <script defer src="ui-kit.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+     <!-- Configuration Management -->
+     <script defer src="config.js"></script>
+     <!-- UI Kit (tokens + componentes base) -->
+     <link rel="stylesheet" href="ui-kit.css">
+     <script defer src="ui-kit.js"></script>
     <style>
         /* Timeline Modal Styles */
         .timeline {
@@ -5091,7 +5093,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        console.log('=== SCRIPT INITIALIZING v2.0 ===');
+        if (window.AppConfig && !window.AppConfig.isProduction()) console.log('=== SCRIPT INITIALIZING v2.0 ===');
 
         // *** MENU TOGGLE ***
         window.toggleMenu = function () {
@@ -5125,7 +5127,7 @@
         };
 
         window.openStatusMobileModal = function () {
-            console.log('--- CHAMADA: openStatusMobileModal ---');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('--- CHAMADA: openStatusMobileModal ---');
             const modal = document.getElementById('statusSummaryModal');
             if (!modal) return;
 
@@ -5135,7 +5137,7 @@
                 const processes = window.state.processes || [];
                 const statuses = window.state.statuses || [];
 
-                console.log('Populando modal com', processes.length, 'processos e', statuses.length, 'status.');
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Populando modal com', processes.length, 'processos e', statuses.length, 'status.');
 
                 statuses.forEach(status => {
                     const filtered = processes.filter(p => String(p.status).trim().toLowerCase() === String(status).trim().toLowerCase());
@@ -5188,7 +5190,7 @@
                 overlay.style.display = 'block';
                 setTimeout(() => overlay.classList.add('visible'), 10);
             }
-            console.log('Modal de status aberto com sucesso.');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Modal de status aberto com sucesso.');
         };
 
         window.closeStatusMobileModal = function () {
@@ -5224,15 +5226,14 @@
         };
 
         // --- GLOBAL CONFIG & STATE ---
-        console.log("%c--- SUB INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        var SUPABASE_KEY = 'sb_publishable_7c1Fie7yFmZo8dx26-tTIg_hxZKrKH7';
+        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
         var supabase;
         try {
             if (window.supabase) {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                console.log('Supabase client initialized');
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Supabase client initialized');
             } else {
                 console.error('ERRO CRÍTICO: Biblioteca Supabase não encontrada!');
             }
@@ -5251,7 +5252,7 @@
         window.initializeAppEventListeners = function () {
             if (window._listenersInitialized) return;
             window._listenersInitialized = true;
-            console.log('Inicializando listeners globais...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Inicializando listeners globais...');
 
             // Botões Novo Processo (Desktop e Mobile)
             const newProcessButtons = document.querySelectorAll('.btn-primary-new, .mobile-actions-grid .btn-primary, .bottom-nav-item i.fa-plus-circle, .nav-item i.fa-plus-circle');
@@ -5259,7 +5260,7 @@
                 const target = btn.closest('a') || btn.closest('button') || btn;
                 target.addEventListener('click', (e) => {
                     e.preventDefault();
-                    console.log('Botão Novo Processo clicado');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Botão Novo Processo clicado');
                     window.openProcessModal();
                 });
             });
@@ -5344,7 +5345,7 @@
                     }
                 }
             });
-            console.log('Setting up listeners...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Setting up listeners...');
 
             const menuBtn = document.getElementById('menu-toggle');
             if (menuBtn) menuBtn.addEventListener('click', function (e) { e.stopPropagation(); window.toggleMenu(); });
@@ -5357,7 +5358,7 @@
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Submenu clicked:', this.innerText.trim());
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Submenu clicked:', this.innerText.trim());
 
                     var submenu = this.nextElementSibling;
                     if (!submenu || !submenu.classList.contains('submenu')) {
@@ -5419,7 +5420,7 @@
                 }
 
                 el._animating = true;
-                // console.log('Animating', el.id, 'to', target);
+                // if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Animating', el.id, 'to', target);
                 var suffix = el.getAttribute('data-suffix') || '';
                 var isFloat = target % 1 !== 0;
                 var start = null;
@@ -5454,7 +5455,7 @@
                 };
             }
 
-            console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
             window.initializeAppEventListeners(); // Fallback imediato
         })();
 
@@ -5463,7 +5464,7 @@
         window.initApp = async function () {
             if (!supabase || window._appLoaded) return;
             window._appLoaded = true;
-            console.log('initApp starting data fetch...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
             try {
                 const [suppliers, locations, objects, statuses, handlers, departments, processes] = await Promise.all([
                     supabase.from('suppliers').select('name').order('name'),
@@ -5505,7 +5506,7 @@
                 window.initializeAppEventListeners();
                 window.updateDashboardCounters();
                 window.renderProcessTable();
-                console.log('initApp success');
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp success');
             } catch (err) {
                 console.error('initApp Error:', err);
                 window._appLoaded = false; // Permite tentar novamente se falhar
@@ -6354,7 +6355,7 @@
         };
 
         window.openProcessModal = function (p = null) {
-            console.log('Botão clicado. Abrindo modal imediatamente...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Botão clicado. Abrindo modal imediatamente...');
             const modal = document.getElementById('processControlModal');
             const overlay = document.getElementById('overlay');
 
@@ -6462,13 +6463,13 @@
                     // Carregamento progressivo dos selects para evitar travar a UI
                     window.updateSelects(true);
 
-                    console.log('Dando foco ao primeiro campo...');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Dando foco ao primeiro campo...');
                     setTimeout(() => {
                         const firstInput = document.getElementById('ppNumber');
                         if (firstInput) firstInput.focus();
                     }, 300);
 
-                    console.log('Modal pronto');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Modal pronto');
                 } catch (err) {
                     console.error('Erro crítico ao abrir modal:', err);
                 }
@@ -6980,7 +6981,7 @@
         };
 
         window.editConfigItemByElement = function (li, oldName) {
-            console.log('Edit initiated for:', oldName);
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Edit initiated for:', oldName);
             li.innerHTML = `
                 <div class="edit-ui" style="display:flex; gap:8px; width:100%; align-items:center;" onclick="event.stopPropagation()">
                     <input type="text" class="form-control edit-input" value="${oldName}" style="flex-grow:1; padding:4px 8px; font-size:0.9rem;">
@@ -7029,7 +7030,7 @@
         };
 
         window.deleteConfigItemByElement = function (li, name) {
-            console.log('Delete initiated for:', name);
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Delete initiated for:', name);
             li.innerHTML = `
                 <div class="delete-ui" style="display:flex; justify-content:space-between; align-items:center; width:100%; background:#fee2e2; padding:5px 10px; border-radius:4px;" onclick="event.stopPropagation()">
                     <span style="font-size:0.85rem; color:#b91c1c; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:60%;">Excluir?</span>
@@ -7042,7 +7043,7 @@
             
             li.querySelector('.btn-confirm-delete').onclick = async (e) => {
                 e.stopPropagation();
-                console.log('Final confirm delete for:', name);
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Final confirm delete for:', name);
                 try {
                     const type = window.state.currentConfigType;
                     const { error } = await supabase.from(type).delete().eq('name', name);
@@ -7054,7 +7055,7 @@
                     }
                     const idx = window.state[type].indexOf(name);
                     if (idx !== -1) window.state[type].splice(idx, 1);
-                    console.log('Delete success');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Delete success');
                     window.renderConfigList(); 
                     window.updateSelects();
                 } catch (err) { 
@@ -7357,7 +7358,7 @@
         // Monitorar estado da sessão com segurança
         if (supabase && supabase.auth) {
             supabase.auth.onAuthStateChange((event, session) => {
-                console.log('Auth event:', event);
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth event:', event);
                 const overlay = document.getElementById('login-overlay');
 
                 if (session?.user) {
@@ -7365,7 +7366,7 @@
                     window.initializeAppEventListeners();
 
                     if (!window._appLoaded) {
-                        console.log('Iniciando carregamento do app...');
+                        if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Iniciando carregamento do app...');
                         window.initApp();
                     }
 
@@ -8026,7 +8027,7 @@
         // Detecção de ambiente de teste para desativar tours intrusivos
         if (window.location.search.includes('test=true') || (window.location.hostname === 'localhost' && window.location.search.includes('disable_tour=true'))) {
             window.DISABLE_TOUR = true;
-            console.log('%c SMEDU TEST MODE: ON ', 'background: #222; color: #bada55');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('%c SMEDU TEST MODE: ON ', 'background: #222; color: #bada55');
         }
 
         window.TOUR_STEPS = [

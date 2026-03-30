@@ -1,6 +1,6 @@
 // Script 0
 
-        console.log('=== SCRIPT INITIALIZING v2.0 ===');
+        if (window.AppConfig && !window.AppConfig.isProduction()) console.log('=== SCRIPT INITIALIZING v2.0 ===');
 
         // *** MENU TOGGLE ***
         window.toggleMenu = function () {
@@ -41,7 +41,7 @@
         var supabase;
         try {
             supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-            console.log('Supabase client initialized');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Supabase client initialized');
         } catch (e) { console.error('Supabase Client Error:', e); }
 
         window.state = {
@@ -56,7 +56,7 @@
 
         // --- 3. EVENT LISTENERS SETUP (DOM already ready at end of body) ---
         (function setupListeners() {
-            console.log('Setting up listeners...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Setting up listeners...');
 
             const menuBtn = document.getElementById('menu-toggle');
             if (menuBtn) menuBtn.addEventListener('click', function (e) { e.stopPropagation(); window.toggleMenu(); });
@@ -69,7 +69,7 @@
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Submenu clicked:', this.innerText.trim());
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Submenu clicked:', this.innerText.trim());
 
                     var submenu = this.nextElementSibling;
                     if (!submenu || !submenu.classList.contains('submenu')) {
@@ -132,7 +132,7 @@
                 }
                 
                 el._animating = true;
-                console.log('Animating', el.id, 'to', target);
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Animating', el.id, 'to', target);
                 var suffix = el.getAttribute('data-suffix') || '';
                 var isFloat = target % 1 !== 0;
                 var start = null;
@@ -167,18 +167,18 @@
                 };
             }
 
-            console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
         })();
 
         // --- 4. APP INITIALIZATION ---
         window.initApp = async function () {
             if (!supabase) return;
-            console.log('initApp starting data fetch...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
             
             // Check for existing session and hide overlay early
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-                console.log('Existing session found in initApp, hiding overlay.');
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Existing session found in initApp, hiding overlay.');
                 const overlay = document.getElementById('login-overlay');
                 if (overlay) overlay.style.display = 'none';
                 updateUserInfo(session.user);
@@ -215,7 +215,7 @@
                 }));
 
                 window.updateSelects(); window.updateDashboardCounters(); window.renderProcessTable();
-                console.log('initApp success');
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp success');
             } catch (err) { console.error('initApp Error:', err); }
         };
 
@@ -586,7 +586,7 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             
-            console.log('Rendering table with', data.length, 'processes. Columns: 14 expected.');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Rendering table with', data.length, 'processes. Columns: 14 expected.');
 
             data.forEach(p => {
                 const tr = document.createElement('tr');
@@ -1349,13 +1349,13 @@
         }
 
         supabase.auth.onAuthStateChange((event, session) => {
-            console.log('Auth State Change:', event);
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth State Change:', event);
             const overlay = document.getElementById('login-overlay');
             if (session?.user) {
                 updateUserInfo(session.user);
                 if (overlay) {
                     overlay.style.setProperty('display', 'none', 'important');
-                    console.log('Login overlay hidden via AuthStateChange');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Login overlay hidden via AuthStateChange');
                 }
             } else {
                 if (overlay) overlay.style.display = 'flex';
@@ -1384,18 +1384,18 @@
             if (btn) { btn.disabled = true; btn.innerText = 'Entrando...'; }
             
             try {
-                console.log('Attempting login for:', email);
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Attempting login for:', email);
                 const { data, error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
                 
-                console.log('Login success, user:', data.user.email);
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Login success, user:', data.user.email);
                 
                 // FORCE HIDE OVERLAY
                 const overlay = document.getElementById('login-overlay');
                 if (overlay) {
                     overlay.style.setProperty('display', 'none', 'important');
                     overlay.classList.add('hidden-overlay'); // Backup method
-                    console.log('Login overlay hidden explicitly in handleLogin');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Login overlay hidden explicitly in handleLogin');
                 }
                 
                 // Ensure data is initialized

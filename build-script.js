@@ -12,6 +12,7 @@ const DIST_DIR = path.join(__dirname, 'dist');
 const FILES_TO_COPY = [
   'index.html',
   '2026_script.js',
+  'config.js',
   'pwa-handler.js',
   'ui-kit.css',
   'ui-kit.js',
