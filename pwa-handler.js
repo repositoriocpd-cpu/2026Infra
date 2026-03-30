@@ -37,7 +37,7 @@
             `;
 
             banner.innerHTML = `
-                <img src="icons/icon-192.png" style="width: 48px; height: 48px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                <img src="icons/icon-192.png" alt="Ícone do PWA" style="width: 48px; height: 48px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
                 <div style="flex: 1;">
                     <h4 style="margin: 0; font-size: 16px; font-weight: 600;">Instalar INFRASMEDU</h4>
                     <p id="pwa-text" style="margin: 4px 0 0; font-size: 13px; opacity: 0.9;">${isIOS ? 'Toque em Compartilhar > Adicionar à Tela de Início' : 'Adicione à tela inicial para acesso rápido'}</p>
