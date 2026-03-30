@@ -36,7 +36,7 @@
 
         // --- GLOBAL CONFIG & STATE ---
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+        var SUPABASE_KEY = 'sb_publishable_7c1Fie7yFmZo8dx26-tTIg_hxZKrKH7';
 
         var supabase;
         try {

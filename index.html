@@ -3496,8 +3496,8 @@
                                     <div class="input-icon-wrapper">
                                         <i class="far fa-envelope"></i>
                                         <input type="email" id="login-email" required
-                                            placeholder="seu@email.institucional.gov.br"
-                                            autocomplete="username">
+                                            placeholder="cpdinfra@edu.itaguai.rj.gov.br"
+                                            value="cpdinfra@edu.itaguai.rj.gov.br">
                                     </div>
                                 </div>
 
@@ -3506,7 +3506,7 @@
                                     <div class="input-icon-wrapper">
                                         <i class="fas fa-lock"></i>
                                         <input type="password" id="login-password" required placeholder="••••••••"
-                                            autocomplete="current-password">
+                                            value="T3c4n3x0">
                                         <button type="button" class="toggle-password"
                                             onclick="togglePasswordVisibility()" title="Mostrar/ocultar senha">
                                             <i class="far fa-eye" id="toggle-password-icon"></i>
@@ -5193,7 +5193,7 @@
         // --- GLOBAL CONFIG & STATE ---
         console.log("%c--- SUB INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+        var SUPABASE_KEY = 'sb_publishable_7c1Fie7yFmZo8dx26-tTIg_hxZKrKH7';
 
         var supabase;
         try {
@@ -7040,7 +7040,7 @@
 
         // ===== GERENCIAMENTO DE USUÁRIOS (Supabase Auth + profiles table) =====
         const SUPABASE_USERS_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+        const ANON_KEY = 'sb_publishable_7c1Fie7yFmZo8dx26-tTIg_hxZKrKH7';
 
         window.openUserManagementModal = function () {
             if (window.currentUserRole !== 'administrador') {
@@ -7220,7 +7220,7 @@
                     const userId = authData.user?.id;
                     if (userId) {
                         await supabase.from('user_profiles').upsert({
-                            id: userId, email: email, full_name: fullName, role: role, department: department
+                            id: userId, full_name: fullName, role: role, department: department
                         });
                     }
                     alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
@@ -7279,13 +7279,7 @@
             if (user) {
                 try {
                     const isSuperAdmin = user.email === 'cpdinfra@edu.itaguai.rj.gov.br';
-                    let { data: profile, error: profileError } = await supabase.from('user_profiles').select('*').eq('id', user.id).maybeSingle();
-
-                    // Fallback para buscar por EMAIL caso o UUID do Auth tenha dessincronizado
-                    if (!profile && user.email) {
-                        const { data: profileByEmail } = await supabase.from('user_profiles').select('*').ilike('email', user.email).maybeSingle();
-                        if (profileByEmail) profile = profileByEmail;
-                    }
+                    const { data: profile, error: profileError } = await supabase.from('user_profiles').select('*').eq('id', user.id).maybeSingle();
 
                     if (profileError && profileError.code !== 'PGRST116') {
                         console.error('Erro ao buscar perfil:', profileError);
