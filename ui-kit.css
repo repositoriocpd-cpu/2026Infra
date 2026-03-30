@@ -60,6 +60,15 @@ body {
   color: #d7e7ff;
 }
 
+/* Garantir legibilidade no cabeçalho */
+.govbr-header,
+.govbr-header *,
+.govbr-header a,
+.govbr-header span,
+.govbr-header strong {
+  color: #ffffff !important;
+}
+
 /* Side menu */
 .side-menu {
   background: #0f1d34;
