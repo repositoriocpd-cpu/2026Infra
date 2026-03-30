@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel de Controle de Processos de Pagamento - SUB Infra.">
     <title>Painel SUB INFRA</title>
-    <link rel="icon" type="image/jpeg"
-        href="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg">
+    <link rel="icon" type="image/jpeg" href="public/assets/images/brasao.jpg">
 
     <!-- PWA Settings -->
     <link rel="manifest" href="manifest.json">
@@ -33,6 +33,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <!-- UI Kit (tokens + componentes base) -->
+    <link rel="stylesheet" href="ui-kit.css">
+    <script defer src="ui-kit.js"></script>
     <style>
         /* Timeline Modal Styles */
         .timeline {
@@ -103,6 +106,18 @@
             --text-color: #333;
             --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             --border-color: #e0e0e0;
+
+            /* Paleta institucional solicitada */
+            --inst-primary: #1E5FAF;
+            --inst-secondary: #2F7ED8;
+            --inst-soft: #E8F1FB;
+            --inst-bg: #F5F6F7;
+            --inst-border: #D1D5DB;
+            --inst-muted: #6B7280;
+            --inst-text: #111827;
+            --inst-white: #FFFFFF;
+            --inst-success: #16A34A;
+            --inst-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
         }
 
         /* Custom Success Modal */
@@ -401,208 +416,226 @@
         }
 
         .govbr-header {
-            background-color: white;
-            color: var(--text-color);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid var(--border-color);
+            background: var(--inst-white);
+            color: var(--inst-text);
+            border-bottom: 1px solid var(--inst-border);
+            box-shadow: 0 6px 20px rgba(17, 24, 39, 0.04);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 140;
         }
 
-        .header-top {
+        .inst-top {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border-color);
+            gap: 16px;
+            padding: 12px 24px;
         }
 
-        @media (min-width: 768px) {
-            .header-top {
-                padding: 0.75rem 2rem;
-            }
-        }
-
-        .header-logo-area {
+        .inst-brand {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 12px;
+            min-width: 240px;
         }
 
-        .header-logo {
-            height: 20px;
+        .inst-logo {
+            height: 32px;
+            width: auto;
         }
 
-        .logo-box {
-            display: none;
-            /* Hide old logo box */
-        }
-
-        .logo-separator {
-            width: 1px;
-            height: 24px;
-            background-color: var(--border-color);
-        }
-
-        .state-name {
-            font-size: 1.1rem;
-            color: #333333;
-        }
-
-        .header-actions {
+        .inst-brand-text {
             display: flex;
-            align-items: center;
-            gap: 1.25rem;
+            flex-direction: column;
+            line-height: 1.1;
         }
 
-        .header-actions a {
-            color: var(--govbr-blue);
-            font-size: 1.2rem;
-            text-decoration: none;
-        }
-
-        .header-actions a.header-link {
-            font-size: 1rem;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .header-actions a.header-link i {
-            display: none;
-        }
-
-        @media (max-width: 400px) {
-            .header-actions a.header-link span {
-                display: none !important;
-            }
-
-            .header-actions a.header-link i {
-                display: inline !important;
-            }
-
-            .actions-separator {
-                margin: 0;
-            }
-        }
-
-        #dark-mode-toggle,
-        #accessibility-toggle {
-            color: #1452b5;
-        }
-
-        .actions-separator {
-            width: 1px;
-            height: 16px;
-            background-color: var(--border-color);
-            margin: 0 -0.5rem;
-        }
-
-        .header-bottom {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 2rem;
-            gap: 1rem;
-            justify-content: space-between;
-            border-bottom: 1px solid #f1f1f1;
-        }
-
-        .menu-icon {
-            color: var(--govbr-blue);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .department-info {
-            display: flex;
-            align-items: center;
-            font-size: 1rem;
-            flex-wrap: nowrap;
-            gap: 1.25rem;
-            color: var(--govbr-blue);
-        }
-
-        .department-info .main-title {
-            font-weight: 700;
-            text-transform: none;
-            color: var(--govbr-blue);
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .department-info .sub-title {
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--govbr-blue);
+        .inst-brand-text .inst-state {
+            color: var(--inst-text);
+            font-weight: 600;
             font-size: 0.95rem;
-            letter-spacing: 0.03em;
         }
 
-        .header-separator {
-            color: #E5E7EB;
-            font-weight: 300;
-            margin: 0 0.5rem;
-            font-size: 1.2rem;
+        .inst-brand-text .inst-secretary {
+            color: var(--inst-primary);
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            font-size: 0.95rem;
+        }
+
+        .inst-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            display: grid;
+            place-items: center;
+            background: transparent;
+            color: var(--inst-primary);
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--inst-soft);
+            border-color: var(--inst-secondary);
+            color: var(--inst-secondary);
+        }
+
+        .icon-btn.green {
+            color: var(--inst-success);
+        }
+
+        .icon-btn.green:hover {
+            background: #e9f7ef;
+            border-color: #13913f;
+            color: #0f7d36;
+        }
+
+        .inst-nav {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 24px 14px;
+            border-top: 1px solid rgba(209, 213, 219, 0.7);
+            border-bottom: 1px solid rgba(209, 213, 219, 0.7);
+            background: var(--inst-white);
+        }
+
+        .menu-trigger {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--inst-white);
+            border: 1px solid var(--inst-border);
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .menu-trigger:hover {
+            border-color: var(--inst-secondary);
+            background: var(--inst-soft);
+            box-shadow: var(--inst-shadow);
+        }
+
+        .inst-titles {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--inst-text);
+            flex-wrap: wrap;
+        }
+
+        .inst-main {
+            color: var(--inst-primary);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .inst-sub {
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            font-weight: 700;
+            color: var(--inst-text);
+            font-size: 0.95rem;
+        }
+
+        .inst-divider {
+            width: 1px;
+            height: 22px;
+            background: var(--inst-border);
+        }
+
+        #header-dept-name {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--inst-soft);
+            color: var(--inst-primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 1px solid var(--inst-border);
+            text-transform: uppercase;
+        }
+
+        .inst-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #header-right-actions button {
+            border: 1px solid var(--inst-border);
+            background: var(--inst-white);
+            border-radius: 10px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        #header-right-actions button:hover {
+            background: var(--inst-soft);
+            border-color: var(--inst-secondary);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 10px;
             position: relative;
             cursor: pointer;
-            color: var(--govbr-blue);
+            color: var(--inst-primary);
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: all 0.18s ease;
         }
 
-        #header-dept-name {
-            color: var(--govbr-blue);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            margin-right: -0.25rem;
-        }
-
-        #header-dept-name::before {
-            content: "|";
-            color: #E5E7EB;
-            margin-right: 0.5rem;
-            font-weight: 300;
-        }
-
-        .user-info .fa-user-circle {
-            font-size: 1.5rem;
-            color: var(--govbr-blue);
+        .user-info:hover {
+            background: var(--inst-soft);
+            border-color: var(--inst-border);
         }
 
         .user-info span[contenteditable="true"]:focus {
             outline: none;
-            background-color: #eef3fc;
-            box-shadow: 0 0 2px 1px var(--govbr-blue);
-            border-radius: 4px;
+            background-color: var(--inst-soft);
+            box-shadow: 0 0 0 2px var(--inst-secondary);
+            border-radius: 6px;
             padding: 0 4px;
         }
 
         .header-sign-in {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 8px);
             right: 0;
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            width: 180px;
+            background: var(--inst-white);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--inst-border);
+            width: 220px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s ease;
-            z-index: 100;
+            z-index: 120;
+            padding: 6px 0;
         }
 
         .user-info:hover .header-sign-in {
             opacity: 1;
             visibility: visible;
+            transform: translateY(0);
         }
 
         .header-sign-in ul {
@@ -615,28 +648,29 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            color: var(--text-color);
+            padding: 10px 14px;
+            color: var(--inst-text);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: background-color 0.2s ease;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background-color 0.15s ease, color 0.15s ease;
         }
 
         .header-sign-in li a:hover {
-            background-color: var(--govbr-light-gray);
-            color: var(--govbr-blue);
+            background-color: var(--inst-soft);
+            color: var(--inst-primary);
         }
 
-        .header-sign-in li a .fas {
-            width: 16px;
-            text-align: center;
-            color: var(--govbr-blue);
+        .header-sign-in li a svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--inst-primary);
         }
 
         .header-sign-in .menu-section {
             border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 0.5rem;
-            margin-bottom: 0.5rem;
+            padding-bottom: 0.35rem;
+            margin-bottom: 0.35rem;
         }
 
         .header-sign-in .menu-section:last-child {
@@ -646,56 +680,52 @@
         }
 
         .header-sign-in .menu-header {
-            padding: 0.5rem 1rem 0.25rem;
+            padding: 0.4rem 1rem 0.2rem;
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: #6b7280;
-            font-weight: 600;
+            color: var(--inst-muted);
+            font-weight: 700;
         }
 
         .header-sign-in .logout-link {
             color: #dc2626;
         }
 
-        .header-sign-in .logout-link .fas {
-            color: #dc2626;
+        body.dark-mode .govbr-header {
+            background-color: #0f172a;
+            border-color: #1f2937;
         }
 
-        .header-sign-in .logout-link:hover {
-            background-color: #fef2f2;
-            color: #b91c1c;
+        body.dark-mode .inst-top,
+        body.dark-mode .inst-nav {
+            background-color: #0f172a;
+        }
+
+        body.dark-mode .inst-brand-text .inst-state,
+        body.dark-mode .inst-sub,
+        body.dark-mode .header-sign-in li a {
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .menu-trigger,
+        body.dark-mode #header-right-actions button {
+            border-color: #1f2937;
+            background: #111827;
+        }
+
+        body.dark-mode .user-info {
+            color: #bfdbfe;
         }
 
         body.dark-mode .header-sign-in {
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-        }
-
-        body.dark-mode .header-sign-in li a {
-            color: #e0e0e0;
+            background-color: #111827;
+            border-color: #1f2937;
         }
 
         body.dark-mode .header-sign-in li a:hover {
-            background-color: #333;
-            color: #66b3ff;
-        }
-
-        body.dark-mode .header-sign-in .menu-header {
-            color: #9ca3af;
-        }
-
-        body.dark-mode .header-sign-in .logout-link {
-            color: #f87171;
-        }
-
-        body.dark-mode .header-sign-in .logout-link .fas {
-            color: #f87171;
-        }
-
-        body.dark-mode .header-sign-in .logout-link:hover {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: #fca5a5;
+            background-color: #1f2937;
+            color: #93c5fd;
         }
 
         .header-content h1 {
@@ -981,7 +1011,7 @@
 
         body.dark-mode .stat-card .tooltip {
             background-color: #1a3a6e;
-            color: #ffffff;
+            color: #ffffff; background-color: #990000;
         }
 
         body.dark-mode .stat-card .tooltip::after {
@@ -2787,7 +2817,7 @@
             line-height: 1.06;
             font-weight: 900;
             font-size: 2.05rem;
-            color: #ffffff;
+            color: #ffffff; background-color: #990000;
             text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
@@ -3474,7 +3504,7 @@
 
                         <header class="login-header">
                             <div class="login-header-logo">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+                                <img src="public/assets/images/logo-itaguai.png"
                                     alt="Brasão da Prefeitura de Itaguaí">
                             </div>
                             <h1><span class="accent">SUBINFRA</span>&nbsp;• PAINEL SMEDU</h1>
@@ -3496,8 +3526,8 @@
                                     <div class="input-icon-wrapper">
                                         <i class="far fa-envelope"></i>
                                         <input type="email" id="login-email" required
-                                            placeholder="cpdinfra@edu.itaguai.rj.gov.br"
-                                            value="cpdinfra@edu.itaguai.rj.gov.br">
+                                            placeholder="nome@edu.itaguai.rj.gov.br"
+                                            autocomplete="off">
                                     </div>
                                 </div>
 
@@ -3506,7 +3536,7 @@
                                     <div class="input-icon-wrapper">
                                         <i class="fas fa-lock"></i>
                                         <input type="password" id="login-password" required placeholder="••••••••"
-                                            value="T3c4n3x0">
+                                            autocomplete="new-password">
                                         <button type="button" class="toggle-password"
                                             onclick="togglePasswordVisibility()" title="Mostrar/ocultar senha">
                                             <i class="far fa-eye" id="toggle-password-icon"></i>
@@ -3530,7 +3560,7 @@
 
     <nav id="side-menu" class="side-menu">
         <div class="side-menu-header" style="display: flex; align-items: center; gap: 10px; padding: 1.5rem 1rem;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+            <img src="public/assets/images/logo-itaguai.png"
                 alt="Logo" style="height: 40px; border-radius: 4px;">
             <h3 style="font-weight: 800; letter-spacing: 0.05em; margin: 0; font-size: 1.2rem; color: #fff;">SUB INFRA
             </h3>
@@ -3630,82 +3660,85 @@
     </div>
 
     <header class="govbr-header">
-        <div class="header-top">
-            <div class="header-logo-area">
-                <img class="header-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
+        <div class="inst-top">
+            <div class="inst-brand">
+                <img class="inst-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
                     alt="Prefeitura de Itaguaí">
-                <div class="logo-separator"></div>
-                <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span>
-            </div>
-            <div class="header-actions">
-                <!--
-                <div class="actions-separator"></div>
-                <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank"
-                    rel="noopener noreferrer" class="header-link" title="Jornal Oficial"><i
-                        class="fas fa-newspaper"></i><span class="hide-on-small">Jornal Oficial</span></a>
-                <div class="actions-separator"></div>
-                <a href="https://portal.transparencia.itaguai.rj.gov.br/" target="_blank" rel="noopener noreferrer"
-                    class="header-link" title="Transparência"><i class="fas fa-search-dollar"></i><span
-                        class="hide-on-small">Transparência</span></a>
-
-                <div class="actions-separator"></div>
-                <a href="#" aria-label="Modo noturno" id="dark-mode-toggle"><i class="fa-solid fa-moon"></i><span
-                        class="hide-on-small"></span></a>
-                <a href="#" aria-label="Acessibilidade" id="accessibility-toggle"><i
-                        class="fa-solid fa-universal-access"></i><span class="hide-on-small"></span></a>
-                <a href="#" aria-label="Privacidade" id="cookie-toggle"><i
-                        class="fa-solid fa-cookie-bite"></i><span class="hide-on-small"></span></a>
-            </div> -->
-            </div>
-            <div class="header-bottom">
-                <div class="department-info">
-                    <i id="menu-toggle" class="fa-solid fa-bars menu-icon" style="font-size: 1.4rem; margin-right: 0.5rem;"></i>
-                    
-                    <div class="main-title">
-                        <span class="hide-on-small">Secretaria Municipal de Educação</span>
-                        <span class="show-on-small">SMEDU</span>
-                    </div>
-
-                    <span class="header-separator hide-on-small">|</span>
-                    
-                    <div class="sub-title hide-on-small hide-on-medium">
-                        CONTROLE DE PROCESSOS DE PAGAMENTO
-                    </div>
-                </div>
-
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem;">
-                        <button id="global-tour-btn"
-                            class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                            title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
-                            onclick="window.startProcessTour()">
-                            <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
-                        </button>
-                    </div>
-
-                    <div class="user-info">
-                        <span class="header-separator hide-on-small">|</span>
-                        <span id="header-dept-name" class="hide-on-small">DIRETORIA</span>
-                        <i class="fa-solid fa-user-circle" style="font-size: 1.8rem;"></i>
-                        <span id="header-user-name" style="font-weight: 300;">Usuário</span>
-                        <div class="header-sign-in">
-                        <ul class="menu-section">
-                            <li class="menu-header">Sua Conta</li>
-                            <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                            <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
-                        </ul>
-                        <ul class="menu-section">
-                            <li class="menu-header">Links Externo</li>
-                            <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas Frequentes</a></li>
-                            <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a></li>
-                            <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a></li>
-                        </ul>
-                        <ul class="menu-section">
-                            <li><a href="#" onclick="window.logout(event)" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-                        </ul>
-                    </div>
+                <div class="inst-brand-text">
+                    <span class="inst-state">Estado do Rio de Janeiro</span>
+                    <span class="inst-secretary">Secretaria Municipal de Educação</span>
                 </div>
             </div>
+            <div class="inst-actions" aria-label="Ações rápidas">
+                <button class="icon-btn" id="dark-mode-toggle" aria-label="Tema">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                    </svg>
+                </button>
+                <button class="icon-btn" id="accessibility-toggle" aria-label="Acessibilidade">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 3a2 2 0 110 4 2 2 0 010-4z" />
+                        <path d="M5 7h14" />
+                        <path d="M8 7l-3 14" />
+                        <path d="M16 7l3 14" />
+                        <path d="M9 12h6" />
+                    </svg>
+                </button>
+                <button class="icon-btn green" id="cookie-toggle" aria-label="Notificações / Chat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="inst-nav">
+            <button id="menu-toggle" class="menu-trigger" aria-label="Abrir menu">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--inst-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="4" y1="7" x2="20" y2="7" />
+                    <line x1="4" y1="12" x2="20" y2="12" />
+                    <line x1="4" y1="17" x2="14" y2="17" />
+                </svg>
+            </button>
+
+            <div class="inst-titles">
+                <span class="inst-main">Secretaria Municipal de Educação</span>
+                <span class="inst-divider"></span>
+                <span class="inst-sub">Controle de Processos de Pagamentos</span>
+                <span id="header-dept-name" class="hide-on-small">DIRETORIA</span>
+            </div>
+
+            <div class="inst-right">
+                <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button id="global-tour-btn" title="Tour pelo sistema" aria-label="Tour pelo sistema" onclick="window.startProcessTour()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#1E5FAF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M9.09 9a3 3 0 115.82 1c0 2-3 2-3 4" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="user-info" aria-haspopup="true" aria-expanded="false">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 21v-2a4 4 0 00-3-3.87M7 21v-2a4 4 0 013-3.87" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                    <span id="header-user-name" style="font-weight: 600;">Usuário</span>
+                    <div class="header-sign-in">
+                        <ul class="menu-section">
+                            <li class="menu-header">Sua conta</li>
+                            <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-3-3.87M7 21v-2a4 4 0 013-3.87"/><circle cx="12" cy="7" r="4"/></svg>Meu Perfil</a></li>
+                            <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10l5 5 5-5"/><path d="M12 4v10"/></svg>Trocar Unidade</a></li>
+                            <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11V7a4 4 0 014-4h10a4 4 0 014 4v10a4 4 0 01-4 4H9"/><path d="M3 15a4 4 0 004 4h1"/><path d="M7 11a5 5 0 015-5"/></svg>Alterar Senha</a></li>
+                        </ul>
+                        <ul class="menu-section">
+                            <li><a href="#" onclick="window.logout(event)" class="logout-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     <main class="container" style="margin-top: 2rem;">
@@ -3851,7 +3884,7 @@
                             <i class="fas fa-search"></i> Consultar Cadastrados
                         </button>
                         <button class="btn btn-danger" onclick="window.exportDashboardToPDF()"
-                            style="width: 100px; height: 48px; border-radius: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; background: #ef4444; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: all 0.2s;">
+                            style="color: #ffffff; background-color: #990000; width: 100px; height: 48px; border-radius: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; background: #990000; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: all 0.2s;">
                             <i class="fas fa-file-pdf"></i> PDF
                         </button>
                     </div>
@@ -3956,7 +3989,7 @@
                         </button>
 
                         <button class="btn btn-danger" onclick="exportToPDF()"
-                            style="height: 48px; border-radius: 12px; background: #ef4444; border: none;">
+                            style="height: 48px; border-radius: 12px; background: #990000; border: none;">
                             <i class="fas fa-file-pdf"></i> PDF
                         </button>
 
@@ -4072,7 +4105,7 @@
                     </div>
 
                     <button class="btn btn-danger" onclick="window.restoreFromBackup()"
-                        style="width:100%; justify-content: center; padding: 0.8rem; background: #ef4444;">
+                        style="width:100%; justify-content: center; padding: 0.8rem; background: #990000;">
                         <i class="fas fa-history"></i>&nbsp;Executar Restauração
                     </button>
                 </div>
@@ -4160,7 +4193,7 @@
                 style="margin-bottom:1.5rem; background: linear-gradient(135deg, #005A9C, #005A9C); color: white;">
                 <div style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
                     <div style="display:flex; align-items:center; gap:1.5rem;">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+                        <img src="public/assets/images/logo-itaguai.png"
                             alt="SUB INFRA Logo"
                             style="height: 60px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                         <div>
@@ -5044,9 +5077,9 @@
                     <div
                         style="display: flex; gap: 1rem; justify-content: flex-end; flex-direction: column; align-items: flex-end;">
                         <div style="display: flex; gap: 1rem;">
-                            <a href="https://www.instagram.com/" target="_blank"
+                            <a href="https://www.instagram.com/" aria-label="Instagram"  target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.facebook.com/?ref=tn_tnmn" target="_blank"
+                            <a href="https://www.facebook.com/?ref=tn_tnmn" aria-label="Facebook"  target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook-f"></i></a>
                         </div>
                         <!-- <img class="logo-govcidades" src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg" alt="Prefeitura de Itaguaí" style="max-height: 40px; margin-top: 1rem;"> -->
@@ -5193,7 +5226,7 @@
         // --- GLOBAL CONFIG & STATE ---
         console.log("%c--- SUB INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+        var SUPABASE_KEY = 'sb_publishable_7c1Fie7yFmZo8dx26-tTIg_hxZKrKH7';
 
         var supabase;
         try {
@@ -7040,7 +7073,7 @@
 
         // ===== GERENCIAMENTO DE USUÁRIOS (Supabase Auth + profiles table) =====
         const SUPABASE_USERS_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+        const ANON_KEY = 'sb_publishable_7c1Fie7yFmZo8dx26-tTIg_hxZKrKH7';
 
         window.openUserManagementModal = function () {
             if (window.currentUserRole !== 'administrador') {
@@ -7204,7 +7237,7 @@
 
             try {
                 if (editingId) {
-                    const updateData = { full_name: fullName, email: email, role: role, department: department };
+                    const updateData = { full_name: fullName, role: role, department: department };
                     // Hint: password updates via admin API would go here
                     const { error } = await supabase.from('user_profiles').update(updateData).eq('id', editingId);
                     if (error) throw error;
@@ -7220,7 +7253,7 @@
                     const userId = authData.user?.id;
                     if (userId) {
                         await supabase.from('user_profiles').upsert({
-                            id: userId, full_name: fullName, email: email, role: role, department: department, active: true
+                            id: userId, full_name: fullName, role: role, department: department
                         });
                     }
                     alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
@@ -7414,7 +7447,7 @@
             const doc = new jsPDF('l', 'mm', 'a4');
 
             try {
-                const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                const logoUrl = 'public/assets/images/logo-itaguai.png';
                 const img = new Image();
                 img.crossOrigin = 'Anonymous';
                 img.src = logoUrl;
@@ -7545,7 +7578,7 @@
 
                 // --- Cabeçalho e Logo ---
                 try {
-                    const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                    const logoUrl = 'public/assets/images/logo-itaguai.png';
                     const imgLogo = new Image();
                     imgLogo.crossOrigin = 'Anonymous';
                     imgLogo.src = logoUrl;
@@ -7754,11 +7787,11 @@
     </div>
     <!-- <p
         style="border-radius: 8px; text-align: center; font-size: 11px; color: #fff; margin-top: 16px; position: fixed; left: 50%; transform: translateX(-50%); bottom: 75px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 12px; white-space: nowrap; width: auto; max-width: 90vw;">
-        SESME-C <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+        SESME-C <img src="public/assets/images/logo-itaguai.png"
             alt="DeepSite Logo"
             style="width: 14px; height: 14px; vertical-align: middle; display: inline-block; margin-right: 3px; filter: brightness(0) invert(1);"><a
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
-            style="color: #ffffff; text-decoration: underline;" target="_blank">INFRA</a> - <a
+            style="color: #ffffff; background-color: #990000; text-decoration: underline;" target="_blank">INFRA</a> - <a
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
             style="color: #fff; text-decoration: underline;" target="_blank">PMI</a></p>-->
     <script>
