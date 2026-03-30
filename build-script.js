@@ -92,7 +92,7 @@ function copyDirRecursive(src, dst) {
 }
 
 /**
- * Main build function
+ * Build function
  */
 function build() {
   console.log('\n🔨 Building SUB INFRA Panel...\n');
@@ -107,8 +107,16 @@ function build() {
   console.log('Creating dist folder...\n');
   fs.mkdirSync(DIST_DIR, { recursive: true });
 
+  // Generate cache manifest
+  console.log('Generating cache manifest...');
+  try {
+    require('./generate-cache-manifest.js');
+  } catch (err) {
+    console.warn('⚠️  Could not generate cache manifest:', err.message);
+  }
+
   // Copy files
-  console.log('Copying files:');
+  console.log('\nCopying files:');
   FILES_TO_COPY.forEach((file) => copyFile(file, DIST_DIR));
 
   // Copy directories

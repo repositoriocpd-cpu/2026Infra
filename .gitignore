@@ -6,6 +6,10 @@ tools/
 *.tmp
 .DS_Store
 
+# Build artifacts
+.cache-manifest.json
+.cache-version
+
 # Environment variables
 .env
 .env.local
