@@ -1022,7 +1022,7 @@
             const doc = new jsPDF('l', 'mm', 'a4');
 
             try {
-                const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                const logoUrl = 'public/assets/images/logo-itaguai.png';
                 const img = new Image();
                 img.crossOrigin = 'Anonymous';
                 img.src = logoUrl;
@@ -1138,7 +1138,7 @@
                 });
 
                 try {
-                    const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                    const logoUrl = 'public/assets/images/logo-itaguai.png';
                     const imgLogo = new Image();
                     imgLogo.crossOrigin = 'Anonymous';
                     imgLogo.src = logoUrl;
