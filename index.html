@@ -3496,8 +3496,8 @@
                                     <div class="input-icon-wrapper">
                                         <i class="far fa-envelope"></i>
                                         <input type="email" id="login-email" required
-                                            placeholder="cpdinfra@edu.itaguai.rj.gov.br"
-                                            value="cpdinfra@edu.itaguai.rj.gov.br">
+                                            placeholder="seu@email.institucional.gov.br"
+                                            autocomplete="username">
                                     </div>
                                 </div>
 
@@ -3506,7 +3506,7 @@
                                     <div class="input-icon-wrapper">
                                         <i class="fas fa-lock"></i>
                                         <input type="password" id="login-password" required placeholder="••••••••"
-                                            value="T3c4n3x0">
+                                            autocomplete="current-password">
                                         <button type="button" class="toggle-password"
                                             onclick="togglePasswordVisibility()" title="Mostrar/ocultar senha">
                                             <i class="far fa-eye" id="toggle-password-icon"></i>
@@ -7220,7 +7220,7 @@
                     const userId = authData.user?.id;
                     if (userId) {
                         await supabase.from('user_profiles').upsert({
-                            id: userId, full_name: fullName, role: role, department: department
+                            id: userId, email: email, full_name: fullName, role: role, department: department
                         });
                     }
                     alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
@@ -7279,7 +7279,13 @@
             if (user) {
                 try {
                     const isSuperAdmin = user.email === 'cpdinfra@edu.itaguai.rj.gov.br';
-                    const { data: profile, error: profileError } = await supabase.from('user_profiles').select('*').eq('id', user.id).maybeSingle();
+                    let { data: profile, error: profileError } = await supabase.from('user_profiles').select('*').eq('id', user.id).maybeSingle();
+
+                    // Fallback para buscar por EMAIL caso o UUID do Auth tenha dessincronizado
+                    if (!profile && user.email) {
+                        const { data: profileByEmail } = await supabase.from('user_profiles').select('*').ilike('email', user.email).maybeSingle();
+                        if (profileByEmail) profile = profileByEmail;
+                    }
 
                     if (profileError && profileError.code !== 'PGRST116') {
                         console.error('Erro ao buscar perfil:', profileError);
