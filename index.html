@@ -7589,9 +7589,30 @@
                  errorMsg.style.display = 'block';
                  submitBtn.disabled = false;
                  submitBtn.innerHTML = 'Entrar';
-             }
-         }
-    </script>
+              }
+          }
+          
+          // Debug: Log initialization status
+          window.addEventListener('load', () => {
+              console.log('=== SUPABASE INITIALIZATION DEBUG ===');
+              console.log('window.supabaseClient:', typeof window.supabaseClient);
+              console.log('window.supabase (library):', typeof window.supabase);
+              
+              if (window.supabaseClient) {
+                  console.log('✓ Supabase client is initialized');
+                  console.log('Auth available:', !!window.supabaseClient.auth);
+              } else {
+                  console.warn('⚠ Supabase client is NOT initialized yet');
+                  console.log('Waiting for initialization...');
+              }
+              
+              // Log any errors from Supabase library
+              if (window.supabase && !window.supabase.createClient) {
+                  console.error('✗ Supabase library loaded but createClient not available');
+              }
+          });
+     </script>
+
 
     <!-- Bottom Navigation Mobile (SUBInfra Style) -->
     <nav class="mobile-bottom-nav">
