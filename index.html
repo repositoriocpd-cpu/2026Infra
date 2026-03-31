@@ -5473,21 +5473,46 @@
             }
         };
 
-        // --- GLOBAL CONFIG & STATE ---
-        var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+         // --- GLOBAL CONFIG & STATE ---
+         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
+         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
          var supabase;
-         try {
-             if (window.supabase) {
+         
+         // Function to initialize Supabase with retry logic
+         function initializeSupabase() {
+             try {
+                 // Check if Supabase library is loaded
+                 if (!window.supabase || !window.supabase.createClient) {
+                     console.warn('Supabase library not ready yet, will retry in 500ms...');
+                     setTimeout(initializeSupabase, 500);
+                     return;
+                 }
+                 
+                 // Create Supabase client
                  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                 
                  // Make it globally accessible
-                 window.supabase = supabase;
-                 if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Supabase client initialized');
-             } else {
-                 console.error('ERRO CRÍTICO: Biblioteca Supabase não encontrada!');
+                 window.supabaseClient = supabase;
+                 
+                 console.log('Supabase client initialized successfully');
+                 if (window.AppConfig && !window.AppConfig.isProduction()) {
+                     console.log('Supabase URL:', SUPABASE_URL);
+                 }
+             } catch (e) { 
+                 console.error('Supabase Client Error:', e);
+                 setTimeout(initializeSupabase, 1000);
              }
-         } catch (e) { console.error('Supabase Client Error:', e); }
+         }
+         
+         // Initialize on document ready or immediately if script is at end of body
+         if (document.readyState === 'loading') {
+             document.addEventListener('DOMContentLoaded', initializeSupabase);
+         } else {
+             // Script ran after DOM was ready
+             setTimeout(initializeSupabase, 100);
+         }
+
 
         // --- STATE ---
         window.state = {
@@ -5717,11 +5742,20 @@
 
         // --- 4. APP INITIALIZATION ---
         window._appLoaded = false;
-        window.initApp = async function () {
-            if (!supabase || window._appLoaded) return;
-            window._appLoaded = true;
-            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
-            try {
+         window.initApp = async function () {
+             // Wait for supabase to be initialized
+             if (!window.supabaseClient || window._appLoaded) {
+                 if (!window.supabaseClient) {
+                     console.warn('Waiting for Supabase client to initialize...');
+                     setTimeout(window.initApp, 500);
+                 }
+                 return;
+             }
+             
+             supabase = window.supabaseClient; // Use the initialized client
+             window._appLoaded = true;
+             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
+             try {
                 const [suppliers, locations, objects, statuses, handlers, departments, processes] = await Promise.all([
                     supabase.from('suppliers').select('name').order('name'),
                     supabase.from('locations').select('name').order('name'),
@@ -6713,55 +6747,79 @@
             }
         }
 
-        // Monitorar estado da sessão com segurança
-        if (supabase && supabase.auth) {
-            supabase.auth.onAuthStateChange((event, session) => {
-                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth event:', event);
-                const overlay = document.getElementById('login-overlay');
+         // Esperar pela inicialização do Supabase antes de usar
+         function waitForSupabase(callback, maxAttempts = 30) {
+             let attempts = 0;
+             const checkInterval = setInterval(() => {
+                 attempts++;
+                 if (window.supabaseClient) {
+                     clearInterval(checkInterval);
+                     callback(window.supabaseClient);
+                 } else if (attempts >= maxAttempts) {
+                     clearInterval(checkInterval);
+                     console.error('Supabase client não foi inicializado após múltiplas tentativas');
+                 }
+             }, 200);
+         }
 
-                if (session?.user) {
-                    updateUserInfo(session.user);
-                    window.initializeAppEventListeners();
+         // Monitorar estado da sessão com segurança
+         waitForSupabase(function(supabaseClient) {
+             if (supabaseClient && supabaseClient.auth) {
+                 supabaseClient.auth.onAuthStateChange((event, session) => {
+                     if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth event:', event);
+                     const overlay = document.getElementById('login-overlay');
 
-                    if (!window._appLoaded) {
-                        if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Iniciando carregamento do app...');
-                        window.initApp();
-                    }
+                     if (session?.user) {
+                         updateUserInfo(session.user);
+                         window.initializeAppEventListeners();
 
-                    if (overlay) {
-                        overlay.style.opacity = '0';
-                        setTimeout(() => {
-                            overlay.style.display = 'none';
-                        }, 500);
-                    }
-                } else {
-                    if (overlay) {
-                        overlay.style.display = 'flex';
-                        overlay.style.opacity = '1';
-                    }
-                }
-            });
-        } else {
-            console.error('supabase.auth não disponível para monitoramento.');
-        }
+                         if (!window._appLoaded) {
+                             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Iniciando carregamento do app...');
+                             window.initApp();
+                         }
 
-        window.logout = async function (e) {
-             if (e) e.preventDefault();
-             // Using a cleaner confirm message and ensuring state is reset
-             if (await ConfirmModal.show('Você tem certeza que deseja sair do sistema?', {title: 'Logout'})) {
-                 try {
-                     // Explicitly reset role before sign out to prevent UI flickers or lingering access
-                    window.currentUserRole = 'convidado';
-                    await supabase.auth.signOut();
-                    
-                    // Clear any sensitive local storage data if any exists (PWA/custom)
-                    localStorage.removeItem('supabase.auth.token'); 
-                    
-                    window.location.reload();
-                } catch (err) {
-                    console.error('Logout Error:', err);
-                    window.location.reload();
-                }
+                         if (overlay) {
+                             overlay.style.opacity = '0';
+                             setTimeout(() => {
+                                 overlay.style.display = 'none';
+                             }, 500);
+                         }
+                     } else {
+                         if (overlay) {
+                             overlay.style.display = 'flex';
+                             overlay.style.opacity = '1';
+                         }
+                     }
+                 });
+             } else {
+                 console.error('supabase.auth não disponível para monitoramento.');
+             }
+         });
+
+         window.logout = async function (e) {
+              if (e) e.preventDefault();
+              // Using a cleaner confirm message and ensuring state is reset
+              if (await ConfirmModal.show('Você tem certeza que deseja sair do sistema?', {title: 'Logout'})) {
+                  try {
+                      // Explicitly reset role before sign out to prevent UI flickers or lingering access
+                     window.currentUserRole = 'convidado';
+                     
+                     if (!window.supabaseClient) {
+                         console.error('Supabase não inicializado');
+                         window.location.reload();
+                         return;
+                     }
+                     
+                     await window.supabaseClient.auth.signOut();
+                     
+                     // Clear any sensitive local storage data if any exists (PWA/custom)
+                     localStorage.removeItem('supabase.auth.token'); 
+                     
+                     window.location.reload();
+                 } catch (err) {
+                     console.error('Logout Error:', err);
+                     window.location.reload();
+                 }
             }
         };
 
@@ -7483,7 +7541,7 @@
              }
 
              // Verifica se Supabase foi inicializado
-             if (!window.supabase) {
+             if (!window.supabaseClient) {
                  console.error('Supabase não foi inicializado.');
                  errorMsg.innerText = 'Erro: Sistema não está conectado. Recarregue a página.';
                  errorMsg.style.display = 'block';
@@ -7505,7 +7563,7 @@
              }, 10000);
 
              try {
-                 const { data, error } = await window.supabase.auth.signInWithPassword({ email, password });
+                 const { data, error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
                  clearTimeout(loginTimeout);
                  if (error) throw error;
 
