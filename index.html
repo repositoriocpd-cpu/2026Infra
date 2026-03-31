@@ -5220,21 +5220,36 @@
         };
 
         window.closeModal = function (id) {
+            if (!id) return;
+            
             var m = document.getElementById(id);
-            if (m) {
-                m.classList.remove('visible');
-                m.style.opacity = '0';
-                setTimeout(() => {
-                    if (!m.classList.contains('visible')) {
-                        m.style.display = 'none';
-                    }
-                }, 300);
+            if (!m) return;
+            
+            // Remove classe visible (para animação)
+            m.classList.remove('visible');
+            
+            // Aguarda transição CSS (300ms) antes de esconder completamente
+            setTimeout(() => {
+                if (!m.classList.contains('visible')) {
+                    m.style.display = 'none';
+                    m.style.opacity = '0';
+                }
+            }, 300);
+            
+            // Verifica se há outro modal aberto
+            var anyModalOpen = false;
+            var modals = document.querySelectorAll('[id*="modal"]');
+            for (var i = 0; i < modals.length; i++) {
+                if (modals[i].classList.contains('visible') && modals[i].id !== id) {
+                    anyModalOpen = true;
+                    break;
+                }
             }
-            // Apenas esconde o overlay se nenhum outro modal está aberto
-            var overlay = document.getElementById('overlay');
-            if (overlay) {
-                var anyModalOpen = document.querySelectorAll('[id*="modal"][class*="visible"]').length > 0;
-                if (!anyModalOpen) {
+            
+            // Apenas esconde o overlay se não houver modal aberto
+            if (!anyModalOpen) {
+                var overlay = document.getElementById('overlay');
+                if (overlay) {
                     overlay.classList.remove('visible');
                     setTimeout(() => {
                         if (!overlay.classList.contains('visible')) {

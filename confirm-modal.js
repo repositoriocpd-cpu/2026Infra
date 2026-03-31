@@ -19,11 +19,12 @@
       }
 
       const modal = document.createElement('div');
-      modal.id = this.modalId;
-      modal.className = 'modal-overlay';
-      modal.setAttribute('role', 'alertdialog');
-      modal.setAttribute('aria-modal', 'true');
-      modal.setAttribute('aria-labelledby', 'confirm-modal-title');
+       modal.id = this.modalId;
+       modal.className = 'modal-overlay';
+       modal.setAttribute('role', 'alertdialog');
+       modal.setAttribute('aria-modal', 'true');
+       modal.setAttribute('aria-labelledby', 'confirm-modal-title');
+       modal.style.display = 'none'; // Garante que comece escondido
 
       modal.innerHTML = `
         <div class="modal-content confirm-modal-content">
@@ -95,8 +96,11 @@
       confirmBtn.textContent = options.confirmText || 'Confirmar';
       cancelBtn.textContent = options.cancelText || 'Cancelar';
 
-      // Show modal
-      modal.classList.add('visible');
+      // Show modal - garante que está visível
+      modal.style.display = 'flex';
+      setTimeout(() => {
+        modal.classList.add('visible');
+      }, 10);
 
       // Set danger style for destructive actions
       if (options.isDangerous) {
@@ -122,6 +126,13 @@
     confirm() {
       const modal = document.getElementById(this.modalId);
       modal.classList.remove('visible');
+      
+      // Aguarda transição antes de esconder completamente
+      setTimeout(() => {
+        if (!modal.classList.contains('visible')) {
+          modal.style.display = 'none';
+        }
+      }, 300);
 
       if (this.resolveCallback) {
         this.resolveCallback(true);
@@ -135,6 +146,13 @@
     cancel() {
       const modal = document.getElementById(this.modalId);
       modal.classList.remove('visible');
+      
+      // Aguarda transição antes de esconder completamente
+      setTimeout(() => {
+        if (!modal.classList.contains('visible')) {
+          modal.style.display = 'none';
+        }
+      }, 300);
 
       if (this.resolveCallback) {
         this.resolveCallback(false);

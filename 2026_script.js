@@ -33,20 +33,26 @@
                 'history-modal', 'infoModal', 'confirm-modal',
                 'statusSummaryModal'
             ];
+            
+            // Fecha cada modal
             ids.forEach(function (id) {
                 var m = document.getElementById(id);
                 if (m) { 
                     m.classList.remove('visible');
-                    m.style.opacity = '0';
-                    setTimeout(() => {
-                        if (!m.classList.contains('visible')) {
-                            m.style.display = 'none';
-                        }
-                    }, 300);
+                    // Aguarda transição CSS antes de esconder
+                    setTimeout((function(modal) {
+                        return function() {
+                            if (!modal.classList.contains('visible')) {
+                                modal.style.display = 'none';
+                                modal.style.opacity = '0';
+                            }
+                        };
+                    })(m), 300);
                 }
             });
+            
+            // Fecha overlay após todos os modais
             var overlay = document.getElementById('overlay');
-            var sideMenu = document.getElementById('side-menu');
             if (overlay) {
                 overlay.classList.remove('visible');
                 setTimeout(() => {
@@ -55,7 +61,12 @@
                     }
                 }, 300);
             }
-            if (sideMenu) sideMenu.classList.remove('open');
+            
+            // Fecha menu lateral se estiver aberto
+            var sideMenu = document.getElementById('side-menu');
+            if (sideMenu) {
+                sideMenu.classList.remove('open');
+            }
         };
 
 
