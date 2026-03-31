@@ -5477,15 +5477,17 @@
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
-        var supabase;
-        try {
-            if (window.supabase) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Supabase client initialized');
-            } else {
-                console.error('ERRO CRÍTICO: Biblioteca Supabase não encontrada!');
-            }
-        } catch (e) { console.error('Supabase Client Error:', e); }
+         var supabase;
+         try {
+             if (window.supabase) {
+                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                 // Make it globally accessible
+                 window.supabase = supabase;
+                 if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Supabase client initialized');
+             } else {
+                 console.error('ERRO CRÍTICO: Biblioteca Supabase não encontrada!');
+             }
+         } catch (e) { console.error('Supabase Client Error:', e); }
 
         // --- STATE ---
         window.state = {
@@ -7466,63 +7468,71 @@
         }
 
         async function handleLogin(event) {
-            event.preventDefault();
-            const emailInput = document.getElementById('login-email');
-            const passwordInput = document.getElementById('login-password');
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
-            const errorMsg = document.getElementById('login-error-msg');
-            const submitBtn = event.target.querySelector('button');
+             event.preventDefault();
+             const emailInput = document.getElementById('login-email');
+             const passwordInput = document.getElementById('login-password');
+             const email = emailInput.value.trim();
+             const password = passwordInput.value;
+             const errorMsg = document.getElementById('login-error-msg');
+             const submitBtn = event.target.querySelector('button');
 
-            if (!email || !password) {
-                errorMsg.innerText = 'Preencha todos os campos.';
-                errorMsg.style.display = 'block';
-                return;
-            }
+             if (!email || !password) {
+                 errorMsg.innerText = 'Preencha todos os campos.';
+                 errorMsg.style.display = 'block';
+                 return;
+             }
 
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
-            errorMsg.style.display = 'none';
+             // Verifica se Supabase foi inicializado
+             if (!window.supabase) {
+                 console.error('Supabase não foi inicializado.');
+                 errorMsg.innerText = 'Erro: Sistema não está conectado. Recarregue a página.';
+                 errorMsg.style.display = 'block';
+                 return;
+             }
 
-            // Timeout de segurança para evitar ficar preso no "Entrando..."
-            const loginTimeout = setTimeout(() => {
-                if (submitBtn.disabled) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Entrar';
-                    errorMsg.innerText = 'O servidor está demorando a responder. Tente novamente.';
-                    errorMsg.style.display = 'block';
-                }
-            }, 10000);
+             submitBtn.disabled = true;
+             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+             errorMsg.style.display = 'none';
 
-            try {
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-                clearTimeout(loginTimeout);
-                if (error) throw error;
+             // Timeout de segurança para evitar ficar preso no "Entrando..."
+             const loginTimeout = setTimeout(() => {
+                 if (submitBtn.disabled) {
+                     submitBtn.disabled = false;
+                     submitBtn.innerHTML = 'Entrar';
+                     errorMsg.innerText = 'O servidor está demorando a responder. Tente novamente.';
+                     errorMsg.style.display = 'block';
+                 }
+             }, 10000);
 
-                // Limpa campos após sucesso para segurança
-                emailInput.value = '';
-                passwordInput.value = '';
+             try {
+                 const { data, error } = await window.supabase.auth.signInWithPassword({ email, password });
+                 clearTimeout(loginTimeout);
+                 if (error) throw error;
 
-                // O onAuthStateChange cuidará de esconder o overlay e iniciar o app
-            } catch (err) {
-                clearTimeout(loginTimeout);
-                console.error('Erro no login:', err);
+                 // Limpa campos após sucesso para segurança
+                 emailInput.value = '';
+                 passwordInput.value = '';
 
-                let msg = 'E-mail ou senha incorretos.';
-                if (err.message === 'Email not confirmed') {
-                    msg = 'E-mail ainda não confirmado. Verifique seu e-mail.';
-                } else if (err.message === 'Invalid login credentials') {
-                    msg = 'Credenciais inválidas. Verifique e-mail e senha.';
-                } else if (err.message) {
-                    msg = err.message;
-                }
+                 // O onAuthStateChange cuidará de esconder o overlay e iniciar o app
+             } catch (err) {
+                 clearTimeout(loginTimeout);
+                 console.error('Erro no login:', err);
 
-                errorMsg.innerText = msg;
-                errorMsg.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Entrar';
-            }
-        }
+                 let msg = 'E-mail ou senha incorretos.';
+                 if (err.message === 'Email not confirmed') {
+                     msg = 'E-mail ainda não confirmado. Verifique seu e-mail.';
+                 } else if (err.message === 'Invalid login credentials') {
+                     msg = 'Credenciais inválidas. Verifique e-mail e senha.';
+                 } else if (err.message) {
+                     msg = err.message;
+                 }
+
+                 errorMsg.innerText = msg;
+                 errorMsg.style.display = 'block';
+                 submitBtn.disabled = false;
+                 submitBtn.innerHTML = 'Entrar';
+             }
+         }
     </script>
 
     <!-- Bottom Navigation Mobile (SUBInfra Style) -->
