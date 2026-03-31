@@ -1,0 +1,158 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                                                                           ║
+║                    🚀 COMECE AQUI - INSTRUÇÕES RÁPIDAS                  ║
+║                                                                           ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+
+⚡ PASSO 1: INICIAR O SERVIDOR (Obrigatório!)
+─────────────────────────────────────────────────────────────────────────
+
+1. Abra PowerShell (Buscar: PowerShell)
+   ou Command Prompt (cmd)
+
+2. Cole este comando:
+   cd E:\2026\ SISTEMAS\2025\ Infra\ Sistemas\ YASMIN
+
+3. Pressione Enter
+
+4. Cole este comando:
+   python -m http.server 8000
+
+5. Se funcionar, você verá:
+   Serving HTTP on 0.0.0.0 port 8000 ...
+
+6. Deixe essa janela aberta! ⚠️
+
+
+🌐 PASSO 2: ABRIR O NAVEGADOR
+─────────────────────────────────────────────────────────────────────────
+
+1. Abra seu navegador favorito:
+   Chrome, Firefox, Edge, Safari, etc.
+
+2. Na barra de endereço, digite:
+   http://localhost:8000
+
+3. Pressione Enter
+
+4. Você verá uma lista de arquivos
+
+5. Clique em "index.html"
+
+6. A aplicação carrega! 🎉
+
+
+✅ PASSO 3: TESTAR OS BOTÕES
+─────────────────────────────────────────────────────────────────────────
+
+Teste 1 - Botão X:
+├─ Clique em "Novo Processo" (ou qualquer botão)
+├─ Vê um modal aparecer
+├─ Clique no X (canto superior direito)
+└─ Modal desaparece suavemente ✓
+
+Teste 2 - Botão Cancelar:
+├─ Abra um modal novamente
+├─ Clique em "Cancelar" ou "Fechar"
+└─ Modal fecha ✓
+
+Teste 3 - Clique no overlay:
+├─ Abra um modal
+├─ Clique na área escura ao redor
+└─ Modal fecha ✓
+
+Teste 4 - Menu Lateral:
+├─ Clique no ícone ≡ (hambúrguer)
+├─ Menu abre
+├─ Clique novamente
+└─ Menu fecha ✓
+
+
+📚 PASSO 4: ACESSAR DOCUMENTAÇÃO (NOVO!)
+─────────────────────────────────────────────────────────────────────────
+
+1. Clique no ícone de usuário 👤 (canto superior direito)
+
+2. Você verá um menu dropdown
+
+3. Nova seção: "Ajuda & Documentação" com:
+   ├─ ❓ Perguntas Frequentes
+   ├─ 📖 Manual do Usuário
+   └─ 📄 Política de Uso
+
+4. Clique em qualquer uma para ler
+
+
+🔍 SE ALGO DER ERRADO
+─────────────────────────────────────────────────────────────────────────
+
+Problema: "Connection refused" ou "Erro de conexão"
+Solução:
+├─ Verifique se o PowerShell ainda está aberto
+├─ Se não estiver, execute novamente:
+│  cd E:\2026\ SISTEMAS\2025\ Infra\ Sistemas\ YASMIN
+│  python -m http.server 8000
+└─ Aguarde 5 segundos antes de recarregar a página
+
+Problema: Botões ainda não funcionam
+Solução:
+├─ Verifica a URL da barra:
+│  ❌ ERRADA: file:///E:/2026...
+│  ✅ CORRETA: http://localhost:8000/index.html
+└─ Se estiver errada, digite http://localhost:8000 novamente
+
+Problema: Servidor diz "porta 8000 já está em uso"
+Solução:
+├─ Teste outra porta:
+│  python -m http.server 8001
+└─ Abre no navegador:
+   http://localhost:8001
+
+
+📖 PARA MAIS INFORMAÇÕES
+─────────────────────────────────────────────────────────────────────────
+
+Arquivo: GUIA_TESTE_BOTOES.txt
+├─ Testes completos passo-a-passo
+├─ Checklist de validação
+├─ Troubleshooting detalhado
+├─ Como usar o Console do navegador
+└─ Referência de IDs de modais
+
+
+🎯 O QUE FOI CORRIGIDO NESTA VERSÃO
+─────────────────────────────────────────────────────────────────────────
+
+1. Botões X, Cancelar, Continua, Fechar
+   └─ Agora funcionam perfeitamente! ✅
+
+2. Menu de Perfil
+   └─ Adicionadas 3 opções de documentação ✅
+
+3. Transições CSS
+   └─ Suaves com 300ms ✅
+
+
+✨ RESUMO RÁPIDO
+─────────────────────────────────────────────────────────────────────────
+
+┌─ Iniciar
+│  └─ python -m http.server 8000
+│
+├─ Acessar
+│  └─ http://localhost:8000
+│
+├─ Clicar
+│  └─ index.html
+│
+└─ Testar
+   └─ Todos os botões!
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎉 PRONTO! Agora é só aproveitar!
+
+Alguma dúvida? Consulte GUIA_TESTE_BOTOES.txt
+
