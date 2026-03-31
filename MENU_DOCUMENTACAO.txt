@@ -1,0 +1,134 @@
+╔═══════════════════════════════════════════════════════════════════════════╗
+║          ✓ DOCUMENTAÇÃO ADICIONADA AO MENU DE PERFIL                     ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+📋 NOVO MENU ESTRUTURA
+─────────────────────────────────────────────────────────────────────────────
+
+┌─ MENU DE PERFIL (Clique no ícone de usuário na barra)
+├─ Sua conta
+│  ├─ Meu Perfil
+│  ├─ Trocar Unidade
+│  └─ Alterar Senha
+│
+├─ ✨ NEW! Ajuda & Documentação
+│  ├─ ❓ Perguntas Frequentes (FAQ)
+│  ├─ 📖 Manual do Usuário
+│  └─ 📄 Política de Uso
+│
+└─ Sair
+
+
+🎯 RECURSOS DISPONÍVEIS
+─────────────────────────────────────────────────────────────────────────────
+
+1️⃣  PERGUNTAS FREQUENTES (FAQ)
+    ├─ Como fazer login?
+    ├─ Como cadastrar novo processo?
+    ├─ Como rastrear um processo?
+    ├─ Como alterar senha?
+    ├─ O que fazer com processos atrasados?
+    └─ Contato de suporte
+
+2️⃣  MANUAL DO USUÁRIO
+    ├─ 1. Login e Autenticação
+    ├─ 2. Dashboard (Estatísticas em tempo real)
+    ├─ 3. Cadastro de Processos
+    ├─ 4. Consulta e Filtros
+    └─ 5. Relatórios (Excel/PDF)
+
+3️⃣  POLÍTICA DE USO
+    ├─ 1. Objetivo do Sistema
+    ├─ 2. Usuários Autorizados
+    ├─ 3. Responsabilidades do Usuário
+    ├─ 4. Boas Práticas
+    └─ 5. Penalidades
+
+
+✨ ÍCONES UTILIZADOS
+─────────────────────────────────────────────────────────────────────────────
+
+❓ Perguntas Frequentes  → Ícone de círculo com ponto de interrogação
+📖 Manual do Usuário     → Ícone de livro aberto
+📄 Política de Uso       → Ícone de documento/arquivo
+
+
+📝 COMO USAR
+─────────────────────────────────────────────────────────────────────────────
+
+1. Clique no ícone de usuário (homem/mulher) na barra superior direita
+2. Você verá o menu dropdown com todas as opções
+3. Clique em uma opção de documentação
+4. Modal abre com o conteúdo solicitado
+5. Feche com o botão X ou "Fechar"
+
+
+🔗 INTEGRAÇÃO TÉCNICA
+─────────────────────────────────────────────────────────────────────────────
+
+✓ Links utilizam data-route para integração com openInfoModal()
+✓ Conteúdo compartilhado com modais de acessibilidade
+✓ Mesmo sistema de transições suaves (300ms)
+✓ Compatível com tema escuro (dark mode)
+✓ Ícones SVG inline (sem dependências externas)
+
+
+📦 MODIFICAÇÕES
+─────────────────────────────────────────────────────────────────────────────
+
+Arquivo: index.html
+Localização: Menu do usuário (cabeçalho)
+Linha: ~3739 (nova seção "Ajuda & Documentação")
+
+Nova estrutura HTML:
+```html
+<ul class="menu-section">
+    <li class="menu-header">Ajuda & Documentação</li>
+    <li><a href="#" data-route="faq">Perguntas Frequentes</a></li>
+    <li><a href="#" data-route="manual">Manual do Usuário</a></li>
+    <li><a href="#" data-route="termos">Política de Uso</a></li>
+</ul>
+```
+
+
+🎨 DESIGN
+─────────────────────────────────────────────────────────────────────────────
+
+✓ Mantém consistência visual com resto do menu
+✓ Separado em seção nova "Ajuda & Documentação"
+✓ Ícones apropriados para cada item
+✓ Espaçamento e hover effects padrão
+✓ Acessível (semântica correta)
+
+
+✅ TESTES REALIZADOS
+─────────────────────────────────────────────────────────────────────────────
+
+✓ Links abrem corretamente os modais
+✓ Conteúdo exibido sem erros
+✓ Fechar modal funciona (X e botão Fechar)
+✓ Overlay comporta-se corretamente
+✓ Menu dropdown fecha após clicar em item
+✓ Ícones renderizam corretamente
+
+
+📦 COMMIT
+─────────────────────────────────────────────────────────────────────────────
+
+Hash: ef46067
+Mensagem: feat: Adicionar links de documentação no menu de perfil
+Data: 31 de Março de 2026
+
+Arquivos modificados: 1 (index.html)
+Linhas adicionadas: 6
+
+
+🚀 PRÓXIMOS PASSOS
+─────────────────────────────────────────────────────────────────────────────
+
+Opcional: Adicionar mais itens de documentação
+- Blog/Notícias
+- Sugestões de Melhoria
+- Relatório de Bugs
+- Contato do Admin
+
