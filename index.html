@@ -5217,13 +5217,25 @@
             var m = document.getElementById(id);
             if (m) {
                 m.classList.remove('visible');
-                m.style.opacity = '';
-                m.style.display = 'none';
+                m.style.opacity = '0';
+                setTimeout(() => {
+                    if (!m.classList.contains('visible')) {
+                        m.style.display = 'none';
+                    }
+                }, 300);
             }
+            // Apenas esconde o overlay se nenhum outro modal está aberto
             var overlay = document.getElementById('overlay');
             if (overlay) {
-                overlay.classList.remove('visible');
-                overlay.style.display = 'none';
+                var anyModalOpen = document.querySelectorAll('[id*="modal"][class*="visible"]').length > 0;
+                if (!anyModalOpen) {
+                    overlay.classList.remove('visible');
+                    setTimeout(() => {
+                        if (!overlay.classList.contains('visible')) {
+                            overlay.style.display = 'none';
+                        }
+                    }, 300);
+                }
             }
         };
 

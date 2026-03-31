@@ -9,30 +9,55 @@
             if (!sideMenu || !overlay) return;
             sideMenu.classList.toggle('open');
             overlay.classList.toggle('visible');
+            
             if (!sideMenu.classList.contains('open')) {
                 document.querySelectorAll('.submenu').forEach(function (sub) { sub.classList.remove('open'); });
                 document.querySelectorAll('.has-submenu').forEach(function (link) { link.classList.remove('active'); });
+                // Esconder overlay após animação
+                setTimeout(() => {
+                    if (!sideMenu.classList.contains('open')) {
+                        overlay.style.display = 'none';
+                    }
+                }, 300);
+            } else {
+                overlay.style.display = 'block';
             }
         };
 
         window.closeAllModals = function () {
-            var ids = ['accessibility-modal', 'cookie-modal', 'processControlModal', 'processConfigModal', 'processHistoryModal', 'remanejamento-modal', 'comments-modal'];
+            var ids = [
+                'accessibility-modal', 'cookie-modal', 
+                'processControlModal', 'processConfigModal', 'processHistoryModal', 
+                'remanejamento-modal', 'comments-modal',
+                'userManagementModal', 'processDetailsModal',
+                'history-modal', 'infoModal', 'confirm-modal',
+                'statusSummaryModal'
+            ];
             ids.forEach(function (id) {
                 var m = document.getElementById(id);
-                if (m) { m.classList.remove('visible'); m.style.display = 'none'; }
+                if (m) { 
+                    m.classList.remove('visible');
+                    m.style.opacity = '0';
+                    setTimeout(() => {
+                        if (!m.classList.contains('visible')) {
+                            m.style.display = 'none';
+                        }
+                    }, 300);
+                }
             });
             var overlay = document.getElementById('overlay');
             var sideMenu = document.getElementById('side-menu');
-            if (overlay) overlay.classList.remove('visible');
+            if (overlay) {
+                overlay.classList.remove('visible');
+                setTimeout(() => {
+                    if (!overlay.classList.contains('visible')) {
+                        overlay.style.display = 'none';
+                    }
+                }, 300);
+            }
             if (sideMenu) sideMenu.classList.remove('open');
         };
 
-        window.closeModal = function (id) {
-            var m = document.getElementById(id);
-            if (m) { m.classList.remove('visible'); m.style.display = 'none'; }
-            var overlay = document.getElementById('overlay');
-            if (overlay) overlay.classList.remove('visible');
-        };
 
         // --- GLOBAL CONFIG & STATE ---
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
@@ -109,10 +134,25 @@
                     if (ov) ov.classList.add('visible');
                 };
             };
-            setupTrigger('accessibility-toggle', 'accessibility-modal');
-            setupTrigger('cookie-toggle', 'cookie-modal');
-            setupTrigger('remanejamento-link', 'remanejamento-modal');
-            setupTrigger('comments-toggle', 'comments-modal');
+             setupTrigger('accessibility-toggle', 'accessibility-modal');
+             setupTrigger('cookie-toggle', 'cookie-modal');
+             setupTrigger('remanejamento-link', 'remanejamento-modal');
+             setupTrigger('comments-toggle', 'comments-modal');
+
+             // Handlers para botões de fechar específicos
+             var closeBtn = document.getElementById('close-comments-modal-button');
+             if (closeBtn) closeBtn.addEventListener('click', function(e) { 
+                 e.preventDefault(); 
+                 e.stopPropagation(); 
+                 window.closeModal('comments-modal'); 
+             });
+             
+             var closeRemBtn = document.getElementById('close-remanejamento-modal-button');
+             if (closeRemBtn) closeRemBtn.addEventListener('click', function(e) { 
+                 e.preventDefault(); 
+                 e.stopPropagation(); 
+                 window.closeModal('remanejamento-modal'); 
+             });
 
             var observer = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
