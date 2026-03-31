@@ -1,0 +1,243 @@
+CODEBASE SEARCH RESULTS - PROCESS MANAGEMENT SYSTEM
+====================================================
+
+1. PROCESS TABLE STRUCTURE - AÇÕES COLUMN
+==========================================
+
+Location: index.html
+- Line 4088: Table header definition
+  <th>Ações</th>
+
+- Line 4091: Empty tbody for dynamic population
+  <tbody id="processTableBody"></tbody>
+
+Location: 2026_script.js
+- Lines 634-698: Function renderProcessTable() creates table rows
+
+Key Ações Column Code (Lines 689-695):
+<td onclick="event.stopPropagation();">
+    <div style="display:flex; flex-direction: row; gap:4px; align-items:center;">
+        <button class="btn btn-warning" onclick='window.openProcessModal(${JSON.stringify(p)})' title="Editar">
+            <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-primary" onclick='window.showHistory(${JSON.stringify(p)})' title="Histórico">
+            <i class="fas fa-history"></i>
+        </button>
+        <button class="btn btn-danger" onclick="window.deleteProcess('${p.id}')" title="Excluir">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+</td>
+
+Modern Version (index.html Lines 6317-6327):
+Uses data-action attributes instead of inline callbacks:
+- data-action="edit"
+- data-action="history"
+- data-action="delete"
+
+
+2. EDIT MODAL STRUCTURE - processControlModal
+==============================================
+
+HTML Definition: index.html Lines 4345-4572
+
+Modal Container (Lines 4345-4356):
+- ID: processControlModal
+- Class: process-modal
+- Can be dismissed by clicking outside or close button
+
+Header (Lines 4348-4356):
+- h2 id="processModalTitle" (toggles between "Novo Processo" or "Editar Processo")
+- Description: "Cadastro de processo administrativo para controle de fluxo"
+- Close button onclick="window.closeModal('processControlModal')"
+
+Form Sections (Lines 4359-4563):
+1. IDENTIFICAÇÃO DO PROCESSO (Lines 4407-4435)
+   - Nº PROC. MÃE (parentProc)
+   - NÚMERO DO P.P. (ppNumber)
+   - ANO EXERCÍCIO OF (exerciseYear)
+   - PP ANO ATUAL (ppAno)
+   - VALOR DE CAPA (coverValue)
+
+2. INFORMAÇÕES DO PROCESSO (Lines 4437-4468)
+   - Fornecedor (supplierSelect)
+   - Objeto (objectSelect)
+   - Responsável / Tratado Por (treatedBy)
+
+3. PRAZOS E DATAS (Lines 4470-4489)
+   - DATA DE ABERTURA (openingDate)
+   - DATA DE CONCLUSÃO (deadline)
+   - DIAS RESTANTES (modalRemainingDays - readonly)
+
+4. HISTÓRICO / TIMELINE (Contains modalTimeline container at Lines 4536-4538)
+   - Manual update input: id="newManualUpdate"
+   - Button: id="btnLaunchUpdate"
+   - Timeline container: id="modalTimeline" class="modal-timeline"
+
+5. SITUAÇÃO ATUAL (Lines 4541-4550)
+   - id="situation"
+
+6. INFORMAÇÕES ADICIONAIS (Lines 4552-4562)
+   - OBSERVAÇÃO: id="notes" (textarea)
+
+Footer (Lines 4565-4569):
+- Cancelar button: onclick="window.closeModal('processControlModal')"
+- Salvar Processo button: type="submit" (submits processForm)
+
+Opening Function (2026_script.js Lines 725-763):
+window.openProcessModal = function (p = null)
+- If p is null: creates new process
+- If p exists: populates form with process data
+- Calls window.renderModalHistory(p.history)
+- Sets document.getElementById('processControlModal').style.display = 'flex'
+
+
+3. PROCESS HISTORY / TIMELINE RENDERING
+========================================
+
+THREE DIFFERENT TIMELINE IMPLEMENTATIONS:
+
+A. MODAL TIMELINE (in processControlModal)
+- Container: id="modalTimeline" class="modal-timeline"
+- Function: window.renderModalHistory() (Lines 765-775 in 2026_script.js)
+- Format: <span class="modal-timeline-date"> + <div class="modal-timeline-content">
+- Display: "FROM → TO" or message text
+
+B. HISTORY TIMELINE (in processHistoryModal)
+- Container: id="historyTimeline" class="history-container"
+- Function: window.showHistory() (Lines 821-834 in 2026_script.js)
+- HTML Modal: index.html Lines 4967-4986
+- Format: <div class="history-node"> + <div class="history-date"> + <div class="history-card">
+- Displays reversed timeline with movement/message
+
+C. DETAILS TIMELINE (in processDetailsModal)
+- Container: id="detailsTimeline" class="timeline-vertical"
+- Function: window.showProcessDetails() (Lines 836-884 in 2026_script.js)
+- HTML Modal: index.html Lines 4575-4688
+- Format: <div class="timeline-date"> + <div class="timeline-msg">
+- Shows "Movimentação:" prefix for movements
+
+D. NEW STANDARDIZED HISTORY-MODAL
+- Container: id="history-body"
+- Modal: id="history-modal" (index.html Lines 7956-7972)
+- Function: window.showHistoryModal() (index.html Lines 6336-6388)
+- Fetches from Supabase process_history table directly
+- Format: "De FROM para TO" or message text
+- Uses created_at timestamp converted to pt-BR locale
+
+Timeline Data Structure:
+{
+    date: String,       // e.g., "3/31/2026 10:30:45 AM"
+    from: String,       // Location from (nullable)
+    to: String,         // Location to (nullable)
+    msg: String         // Message/description (nullable)
+}
+
+Database Table (process_history):
+- id
+- process_id
+- history_date (String)
+- location_from (String, nullable)
+- location_to (String, nullable)
+- message (String, nullable)
+- created_at (Timestamp)
+- updated_at (Timestamp)
+
+
+4. CURRENT USER INFORMATION STORAGE
+===================================
+
+GLOBAL STATE VARIABLES:
+
+window.currentUserRole
+- Values: 'administrador', 'usuario', 'convidado'
+- Set in: updateUserInfo() function
+- Default: 'convidado' (Line 5305 in index.html)
+
+window.currentUserName
+- Values: User's full_name from database
+- Set in: updateUserInfo() function
+- Fallback: user.email or 'Usuário'
+
+NOT in localStorage/sessionStorage:
+- User info fetched from Supabase on each session
+- Only localStorage used for: darkMode preference, PWA status
+
+updateUserInfo() Function (2026_script.js Lines 1388-1400):
+async function updateUserInfo(user) {
+    const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+    if (profile) {
+        window.currentUserRole = profile.role;
+        document.getElementById('header-user-name').innerText = profile.full_name.split(' ')[0];
+        document.getElementById('header-dept-name').innerText = profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR';
+    }
+}
+
+Enhanced Version (index.html Lines 7364-7414):
+- Checks for super admin: user.email === 'cpdinfra@edu.itaguai.rj.gov.br'
+- Sets role to 'administrador' for super admin
+- Also manages menu visibility based on role
+- Uses maybeSingle() for safer profile queries
+
+Auth State Listener (2026_script.js Lines 1402-1414):
+supabase.auth.onAuthStateChange((event, session) => {
+    if (session?.user) {
+        updateUserInfo(session.user);
+        // hide login overlay
+    } else {
+        // show login overlay
+    }
+});
+
+User Profile Table:
+- id (user ID from auth.users)
+- full_name
+- role ('administrador', 'usuario', 'convidado')
+- department
+- email (from auth.users)
+- active (boolean)
+
+
+5. "USUÁRIO REGISTROU" TEXT LOCATION
+====================================
+
+NOT FOUND in current codebase.
+
+Search results show NO occurrences of "Usuário registrou" in:
+- 2026_script.js
+- index.html
+- confirm-modal.js
+- ui-kit.js
+- Any other JavaScript files
+
+Related user attribution text found:
+- index.html Line 6179: const email = user ? user.email : (window.currentUserName || 'Usuário Autenticado');
+- index.html Line 6573: const userName = window.currentUserName || 'Usuário';
+
+RECOMMENDATION: 
+To add user attribution to timeline entries, modify process_history inserts to include:
+message: `Usuário registrou: ${message}`
+Or add separate user tracking field to timeline entries.
+
+
+6. TIMELINE ENTRY FORMAT & DISPLAY
+==================================
+
+TIMELINE ENTRY OBJECT STRUCTURE:
+{
+    date: "3/31/2026 10:30:45 AM",   // ISO date converted to locale string
+    from: "Protocolo",                // Source location
+    to: "Análise",                    // Destination location
+    msg: "Processo recebido"          // Optional message
+}
+
+DATA TRANSFORMATION (2026_script.js Lines 263-265):
+history: (p.process_history || []).map(h => ({
+    date: h.history_date,
+    from: h.location_from,
+    to: h.location_to,
+    

@@ -122,14 +122,29 @@
      * Close all modals
      */
     closeAllModals() {
-      const modals = document.querySelectorAll('.modal-overlay.visible');
+      const selectors = '.modal-overlay.visible, .process-modal.visible, .modal.visible, .success-modal.visible';
+      const modals = document.querySelectorAll(selectors);
+      
       modals.forEach((modal) => {
         modal.classList.remove('visible');
+        // Ensure hidden even if display was set inline
+        setTimeout(() => {
+          if (!modal.classList.contains('visible')) {
+            modal.style.display = 'none';
+            modal.style.opacity = '0';
+          }
+        }, 300);
       });
 
-      const successModal = document.querySelector('.success-modal.visible');
-      if (successModal) {
-        successModal.classList.remove('visible');
+      // Also hide the shared overlay
+      const overlay = document.getElementById('overlay');
+      if (overlay) {
+        overlay.classList.remove('visible');
+        setTimeout(() => {
+          if (!overlay.classList.contains('visible')) {
+            overlay.style.display = 'none';
+          }
+        }, 300);
       }
     },
 
@@ -159,6 +174,25 @@
       const modal = document.getElementById(modalId);
       if (modal) {
         modal.classList.remove('visible');
+        // Final hide after transition
+        setTimeout(() => {
+          if (!modal.classList.contains('visible')) {
+            modal.style.display = 'none';
+            modal.style.opacity = '0';
+          }
+        }, 300);
+      }
+      
+      // Auto-hide overlay if this was the last modal
+      const selectors = '.modal-overlay.visible, .process-modal.visible, .modal.visible, .success-modal.visible';
+      if (document.querySelectorAll(selectors).length === 0) {
+        const overlay = document.getElementById('overlay');
+        if (overlay) {
+          overlay.classList.remove('visible');
+          setTimeout(() => {
+            if (!overlay.classList.contains('visible')) overlay.style.display = 'none';
+          }, 300);
+        }
       }
     },
 

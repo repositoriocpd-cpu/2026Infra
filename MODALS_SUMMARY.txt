@@ -1,0 +1,238 @@
+================================================================================
+SUMÁRIO DE MODAIS E MENUS - 2025 Infra Sistemas YASMIN
+================================================================================
+
+ARQUIVOS PRINCIPAIS ANALISADOS:
+===============================
+1. index.html (8158 linhas) - Estrutura HTML com todas as modais
+2. 2026_script.js (1577 linhas) - Lógica JavaScript e handlers
+3. ui-kit.js (432 linhas) - Componentes e utilitários
+4. ui-kit.css (1044 linhas) - Estilos CSS
+5. confirm-modal.js (171 linhas) - Modal de confirmação acessível
+6. pwa-handler.js (193 linhas) - Handler de PWA
+
+
+MODAIS ENCONTRADAS:
+===================
+
+1. MODAL DE PROCESSO (processControlModal)
+   ├─ ID: processControlModal
+   ├─ Localização: index.html (linhas 4316-4536)
+   ├─ Classe: process-modal
+   ├─ Propósito: Criar/editar processos administrativos
+   ├─ Botão Fechar: onclick="window.closeModal('processControlModal')"
+   ├─ Ícone: <i class="fas fa-times"></i>
+   └─ Status: Ativa
+
+2. MODAL DE DETALHES (processDetailsModal)
+   ├─ ID: processDetailsModal
+   ├─ Localização: index.html (linhas 4546-4656)
+   ├─ Classe: process-modal
+   ├─ Propósito: Visualizar detalhes completos de um processo
+   ├─ Botão Fechar: onclick="window.closeModal('processDetailsModal')"
+   ├─ Ícone: <i class="fas fa-times"></i>
+   └─ Status: Ativa
+
+3. MODAL DE CONFIGURAÇÕES (processConfigModal)
+   ├─ ID: processConfigModal
+   ├─ Localização: index.html (linhas 4660-4698)
+   ├─ Classe: process-modal
+   ├─ Propósito: Configurar departamentos, usuários, fornecedores, etc.
+   ├─ Botão Fechar: onclick="window.closeModal('processConfigModal')"
+   ├─ Ícone: <i class="fas fa-times"></i>
+   └─ Especial: event.stopPropagation() no content
+
+4. MODAL DE GESTÃO DE USUÁRIOS (userManagementModal)
+   ├─ ID: userManagementModal
+   ├─ Localização: index.html (linhas 4698-4737)
+   ├─ Classe: process-modal
+   ├─ Propósito: Gerenciar usuários do sistema
+   ├─ Botão Fechar: onclick="window.closeModal('userManagementModal')"
+   ├─ Ícone: <i class="fas fa-times"></i> (font-size: 1.5rem; color: #94a3b8)
+   └─ Status: Ativa
+
+5. MODAL DE HISTÓRICO (processHistoryModal)
+   ├─ ID: processHistoryModal
+   ├─ Localização: index.html (linhas 4938-4971)
+   ├─ Classe: process-modal
+   ├─ Propósito: Visualizar histórico de alterações
+   ├─ Botão Fechar: onclick="window.closeModal('processHistoryModal')"
+   ├─ Ícone: <i class="fas fa-times"></i>
+   └─ Status: Ativa
+
+6. MODAL DE CONFIRMAÇÃO (confirm-modal)
+   ├─ ID: confirm-modal
+   ├─ Arquivo Dedicado: confirm-modal.js (171 linhas)
+   ├─ Localização: Gerada dinamicamente
+   ├─ Classe: modal-overlay
+   ├─ Propósito: Confirmação de ações (acessível)
+   ├─ Botão Fechar: onclick="window.ConfirmModal.cancel()"
+   ├─ Ícone: &times;
+   ├─ Eventos:
+   │   ├─ ESC: Cancela a modal
+   │   ├─ Clique no backdrop: Cancela
+   │   ├─ Foco automático: No botão Cancelar
+   │   └─ Retorna: Promise<boolean>
+   └─ Status: Ativa - Padrão para confirmações
+
+7. MODAL DE ACESSIBILIDADE (accessibility-modal)
+   ├─ ID: accessibility-modal
+   ├─ Localização: index.html (linhas ~4967)
+   ├─ Classe: modal-content
+   ├─ Propósito: Informações sobre acessibilidade
+   ├─ Botão Fechar: onclick="window.closeModal('accessibility-modal')"
+   ├─ Ícone: &times;
+   └─ Status: Ativa
+
+8. MODAL DE COOKIES (cookie-modal)
+   ├─ ID: cookie-modal
+   ├─ Localização: index.html (linhas ~4996)
+   ├─ Classe: modal-content
+   ├─ Propósito: Aviso de cookies
+   ├─ Botão Fechar: onclick="window.closeModal('cookie-modal')"
+   ├─ Ícone: &times;
+   └─ Status: Ativa
+
+9. MODAL DE COMENTÁRIOS (comments-modal)
+   ├─ ID: comments-modal
+   ├─ Localização: index.html (linhas ~7771)
+   ├─ Classe: modal-content
+   ├─ Propósito: Comentários de processos
+   ├─ Botão Fechar: id="close-comments-modal-button"
+   ├─ Ícone: &times;
+   └─ Status: Ativa
+
+10. MODAL DE REMANEJAMENTO (remanejamento-modal)
+    ├─ ID: remanejamento-modal
+    ├─ Localização: index.html (linhas ~7779)
+    ├─ Classe: modal-content
+    ├─ Propósito: Remanejamento de processos
+    ├─ Botão Fechar: id="close-remanejamento-modal-button"
+    ├─ Ícone: &times;
+    └─ Status: Ativa
+
+11. MODAL DE INFO (infoModal)
+    ├─ ID: infoModal
+    ├─ Localização: index.html (linhas ~7926)
+    ├─ Classe: modal-close
+    ├─ Propósito: Informações do sistema
+    ├─ Botão Fechar: onclick="window.closeModal('infoModal')"
+    ├─ Ícone: &times;
+    └─ Status: Ativa
+
+12. MODAL DE HISTÓRICO 2 (history-modal)
+    ├─ ID: history-modal
+    ├─ Localização: index.html (linhas ~7907)
+    ├─ Classe: modal-close
+    ├─ Propósito: Histórico adicional
+    ├─ Botão Fechar: onclick="window.closeModal('history-modal')"
+    ├─ Ícone: &times;
+    └─ Status: Ativa
+
+
+MENUS ENCONTRADOS:
+==================
+
+1. MENU LATERAL (side-menu)
+   ├─ ID: side-menu
+   ├─ Localização: index.html (linhas 3565-3664)
+   ├─ Classe: side-menu
+   ├─ Propósito: Navegação principal
+   ├─ Position: Fixed, esquerda, top: 64px
+   ├─ Width: 280px
+   ├─ Z-index: 1000
+   ├─ Itens principais:
+   │   ├─ Dashboard
+   │   ├─ Novo Processo
+   │   ├─ Consultar Cadastrados
+   │   ├─ Backup e Restauração
+   │   ├─ Logs do Sistema
+   │   ├─ Sobre o Sistema
+   │   ├─ Configurações (Submenu)
+   │   └─ Links Externos (Submenu)
+   ├─ Botão de Fechar: class="close-sidebar" onclick="window.toggleMenu()"
+   ├─ Ícone de Fechar: <i class="fas fa-times"></i>
+   └─ Status: Ativa
+
+2. SUBMENUS (side-menu)
+   ├─ Classe Parent: has-submenu
+   ├─ Classe Container: submenu
+   ├─ Ícone de Expansão: fas fa-chevron-right chevron-icon
+   ├─ Classes Dinâmicas:
+   │   ├─ active (parent aberto)
+   │   └─ open (submenu visível)
+   ├─ Submenus implementados:
+   │   ├─ Configurações
+   │   │   ├─ Cadastro de Usuários
+   │   │   ├─ Cadastrar Departamento
+   │   │   ├─ Cadastro de Fornecedores
+   │   │   ├─ Cadastro de Objetos
+   │   │   ├─ Cadastro de Localização
+   │   │   ├─ Cadastro de Status
+   │   │   └─ Cadastro de Tratadores
+   │   └─ Links Externos
+   │       ├─ GOVBR
+   │       └─ PMI
+   └─ Status: Ativa
+
+3. BOTÃO DE TOGGLE DO MENU (menu-toggle)
+   ├─ ID: menu-toggle
+   ├─ Classe: menu-trigger
+   ├─ Localização: Header
+   ├─ Ícone: <i class="fas fa-bars"></i>
+   ├─ Evento: addEventListener('click', function (e) { window.toggleMenu(); })
+   ├─ ARIA Label: "Abrir menu"
+   └─ Status: Ativa
+
+
+PADRÕES DE BOTÃO FECHAR:
+========================
+
+PADRÃO 1: Com Ícone X
+├─ HTML: <button class="modal-close" onclick="window.closeModal('id')"><i class="fas fa-times"></i></button>
+├─ CSS: background: transparent; border: none; font-size: 1.5rem; cursor: pointer;
+└─ Hover: color #dc3545; transform: scale(1.1);
+
+PADRÃO 2: Texto "Fechar"
+├─ HTML: <button class="btn btn-secondary" onclick="window.closeModal('id')">Fechar</button>
+├─ CSS: Segue padrão de botões do sistema
+└─ Hover: Efeito padrão dos botões
+
+PADRÃO 3: Fechar por Backdrop
+├─ HTML: onclick="if(event.target===this) window.closeModal('id')"
+├─ Comportamento: Apenas se clicar fora do conteúdo
+└─ Uso: Modais de processo, configuração
+
+PADRÃO 4: Close-Sidebar (Menu)
+├─ HTML: <button class="close-sidebar" onclick="window.toggleMenu()"><i class="fas fa-times"></i></button>
+├─ CSS: Ícone branco, transparent background
+└─ Uso: Botão dentro do header do menu lateral
+
+PADRÃO 5: Cancelar (Confirmação)
+├─ HTML: <button class="btn btn-secondary" onclick="window.ConfirmModal.cancel()">Cancelar</button>
+├─ CSS: Segue padrão de botões secundários
+└─ Uso: Modal de confirmação
+
+
+HANDLERS DE CLIQUE PRINCIPAIS:
+==============================
+
+1. window.toggleMenu()
+   ├─ Localização: 2026_script.js (linhas 6-16)
+   ├─ Função: Alterna abertura/fechamento do menu
+   ├─ Classes manipuladas:
+   │   ├─ .side-menu → toggle 'open'
+   │   └─ .overlay → toggle 'visible'
+   ├─ Extras:
+   │   ├─ Remove 'open' de todos os submenus
+   │   └─ Remove 'active' de items com submenu
+   └─ Status: Global
+
+2. window.closeAllModals()
+   ├─ Localização: 2026_script.js (linhas 18-28)
+   ├─ Função: Fecha todas as modais conhecidas
+   ├─ Modais fechadas:
+   │   ├─ accessibility-modal
+   │   ├─ cookie-modal
+   │   ├─ processControlModal
+   │   ├─ processConf

@@ -1546,7 +1546,7 @@
             background: rgba(255, 255, 255, 0.72);
             border-radius: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 1200px;
             max-height: 90vh;
             /* Mantendo dentro da visão */
             overflow-y: auto;
@@ -1753,6 +1753,29 @@
             outline: none;
         }
 
+        /* Reduzir tamanho dos placeholders */
+        .form-control::placeholder {
+            font-size: 0.70rem;
+            opacity: 0.7;
+        }
+
+        /* Estilo placeholder para navegadores Webkit (Chrome, Safari) */
+        .form-control::-webkit-input-placeholder {
+            font-size: 0.70rem;
+            opacity: 0.7;
+        }
+
+        /* Estilo placeholder para Mozilla Firefox */
+        .form-control::-moz-placeholder {
+            font-size: 0.70rem;
+            opacity: 0.7;
+        }
+
+        .form-control:-ms-input-placeholder {
+            font-size: 0.70rem;
+            opacity: 0.7;
+        }
+
         /* REFORÇO GAIA - MÁXIMA PRIORIDADE */
         div.process-modal div.form-section div.form-group label {
             color: #475569 !important;
@@ -1893,13 +1916,70 @@
             font-weight: 700;
         }
 
-        .timeline-footer-date {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            margin-top: 0.4rem;
-        }
+         .timeline-footer-date {
+             font-size: 0.75rem;
+             color: #94a3b8;
+             margin-top: 0.4rem;
+         }
 
-        /* Registration Area */
+         .timeline-actions {
+             display: flex;
+             gap: 0.5rem;
+             align-items: flex-start;
+             margin-top: 0.5rem;
+         }
+
+         .timeline-action-btn {
+             background: none;
+             border: none;
+             cursor: pointer;
+             padding: 0.4rem;
+             border-radius: 4px;
+             font-size: 0.85rem;
+             color: #64748b;
+             transition: all 0.2s ease;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .timeline-edit-btn {
+             color: #0f766e;
+         }
+
+         .timeline-edit-btn:hover {
+             background-color: #ecf0f1;
+             color: #14b8a6;
+         }
+
+         .timeline-delete-btn {
+             color: #dc2626;
+         }
+
+         .timeline-delete-btn:hover {
+             background-color: #fee2e2;
+             color: #ef4444;
+         }
+
+         body.dark-mode .timeline-edit-btn {
+             color: #14b8a6;
+         }
+
+         body.dark-mode .timeline-edit-btn:hover {
+             background-color: rgba(20, 184, 166, 0.1);
+             color: #2dd4bf;
+         }
+
+         body.dark-mode .timeline-delete-btn {
+             color: #ef4444;
+         }
+
+         body.dark-mode .timeline-delete-btn:hover {
+             background-color: rgba(239, 68, 68, 0.1);
+             color: #fca5a5;
+         }
+
+         /* Registration Area */
         .registration-input-grid {
             display: flex;
             gap: 1rem;
@@ -4954,11 +5034,15 @@
             </header>
             <div class="history-container" id="historyTimeline">
                 <!-- Items will be rendered here -->
-            </div>
-            <footer class="modal-footer">
-                <button type="button" class="btn-action btn-secondary"
-                    onclick="window.closeModal('processHistoryModal')">Fechar Histórico</button>
-            </footer>
+             </div>
+             <footer class="modal-footer">
+                 <button type="button" class="btn-action btn-secondary"
+                     onclick="window.closeModal('processHistoryModal')">Fechar Histórico</button>
+                 <button type="button" class="btn-navy-save" id="historyTramitarBtn2" 
+                     onclick="window.tramitarFromProcessHistoryModal()" style="display:none;">
+                     <i class="fas fa-exchange-alt"></i> Tramitar
+                 </button>
+             </footer>
         </div>
     </div>
 
@@ -4993,7 +5077,7 @@
             </div>
             <h2 class="success-modal-title">Sucesso!</h2>
             <p id="successModalMessage" class="success-modal-text">Salvo com Sucesso</p>
-            <button class="success-modal-btn" onclick="window.closeAllModals()">Continuar</button>
+             <button class="success-modal-btn" onclick="window.closeSuccessModal()">Continuar</button>
         </div>
     </div>
 
@@ -5116,23 +5200,27 @@
             }
         };
 
-        window.closeAllModals = function () {
-            const modalSelectors = ['.modal', '.process-modal', '.success-modal', '.modal-overlay'];
-            modalSelectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach(m => {
-                    m.classList.remove('visible');
-                    m.style.opacity = '';
-                    m.style.display = 'none';
-                });
-            });
-            var ov = document.getElementById('overlay');
-            if (ov) {
-                ov.classList.remove('visible');
-                ov.style.display = 'none';
-            }
-            var sideMenu = document.getElementById('side-menu');
-            if (sideMenu) sideMenu.classList.remove('open');
-        };
+         window.closeAllModals = function () {
+             const modalSelectors = ['.modal', '.process-modal', '.success-modal', '.modal-overlay'];
+             modalSelectors.forEach(selector => {
+                 document.querySelectorAll(selector).forEach(m => {
+                     m.classList.remove('visible');
+                     m.style.opacity = '';
+                     m.style.display = 'none';
+                 });
+             });
+             var ov = document.getElementById('overlay');
+             if (ov) {
+                 ov.classList.remove('visible');
+                 ov.style.display = 'none';
+                 ov.style.opacity = '';
+             }
+             var sideMenu = document.getElementById('side-menu');
+             if (sideMenu) sideMenu.classList.remove('open');
+             
+             // Garantir que o body volta ao normal
+             document.body.style.overflow = '';
+         };
 
         window.openStatusMobileModal = function () {
             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('--- CHAMADA: openStatusMobileModal ---');
@@ -5329,7 +5417,7 @@
                         const pid = row.dataset.processId;
                         if (pid) {
                             const process = window.state.processes.find(function (p) { return p.id === pid; });
-                            if (process) window.showProcessDetails(process);
+                            if (process) window.openProcessModalForTransit(process);
                         }
                     }
                 });
@@ -5354,6 +5442,9 @@
             switch (action) {
                 case 'edit':
                     window.openProcessModal(process);
+                    break;
+                case 'transit':
+                    window.openProcessModalForTransit(process);
                     break;
                 case 'history':
                     await window.showHistoryModal(id);
@@ -6292,6 +6383,9 @@
                     <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
                     <td>${formatDate(p.locationDate)}</td>
                     <td style="display:flex; flex-direction: row; gap:4px; align-items:center;">
+                        <button class="btn btn-success action-btn" data-action="transit" data-id="${p.id}" title="Tramitar" style="padding:4px; width:28px; height:28px">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
                         <button class="btn btn-warning action-btn" data-action="edit" data-id="${p.id}" title="Editar" style="padding:4px; width:28px; height:28px">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -6310,27 +6404,35 @@
         /**
          * Novo Modal de Histórico (Consultando Supabase diretamente).
          */
-        window.showHistoryModal = async function (processId) {
-            const modal = document.getElementById('history-modal');
-            const historyBody = document.getElementById('history-body');
-            const processIdentifier = document.getElementById('history-process-identifier');
+         window.showHistoryModal = async function (processId) {
+             const modal = document.getElementById('history-modal');
+             const historyBody = document.getElementById('history-body');
+             const processIdentifier = document.getElementById('history-process-identifier');
 
-            if (!modal || !historyBody) return;
+             if (!modal || !historyBody) return;
 
-            historyBody.innerHTML = '<div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin"></i> Carregando histórico...</div>';
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('visible'), 10);
+             historyBody.innerHTML = '<div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin"></i> Carregando histórico...</div>';
+             modal.style.display = 'flex';
+             setTimeout(() => modal.classList.add('visible'), 10);
 
-            const overlay = document.getElementById('overlay');
-            if (overlay) {
-                overlay.style.display = 'block';
-                setTimeout(() => overlay.classList.add('visible'), 10);
-            }
+             const overlay = document.getElementById('overlay');
+             if (overlay) {
+                 overlay.style.display = 'block';
+                 setTimeout(() => overlay.classList.add('visible'), 10);
+             }
 
-            const process = window.state.processes.find(p => p.id === processId);
-            if (process) {
-                processIdentifier.textContent = `Histórico do Processo: ${process.ppAno}`;
-            }
+             const process = window.state.processes.find(p => p.id === processId);
+             if (process) {
+                 processIdentifier.textContent = `Histórico do Processo: ${process.ppAno}`;
+                 // Armazenar o processId globalmente para usar no botão de tramitação
+                 window._currentHistoryProcessId = processId;
+                 window._currentHistoryProcess = process;
+                 // Mostrar botão de tramitação
+                 const tramitarBtn = document.getElementById('historyTramitarBtn');
+                 if (tramitarBtn) {
+                     tramitarBtn.style.display = 'block';
+                 }
+             }
 
             try {
                 const { data: history, error } = await supabase
@@ -6456,8 +6558,8 @@
                                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
                                     if (!error) {
                                         p.history = (data || []).map(h => ({
-                                            date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
-                                        }));
+                                             id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                                         }));
                                         window.renderModalHistory(p.history);
                                     }
                                 } catch (e) { console.error('E-load-hist:', e); }
@@ -6511,36 +6613,107 @@
             }, 50); // Delay curto mas suficiente para o "paint" do overlay
         };
 
-        window.renderModalHistory = function (history = []) {
-            const cont = document.getElementById('modalTimeline');
-            if (!cont) return;
-            cont.innerHTML = history.length ? '' : '<p style="text-align:center; color:#888; font-size:12px; padding: 1rem;">Nenhuma movimentação registrada.</p>';
-
-            [...history].reverse().forEach(h => {
-                const div = document.createElement('div');
-                div.className = 'modal-timeline-item';
-
-                // Extração de metadados simulados ou reais
-                const userName = h.user || 'Usuário';
-                const initial = userName.charAt(0).toUpperCase();
-                const time = h.date ? h.date.split(',')[1]?.trim() || '' : '';
-                const displayDate = h.date ? h.date.split(',')[0].trim() : '';
-
-                div.innerHTML = `
-                    <div class="avatar-circle">${initial}</div>
-                    <div class="timeline-body">
-                        <div class="timeline-meta">
-                            <i class="fas fa-user-clock"></i> 1min atrás • ${time}
-                        </div>
-                        <div class="timeline-content-bubble">
-                            <strong>${userName} registrou:</strong> ${h.from ? `Movimentação de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
-                        </div>
-                        <div class="timeline-footer-date">Hoje, ${time}</div>
-                    </div>
-                `;
-                cont.appendChild(div);
-            });
+        window.openProcessModalForTransit = function (p = null) {
+            // Abre o modal normalmente
+            window.openProcessModal(p);
+            
+            // Aguarda um pouco para o modal ser renderizado
+            setTimeout(() => {
+                // Procura pela seção de tramitação e rola até ela
+                const modalContent = document.querySelector('.process-modal-content');
+                if (modalContent) {
+                    // Encontra o label "NOVA ATUALIZAÇÃO / TRAMITAÇÃO"
+                    const labels = modalContent.querySelectorAll('.form-section-title');
+                    for (let label of labels) {
+                        if (label.innerText.includes('NOVA ATUALIZAÇÃO') || label.innerText.includes('TRAMITAÇÃO')) {
+                            // Rola o modal para a seção
+                            label.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            // Coloca focus no campo de entrada de movimentação
+                            const inputField = document.getElementById('newManualUpdate');
+                            if (inputField) {
+                                setTimeout(() => inputField.focus(), 300);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }, 100);
         };
+
+        window.tramitarFromHistory = function () {
+            // Fechar o modal de histórico
+            window.closeModal('history-modal');
+            
+            // Obter o processo armazenado
+            const process = window._currentHistoryProcess;
+            if (!process) return;
+            
+             // Abrir o modal de tramitação
+             window.openProcessModalForTransit(process);
+         };
+
+         window.tramitarFromProcessHistoryModal = function () {
+             // Fechar o modal de histórico
+             window.closeModal('processHistoryModal');
+             
+             // Obter o processo armazenado
+             const process = window._currentHistoryProcess;
+             if (!process) return;
+             
+             // Abrir o modal de tramitação
+             window.openProcessModalForTransit(process);
+         };
+
+          window.renderModalHistory = function (history = []) {
+             const cont = document.getElementById('modalTimeline');
+             if (!cont) return;
+             cont.innerHTML = history.length ? '' : '<p style="text-align:center; color:#888; font-size:12px; padding: 1rem;">Nenhuma movimentação registrada.</p>';
+
+             [...history].reverse().forEach(h => {
+                 const div = document.createElement('div');
+                 div.className = 'modal-timeline-item';
+
+                 // Extração de metadados simulados ou reais
+                 const userName = h.user || 'Usuário';
+                 const initial = userName.charAt(0).toUpperCase();
+                 const time = h.date ? h.date.split(',')[1]?.trim() || '' : '';
+                 const displayDate = h.date ? h.date.split(',')[0].trim() : '';
+
+                 div.innerHTML = `
+                     <div class="avatar-circle">${initial}</div>
+                     <div class="timeline-body">
+                         <div class="timeline-meta">
+                             <i class="fas fa-user-clock"></i> 1min atrás • ${time}
+                         </div>
+                         <div class="timeline-content-bubble">
+                             <strong>${userName} registrou:</strong> ${h.from ? `Movimentação de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
+                         </div>
+                         <div class="timeline-footer-date">Hoje, ${time}</div>
+                     </div>
+                     <div class="timeline-actions">
+                         <button class="timeline-action-btn timeline-edit-btn" title="Editar este registro" data-history-id="${h.id}">
+                             <i class="fas fa-edit"></i>
+                         </button>
+                         <button class="timeline-action-btn timeline-delete-btn" title="Excluir este registro" data-history-id="${h.id}">
+                             <i class="fas fa-trash"></i>
+                         </button>
+                     </div>
+                 `;
+                 cont.appendChild(div);
+
+                 // Add event listeners
+                 const editBtn = div.querySelector('.timeline-edit-btn');
+                 const deleteBtn = div.querySelector('.timeline-delete-btn');
+                 
+                 editBtn.addEventListener('click', () => {
+                     window.editHistoryItem(h.id, h);
+                 });
+                 
+                 deleteBtn.addEventListener('click', () => {
+                     window.deleteHistoryItem(h.id);
+                 });
+             });
+         };
 
         window.launchManualUpdate = async function () {
             const input = document.getElementById('newManualUpdate');
@@ -6651,12 +6824,39 @@
             }
         };
 
-        window.showSuccessModal = function (msg) {
-            document.getElementById('successModalMessage').innerText = msg || 'Salvo com Sucesso';
-            document.getElementById('successModal').style.display = 'flex';
-        };
+         window.showSuccessModal = function (msg) {
+             document.getElementById('successModalMessage').innerText = msg || 'Salvo com Sucesso';
+             const modal = document.getElementById('successModal');
+             modal.style.display = 'flex';
+             setTimeout(() => modal.classList.add('visible'), 10);
+             
+             // Mostrar overlay
+             const overlay = document.getElementById('overlay');
+             if (overlay) {
+                 overlay.style.display = 'block';
+                  setTimeout(() => overlay.classList.add('visible'), 10);
+              }
+          };
 
-        window.showHistory = async function (p) {
+         window.closeSuccessModal = function () {
+             const modal = document.getElementById('successModal');
+             if (modal) {
+                 modal.classList.remove('visible');
+                 setTimeout(() => {
+                     modal.style.display = 'none';
+                 }, 300);
+             }
+             
+             const overlay = document.getElementById('overlay');
+             if (overlay) {
+                 overlay.classList.remove('visible');
+                 setTimeout(() => {
+                     overlay.style.display = 'none';
+                 }, 300);
+             }
+         };
+
+         window.showHistory = async function (p) {
             // Se p for uma string (ID), busca o processo no estado
             if (typeof p === 'string') {
                 const found = window.state.processes.find(proc => proc.id === p);
@@ -6669,34 +6869,45 @@
             sym.innerHTML = `Processo: <strong>${p.ppAno}</strong>`;
             timeline.innerHTML = '<p style="text-align:center; padding:1rem;"><i class="fas fa-spinner fa-spin"></i> Carregando histórico...</p>';
 
-            // Lazy load histórico se necessário
-            if (p.history === null) {
-                try {
-                    const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
-                    if (error) throw error;
-                    p.history = (data || []).map(h => ({
-                        date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
-                    }));
-                } catch (err) {
-                    console.error('Erro ao carregar histórico:', err);
-                    timeline.innerHTML = '<p style="text-align:center; color:red; padding:1rem;">Erro ao carregar histórico.</p>';
-                    return;
-                }
-            }
+             // Lazy load histórico se necessário
+             if (p.history === null) {
+                 try {
+                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
+                     if (error) throw error;
+                     p.history = (data || []).map(h => ({
+                         id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                     }));
+                 } catch (err) {
+                     console.error('Erro ao carregar histórico:', err);
+                     timeline.innerHTML = '<p style="text-align:center; color:red; padding:1rem;">Erro ao carregar histórico.</p>';
+                     return;
+                 }
+             }
 
             timeline.innerHTML = '';
-            if (p.history.length === 0) {
-                timeline.innerHTML = '<p style="text-align:center; color:#888; padding:1rem;">Nenhuma movimentação registrada.</p>';
-            } else {
-                [...p.history].reverse().forEach(h => {
-                    const div = document.createElement('div');
-                    div.className = 'history-item log';
-                    div.innerHTML = `<div class="history-node"></div><div class="history-date">${h.date}</div><div class="history-card">${h.from ? `${h.from} &rarr; ${h.to}` : h.msg || h.message}</div>`;
-                    timeline.appendChild(div);
-                });
-            }
-            document.getElementById('processHistoryModal').style.display = 'flex';
-        };
+             if (p.history.length === 0) {
+                 timeline.innerHTML = '<p style="text-align:center; color:#888; padding:1rem;">Nenhuma movimentação registrada.</p>';
+             } else {
+                 [...p.history].reverse().forEach(h => {
+                     const div = document.createElement('div');
+                     div.className = 'history-item log';
+                     div.innerHTML = `<div class="history-node"></div><div class="history-date">${h.date}</div><div class="history-card">${h.from ? `${h.from} &rarr; ${h.to}` : h.msg || h.message}</div>`;
+                     timeline.appendChild(div);
+                 });
+             }
+             
+             // Armazenar o processo para uso no botão de tramitação
+             window._currentHistoryProcess = p;
+             window._currentHistoryProcessId = p.id;
+             
+             // Mostrar botão de tramitação
+             const tramitarBtn2 = document.getElementById('historyTramitarBtn2');
+             if (tramitarBtn2) {
+                 tramitarBtn2.style.display = 'block';
+             }
+             
+             document.getElementById('processHistoryModal').style.display = 'flex';
+         };
 
         window.showProcessDetails = async function (p) {
             const modal = document.getElementById('processDetailsModal');
@@ -6736,17 +6947,17 @@
             const timeline = document.getElementById('detailsTimeline');
             timeline.innerHTML = '<p style="text-align:center; padding:0.5rem;"><i class="fas fa-spinner fa-spin"></i> Carregando histórico...</p>';
 
-            if (p.history === null) {
-                try {
-                    const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
-                    if (error) throw error;
-                    p.history = (data || []).map(h => ({
-                        date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
-                    }));
-                } catch (err) {
-                    console.error('Erro ao carregar histórico nos detalhes:', err);
-                }
-            }
+             if (p.history === null) {
+                 try {
+                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
+                     if (error) throw error;
+                     p.history = (data || []).map(h => ({
+                         id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                     }));
+                 } catch (err) {
+                     console.error('Erro ao carregar histórico nos detalhes:', err);
+                 }
+             }
 
             timeline.innerHTML = '';
             if (p.history && p.history.length > 0) {
@@ -7483,7 +7694,7 @@
             const doc = new jsPDF('l', 'mm', 'a4');
 
             try {
-                const logoUrl = 'public/assets/images/logo-itaguai.png';
+                const logoUrl = 'public/assets/images/logo.png';
                 const img = new Image();
                 img.crossOrigin = 'Anonymous';
                 img.src = logoUrl;
@@ -7493,7 +7704,7 @@
                 });
 
                 if (img.naturalWidth > 0) {
-                    doc.addImage(img, 'JPEG', 14, 10, 16, 20);
+                    doc.addImage(img, 'PNG', 14, 10, 16, 20);
                 }
             } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
@@ -7614,7 +7825,7 @@
 
                 // --- Cabeçalho e Logo ---
                 try {
-                    const logoUrl = 'public/assets/images/logo-itaguai.png';
+                    const logoUrl = 'public/assets/images/logo.png';
                     const imgLogo = new Image();
                     imgLogo.crossOrigin = 'Anonymous';
                     imgLogo.src = logoUrl;
@@ -7624,7 +7835,7 @@
                     });
 
                     if (imgLogo.naturalWidth > 0) {
-                        doc.addImage(imgLogo, 'JPEG', 14, 10, 16, 20);
+                        doc.addImage(imgLogo, 'PNG', 14, 10, 16, 20);
                     }
                 } catch (e) {
                     console.warn('Falha ao carregar logo no PDF:', e);
@@ -7760,13 +7971,237 @@
                                 fill: { fgColor: { rgb: color } },
                                 alignment: { horizontal: "center", vertical: "center" },
                                 font: { color: { rgb: "333333" } }
-                            };
-                        }
-                    }
-                }
-            }
+         };
 
-            ws['!cols'] = [
+         window.editHistoryItem = async function (historyId, historyData) {
+             try {
+                 // Get current message
+                 const message = historyData.msg || historyData.message || '';
+                 
+                 // Show prompt for editing
+                 const newMessage = prompt('Editar movimento:\n\nMensagem atual:\n' + message, message);
+                 
+                 if (newMessage === null || newMessage.trim() === '') {
+                     return; // User cancelled or empty
+                 }
+                 
+                 if (newMessage === message) {
+                     return; // No changes
+                 }
+                 
+                 console.log('Editing history item:', { historyId, oldMessage: message, newMessage });
+                 
+                 const processId = document.getElementById('processId').value;
+                 
+                 if (!supabase) {
+                     alert('Erro: Banco de dados não inicializado');
+                     return;
+                 }
+                 
+                 // Call RPC function to update history (bypasses RLS)
+                 const { data, error } = await supabase.rpc('edit_process_history', {
+                     p_history_id: historyId,
+                     p_new_message: newMessage.trim()
+                 });
+                 
+                 console.log('RPC update result:', { data, error });
+                 
+                 if (error) {
+                     throw new Error('Erro na atualização: ' + (error.message || error));
+                 }
+                 
+                 // Check if RPC returned an error in the response
+                 if (data && data.error) {
+                     throw new Error(data.error);
+                 }
+                 
+                 // Show success
+                 alert('Registro atualizado com sucesso!');
+                 
+                 // Refresh the timeline
+                 if (processId) {
+                     const { data: refreshedHistory, error: fetchError } = await supabase
+                         .from('process_history')
+                         .select('*')
+                         .eq('process_id', processId)
+                         .order('history_date', { ascending: true });
+                     
+                     console.log('Refreshed history:', { refreshedHistory, fetchError });
+                     
+                     if (!fetchError && refreshedHistory) {
+                         const currentProcess = window.state.processes.find(p => p.id === processId);
+                         if (currentProcess) {
+                             currentProcess.history = refreshedHistory.map(h => ({
+                                 id: h.id,
+                                 date: h.history_date,
+                                 from: h.location_from,
+                                 to: h.location_to,
+                                 msg: h.message,
+                                 user: h.user
+                             }));
+                             window.renderModalHistory(currentProcess.history);
+                         }
+                     }
+                 }
+             } catch (err) {
+                 console.error('Erro ao editar registro:', err);
+                 alert('Erro ao editar registro: ' + err.message);
+             }
+         };
+
+         window.deleteHistoryItem = async function (historyId) {
+             try {
+                 // Confirm deletion
+                 if (!await ConfirmModal.show('Tem certeza que deseja excluir este registro de movimentação?', { isDangerous: true })) {
+                     return;
+                 }
+                 
+                 console.log('Deleting history item:', historyId);
+                 
+                 const processId = document.getElementById('processId').value;
+                 
+                 if (!supabase) {
+                     alert('Erro: Banco de dados não inicializado');
+                     return;
+                 }
+                 
+                 // Call RPC function to delete history (bypasses RLS)
+                 const { data, error } = await supabase.rpc('delete_process_history', {
+                     p_history_id: historyId
+                 });
+                 
+                 console.log('RPC delete result:', { data, error });
+                 
+                 if (error) {
+                     throw new Error('Erro na exclusão: ' + (error.message || error));
+                 }
+                 
+                 // Check if RPC returned an error in the response
+                 if (data && data.error) {
+                     throw new Error(data.error);
+                 }
+                 
+                 // Show success
+                 alert('Registro excluído com sucesso!');
+                 
+                 // Refresh the timeline
+                 if (processId) {
+                     const { data: refreshedHistory, error: fetchError } = await supabase
+                         .from('process_history')
+                         .select('*')
+                         .eq('process_id', processId)
+                         .order('history_date', { ascending: true });
+                     
+                     console.log('Refreshed history after delete:', { refreshedHistory, fetchError });
+                     
+                     if (!fetchError && refreshedHistory) {
+                         const currentProcess = window.state.processes.find(p => p.id === processId);
+                         if (currentProcess) {
+                             currentProcess.history = refreshedHistory.map(h => ({
+                                 id: h.id,
+                                 date: h.history_date,
+                                 from: h.location_from,
+                                 to: h.location_to,
+                                 msg: h.message,
+                                 user: h.user
+                             }));
+                             window.renderModalHistory(currentProcess.history);
+                         }
+                     }
+                 }
+             } catch (err) {
+                 console.error('Erro ao deletar registro:', err);
+                 alert('Erro ao deletar registro: ' + err.message);
+             }
+         };;
+             
+             if (newMessage === message) {
+                 return; // No changes
+             }
+             
+             try {
+                 const processId = document.getElementById('processId').value;
+                 
+                 // Update in Supabase
+                 const { error } = await supabase
+                     .from('process_history')
+                     .update({ message: newMessage.trim() })
+                     .eq('id', historyId);
+                 
+                 if (error) throw error;
+                 
+                 // Show success
+                 alert('Registro atualizado com sucesso!');
+                 
+                 // Refresh the timeline
+                 if (processId) {
+                     const { data: historyData, error: fetchError } = await supabase
+                         .from('process_history')
+                         .select('*')
+                         .eq('process_id', processId)
+                         .order('history_date', { ascending: true });
+                     
+                     if (!fetchError) {
+                         const currentProcess = window.state.processes.find(p => p.id === processId);
+                         if (currentProcess) {
+                             currentProcess.history = (historyData || []).map(h => ({
+                                 id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                             }));
+                             window.renderModalHistory(currentProcess.history);
+                         }
+                     }
+                 }
+             } catch (err) {
+                 console.error('Erro ao atualizar registro:', err);
+                 alert('Erro ao atualizar registro: ' + err.message);
+             }
+         };
+
+         window.deleteHistoryItem = async function (historyId) {
+             // Confirm deletion
+             if (!await ConfirmModal.show('Tem certeza que deseja excluir este registro de movimentação?', { isDangerous: true })) {
+                 return;
+             }
+             
+             try {
+                 const processId = document.getElementById('processId').value;
+                 
+                 // Delete from Supabase
+                 const { error } = await supabase
+                     .from('process_history')
+                     .delete()
+                     .eq('id', historyId);
+                 
+                 if (error) throw error;
+                 
+                 // Show success
+                 alert('Registro excluído com sucesso!');
+                 
+                 // Refresh the timeline
+                 if (processId) {
+                     const { data: historyData, error: fetchError } = await supabase
+                         .from('process_history')
+                         .select('*')
+                         .eq('process_id', processId)
+                         .order('history_date', { ascending: true });
+                     
+                     if (!fetchError) {
+                         const currentProcess = window.state.processes.find(p => p.id === processId);
+                         if (currentProcess) {
+                             currentProcess.history = (historyData || []).map(h => ({
+                                 id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                             }));
+                             window.renderModalHistory(currentProcess.history);
+                         }
+                     }
+                 }
+             } catch (err) {
+                 console.error('Erro ao excluir registro:', err);
+                 alert('Erro ao excluir registro: ' + err.message);
+             }
+          };
+
+                         
                 { wch: 18 }, { wch: 10 }, { wch: 15 }, { wch: 55 }, { wch: 20 },
                 { wch: 22 }, { wch: 20 }, { wch: 25 }, { wch: 45 }
             ];
@@ -7944,6 +8379,9 @@
             </div>
             <footer class="modal-footer">
                 <button class="btn-glass-cancel" onclick="window.closeModal('history-modal')">Fechar</button>
+                <button class="btn-navy-save" id="historyTramitarBtn" onclick="window.tramitarFromHistory()" style="display:none;">
+                    <i class="fas fa-exchange-alt"></i> Tramitar
+                </button>
             </footer>
         </div>
     </div>

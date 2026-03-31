@@ -3737,6 +3737,12 @@
                             <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11V7a4 4 0 014-4h10a4 4 0 014 4v10a4 4 0 01-4 4H9"/><path d="M3 15a4 4 0 004 4h1"/><path d="M7 11a5 5 0 015-5"/></svg>Alterar Senha</a></li>
                         </ul>
                         <ul class="menu-section">
+                            <li class="menu-header">Ajuda & Documentação</li>
+                            <li><a href="#" data-route="faq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Perguntas Frequentes</a></li>
+                            <li><a href="#" data-route="manual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.5a2.5 2.5 0 0 1-2 2.5"/></svg>Manual do Usuário</a></li>
+                            <li><a href="#" data-route="termos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Política de Uso</a></li>
+                        </ul>
+                        <ul class="menu-section">
                             <li><a href="#" onclick="window.logout(event)" class="logout-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair</a></li>
                         </ul>
                     </div>
@@ -5214,16 +5220,43 @@
         };
 
         window.closeModal = function (id) {
+            if (!id) return;
+            
             var m = document.getElementById(id);
-            if (m) {
-                m.classList.remove('visible');
-                m.style.opacity = '';
-                m.style.display = 'none';
+            if (!m) return;
+            
+            // Remove classe visible (para animação)
+            m.classList.remove('visible');
+            
+            // Aguarda transição CSS (300ms) antes de esconder completamente
+            setTimeout(() => {
+                if (!m.classList.contains('visible')) {
+                    m.style.display = 'none';
+                    m.style.opacity = '0';
+                }
+            }, 300);
+            
+            // Verifica se há outro modal aberto
+            var anyModalOpen = false;
+            var modals = document.querySelectorAll('[id*="modal"]');
+            for (var i = 0; i < modals.length; i++) {
+                if (modals[i].classList.contains('visible') && modals[i].id !== id) {
+                    anyModalOpen = true;
+                    break;
+                }
             }
-            var overlay = document.getElementById('overlay');
-            if (overlay) {
-                overlay.classList.remove('visible');
-                overlay.style.display = 'none';
+            
+            // Apenas esconde o overlay se não houver modal aberto
+            if (!anyModalOpen) {
+                var overlay = document.getElementById('overlay');
+                if (overlay) {
+                    overlay.classList.remove('visible');
+                    setTimeout(() => {
+                        if (!overlay.classList.contains('visible')) {
+                            overlay.style.display = 'none';
+                        }
+                    }, 300);
+                }
             }
         };
 

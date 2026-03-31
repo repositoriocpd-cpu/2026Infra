@@ -261,7 +261,11 @@
                     status: p.status, location: p.location, locationDate: p.location_date,
                     situation: p.situation, notes: p.notes,
                     history: (p.process_history || []).map(h => ({
-                        date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message
+                        date: h.history_date, 
+                        from: h.location_from, 
+                        to: h.location_to, 
+                        msg: h.message,
+                        user_name: h.user_name
                     }))
                 }));
 
@@ -641,7 +645,7 @@
 
             data.forEach(p => {
                 const tr = document.createElement('tr');
-                tr.onclick = () => window.showProcessDetails(p);
+                tr.onclick = () => window.openProcessModalForTransit(p);
                 
                 let daysText = '';
                 let daysColor = 'gray';
@@ -688,6 +692,7 @@
                     <td>${formatDate(p.locationDate)}</td>
                     <td onclick="event.stopPropagation();">
                         <div style="display:flex; flex-direction: row; gap:4px; align-items:center;">
+                            <button class="btn btn-success" style="padding:4px; width:28px; height:28px" onclick='window.openProcessModalForTransit(${JSON.stringify(p)})' title="Tramitar"><i class="fas fa-exchange-alt"></i></button>
                             <button class="btn btn-warning" style="padding:4px; width:28px; height:28px" onclick='window.openProcessModal(${JSON.stringify(p)})' title="Editar"><i class="fas fa-edit"></i></button>
                             <button class="btn btn-primary" style="padding:4px; width:28px; height:28px" onclick='window.showHistory(${JSON.stringify(p)})' title="Histórico"><i class="fas fa-history"></i></button>
                             <button class="btn btn-danger" style="padding:4px; width:28px; height:28px" onclick="window.deleteProcess('${p.id}')" title="Excluir"><i class="fas fa-trash"></i></button>
@@ -762,6 +767,33 @@
             document.getElementById('processControlModal').style.display = 'flex';
         };
 
+        window.openProcessModalForTransit = function (p = null) {
+            // Abre o modal normalmente
+            window.openProcessModal(p);
+            
+            // Aguarda um pouco para o modal ser renderizado
+            setTimeout(() => {
+                // Procura pela seção de tramitação e rola até ela
+                const modalContent = document.querySelector('.process-modal-content');
+                if (modalContent) {
+                    // Encontra o label "NOVA ATUALIZAÇÃO / TRAMITAÇÃO"
+                    const labels = modalContent.querySelectorAll('.form-section-title');
+                    for (let label of labels) {
+                        if (label.innerText.includes('NOVA ATUALIZAÇÃO') || label.innerText.includes('TRAMITAÇÃO')) {
+                            // Rola o modal para a seção
+                            label.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            // Coloca focus no campo de entrada de movimentação
+                            const inputField = document.getElementById('newManualUpdate');
+                            if (inputField) {
+                                setTimeout(() => inputField.focus(), 300);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }, 100);
+        };
+
         window.renderModalHistory = function (history = []) {
             const cont = document.getElementById('modalTimeline');
             if (!cont) return;
@@ -769,7 +801,22 @@
             [...history].reverse().forEach(h => {
                 const div = document.createElement('div');
                 div.className = 'modal-timeline-item';
-                div.innerHTML = `<span class="modal-timeline-date">${h.date}</span><div class="modal-timeline-content">${h.from ? `${h.from} &rarr; ${h.to}` : h.msg || h.message}</div>`;
+                
+                // Determinar o nome do usuário
+                let userName = h.user_name || window.currentUserName || 'Usuário';
+                
+                // Montar o conteúdo da mensagem
+                let messageContent = '';
+                if (h.from) {
+                    messageContent = `${h.from} &rarr; ${h.to}`;
+                } else {
+                    messageContent = h.msg || h.message || '';
+                }
+                
+                // Adicionar nome do usuário ao final
+                const userAttribution = `<span style="display:block; margin-top:0.3rem; font-size:0.75rem; color:#9ca3af; font-style:italic;">${userName}</span>`;
+                
+                div.innerHTML = `<span class="modal-timeline-date">${h.date}</span><div class="modal-timeline-content">${messageContent}${userAttribution}</div>`;
                 cont.appendChild(div);
             });
         };
@@ -779,13 +826,31 @@
             const msg = input.value.trim();
             if (!msg) return;
             const id = document.getElementById('processId').value;
-            const item = { date: new Date().toLocaleString(), msg };
+            
+            // Capturar o nome do usuário logado
+            const userName = window.currentUserName || 'Usuário';
+            
+            const item = { 
+                date: new Date().toLocaleString(), 
+                msg,
+                user_name: userName
+            };
+            
             if (id && supabase) {
-                await supabase.from('process_history').insert({ process_id: id, history_date: item.date, message: msg });
+                await supabase.from('process_history').insert({ 
+                    process_id: id, 
+                    history_date: item.date, 
+                    message: msg,
+                    user_name: userName
+                });
                 const p = window.state.processes.find(x => x.id === id);
-                if (p) { p.history.push(item); window.renderModalHistory(p.history); }
+                if (p) { 
+                    p.history.push(item); 
+                    window.renderModalHistory(p.history); 
+                }
             } else {
-                window._tempHistory.push(item); window.renderModalHistory(window._tempHistory);
+                window._tempHistory.push(item); 
+                window.renderModalHistory(window._tempHistory);
             }
             input.value = '';
         };
@@ -1073,7 +1138,7 @@
             const doc = new jsPDF('l', 'mm', 'a4');
 
             try {
-                const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                const logoUrl = 'public/assets/images/logo.png';
                 const img = new Image();
                 img.crossOrigin = 'Anonymous';
                 img.src = logoUrl;
@@ -1083,7 +1148,7 @@
                 });
 
                 if (img.naturalWidth > 0) {
-                    doc.addImage(img, 'JPEG', 14, 10, 16, 20);
+                    doc.addImage(img, 'PNG', 14, 10, 16, 20);
                 }
             } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
@@ -1189,7 +1254,7 @@
                 });
 
                 try {
-                    const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                    const logoUrl = 'public/assets/images/logo.png';
                     const imgLogo = new Image();
                     imgLogo.crossOrigin = 'Anonymous';
                     imgLogo.src = logoUrl;
@@ -1197,7 +1262,7 @@
                         imgLogo.onload = resolve;
                         imgLogo.onerror = resolve;
                     });
-                    if (imgLogo.naturalWidth > 0) doc.addImage(imgLogo, 'JPEG', 14, 10, 16, 20);
+                    if (imgLogo.naturalWidth > 0) doc.addImage(imgLogo, 'PNG', 14, 10, 16, 20);
                 } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
                 doc.setFont('helvetica', 'normal');
