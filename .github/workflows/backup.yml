@@ -2,7 +2,7 @@ name: Supabase Backup & Email
 
 on:
   schedule:
-    - cron: '0 */3 * * *'  # A cada 3 horas
+    - cron: '0 */3 * * *'  # A cada 3 horas (00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC)
   workflow_dispatch:  # Permite execução manual
 
 jobs:
@@ -39,7 +39,6 @@ jobs:
             
             console.log('Iniciando backup...');
             
-            // Tabelas para backup
             const tables = ['processes', 'process_history', 'statuses', 'locations', 'suppliers', 'objects', 'treated_by'];
             
             const backup = {
@@ -58,14 +57,12 @@ jobs:
               }
             }
             
-            // Gerar arquivo JSON
             const backupJson = JSON.stringify(backup, null, 2);
             const fileName = `backup_${new Date().toISOString().split('T')[0]}_${Date.now()}.json`;
             fs.writeFileSync(fileName, backupJson);
             
             console.log(`Backup gerado: ${fileName}`);
             
-            // Enviar e-mail
             if (emailUser && emailPass && emailTo) {
               const transporter = nodemailer.createTransport({
                 service: 'gmail',
