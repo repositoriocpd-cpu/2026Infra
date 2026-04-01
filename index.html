@@ -4536,6 +4536,7 @@
             <header class="modal-header">
                 <div class="modal-header-info">
                     <h2 id="detailsModalTitle">Detalhes do Processo</h2>
+                    <input type="hidden" id="detailsProcessId">
                     <p id="detailsModalSubtitle">Visualização completa do fluxo e informações</p>
                 </div>
                 <div style="display:flex; gap: 10px; align-items: center; margin-right: 20px;">
@@ -4629,8 +4630,12 @@
 
                 <!-- Histórico / Timeline -->
                 <div class="details-card" style="margin-bottom: 0;">
-                    <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i
-                            class="fas fa-history"></i> Histórico de Tramitações</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                        <h4 style="margin: 0;"><i class="fas fa-history"></i> Histórico de Tramitações</h4>
+                        <button class="btn btn-success" onclick="window.tramitarFromHistory()" style="padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-exchange-alt"></i> Tramitar
+                        </button>
+                    </div>
                     <div id="detailsTimeline" class="timeline-vertical" style="padding-top: 1rem;">
                         <!-- Timeline items will be injected here -->
                     </div>
@@ -6780,6 +6785,7 @@
             };
 
             // Basic Info
+            document.getElementById('detailsProcessId').value = p.id;
             document.getElementById('detailsModalTitle').innerText = `Processo ${p.ppAno}`;
             document.getElementById('detailsSupplier').innerText = p.supplier || '-';
             document.getElementById('detailsObject').innerText = p.object || '-';
@@ -6879,6 +6885,16 @@
             };
 
             modal.style.display = 'flex';
+        };
+
+        window.tramitarFromHistory = function () {
+            const processId = document.getElementById('detailsProcessId')?.value;
+            if (!processId) return;
+            const p = window.state.processes.find(x => x.id === processId);
+            if (p) {
+                window.closeModal('processDetailsModal');
+                setTimeout(() => window.openProcessModalForTransit(p), 200);
+            }
         };
 
         window.choicesInstances = {};
