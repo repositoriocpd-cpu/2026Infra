@@ -1,0 +1,105 @@
+name: Supabase Backup & Email
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'  # A cada 3 horas (00:00, 03:00, 06:00, 09:00, 12:00, 15:00, 18:00, 21:00 UTC)
+  workflow_dispatch:  # Permite execução manual
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install @supabase/supabase-js dotenv nodemailer
+
+      - name: Create backup script
+        run: |
+          cat > backup.js << 'EOF'
+          const { createClient } = require('@supabase/supabase-js');
+          const nodemailer = require('nodemailer');
+          const fs = require('fs');
+
+          const supabaseUrl = process.env.SUPABASE_URL;
+          const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+          const emailUser = process.env.EMAIL_USER;
+          const emailPass = process.env.EMAIL_PASS;
+          const emailTo = process.env.EMAIL_TO;
+
+          async function backup() {
+            const supabase = createClient(supabaseUrl, supabaseKey);
+            
+            console.log('Iniciando backup...');
+            
+            const tables = ['processes', 'process_history', 'statuses', 'locations', 'suppliers', 'objects', 'treated_by'];
+            
+            const backup = {
+              timestamp: new Date().toISOString(),
+              data: {}
+            };
+            
+            for (const table of tables) {
+              try {
+                const { data, error } = await supabase.from(table).select('*');
+                if (error) throw error;
+                backup.data[table] = data || [];
+                console.log(`✓ ${table}: ${data?.length || 0} registros`);
+              } catch (err) {
+                console.error(`Erro ao backup ${table}:`, err.message);
+              }
+            }
+            
+            const backupJson = JSON.stringify(backup, null, 2);
+            const fileName = `backup_${new Date().toISOString().split('T')[0]}_${Date.now()}.json`;
+            fs.writeFileSync(fileName, backupJson);
+            
+            console.log(`Backup gerado: ${fileName}`);
+            
+            if (emailUser && emailPass && emailTo) {
+              const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: emailUser,
+                  pass: emailPass
+                }
+              });
+
+              const mailOptions = {
+                from: emailUser,
+                to: emailTo,
+                subject: `Backup InfraSistemas - ${new Date().toLocaleString('pt-BR')}`,
+                text: `Backup automático do banco de dados.\n\nData: ${new Date().toLocaleString('pt-BR')}\nRegistros: ${Object.values(backup.data).reduce((acc, arr) => acc + arr.length, 0)}`,
+                attachments: [
+                  {
+                    filename: fileName,
+                    content: backupJson
+                  }
+                ]
+              };
+
+              await transporter.sendMail(mailOptions);
+              console.log('✓ E-mail enviado com sucesso!');
+            }
+            
+            console.log('Backup concluído!');
+          }
+
+          backup().catch(console.error);
+          EOF
+
+      - name: Run backup
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: node backup.js
