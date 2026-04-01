@@ -7,7 +7,7 @@
 // Version and assets list
 // Note: These should be generated at build time with file hashes
 // For now, using timestamp-based versioning for development
-const BUILD_VERSION = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+const BUILD_VERSION = '1.0.9'; // Versão estável (2026-03-31)
 const CACHE_NAME = `infrasmedu-cache-v${BUILD_VERSION}`;
 const ASSETS_TO_CACHE = [
   '/',
@@ -156,16 +156,12 @@ async function staleWhileRevalidateStrategy(request) {
  * Install event - cache essential assets
  */
 self.addEventListener('install', (event) => {
-  if (AppConfig && !AppConfig.isProduction()) {
     console.log('[SW] Installing...', CACHE_NAME);
-  }
   
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE).catch((error) => {
-        if (AppConfig && !AppConfig.isProduction()) {
-          console.error('[SW] Cache addAll error:', error);
-        }
+        console.error('[SW] Cache addAll error:', error);
         // Don't fail install if some assets fail
         return Promise.resolve();
       });
@@ -180,9 +176,7 @@ self.addEventListener('install', (event) => {
  * Activate event - clean up old caches
  */
 self.addEventListener('activate', (event) => {
-  if (AppConfig && !AppConfig.isProduction()) {
     console.log('[SW] Activating...');
-  }
   
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -195,9 +189,7 @@ self.addEventListener('activate', (event) => {
           
           // Delete caches from different dates (keep only current date)
           if (cacheName !== CACHE_NAME) {
-            if (AppConfig && !AppConfig.isProduction()) {
-              console.log('[SW] Deleting old cache:', cacheName);
-            }
+            console.log('[SW] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -268,8 +260,6 @@ self.addEventListener('fetch', (event) => {
         event.respondWith(staleWhileRevalidateStrategy(request));
     }
   } catch (error) {
-    if (AppConfig && !AppConfig.isProduction()) {
       console.error('[SW] Fetch error:', error);
-    }
   }
 });
