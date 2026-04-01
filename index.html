@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Painel de Controle de Processos de Pagamento - SUB Infra.">
     <title>Painel SUB INFRA</title>
-    <link rel="icon" type="image/jpeg" href="public/assets/images/brasao.jpg">
+    <link rel="icon" type="image/jpeg"
+        href="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg">
 
     <!-- PWA Settings -->
     <link rel="manifest" href="manifest.json">
@@ -33,9 +33,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <!-- UI Kit (tokens + componentes base) -->
-    <link rel="stylesheet" href="ui-kit.css">
-    <script defer src="ui-kit.js"></script>
     <style>
         /* Timeline Modal Styles */
         .timeline {
@@ -521,52 +518,67 @@
         .department-info {
             display: flex;
             align-items: center;
-            font-size: 1rem;
-            flex-wrap: nowrap;
-            gap: 1.25rem;
-            color: var(--govbr-blue);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 0.25rem;
         }
 
-        .department-info .main-title {
-            font-weight: 700;
-            text-transform: none;
-            color: var(--govbr-blue);
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+        @media (min-width: 600px) {
+            .department-info {
+                font-size: 1rem;
+                gap: 0.5rem;
+            }
         }
 
-        .department-info .sub-title {
-            font-weight: 700;
+        @media (min-width: 900px) {
+            .department-info {
+                font-size: 1.1rem;
+            }
+        }
+
+        .department-info a {
+            color: var(--govbr-blue);
+            text-decoration: none;
+            font-weight: 500;
             text-transform: uppercase;
-            color: var(--govbr-blue);
-            font-size: 0.95rem;
-            letter-spacing: 0.03em;
+            font-size: 0.85rem;
+            letter-spacing: 0.02em;
         }
 
-        .header-separator {
-            color: #E5E7EB;
-            font-weight: 300;
+        .department-info a:hover {
+            text-decoration: underline;
+        }
+
+        .department-info a[contenteditable="true"]:focus {
+            outline: none;
+            background-color: #eef3fc;
+            box-shadow: 0 0 2px 1px var(--govbr-blue);
+            border-radius: 4px;
+            padding: 0 4px;
+            text-decoration: none;
+        }
+
+        .department-info span {
             margin: 0 0.5rem;
-            font-size: 1.2rem;
+            color: var(--border-color);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             position: relative;
             cursor: pointer;
-            color: var(--govbr-blue);
         }
 
         #header-dept-name {
             color: var(--govbr-blue);
             font-weight: 700;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            margin-right: -0.25rem;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         #header-dept-name::before {
@@ -984,7 +996,7 @@
 
         body.dark-mode .stat-card .tooltip {
             background-color: #1a3a6e;
-            color: #ffffff; background-color: #990000;
+            color: #ffffff;
         }
 
         body.dark-mode .stat-card .tooltip::after {
@@ -2790,7 +2802,7 @@
             line-height: 1.06;
             font-weight: 900;
             font-size: 2.05rem;
-            color: #ffffff; background-color: #990000;
+            color: #ffffff;
             text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
@@ -3159,15 +3171,6 @@
                 padding: 1.25rem !important;
             }
 
-            body #processControlModal.modal .modal-content {
-                width: 95% !important;
-                max-width: 95% !important;
-                margin: 0 auto !important;
-                padding: 1.5rem 1rem !important;
-                border-radius: 16px !important;
-                max-height: 88vh !important;
-            }
-
             /* Ajuste de Botões (Table Actions) e Header no Mobile */
             body .table-wrapper {
                 overflow-x: auto !important;
@@ -3477,7 +3480,7 @@
 
                         <header class="login-header">
                             <div class="login-header-logo">
-                                <img src="public/assets/images/logo-itaguai.png"
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
                                     alt="Brasão da Prefeitura de Itaguaí">
                             </div>
                             <h1><span class="accent">SUBINFRA</span>&nbsp;• PAINEL SMEDU</h1>
@@ -3499,8 +3502,8 @@
                                     <div class="input-icon-wrapper">
                                         <i class="far fa-envelope"></i>
                                         <input type="email" id="login-email" required
-                                            placeholder="nome@edu.itaguai.rj.gov.br"
-                                            autocomplete="off">
+                                            placeholder="cpdinfra@edu.itaguai.rj.gov.br"
+                                            value="cpdinfra@edu.itaguai.rj.gov.br">
                                     </div>
                                 </div>
 
@@ -3509,7 +3512,7 @@
                                     <div class="input-icon-wrapper">
                                         <i class="fas fa-lock"></i>
                                         <input type="password" id="login-password" required placeholder="••••••••"
-                                            autocomplete="new-password">
+                                            value="T3c4n3x0">
                                         <button type="button" class="toggle-password"
                                             onclick="togglePasswordVisibility()" title="Mostrar/ocultar senha">
                                             <i class="far fa-eye" id="toggle-password-icon"></i>
@@ -3533,7 +3536,7 @@
 
     <nav id="side-menu" class="side-menu">
         <div class="side-menu-header" style="display: flex; align-items: center; gap: 10px; padding: 1.5rem 1rem;">
-            <img src="public/assets/images/logo-itaguai.png"
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
                 alt="Logo" style="height: 40px; border-radius: 4px;">
             <h3 style="font-weight: 800; letter-spacing: 0.05em; margin: 0; font-size: 1.2rem; color: #fff;">SUB INFRA
             </h3>
@@ -3563,13 +3566,13 @@
             <li>
                 <hr class="menu-divider">
             </li>
-            <li id="menu-backup" style="display: none;">
+            <li>
                 <a href="#"
                     onclick="window.showSection('backup'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
                     <i class="fas fa-database menu-icon"></i> <span style="flex-grow: 1;">Backup e Restauração</span>
                 </a>
             </li>
-            <li id="menu-logs" style="display: none;">
+            <li>
                 <a href="#"
                     onclick="window.showSection('logs'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
                     <i class="fas fa-clipboard-list menu-icon"></i> <span style="flex-grow: 1;">Logs do Sistema</span>
@@ -3584,7 +3587,7 @@
             <li>
                 <hr class="menu-divider">
             </li>
-            <li id="menu-settings" style="display: none;">
+            <li id="menu-settings">
                 <a href="#" class="has-submenu">
                     <i class="fas fa-link menu-icon"></i> <span style="flex-grow: 1;">Configurações</span> <i
                         class="fas fa-chevron-right chevron-icon"></i>
@@ -3661,37 +3664,33 @@
             </div> -->
             </div>
             <div class="header-bottom">
-                <div class="department-info">
-                    <i id="menu-toggle" class="fa-solid fa-bars menu-icon" style="font-size: 1.4rem; margin-right: 0.5rem;"></i>
-                    
-                    <div class="main-title">
-                        <span class="hide-on-small">Secretaria Municipal de Educação</span>
-                        <span class="show-on-small">SMEDU</span>
-                    </div>
-
-                    <span class="header-separator hide-on-small">|</span>
-                    
-                    <div class="sub-title hide-on-small hide-on-medium">
-                        CONTROLE DE PROCESSOS DE PAGAMENTO
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <i id="menu-toggle" class="fa-solid fa-bars menu-icon"></i>
+                    <div class="department-info">
+                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
+                            class="hide-on-small">Secretaria
+                            Municipal de Educação</a>
+                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
+                            class="show-on-small">SMEDU</a>
+                        <span class="hide-on-small"
+                            style="color: #E5E7EB; font-weight: 300; margin: 0 0.25rem;">|</span>
+                        <a href="#" class="hide-on-small hide-on-medium">CONTROLE DE PROCESSOS DE PAGAMENTO</a>
                     </div>
                 </div>
 
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem;">
-                        <button id="global-tour-btn"
-                            class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                            title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
-                            onclick="window.startProcessTour()">
-                            <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
-                        </button>
-                    </div>
-
-                    <div class="user-info">
-                        <span class="header-separator hide-on-small">|</span>
-                        <span id="header-dept-name" class="hide-on-small">DIRETORIA</span>
-                        <i class="fa-solid fa-user-circle" style="font-size: 1.8rem;"></i>
-                        <span id="header-user-name" style="font-weight: 300;">Usuário</span>
-                        <div class="header-sign-in">
+                <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-right: 1rem;">
+                    <button id="global-tour-btn"
+                        class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                        title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
+                        onclick="window.startProcessTour()">
+                        <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
+                    </button>
+                </div>
+                <div class="user-info">
+                    <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span id="header-user-name">Usuário</span>
+                    <div class="header-sign-in">
                         <ul class="menu-section">
                             <li class="menu-header">Sua Conta</li>
                             <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
@@ -3854,7 +3853,7 @@
                             <i class="fas fa-search"></i> Consultar Cadastrados
                         </button>
                         <button class="btn btn-danger" onclick="window.exportDashboardToPDF()"
-                            style="color: #ffffff; background-color: #990000; width: 100px; height: 48px; border-radius: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; background: #990000; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: all 0.2s;">
+                            style="width: 100px; height: 48px; border-radius: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; background: #ef4444; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: all 0.2s;">
                             <i class="fas fa-file-pdf"></i> PDF
                         </button>
                     </div>
@@ -3959,7 +3958,7 @@
                         </button>
 
                         <button class="btn btn-danger" onclick="exportToPDF()"
-                            style="height: 48px; border-radius: 12px; background: #990000; border: none;">
+                            style="height: 48px; border-radius: 12px; background: #ef4444; border: none;">
                             <i class="fas fa-file-pdf"></i> PDF
                         </button>
 
@@ -4075,7 +4074,7 @@
                     </div>
 
                     <button class="btn btn-danger" onclick="window.restoreFromBackup()"
-                        style="width:100%; justify-content: center; padding: 0.8rem; background: #990000;">
+                        style="width:100%; justify-content: center; padding: 0.8rem; background: #ef4444;">
                         <i class="fas fa-history"></i>&nbsp;Executar Restauração
                     </button>
                 </div>
@@ -4163,7 +4162,7 @@
                 style="margin-bottom:1.5rem; background: linear-gradient(135deg, #005A9C, #005A9C); color: white;">
                 <div style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
                     <div style="display:flex; align-items:center; gap:1.5rem;">
-                        <img src="public/assets/images/logo-itaguai.png"
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
                             alt="SUB INFRA Logo"
                             style="height: 60px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                         <div>
@@ -4427,7 +4426,7 @@
                     </div>
 
                     <!-- Section 4: CONTROLE DE FLUXO & TRAMITAÇÃO -->
-                    <div class="form-section" id="transitSection">
+                    <div class="form-section">
                         <div class="form-section-title">
                             <i class="fas fa-exchange-alt"></i> NOVA ATUALIZAÇÃO / TRAMITAÇÃO
                         </div>
@@ -5047,9 +5046,9 @@
                     <div
                         style="display: flex; gap: 1rem; justify-content: flex-end; flex-direction: column; align-items: flex-end;">
                         <div style="display: flex; gap: 1rem;">
-                            <a href="https://www.instagram.com/" aria-label="Instagram"  target="_blank"
+                            <a href="https://www.instagram.com/" target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.facebook.com/?ref=tn_tnmn" aria-label="Facebook"  target="_blank"
+                            <a href="https://www.facebook.com/?ref=tn_tnmn" target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook-f"></i></a>
                         </div>
                         <!-- <img class="logo-govcidades" src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg" alt="Prefeitura de Itaguaí" style="max-height: 40px; margin-top: 1rem;"> -->
@@ -5196,7 +5195,7 @@
         // --- GLOBAL CONFIG & STATE ---
         console.log("%c--- SUB INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        var SUPABASE_KEY = 'sb_publishable_7c1Fie7yFmZo8dx26-tTIg_hxZKrKH7';
+        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
         var supabase;
         try {
@@ -5213,7 +5212,6 @@
             processes: [], suppliers: [], locations: [], objects: [], departments: [],
             statuses: [], handlers: [], users: [], currentConfigType: ''
         };
-        window.currentUserRole = 'convidado'; // Default safe role
 
         /**
          * Inicializa os event listeners principais (Event Delegation).
@@ -5288,12 +5286,6 @@
             switch (action) {
                 case 'edit':
                     window.openProcessModal(process);
-                    break;
-                case 'transit':
-                    window.openProcessModalForTransit(process);
-                    break;
-                case 'checklist':
-                    window.openChecklistModal(process);
                     break;
                 case 'history':
                     await window.showHistoryModal(id);
@@ -6232,12 +6224,6 @@
                     <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
                     <td>${formatDate(p.locationDate)}</td>
                     <td style="display:flex; flex-direction: row; gap:4px; align-items:center;">
-                        <button class="btn btn-info action-btn" data-action="checklist" data-id="${p.id}" title="Checklist de Pagamento" style="padding:4px; width:28px; height:28px">
-                            <i class="fas fa-list-check"></i>
-                        </button>
-                        <button class="btn btn-success action-btn" data-action="transit" data-id="${p.id}" title="Tramitar" style="padding:4px; width:28px; height:28px">
-                            <i class="fas fa-exchange-alt"></i>
-                        </button>
                         <button class="btn btn-warning action-btn" data-action="edit" data-id="${p.id}" title="Editar" style="padding:4px; width:28px; height:28px">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -6457,92 +6443,6 @@
             }, 50); // Delay curto mas suficiente para o "paint" do overlay
         };
 
-        window.openProcessModalForTransit = function (p = null) {
-            console.log('Abrindo modal para tramitação...');
-            const modal = document.getElementById('processControlModal');
-            const overlay = document.getElementById('overlay');
-
-            if (modal) {
-                modal.classList.add('visible');
-                modal.style.display = 'flex';
-                modal.style.opacity = '1';
-            }
-
-            if (overlay) {
-                overlay.style.display = 'block';
-                setTimeout(() => overlay.classList.add('visible'), 10);
-            }
-
-            // Deferimos o processamento para depois que o modal estiver visível
-            setTimeout(() => {
-                try {
-                    if (typeof p === 'string') {
-                        p = window.state.processes.find(proc => proc.id === p) || null;
-                    }
-
-                    const form = document.getElementById('processForm');
-                    if (!form) return;
-                    form.reset();
-                    window._tempHistory = [];
-
-                    if (p) {
-                        document.getElementById('processModalTitle').innerText = 'Tramitar Processo';
-                        document.getElementById('processId').value = p.id;
-                        const parentField = document.getElementById('parentProc');
-                        if (parentField) parentField.value = p.parentProc || '';
-                        document.getElementById('ppNumber').value = p.ppNumber || '';
-                        document.getElementById('exerciseYear').value = p.exerciseYear || '';
-                        document.getElementById('ppAno').value = p.ppAno || '';
-                        document.getElementById('coverValue').value = p.coverValue || '';
-                        document.getElementById('openingDate').value = p.openingDate || '';
-                        document.getElementById('deadline').value = p.deadline || '';
-
-                        const setChoice = (id, val) => {
-                            const inst = window.choicesInstances[id];
-                            if (inst) inst.setChoiceByValue(val || '');
-                        };
-
-                        setChoice('supplierSelect', p.supplier || '');
-                        setChoice('objectSelect', p.object || '');
-                        setChoice('treatedBy', p.treatedBy || '');
-                        setChoice('statusSelect', p.status || '');
-                        setChoice('locationSelect', p.location || '');
-                        document.getElementById('openingDate').value = p.openingDate || '';
-                        document.getElementById('deadline').value = p.deadline || '';
-                        document.getElementById('locationDate').value = p.locationDate || '';
-
-                        window.renderModalHistory(p.history || []);
-
-                        const manualInput = document.getElementById('newManualUpdate');
-                        const manualBtn = document.getElementById('btnLaunchUpdate');
-                        if (manualInput && manualBtn) {
-                            manualInput.disabled = false;
-                            manualBtn.disabled = false;
-                            manualInput.style.opacity = '1';
-                            manualBtn.style.opacity = '1';
-                        }
-                    }
-
-                    window.updateSelects(true);
-
-                    // Rola até a seção de tramitação
-                    setTimeout(() => {
-                        const transitSection = document.getElementById('transitSection');
-                        if (transitSection) {
-                            transitSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            console.log('Rolou até seção de tramitação');
-                        }
-                        const transitInput = document.getElementById('newManualUpdate');
-                        if (transitInput) transitInput.focus();
-                    }, 400);
-
-                    console.log('Modal de tramitação pronto');
-                } catch (err) {
-                    console.error('Erro ao abrir modal de tramitação:', err);
-                }
-            }, 50);
-        };
-
         window.renderModalHistory = function (history = []) {
             const cont = document.getElementById('modalTimeline');
             if (!cont) return;
@@ -6553,7 +6453,7 @@
                 div.className = 'modal-timeline-item';
 
                 // Extração de metadados simulados ou reais
-                const userName = h.user || window.currentUserName || 'Usuário';
+                const userName = h.user || 'Usuário';
                 const initial = userName.charAt(0).toUpperCase();
                 const time = h.date ? h.date.split(',')[1]?.trim() || '' : '';
                 const displayDate = h.date ? h.date.split(',')[0].trim() : '';
@@ -6562,11 +6462,12 @@
                     <div class="avatar-circle">${initial}</div>
                     <div class="timeline-body">
                         <div class="timeline-meta">
-                            <i class="fas fa-user-clock"></i> ${displayDate} • ${time}
+                            <i class="fas fa-user-clock"></i> 1min atrás • ${time}
                         </div>
                         <div class="timeline-content-bubble">
-                            <strong>${userName}</strong> ${h.from ? `tramitou de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
+                            <strong>${userName} registrou:</strong> ${h.from ? `Movimentação de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
                         </div>
+                        <div class="timeline-footer-date">Hoje, ${time}</div>
                     </div>
                 `;
                 cont.appendChild(div);
@@ -6910,10 +6811,8 @@
         };
 
         window.openConfigModal = function (type) {
-            // Enhanced security: check if user is admin
-            if (window.currentUserRole !== 'administrador') {
-                alert('Acesso negado. Apenas administradores podem acessar esta área de configuração.');
-                console.warn('Tentativa de acesso não autorizado a área de configuração detectada.');
+            if (window.currentUserRole != null && window.currentUserRole !== 'administrador') {
+                alert('Acesso negado. Apenas administradores podem acessar esta área.');
                 return;
             }
             // Redireciona o cadastro de usuários para o modal dedicado
@@ -6979,12 +6878,7 @@
             try {
                 const type = window.state.currentConfigType;
                 const { error } = await supabase.from(type).insert({ name: val });
-                if (error) {
-                    if (error.code === '42501' || error.message?.includes('row-level security')) {
-                        throw new Error('Acesso negado pelo Servidor: Privilégios insuficientes.');
-                    }
-                    throw error;
-                }
+                if (error) throw error;
                 if (!window.state[type]) window.state[type] = [];
                 window.state[type].push(val);
                 input.value = '';
@@ -7067,17 +6961,12 @@
                     try {
                         const type = window.state.currentConfigType;
                         const { error } = await supabase.from(type).update({ name: newName }).eq('name', oldName);
-                        if (error) {
-                            if (error.code === '42501' || error.message?.includes('row-level security')) {
-                                throw new Error('Acesso negado pelo Servidor: Privilégios insuficientes.');
-                            }
-                            throw error;
-                        }
+                        if (error) throw error;
                         const idx = window.state[type].indexOf(oldName);
                         if (idx !== -1) window.state[type][idx] = newName;
                     } catch (err) {
                         console.error('Save error:', err);
-                        alert('Erro ao salvar: ' + (err.message || 'Falha na comunicação'));
+                        alert('Erro ao salvar: ' + err.message);
                     }
                 }
                 window.renderConfigList();
@@ -7113,12 +7002,7 @@
                 try {
                     const type = window.state.currentConfigType;
                     const { error } = await supabase.from(type).delete().eq('name', name);
-                    if (error) {
-                        if (error.code === '42501' || error.message?.includes('row-level security')) {
-                            throw new Error('Acesso negado pelo Servidor: Privilégios insuficientes.');
-                        }
-                        throw error;
-                    }
+                    if (error) throw error;
                     const idx = window.state[type].indexOf(name);
                     if (idx !== -1) window.state[type].splice(idx, 1);
                     console.log('Delete success');
@@ -7140,13 +7024,9 @@
 
         // ===== GERENCIAMENTO DE USUÁRIOS (Supabase Auth + profiles table) =====
         const SUPABASE_USERS_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        const ANON_KEY = 'sb_publishable_7c1Fie7yFmZo8dx26-tTIg_hxZKrKH7';
+        const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
         window.openUserManagementModal = function () {
-            if (window.currentUserRole !== 'administrador') {
-                alert('Acesso negado. Apenas administradores podem gerenciar usuários.');
-                return;
-            }
             var editingUserId = document.getElementById('editingUserId');
             if (editingUserId) editingUserId.value = '';
             var userFullName = document.getElementById('userFullName');
@@ -7304,7 +7184,7 @@
 
             try {
                 if (editingId) {
-                    const updateData = { full_name: fullName, role: role, department: department };
+                    const updateData = { full_name: fullName, email: email, role: role, department: department };
                     // Hint: password updates via admin API would go here
                     const { error } = await supabase.from('user_profiles').update(updateData).eq('id', editingId);
                     if (error) throw error;
@@ -7320,7 +7200,7 @@
                     const userId = authData.user?.id;
                     if (userId) {
                         await supabase.from('user_profiles').upsert({
-                            id: userId, full_name: fullName, role: role, department: department
+                            id: userId, full_name: fullName, email: email, role: role, department: department, active: true
                         });
                     }
                     alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
@@ -7357,10 +7237,6 @@
         };
 
         window.deleteUser = async function (id, name) {
-            if (window.currentUserRole !== 'administrador') {
-                alert('Acesso negado.');
-                return;
-            }
             if (!confirm(`ATENÇÃO: Deseja excluir permanentemente o perfil de ${name}?\nEsta ação não pode ser desfeita.`)) return;
             const { error } = await supabase.from('user_profiles').delete().eq('id', id);
             if (error) { alert('Erro ao excluir: ' + error.message); return; }
@@ -7373,47 +7249,31 @@
             const deptEl = document.getElementById('header-dept-name');
             const userEl = document.getElementById('header-user-name');
             const menuSettings = document.getElementById('menu-settings');
-            const menuBackup = document.getElementById('menu-backup');
-            const menuLogs = document.getElementById('menu-logs');
 
             if (user) {
                 try {
-                    const isSuperAdmin = user.email === 'cpdinfra@edu.itaguai.rj.gov.br';
                     const { data: profile, error: profileError } = await supabase.from('user_profiles').select('*').eq('id', user.id).maybeSingle();
 
                     if (profileError && profileError.code !== 'PGRST116') {
                         console.error('Erro ao buscar perfil:', profileError);
                     }
+                    if (profile) {
+                        window.currentUserRole = profile.role;
+                        window.currentUserName = profile.full_name;
+                        userEl.innerText = (profile.full_name || user.email).split(' ')[0];
+                        deptEl.innerText = profile.department || (profile.role === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR');
 
-                    if (profile || isSuperAdmin) {
-                        // Se for Super Admin, força cargo de administrador mesmo sem perfil no banco
-                        if (isSuperAdmin) {
-                            window.currentUserRole = 'administrador';
-                            window.currentUserName = (profile?.full_name || 'CPD INFRA');
-                        } else {
-                            window.currentUserRole = (profile.role || 'convidado').toLowerCase().trim();
-                            window.currentUserName = profile.full_name;
+                        // Restrição de menu por cargo
+                        if (menuSettings) {
+                            menuSettings.style.display = profile.role === 'administrador' ? 'block' : 'none';
                         }
-
-                        userEl.innerText = (window.currentUserName || user.email).split(' ')[0];
-                        deptEl.innerText = profile?.department || (window.currentUserRole === 'administrador' ? 'DIRETORIA' : 'SMEDU - COLABORADOR');
-
-                        // Garantir visibilidade das ferramentas administrativas
-                        const isAdmin = window.currentUserRole === 'administrador';
-                        if (menuSettings) menuSettings.style.display = isAdmin ? 'block' : 'none';
-                        if (menuBackup) menuBackup.style.display = isAdmin ? 'block' : 'none';
-                        if (menuLogs) menuLogs.style.display = isAdmin ? 'block' : 'none';
                     } else {
-                        // Perfil não encontrado e não é super admin
-                        window.currentUserRole = 'convidado';
+                        // Perfil não encontrado, usa dados básicos do auth
                         userEl.innerText = user.email.split('@')[0];
                         deptEl.innerText = 'CONVIDADO';
-                        if (menuSettings) menuSettings.style.display = 'none';
-                        if (menuBackup) menuBackup.style.display = 'none';
-                        if (menuLogs) menuLogs.style.display = 'none';
                     }
                 } catch (err) {
-                    console.error('Erro ao atualizar UI do perfil:', err);
+                    console.error('Erro ao buscar perfil:', err);
                 }
             } else {
                 userEl.innerText = 'Usuário';
@@ -7455,29 +7315,18 @@
 
         window.logout = async function (e) {
             if (e) e.preventDefault();
-            // Using a cleaner confirm message and ensuring state is reset
-            if (confirm('Você tem certeza que deseja sair do sistema?')) {
+            if (confirm('Deseja realmente sair?')) {
                 try {
-                    // Explicitly reset role before sign out to prevent UI flickers or lingering access
-                    window.currentUserRole = 'convidado';
                     await supabase.auth.signOut();
-                    
-                    // Clear any sensitive local storage data if any exists (PWA/custom)
-                    localStorage.removeItem('supabase.auth.token'); 
-                    
                     window.location.reload();
                 } catch (err) {
                     console.error('Logout Error:', err);
-                    window.location.reload();
+                    window.location.reload(); // Recarrega mesmo se der erro no Auth para limpar o estado local
                 }
             }
         };
 
         window.deactivateUser = async function (id, name) {
-            if (window.currentUserRole !== 'administrador') {
-                alert('Acesso negado.');
-                return;
-            }
             if (!confirm(`Confirmar bloqueio de acesso para: ${name}?`)) return;
             const { error } = await supabase.from('user_profiles').update({ active: false }).eq('id', id);
             if (error) { alert('Erro: ' + error.message); return; }
@@ -7485,10 +7334,6 @@
         };
 
         window.reactivateUser = async function (id, name) {
-            if (window.currentUserRole !== 'administrador') {
-                alert('Acesso negado.');
-                return;
-            }
             if (!confirm(`Reativar o acesso de: ${name}?`)) return;
             const { error } = await supabase.from('user_profiles').update({ active: true }).eq('id', id);
             if (error) { alert('Erro: ' + error.message); return; }
@@ -7514,7 +7359,7 @@
             const doc = new jsPDF('l', 'mm', 'a4');
 
             try {
-                const logoUrl = 'public/assets/images/logo-itaguai.png';
+                const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
                 const img = new Image();
                 img.crossOrigin = 'Anonymous';
                 img.src = logoUrl;
@@ -7645,7 +7490,7 @@
 
                 // --- Cabeçalho e Logo ---
                 try {
-                    const logoUrl = 'public/assets/images/logo-itaguai.png';
+                    const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
                     const imgLogo = new Image();
                     imgLogo.crossOrigin = 'Anonymous';
                     imgLogo.src = logoUrl;
@@ -7854,11 +7699,11 @@
     </div>
     <!-- <p
         style="border-radius: 8px; text-align: center; font-size: 11px; color: #fff; margin-top: 16px; position: fixed; left: 50%; transform: translateX(-50%); bottom: 75px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 12px; white-space: nowrap; width: auto; max-width: 90vw;">
-        SESME-C <img src="public/assets/images/logo-itaguai.png"
+        SESME-C <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
             alt="DeepSite Logo"
             style="width: 14px; height: 14px; vertical-align: middle; display: inline-block; margin-right: 3px; filter: brightness(0) invert(1);"><a
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
-            style="color: #ffffff; background-color: #990000; text-decoration: underline;" target="_blank">INFRA</a> - <a
+            style="color: #ffffff; text-decoration: underline;" target="_blank">INFRA</a> - <a
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
             style="color: #fff; text-decoration: underline;" target="_blank">PMI</a></p>-->
     <script>
@@ -8169,6 +8014,7 @@
                     <div class="tour-tooltip" onclick="event.stopPropagation()">
                         <div class="tour-progress">${progress}</div>
                         ${step.title ? `<div class="tour-field-name">${step.title}</div>` : ''}
+                        <h3>${step.title}</h3>
                         <p>${step.description}</p>
                         <div class="tour-buttons">
                             <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular Tour</button>
