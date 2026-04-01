@@ -1462,6 +1462,28 @@
             color: white;
         }
 
+        .btn-tiny {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .btn-tiny.btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-tiny.btn-warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .btn-tiny:hover {
+            opacity: 0.8;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -6454,30 +6476,71 @@
             if (!cont) return;
             cont.innerHTML = history.length ? '' : '<p style="text-align:center; color:#888; font-size:12px; padding: 1rem;">Nenhuma movimentação registrada.</p>';
 
-            [...history].reverse().forEach(h => {
+            [...history].reverse().forEach((h, idx) => {
                 const div = document.createElement('div');
                 div.className = 'modal-timeline-item';
+                div.dataset.historyIdx = idx;
 
-                // Extração de metadados simulados ou reais
-                const userName = h.user || 'Usuário';
+                const userName = h.user || window.currentUserName || 'Usuário';
                 const initial = userName.charAt(0).toUpperCase();
                 const time = h.date ? h.date.split(',')[1]?.trim() || '' : '';
                 const displayDate = h.date ? h.date.split(',')[0].trim() : '';
 
                 div.innerHTML = `
                     <div class="avatar-circle">${initial}</div>
-                    <div class="timeline-body">
+                    <div class="timeline-body" style="flex: 1;">
                         <div class="timeline-meta">
-                            <i class="fas fa-user-clock"></i> 1min atrás • ${time}
+                            <i class="fas fa-user-clock"></i> ${displayDate} • ${time}
                         </div>
                         <div class="timeline-content-bubble">
-                            <strong>${userName} registrou:</strong> ${h.from ? `Movimentação de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
+                            <strong>${userName}</strong> ${h.from ? `tramitou de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
                         </div>
-                        <div class="timeline-footer-date">Hoje, ${time}</div>
+                    </div>
+                    <div class="timeline-actions" style="display: flex; gap: 4px; margin-left: 8px;">
+                        <button class="btn-tiny btn-warning" onclick="window.editHistoryItem(${idx}, '${(h.msg || h.message || '').replace(/'/g, "\\'")}')" title="Editar">
+                            <i class="fas fa-pen" style="font-size: 10px;"></i>
+                        </button>
+                        <button class="btn-tiny btn-danger" onclick="window.deleteHistoryItem(${idx})" title="Excluir">
+                            <i class="fas fa-trash" style="font-size: 10px;"></i>
+                        </button>
                     </div>
                 `;
                 cont.appendChild(div);
             });
+        };
+
+        window.editHistoryItem = function (idx, currentMsg) {
+            const newMsg = prompt('Editar movimentação:', currentMsg);
+            if (!newMsg || newMsg.trim() === '' || newMsg.trim() === currentMsg) return;
+            
+            const processId = document.getElementById('processId').value;
+            const p = window.state.processes.find(x => x.id === processId);
+            if (p && p.history && p.history[idx]) {
+                p.history[idx].msg = newMsg.trim();
+                p.history[idx].message = newMsg.trim();
+                window.renderModalHistory(p.history);
+                
+                if (supabase && p.history[idx].id) {
+                    supabase.from('process_history').update({ message: newMsg.trim() }).eq('id', p.history[idx].id);
+                }
+                alert('Registro atualizado!');
+            }
+        };
+
+        window.deleteHistoryItem = async function (idx) {
+            if (!confirm('Deseja excluir esta movimentação?')) return;
+            
+            const processId = document.getElementById('processId').value;
+            const p = window.state.processes.find(x => x.id === processId);
+            if (p && p.history && p.history[idx]) {
+                const itemToDelete = p.history[idx];
+                p.history.splice(idx, 1);
+                window.renderModalHistory(p.history);
+                
+                if (supabase && itemToDelete.id) {
+                    await supabase.from('process_history').delete().eq('id', itemToDelete.id);
+                }
+            }
         };
 
         window.launchManualUpdate = async function () {
