@@ -4653,6 +4653,29 @@
             </footer>
         </div>
     </div>
+
+    <!-- CHECKLIST MODAL -->
+    <div id="checklistModal" class="process-modal" onclick="if(event.target===this) window.closeModal('checklistModal')">
+        <div class="process-modal-content" style="max-width: 800px;" onclick="event.stopPropagation()">
+            <header class="modal-header">
+                <div class="modal-header-info">
+                    <h2 id="checklistModalTitle" style="color: var(--govbr-blue);"><i class="fas fa-list-check"></i> Checklist de Pagamento</h2>
+                    <p>Processo <span id="checklistProcessNumber">-</span></p>
+                </div>
+                <button type="button" class="modal-close" onclick="window.closeModal('checklistModal')">&times;</button>
+            </header>
+            <div class="modal-body" id="checklistModalBody">
+                <!-- Checklist items will be injected here -->
+            </div>
+            <footer class="modal-footer" style="padding: 1rem 2rem; display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-primary" onclick="window.downloadChecklistPDF()">
+                    <i class="fas fa-file-pdf"></i> Baixar PDF
+                </button>
+                <button class="btn btn-secondary" onclick="window.closeModal('checklistModal')">Fechar</button>
+            </footer>
+        </div>
+    </div>
+
     <div id="processConfigModal" class="process-modal"
         onclick="if(event.target===this) window.closeModal('processConfigModal')">
         <div class="process-modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
@@ -7086,6 +7109,147 @@
 
             // Salvar
             doc.save(`processo_${p.ppAno || 'relatorio'}_${new Date().toISOString().split('T')[0]}.pdf`);
+        };
+
+        // ===== CHECKLIST FUNCTIONS =====
+        window.CHECKLIST_ITEMS = {
+            documentacao: {
+                title: 'Documentação de Cobrança e Execução',
+                icon: 'fa-file-contract',
+                items: [
+                    { id: 'doc1', text: 'Requerimento/Ofício de Cobrança', desc: 'Formalização do pedido de pagamento pela empresa.' },
+                    { id: 'doc2', text: 'Nota Fiscal / Fatura', desc: 'Original, devidamente atestada no verso por dois servidores ou via assinatura digital.' },
+                    { id: 'doc3', text: 'Relatório de Execução do Serviço', desc: 'Descritivo detalhado do que foi realizado no período.' },
+                    { id: 'doc4', text: 'Ordem de Serviço (OS)', desc: 'Com as especificações e autorizações prévias.' },
+                    { id: 'doc5', text: 'Mapa de Controle da Execução Contratual', desc: 'Planilha de medição ou controle de saldos do contrato.' }
+                ]
+            },
+            juridica: {
+                title: 'Regularidade Jurídica e Societária',
+                icon: 'fa-file-signature',
+                items: [
+                    { id: 'jur1', text: 'Contrato Social / Consolidação', desc: 'Cópia autenticada ou com selo de validade da JUCERJA.' },
+                    { id: 'jur2', text: 'Documentos dos Sócios', desc: 'RG, CPF e comprovante de residência conforme exigência do edital/contrato.' },
+                    { id: 'jur3', text: 'Protocolo de Transmissão do CNPJ', desc: 'Comprovante de inscrição e situação cadastral ativa.' }
+                ]
+            },
+            fiscal: {
+                title: 'Regularidade Fiscal e Trabalhista',
+                icon: 'fa-certificate',
+                items: [
+                    { id: 'fis1', text: 'Certidão de Regularidade do FGTS (CRF)', desc: '' },
+                    { id: 'fis2', text: 'Certidão Negativa de Débitos Trabalhistas (CNDT)', desc: '' },
+                    { id: 'fis3', text: 'Certidão Negativa de Tributos Federais (PGFN)', desc: '' },
+                    { id: 'fis4', text: 'Certidão Negativa de Débitos Estaduais', desc: '' },
+                    { id: 'fis5', text: 'Certidão Negativa de IPTU/ISS', desc: '' },
+                    { id: 'fis6', text: 'Recibo da DCTFWeb', desc: 'Comprovação de obrigações previdenciárias.' }
+                ]
+            },
+            contratuais: {
+                title: 'Instrumentos Contratuais e Atos Oficiais',
+                icon: 'fa-scroll',
+                items: [
+                    { id: 'con1', text: 'Contrato Original', desc: 'Cópia com todas as assinaturas colhidas.' },
+                    { id: 'con2', text: 'Termos Aditivos', desc: 'Caso existam prorrogações ou reajustes.' },
+                    { id: 'con3', text: 'Portaria de Nomeação do Fiscal', desc: 'Documento que designa quem atestou a nota.' },
+                    { id: 'con4', text: 'Extrato do Contrato/Aditivo', desc: 'Cópia da publicação no Diário Oficial.' }
+                ]
+            },
+            contabeis: {
+                title: 'Documentação Contábil e Financeira',
+                icon: 'fa-coins',
+                items: [
+                    { id: 'ctb1', text: 'Nota de Empenho', desc: 'Original ou cópia da nota vinculada à despesa.' },
+                    { id: 'ctb2', text: 'Folha de Informação (ISS)', desc: 'Informando retenções ou isenções tributárias.' },
+                    { id: 'ctb3', text: 'Folha de Informação (Financeiro)', desc: 'Parecer autorizando o fluxo para pagamento.' }
+                ]
+            }
+        };
+
+        window.openChecklistModal = function (process) {
+            if (!process) return;
+
+            document.getElementById('checklistProcessNumber').textContent = process.ppAno || '-';
+
+            const body = document.getElementById('checklistModalBody');
+            body.innerHTML = '';
+
+            const savedState = JSON.parse(localStorage.getItem(`checklist_${process.id}`) || '{}');
+
+            Object.entries(window.CHECKLIST_ITEMS).forEach(([key, section]) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'checklist-section';
+                sectionDiv.style.cssText = 'background: #f8fafc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;';
+
+                const titleDiv = document.createElement('div');
+                titleDiv.style.cssText = 'font-weight: 700; color: #1e293b; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;';
+                titleDiv.innerHTML = `<i class="fas ${section.icon}" style="color: var(--govbr-blue);"></i> ${section.title}`;
+                sectionDiv.appendChild(titleDiv);
+
+                section.items.forEach(item => {
+                    const isChecked = savedState[item.id] || false;
+                    const itemId = `checklist-${process.id}-${item.id}`;
+
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.cssText = 'display: flex; align-items: flex-start; gap: 8px; padding: 8px; background: white; border-radius: 6px; margin-bottom: 6px;';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = itemId;
+                    checkbox.checked = isChecked;
+                    checkbox.style.cssText = 'width: 18px; height: 18px; margin-top: 2px; cursor: pointer; accent-color: var(--govbr-blue);';
+                    checkbox.addEventListener('change', () => {
+                        savedState[item.id] = checkbox.checked;
+                        localStorage.setItem(`checklist_${process.id}`, JSON.stringify(savedState));
+                        window.updateChecklistProgress(process.id);
+                    });
+
+                    const label = document.createElement('label');
+                    label.htmlFor = itemId;
+                    label.style.cssText = 'flex: 1; cursor: pointer;';
+                    label.innerHTML = `<strong>${item.text}</strong>${item.desc ? `<br><small style="color: #64748b;">${item.desc}</small>` : ''}`;
+
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(label);
+                    sectionDiv.appendChild(itemDiv);
+                });
+
+                body.appendChild(sectionDiv);
+            });
+
+            // Dicas
+            const tipsDiv = document.createElement('div');
+            tipsDiv.style.cssText = 'background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 6px; margin-top: 1rem;';
+            tipsDiv.innerHTML = `
+                <strong style="color: #92400e;">💡 Dicas importantes:</strong>
+                <ul style="margin: 0.5rem 0 0 1.2rem; color: #78350f; font-size: 0.9rem;">
+                    <li>Validade das Certidões: Se vencerem durante a tramitação, é necessário atualizar antes da liquidação.</li>
+                    <li>Atesto de Nota: Deve ser sempre datado e não pode ser anterior à Nota de Empenho.</li>
+                    <li>Este checklist atende às exigências do TCE-RJ.</li>
+                </ul>
+            `;
+            body.appendChild(tipsDiv);
+
+            const modal = document.getElementById('checklistModal');
+            modal.classList.add('visible');
+            modal.style.display = 'flex';
+        };
+
+        window.updateChecklistProgress = function (processId) {
+            const savedState = JSON.parse(localStorage.getItem(`checklist_${processId}`) || '{}');
+            let total = 0, checked = 0;
+            Object.values(window.CHECKLIST_ITEMS).forEach(section => {
+                section.items.forEach(item => {
+                    total++;
+                    if (savedState[item.id]) checked++;
+                });
+            });
+            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+            console.log(`Checklist: ${checked}/${total} (${percent}%)`);
+        };
+
+        window.downloadChecklistPDF = function () {
+            alert('Funcionalidade de PDF do checklist será implementada em breve.');
         };
 
         window.choicesInstances = {};
