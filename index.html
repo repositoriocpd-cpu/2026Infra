@@ -3700,14 +3700,7 @@
                     </div>
                 </div>
 
-                <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-right: 1rem;">
-                    <button id="global-tour-btn"
-                        class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                        title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
-                        onclick="window.startProcessTour()">
-                        <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
-                    </button>
-                </div>
+
                 <div class="user-info">
                     <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
                     <i class="fa-solid fa-user-circle"></i>
@@ -3723,6 +3716,7 @@
                             <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas Frequentes</a></li>
                             <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a></li>
                             <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a></li>
+                            <li><a href="#" onclick="window.startProcessTour(); return false;"><i class="fas fa-circle-question"></i> Tour pelo Sistema</a></li>
                         </ul>
                         <ul class="menu-section">
                             <li><a href="#" onclick="window.logout(event)" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
@@ -4004,46 +3998,46 @@
                     <table id="process-table">
                         <thead>
                             <tr>
+                                <th>Ações</th>
                                 <th onclick="window.sortTable('parentProc')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="0"> Nº PROC. MÃE <i class="fas fa-sort"></i></th>
+                                        data-col="1"> Nº PROC. MÃE <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('ppNumber')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="1"> Nº P.P. <i class="fas fa-sort"></i></th>
+                                        data-col="2"> Nº P.P. <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('exerciseYear')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="2"> ANO <i class="fas fa-sort"></i></th>
+                                        data-col="3"> ANO <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('ppAno')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="3">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="4">
                                     P.P.ANO <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('supplier')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="4"> Fornecedor <i class="fas fa-sort"></i></th>
+                                        data-col="5"> Fornecedor <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('object')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="5">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="6">
                                     Objeto <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('coverValue')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="6"> Valor Capa <i class="fas fa-sort"></i></th>
+                                        data-col="7"> Valor Capa <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('openingDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="7"> Abertura <i class="fas fa-sort"></i></th>
+                                        data-col="8"> Abertura <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('deadline')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="8"> Conclusão <i class="fas fa-sort"></i></th>
+                                        data-col="9"> Conclusão <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('status')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="9">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="10">
                                     Status <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('treatedBy')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="10"> Tratado Por <i class="fas fa-sort"></i></th>
+                                        data-col="11"> Tratado Por <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('location')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="11"> Localização <i class="fas fa-sort"></i></th>
+                                        data-col="12"> Localização <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('locationDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="12"> Dt Local. <i class="fas fa-sort"></i></th>
-                                <th>Ações</th>
+                                        data-col="13"> Dt Local. <i class="fas fa-sort"></i></th>
                             </tr>
                         </thead>
                         <tbody id="processTableBody"></tbody>
@@ -6271,19 +6265,6 @@
 
                 const parentDisplay = p.parentProc || p.ppNumber || '';
                 tr.innerHTML = `
-                    <td>${parentDisplay}</td>
-                    <td>${p.ppNumber || ''}</td>
-                    <td>${p.exerciseYear || ''}</td>
-                    <td><strong>${p.ppAno}</strong></td>
-                    <td title="${p.supplier}">${p.supplier ? (p.supplier.length > 20 ? p.supplier.substring(0, 20) + '...' : p.supplier) : ''}</td>
-                    <td title="${p.object}">${p.object ? (p.object.length > 20 ? p.object.substring(0, 20) + '...' : p.object) : ''}</td>
-                    <td>${formatCurrency(p.coverValue)}</td>
-                    <td>${formatDate(p.openingDate)}</td>
-                    <td>${formatDate(p.deadline)}${daysText ? `<br><small style="color:${daysColor}">(${daysText})</small>` : ''}</td>
-                    <td><span class="badge" style="background:${color}; color:white">${p.status}</span></td>
-                    <td>${p.treatedBy || ''}</td>
-                    <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
-                    <td>${formatDate(p.locationDate)}</td>
                     <td style="display:flex; flex-direction: row; gap:4px; align-items:center;">
                         <button class="btn btn-info action-btn" data-action="checklist" data-id="${p.id}" title="Checklist de Pagamento" style="padding:4px; width:28px; height:28px">
                             <i class="fas fa-list-check"></i>
@@ -6300,7 +6281,20 @@
                         <button class="btn btn-danger action-btn" data-action="delete" data-id="${p.id}" title="Excluir" style="padding:4px; width:28px; height:28px">
                             <i class="fas fa-trash"></i>
                         </button>
-                    </td>`;
+                    </td>
+                    <td>${parentDisplay}</td>
+                    <td>${p.ppNumber || ''}</td>
+                    <td>${p.exerciseYear || ''}</td>
+                    <td><strong>${p.ppAno}</strong></td>
+                    <td title="${p.supplier}">${p.supplier ? (p.supplier.length > 20 ? p.supplier.substring(0, 20) + '...' : p.supplier) : ''}</td>
+                    <td title="${p.object}">${p.object ? (p.object.length > 20 ? p.object.substring(0, 20) + '...' : p.object) : ''}</td>
+                    <td>${formatCurrency(p.coverValue)}</td>
+                    <td>${formatDate(p.openingDate)}</td>
+                    <td>${formatDate(p.deadline)}${daysText ? `<br><small style="color:${daysColor}">(${daysText})</small>` : ''}</td>
+                    <td><span class="badge" style="background:${color}; color:white">${p.status}</span></td>
+                    <td>${p.treatedBy || ''}</td>
+                    <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
+                    <td>${formatDate(p.locationDate)}</td>`;
 
                 tbody.appendChild(tr);
             });
@@ -6455,7 +6449,7 @@
                                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
                                     if (!error) {
                                         p.history = (data || []).map(h => ({
-                                            date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                                            id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
                                         }));
                                         window.renderModalHistory(p.history);
                                     }
@@ -6548,7 +6542,7 @@
             });
         };
 
-        window.editHistoryItem = function (idx, currentMsg) {
+        window.editHistoryItem = async function (idx, currentMsg) {
             const newMsg = prompt('Editar movimentação:', currentMsg);
             if (!newMsg || newMsg.trim() === '' || newMsg.trim() === currentMsg) return;
             
@@ -6560,7 +6554,12 @@
                 window.renderModalHistory(p.history);
                 
                 if (supabase && p.history[idx].id) {
-                    supabase.from('process_history').update({ message: newMsg.trim() }).eq('id', p.history[idx].id);
+                    const { error } = await supabase.from('process_history').update({ message: newMsg.trim() }).eq('id', p.history[idx].id);
+                    if (error) {
+                        console.error('Erro ao atualizar histórico:', error);
+                        alert('Erro ao atualizar o registro.');
+                        return;
+                    }
                 }
                 alert('Registro atualizado!');
             }
@@ -6573,12 +6572,18 @@
             const p = window.state.processes.find(x => x.id === processId);
             if (p && p.history && p.history[idx]) {
                 const itemToDelete = p.history[idx];
-                p.history.splice(idx, 1);
-                window.renderModalHistory(p.history);
                 
                 if (supabase && itemToDelete.id) {
-                    await supabase.from('process_history').delete().eq('id', itemToDelete.id);
+                    const { error } = await supabase.from('process_history').delete().eq('id', itemToDelete.id);
+                    if (error) {
+                        console.error('Erro ao excluir histórico:', error);
+                        alert('Erro ao excluir o registro.');
+                        return;
+                    }
                 }
+                
+                p.history.splice(idx, 1);
+                window.renderModalHistory(p.history);
             }
         };
 
@@ -6586,7 +6591,7 @@
             const input = document.getElementById('newManualUpdate');
             const msg = input.value.trim();
             if (!msg) return;
-            const id = document.getElementById('processId').value;
+            const processId = document.getElementById('processId').value;
             const userName = window.currentUserName || 'Usuário';
             const item = {
                 date: new Date().toLocaleString(),
@@ -6594,14 +6599,19 @@
                 user: userName
             };
 
-            if (id && supabase) {
-                await supabase.from('process_history').insert({
-                    process_id: id,
+            if (processId && supabase) {
+                const { data: inserted, error } = await supabase.from('process_history').insert({
+                    process_id: processId,
                     history_date: item.date,
                     message: msg,
-                    user: userName // Salva quem registrou
-                });
-                const p = window.state.processes.find(x => x.id === id);
+                    user: userName
+                }).select().single();
+                
+                if (!error && inserted) {
+                    item.id = inserted.id;
+                }
+                
+                const p = window.state.processes.find(x => x.id === processId);
                 if (p) { p.history.push(item); window.renderModalHistory(p.history); }
             } else {
                 window._tempHistory.push(item); window.renderModalHistory(window._tempHistory);
@@ -6784,7 +6794,7 @@
                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
                     if (error) throw error;
                     p.history = (data || []).map(h => ({
-                        date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                        id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
                     }));
                 } catch (err) {
                     console.error('Erro ao carregar histórico:', err);
@@ -6851,7 +6861,7 @@
                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
                     if (error) throw error;
                     p.history = (data || []).map(h => ({
-                        date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                        id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
                     }));
                 } catch (err) {
                     console.error('Erro ao carregar histórico nos detalhes:', err);
