@@ -4485,7 +4485,7 @@
                             style="display:flex; flex-direction:column; gap:1rem; margin-top:1rem;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <span style="font-size:0.85rem; color:#64748b;">Ambiente:</span>
-                                <span style="font-size:0.85rem; font-weight:700; color:#188038;">PRODUã‡ãƒO</span>
+                                <span style="font-size:0.85rem; font-weight:700; color:#188038;">PRODUÇÃO</span>
                             </div>
                             <div style="display:flex; justify-content:space-between; align-items:center;">
                                 <span style="font-size:0.85rem; color:#64748b;">Conexão BD:</span>
@@ -4586,10 +4586,10 @@
                         }
                     </style>
 
-                    <!-- Section 1: IDENTIFICAã‡ãƒO DO PROCESSO -->
+                    <!-- Section 1: IDENTIFICAÇÃO DO PROCESSO -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-file-invoice"></i> IDENTIFICAã‡ãƒO DO PROCESSO
+                            <i class="fas fa-file-invoice"></i> IDENTIFICAÇÃO DO PROCESSO
                         </div>
                         <div class="form-grid-4">
                             <div class="form-group">
@@ -4598,7 +4598,7 @@
                             </div>
                             <div class="form-group">
                                 <label>NÚMERO DO P.P.</label>
-                                <input type="text" id="ppNumber" class="form-control" placeholder="Digite o N.Âº Proc">
+                                <input type="text" id="ppNumber" class="form-control" placeholder="Digite o N.º Proc">
                             </div>
                             <div class="form-group">
                                 <label>ANO EXERCãCIO OF</label>
@@ -4616,10 +4616,10 @@
                         </div>
                     </div>
 
-                    <!-- Section 2: INFORMAã‡ã•ES DO PROCESSO -->
+                    <!-- Section 2: INFORMAÇÕES DO PROCESSO -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-file-alt"></i> INFORMAã‡ã•ES DO PROCESSO
+                            <i class="fas fa-file-alt"></i> INFORMAÇÕES DO PROCESSO
                         </div>
                         <div class="form-grid-3">
                             <div class="form-group">
@@ -4671,10 +4671,10 @@
                         </div>
                     </div>
 
-                    <!-- Section 4: CONTROLE DE FLUXO & TRAMITAã‡ãƒO -->
+                    <!-- Section 4: CONTROLE DE FLUXO & TRAMITAÇÃO -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-exchange-alt"></i> NOVA ATUALIZAã‡ãƒO / TRAMITAã‡ãƒO
+                            <i class="fas fa-exchange-alt"></i> NOVA ATUALIZAÇÃO / TRAMITAÇÃO
                         </div>
 
                         <div class="form-grid-3" style="margin-bottom: 1.25rem;">
@@ -4687,7 +4687,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>LOCALIZAã‡ãƒO</label>
+                                <label>LOCALIZAÇÃO</label>
                                 <div class="select-with-btn">
                                     <select id="locationSelect" class="form-control"></select>
                                     <button type="button" class="btn-quick-add" onclick="quickAddConfig('locations')"><i
@@ -4695,7 +4695,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>DATA LOCALIZAã‡ãƒO</label>
+                                <label>DATA LOCALIZAÇÃO</label>
                                 <input type="date" id="locationDate" class="form-control">
                             </div>
                         </div>
@@ -4720,10 +4720,10 @@
                         </div>
                     </div>
 
-                    <!-- Section 5: SITUAã‡ãƒO ATUAL -->
+                    <!-- Section 5: SITUAÇãO ATUAL -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-chevron-circle-down"></i> SITUAã‡ãƒO ATUAL
+                            <i class="fas fa-chevron-circle-down"></i> SITUAÇãO ATUAL
                         </div>
                         <div class="form-group">
                             <input type="text" id="situation" class="form-control"
@@ -4731,13 +4731,13 @@
                         </div>
                     </div>
 
-                    <!-- Section 6: INFORMAã‡ã•ES ADICIONAIS -->
+                    <!-- Section 6: INFORMAÇÕES ADICIONAIS -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-info-circle"></i> INFORMAã‡ã•ES ADICIONAIS
+                            <i class="fas fa-info-circle"></i> INFORMAÇÕES ADICIONAIS
                         </div>
                         <div class="form-group">
-                            <label>OBSERVAã‡ãƒO</label>
+                            <label>OBSERVAÇÃO</label>
                             <textarea id="notes" class="form-control" rows="2"
                                 placeholder="Insira detalhes complementares ou observações relevantes"></textarea>
                         </div>
@@ -6770,7 +6770,7 @@
                 alert('Acesso negado.');
                  return;
              }
-             if (!(await ConfirmModal.show(`ATENã‡ãƒO: Deseja excluir permanentemente o perfil de ${name}?\nEsta ação não pode ser desfeita.`, {isDangerous: true}))) return;
+             if (!(await ConfirmModal.show(`ATENÇÃO: Deseja excluir permanentemente o perfil de ${name}?\nEsta ação não pode ser desfeita.`, {isDangerous: true}))) return;
             const { error } = await supabase.from('user_profiles').delete().eq('id', id);
             if (error) { alert('Erro ao excluir: ' + error.message); return; }
             alert('Perfil removido com sucesso!');
