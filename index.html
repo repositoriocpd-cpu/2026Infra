@@ -4661,6 +4661,7 @@
                 <div class="modal-header-info">
                     <h2 id="checklistModalTitle" style="color: var(--govbr-blue);"><i class="fas fa-list-check"></i> Checklist de Pagamento</h2>
                     <p>Processo <span id="checklistProcessNumber">-</span></p>
+                    <input type="hidden" id="checklistProcessId">
                 </div>
                 <button type="button" class="modal-close" onclick="window.closeModal('checklistModal')">&times;</button>
             </header>
@@ -7170,6 +7171,8 @@
             if (!process) return;
 
             document.getElementById('checklistProcessNumber').textContent = process.ppAno || '-';
+            document.getElementById('checklistProcessId').value = process.id;
+            window._currentChecklistProcessId = process.id;
 
             const body = document.getElementById('checklistModalBody');
             body.innerHTML = '';
@@ -7249,7 +7252,220 @@
         };
 
         window.downloadChecklistPDF = function () {
-            alert('Funcionalidade de PDF do checklist será implementada em breve.');
+            const processId = document.getElementById('checklistProcessId')?.value;
+            const processNumber = document.getElementById('checklistProcessNumber')?.textContent || '-';
+            
+            let process = null;
+            if (processId) {
+                process = window.state.processes.find(p => p.id === processId);
+            }
+            
+            if (!process) {
+                process = window.state.processes.find(p => p.ppAno === processNumber);
+            }
+
+            const savedState = JSON.parse(localStorage.getItem(`checklist_${process?.id}`) || '{}');
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 15;
+            let y = 20;
+
+            // Cabeçalho
+            doc.setFillColor(0, 90, 156);
+            doc.rect(0, 0, pageWidth, 35, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PREFEITURA MUNICIPAL DE ITAGUAÍ', margin, 15);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Secretaria Municipal de Educação', margin, 23);
+            doc.setFontSize(10);
+            doc.text('SUB INFRA - Painel de Controle de Processos', margin, 30);
+
+            doc.setTextColor(0, 0, 0);
+            y = 45;
+
+            // Título
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('CHECKLIST DE PAGAMENTO', margin, y);
+            y += 8;
+
+            // Informações do Processo
+            if (process) {
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text('IDENTIFICAÇÃO DO PROCESSO', margin, y);
+                y += 7;
+
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+
+                const infoData = [
+                    ['Nº Processo:', process.ppAno || '-'],
+                    ['Fornecedor:', process.supplier || '-'],
+                    ['Objeto:', process.object || '-'],
+                    ['Valor:', process.coverValue ? `R$ ${parseFloat(process.coverValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '-'],
+                    ['Status:', process.status || '-'],
+                    ['Tratado por:', process.treatedBy || '-']
+                ];
+
+                infoData.forEach(([label, value]) => {
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(label, margin, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(String(value), margin + 35, y);
+                    y += 5;
+                });
+
+                y += 5;
+            }
+
+            // Linha separadora
+            doc.setDrawColor(0, 90, 156);
+            doc.setLineWidth(0.5);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 8;
+
+            // Seções do Checklist
+            let totalItems = 0;
+            let checkedItems = 0;
+
+            Object.entries(window.CHECKLIST_ITEMS).forEach(([key, section]) => {
+                if (y > 240) {
+                    doc.addPage();
+                    y = 20;
+                }
+
+                // Título da seção
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(0, 90, 156);
+                doc.text(section.title, margin, y);
+                doc.setTextColor(0, 0, 0);
+                y += 7;
+
+                // Itens
+                doc.setFontSize(9);
+                section.items.forEach(item => {
+                    if (y > 270) {
+                        doc.addPage();
+                        y = 20;
+                    }
+
+                    const isChecked = savedState[item.id] || false;
+                    totalItems++;
+                    if (isChecked) checkedItems++;
+
+                    // Fundo colorido
+                    const bgColor = isChecked ? [232, 245, 233] : [255, 235, 238];
+                    doc.setFillColor(bgColor[0], bgColor[1], bgColor[2]);
+                    doc.rect(margin, y - 4, pageWidth - margin * 2, 7, 'F');
+
+                    // Checkbox
+                    doc.setDrawColor(isChecked ? 34 : 156, isChecked ? 197 : 156, isChecked ? 94 : 156);
+                    doc.setLineWidth(0.3);
+                    doc.rect(margin + 1, y - 3, 3, 3);
+
+                    if (isChecked) {
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(34, 197, 94);
+                        doc.text('✓', margin + 1.5, y);
+                        doc.setTextColor(0, 0, 0);
+                    }
+
+                    // Texto do item
+                    doc.setFont('helvetica', 'normal');
+                    const status = isChecked ? '[OK]' : '[FALTANDO]';
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(isChecked ? 34 : 220, isChecked ? 197 : 38, isChecked ? 94 : 38);
+                    doc.text(status, margin + 7, y);
+                    doc.setTextColor(0, 0, 0);
+
+                    doc.setFont('helvetica', 'normal');
+                    const itemText = item.text.length > 65 ? item.text.substring(0, 62) + '...' : item.text;
+                    doc.text(itemText, margin + 22, y);
+
+                    // Descrição se existir
+                    if (item.desc && item.desc.length > 0) {
+                        y += 4;
+                        doc.setFontSize(8);
+                        doc.setTextColor(100, 100, 100);
+                        doc.text(item.desc.substring(0, 90), margin + 7, y);
+                        doc.setTextColor(0, 0, 0);
+                        y += 3;
+                    }
+
+                    y += 5;
+                });
+
+                y += 3;
+            });
+
+            // Resumo
+            if (y > 250) {
+                doc.addPage();
+                y = 20;
+            }
+
+            y += 5;
+            doc.setDrawColor(200, 200, 200);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 8;
+
+            // Box de resumo
+            doc.setFillColor(245, 247, 250);
+            doc.rect(margin, y - 5, pageWidth - margin * 2, 25, 'F');
+
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text('RESUMO DO CHECKLIST', margin + 5, y + 3);
+
+            const percent = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+            doc.setFontSize(14);
+            doc.setTextColor(0, 90, 156);
+            doc.text(`${percent}%`, margin + 80, y + 5);
+
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(0, 0, 0);
+            doc.text(`${checkedItems} de ${totalItems} itens conformpliance`, margin + 95, y + 5);
+
+            // Barra de progresso
+            doc.setFillColor(220, 220, 220);
+            doc.rect(margin + 5, y + 10, pageWidth - margin * 2 - 10, 6, 'F');
+            doc.setFillColor(34, 197, 94);
+            doc.rect(margin + 5, y + 10, (pageWidth - margin * 2 - 10) * (percent / 100), 6, 'F');
+
+            y += 25;
+
+            // Rodapé
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(128, 128, 128);
+                doc.text(
+                    `Página ${i} de ${totalPages} | Gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`,
+                    pageWidth / 2,
+                    doc.internal.pageSize.getHeight() - 10,
+                    { align: 'center' }
+                );
+                doc.text(
+                    'SUB INFRA - Secretaria Municipal de Educação de Itaguaí',
+                    pageWidth / 2,
+                    doc.internal.pageSize.getHeight() - 5,
+                    { align: 'center' }
+                );
+            }
+
+            // Salvar
+            const filename = process ? `checklist_${process.ppAno}_${new Date().toISOString().split('T')[0]}.pdf` : `checklist_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(filename);
         };
 
         window.choicesInstances = {};
