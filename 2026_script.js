@@ -74,16 +74,17 @@
         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
-        var supabase = window.supabaseClient;
-        if (!supabase && window.supabase && window.supabase.createClient) {
+        // Initialize Supabase client
+        window.supabase = window.supabase || {};
+        if (window.supabase.createClient) {
             try {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                window.supabaseClient = supabase;
-                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Supabase client initialized');
+                window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Supabase client initialized via createClient');
             } catch (e) {
                 console.error('Supabase Client Error:', e);
             }
         }
+        var supabase = window.supabaseClient;
 
         window.state = {
             processes: [], suppliers: [], locations: [], objects: [],
