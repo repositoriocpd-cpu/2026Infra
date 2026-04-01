@@ -4643,7 +4643,11 @@
             </div>
 
             <footer class="modal-footer"
-                style="padding: 1.5rem 2rem; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; border-radius: 0 0 16px 16px;">
+                style="padding: 1.5rem 2rem; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; gap: 10px; border-radius: 0 0 16px 16px;">
+                <button class="btn btn-primary" onclick="window.generateProcessPDF()"
+                    style="min-width: 130px; background: #005a9c; color: white; border: none;">
+                    <i class="fas fa-file-pdf"></i> Gerar PDF
+                </button>
                 <button class="btn btn-secondary" onclick="window.closeModal('processDetailsModal')"
                     style="min-width: 110px; background: white; color: #64748b; border: 1px solid #e2e8f0;">Fechar</button>
             </footer>
@@ -6901,6 +6905,187 @@
                 window.closeModal('processDetailsModal');
                 setTimeout(() => window.openProcessModalForTransit(p), 200);
             }
+        };
+
+        window.generateProcessPDF = function () {
+            const processId = document.getElementById('detailsProcessId')?.value;
+            if (!processId) {
+                alert('Processo não encontrado.');
+                return;
+            }
+
+            const p = window.state.processes.find(x => x.id === processId);
+            if (!p) {
+                alert('Processo não encontrado.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 15;
+            let y = 20;
+
+            // Cabeçalho
+            doc.setFillColor(0, 90, 156);
+            doc.rect(0, 0, pageWidth, 35, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PREFEITURA MUNICIPAL DE ITAGUAÍ', margin, 15);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Secretaria Municipal de Educação', margin, 23);
+            doc.setFontSize(10);
+            doc.text('SUB INFRA - Painel de Controle de Processos', margin, 30);
+
+            doc.setTextColor(0, 0, 0);
+            y = 45;
+
+            // Título do Relatório
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('RELATÓRIO DE PROCESSO', margin, y);
+            y += 10;
+
+            // Linha separadora
+            doc.setDrawColor(0, 90, 156);
+            doc.setLineWidth(0.5);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 10;
+
+            // Informações do Processo
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text('IDENTIFICAÇÃO DO PROCESSO', margin, y);
+            y += 7;
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+
+            const infoItems = [
+                ['Nº Processo:', p.ppAno || '-'],
+                ['Nº P.P.:', p.ppNumber || '-'],
+                ['Ano Exercício:', p.exerciseYear || '-'],
+                ['Fornecedor:', p.supplier || '-'],
+                ['Objeto:', p.object || '-'],
+                ['Valor:', p.coverValue ? `R$ ${parseFloat(p.coverValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '-'],
+                ['Data de Abertura:', p.openingDate ? p.openingDate.split('-').reverse().join('/') : '-'],
+                ['Prazo/Vencimento:', p.deadline ? p.deadline.split('-').reverse().join('/') : '-'],
+                ['Status:', p.status || '-'],
+                ['Tratado por:', p.treatedBy || '-'],
+                ['Localização Atual:', p.location || '-'],
+                ['Data Localização:', p.locationDate ? p.locationDate.split('-').reverse().join('/') : '-']
+            ];
+
+            infoItems.forEach(([label, value]) => {
+                doc.setFont('helvetica', 'bold');
+                doc.text(label, margin, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(String(value), margin + 45, y);
+                y += 6;
+            });
+
+            y += 5;
+
+            // Linha separadora
+            doc.setDrawColor(200, 200, 200);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 10;
+
+            // Histórico de Tramitações
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text('HISTÓRICO DE TRAMITAÇÕES', margin, y);
+            y += 8;
+
+            const history = p.history || [];
+
+            if (history.length === 0) {
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'italic');
+                doc.setTextColor(128, 128, 128);
+                doc.text('Nenhuma tramitação registrada.', margin, y);
+                doc.setTextColor(0, 0, 0);
+            } else {
+                doc.setFontSize(9);
+
+                history.forEach((h, index) => {
+                    // Verificar se precisa de nova página
+                    if (y > 260) {
+                        doc.addPage();
+                        y = 20;
+                    }
+
+                    const userName = h.user || 'Sistema';
+                    const date = h.date || '';
+                    const msg = h.msg || h.message || '';
+                    const fromTo = h.from && h.to ? `De ${h.from} para ${h.to}` : '';
+
+                    // Fundo alternado
+                    if (index % 2 === 0) {
+                        doc.setFillColor(245, 247, 250);
+                        doc.rect(margin, y - 4, pageWidth - margin * 2, 18, 'F');
+                    }
+
+                    // Número do registro
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`${index + 1}.`, margin, y);
+
+                    // Usuário e data
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 90, 156);
+                    doc.text(userName, margin + 8, y);
+                    doc.setTextColor(0, 0, 0);
+
+                    // Data
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(100, 100, 100);
+                    doc.text(date, pageWidth - margin - doc.getTextWidth(date), y);
+                    doc.setTextColor(0, 0, 0);
+
+                    y += 5;
+
+                    // Mensagem ou tramitação
+                    if (fromTo) {
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(fromTo, margin + 8, y);
+                        y += 5;
+                        if (msg) {
+                            doc.text(msg, margin + 8, y);
+                        }
+                    } else if (msg) {
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(msg, margin + 8, y);
+                    }
+
+                    y += 8;
+                });
+            }
+
+            // Rodapé
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(128, 128, 128);
+                doc.text(
+                    `Página ${i} de ${totalPages} | Gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`,
+                    pageWidth / 2,
+                    doc.internal.pageSize.getHeight() - 10,
+                    { align: 'center' }
+                );
+                doc.text(
+                    'SUB INFRA - Secretaria Municipal de Educação de Itaguaí',
+                    pageWidth / 2,
+                    doc.internal.pageSize.getHeight() - 5,
+                    { align: 'center' }
+                );
+            }
+
+            // Salvar
+            doc.save(`processo_${p.ppAno || 'relatorio'}_${new Date().toISOString().split('T')[0]}.pdf`);
         };
 
         window.choicesInstances = {};
