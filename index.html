@@ -4427,7 +4427,7 @@
                     </div>
 
                     <!-- Section 4: CONTROLE DE FLUXO & TRAMITAÇÃO -->
-                    <div class="form-section">
+                    <div class="form-section" id="transitSection">
                         <div class="form-section-title">
                             <i class="fas fa-exchange-alt"></i> NOVA ATUALIZAÇÃO / TRAMITAÇÃO
                         </div>
@@ -5288,6 +5288,12 @@
             switch (action) {
                 case 'edit':
                     window.openProcessModal(process);
+                    break;
+                case 'transit':
+                    window.openProcessModalForTransit(process);
+                    break;
+                case 'checklist':
+                    window.openChecklistModal(process);
                     break;
                 case 'history':
                     await window.showHistoryModal(id);
@@ -6226,6 +6232,12 @@
                     <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
                     <td>${formatDate(p.locationDate)}</td>
                     <td style="display:flex; flex-direction: row; gap:4px; align-items:center;">
+                        <button class="btn btn-info action-btn" data-action="checklist" data-id="${p.id}" title="Checklist de Pagamento" style="padding:4px; width:28px; height:28px">
+                            <i class="fas fa-list-check"></i>
+                        </button>
+                        <button class="btn btn-success action-btn" data-action="transit" data-id="${p.id}" title="Tramitar" style="padding:4px; width:28px; height:28px">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
                         <button class="btn btn-warning action-btn" data-action="edit" data-id="${p.id}" title="Editar" style="padding:4px; width:28px; height:28px">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -6445,6 +6457,92 @@
             }, 50); // Delay curto mas suficiente para o "paint" do overlay
         };
 
+        window.openProcessModalForTransit = function (p = null) {
+            console.log('Abrindo modal para tramitação...');
+            const modal = document.getElementById('processControlModal');
+            const overlay = document.getElementById('overlay');
+
+            if (modal) {
+                modal.classList.add('visible');
+                modal.style.display = 'flex';
+                modal.style.opacity = '1';
+            }
+
+            if (overlay) {
+                overlay.style.display = 'block';
+                setTimeout(() => overlay.classList.add('visible'), 10);
+            }
+
+            // Deferimos o processamento para depois que o modal estiver visível
+            setTimeout(() => {
+                try {
+                    if (typeof p === 'string') {
+                        p = window.state.processes.find(proc => proc.id === p) || null;
+                    }
+
+                    const form = document.getElementById('processForm');
+                    if (!form) return;
+                    form.reset();
+                    window._tempHistory = [];
+
+                    if (p) {
+                        document.getElementById('processModalTitle').innerText = 'Tramitar Processo';
+                        document.getElementById('processId').value = p.id;
+                        const parentField = document.getElementById('parentProc');
+                        if (parentField) parentField.value = p.parentProc || '';
+                        document.getElementById('ppNumber').value = p.ppNumber || '';
+                        document.getElementById('exerciseYear').value = p.exerciseYear || '';
+                        document.getElementById('ppAno').value = p.ppAno || '';
+                        document.getElementById('coverValue').value = p.coverValue || '';
+                        document.getElementById('openingDate').value = p.openingDate || '';
+                        document.getElementById('deadline').value = p.deadline || '';
+
+                        const setChoice = (id, val) => {
+                            const inst = window.choicesInstances[id];
+                            if (inst) inst.setChoiceByValue(val || '');
+                        };
+
+                        setChoice('supplierSelect', p.supplier || '');
+                        setChoice('objectSelect', p.object || '');
+                        setChoice('treatedBy', p.treatedBy || '');
+                        setChoice('statusSelect', p.status || '');
+                        setChoice('locationSelect', p.location || '');
+                        document.getElementById('openingDate').value = p.openingDate || '';
+                        document.getElementById('deadline').value = p.deadline || '';
+                        document.getElementById('locationDate').value = p.locationDate || '';
+
+                        window.renderModalHistory(p.history || []);
+
+                        const manualInput = document.getElementById('newManualUpdate');
+                        const manualBtn = document.getElementById('btnLaunchUpdate');
+                        if (manualInput && manualBtn) {
+                            manualInput.disabled = false;
+                            manualBtn.disabled = false;
+                            manualInput.style.opacity = '1';
+                            manualBtn.style.opacity = '1';
+                        }
+                    }
+
+                    window.updateSelects(true);
+
+                    // Rola até a seção de tramitação
+                    setTimeout(() => {
+                        const transitSection = document.getElementById('transitSection');
+                        if (transitSection) {
+                            transitSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            console.log('Rolou até seção de tramitação');
+                        }
+                        const transitInput = document.getElementById('newManualUpdate');
+                        if (transitInput) transitInput.focus();
+                    }, 400);
+
+                    console.log('Modal de tramitação pronto');
+                } catch (err) {
+                    console.error('Erro ao abrir modal de tramitação:', err);
+                }
+            }, 50);
+        };
+
         window.renderModalHistory = function (history = []) {
             const cont = document.getElementById('modalTimeline');
             if (!cont) return;
@@ -6455,7 +6553,7 @@
                 div.className = 'modal-timeline-item';
 
                 // Extração de metadados simulados ou reais
-                const userName = h.user || 'Usuário';
+                const userName = h.user || window.currentUserName || 'Usuário';
                 const initial = userName.charAt(0).toUpperCase();
                 const time = h.date ? h.date.split(',')[1]?.trim() || '' : '';
                 const displayDate = h.date ? h.date.split(',')[0].trim() : '';
@@ -6464,12 +6562,11 @@
                     <div class="avatar-circle">${initial}</div>
                     <div class="timeline-body">
                         <div class="timeline-meta">
-                            <i class="fas fa-user-clock"></i> 1min atrás • ${time}
+                            <i class="fas fa-user-clock"></i> ${displayDate} • ${time}
                         </div>
                         <div class="timeline-content-bubble">
-                            <strong>${userName} registrou:</strong> ${h.from ? `Movimentação de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
+                            <strong>${userName}</strong> ${h.from ? `tramitou de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
                         </div>
-                        <div class="timeline-footer-date">Hoje, ${time}</div>
                     </div>
                 `;
                 cont.appendChild(div);
