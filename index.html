@@ -7178,6 +7178,7 @@
             body.innerHTML = '';
 
             const savedState = JSON.parse(localStorage.getItem(`checklist_${process.id}`) || '{}');
+            const customItems = JSON.parse(localStorage.getItem(`checklist_custom_${process.id}`) || '{}');
 
             Object.entries(window.CHECKLIST_ITEMS).forEach(([key, section]) => {
                 const sectionDiv = document.createElement('div');
@@ -7185,10 +7186,22 @@
                 sectionDiv.style.cssText = 'background: #f8fafc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;';
 
                 const titleDiv = document.createElement('div');
-                titleDiv.style.cssText = 'font-weight: 700; color: #1e293b; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px;';
-                titleDiv.innerHTML = `<i class="fas ${section.icon}" style="color: var(--govbr-blue);"></i> ${section.title}`;
+                titleDiv.style.cssText = 'font-weight: 700; color: #1e293b; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;';
+
+                const titleLeft = document.createElement('span');
+                titleLeft.innerHTML = `<i class="fas ${section.icon}" style="color: var(--govbr-blue); margin-right: 8px;"></i> ${section.title}`;
+                titleDiv.appendChild(titleLeft);
+
+                const addBtn = document.createElement('button');
+                addBtn.className = 'btn btn-sm btn-primary';
+                addBtn.style.cssText = 'padding: 4px 10px; font-size: 11px;';
+                addBtn.innerHTML = '<i class="fas fa-plus"></i> Adicionar';
+                addBtn.onclick = () => window.addCustomChecklistItem(process.id, key);
+                titleDiv.appendChild(addBtn);
+
                 sectionDiv.appendChild(titleDiv);
 
+                // Render default items
                 section.items.forEach(item => {
                     const isChecked = savedState[item.id] || false;
                     const itemId = `checklist-${process.id}-${item.id}`;
@@ -7204,7 +7217,6 @@
                     checkbox.addEventListener('change', () => {
                         savedState[item.id] = checkbox.checked;
                         localStorage.setItem(`checklist_${process.id}`, JSON.stringify(savedState));
-                        window.updateChecklistProgress(process.id);
                     });
 
                     const label = document.createElement('label');
@@ -7214,6 +7226,48 @@
 
                     itemDiv.appendChild(checkbox);
                     itemDiv.appendChild(label);
+                    sectionDiv.appendChild(itemDiv);
+                });
+
+                // Render custom items for this section
+                const sectionCustomItems = customItems[key] || [];
+                sectionCustomItems.forEach((customItem, idx) => {
+                    const customId = `custom-${key}-${idx}`;
+                    const isChecked = savedState[customId] || false;
+                    const itemId = `checklist-${process.id}-${customId}`;
+
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.cssText = 'display: flex; align-items: flex-start; gap: 8px; padding: 8px; background: #fffbeb; border-radius: 6px; margin-bottom: 6px; border: 1px dashed #f59e0b;';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = itemId;
+                    checkbox.checked = isChecked;
+                    checkbox.style.cssText = 'width: 18px; height: 18px; margin-top: 2px; cursor: pointer; accent-color: var(--govbr-blue);';
+                    checkbox.addEventListener('change', () => {
+                        savedState[customId] = checkbox.checked;
+                        localStorage.setItem(`checklist_${process.id}`, JSON.stringify(savedState));
+                    });
+
+                    const label = document.createElement('label');
+                    label.htmlFor = itemId;
+                    label.style.cssText = 'flex: 1; cursor: pointer;';
+                    label.innerHTML = `<strong>${customItem.text}</strong>${customItem.desc ? `<br><small style="color: #64748b;">${customItem.desc}</small>` : ''}`;
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'btn btn-sm btn-danger';
+                    deleteBtn.style.cssText = 'padding: 4px 8px; font-size: 10px;';
+                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    deleteBtn.onclick = () => {
+                        sectionCustomItems.splice(idx, 1);
+                        customItems[key] = sectionCustomItems;
+                        localStorage.setItem(`checklist_custom_${process.id}`, JSON.stringify(customItems));
+                        window.openChecklistModal(process);
+                    };
+
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(label);
+                    itemDiv.appendChild(deleteBtn);
                     sectionDiv.appendChild(itemDiv);
                 });
 
@@ -7236,6 +7290,27 @@
             const modal = document.getElementById('checklistModal');
             modal.classList.add('visible');
             modal.style.display = 'flex';
+        };
+
+        window.addCustomChecklistItem = function (processId, sectionKey) {
+            const process = window.state.processes.find(p => p.id === processId);
+            if (!process) return;
+
+            const text = prompt('Digite a descrição do novo item:');
+            if (!text || text.trim() === '') return;
+
+            const desc = prompt('Digite uma observação (opcional):') || '';
+
+            const customItems = JSON.parse(localStorage.getItem(`checklist_custom_${processId}`) || '{}');
+            if (!customItems[sectionKey]) customItems[sectionKey] = [];
+
+            customItems[sectionKey].push({
+                text: text.trim(),
+                desc: desc.trim()
+            });
+
+            localStorage.setItem(`checklist_custom_${processId}`, JSON.stringify(customItems));
+            window.openChecklistModal(process);
         };
 
         window.updateChecklistProgress = function (processId) {
@@ -7265,6 +7340,7 @@
             }
 
             const savedState = JSON.parse(localStorage.getItem(`checklist_${process?.id}`) || '{}');
+            const customItems = JSON.parse(localStorage.getItem(`checklist_custom_${process?.id}`) || '{}');
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
@@ -7366,38 +7442,67 @@
                     doc.setFillColor(bgColor[0], bgColor[1], bgColor[2]);
                     doc.rect(margin, y - 4, pageWidth - margin * 2, 7, 'F');
 
-                    // Checkbox
-                    doc.setDrawColor(isChecked ? 34 : 156, isChecked ? 197 : 156, isChecked ? 94 : 156);
-                    doc.setLineWidth(0.3);
-                    doc.rect(margin + 1, y - 3, 3, 3);
-
-                    if (isChecked) {
-                        doc.setFont('helvetica', 'bold');
-                        doc.setTextColor(34, 197, 94);
-                        doc.text('✓', margin + 1.5, y);
-                        doc.setTextColor(0, 0, 0);
-                    }
-
-                    // Texto do item
-                    doc.setFont('helvetica', 'normal');
+                    // Status [OK] ou [FALTANDO] e texto na mesma linha
                     const status = isChecked ? '[OK]' : '[FALTANDO]';
                     doc.setFont('helvetica', 'bold');
                     doc.setTextColor(isChecked ? 34 : 220, isChecked ? 197 : 38, isChecked ? 94 : 38);
-                    doc.text(status, margin + 7, y);
-                    doc.setTextColor(0, 0, 0);
+                    doc.text(status, margin + 2, y);
 
+                    // Texto do item na mesma linha
                     doc.setFont('helvetica', 'normal');
-                    const itemText = item.text.length > 65 ? item.text.substring(0, 62) + '...' : item.text;
-                    doc.text(itemText, margin + 22, y);
+                    doc.setTextColor(0, 0, 0);
+                    const itemText = item.text.length > 70 ? item.text.substring(0, 67) + '...' : item.text;
+                    doc.text(itemText, margin + 18, y);
 
                     // Descrição se existir
                     if (item.desc && item.desc.length > 0) {
-                        y += 4;
+                        y += 5;
                         doc.setFontSize(8);
                         doc.setTextColor(100, 100, 100);
-                        doc.text(item.desc.substring(0, 90), margin + 7, y);
+                        doc.text(item.desc.substring(0, 95), margin + 5, y);
                         doc.setTextColor(0, 0, 0);
-                        y += 3;
+                        y += 4;
+                    }
+
+                    y += 5;
+                });
+
+                // Itens personalizados
+                const sectionCustomItems = customItems[key] || [];
+                sectionCustomItems.forEach((item) => {
+                    if (y > 270) {
+                        doc.addPage();
+                        y = 20;
+                    }
+
+                    const customId = `custom-${key}-${item.idx || Math.random().toString(36).substr(2, 9)}`;
+                    const isChecked = savedState[customId] || false;
+                    totalItems++;
+                    if (isChecked) checkedItems++;
+
+                    // Fundo colorido com borda para personalizados
+                    const bgColor = isChecked ? [232, 245, 233] : [255, 251, 235];
+                    doc.setFillColor(bgColor[0], bgColor[1], bgColor[2]);
+                    doc.rect(margin, y - 4, pageWidth - margin * 2, 7, 'FD');
+
+                    // Status e texto
+                    const status = isChecked ? '[OK]' : '[FALTANDO]';
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(isChecked ? 34 : 220, isChecked ? 197 : 38, isChecked ? 94 : 38);
+                    doc.text(status, margin + 2, y);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(0, 0, 0);
+                    const itemText = item.text.length > 70 ? item.text.substring(0, 67) + '...' : item.text;
+                    doc.text(itemText, margin + 18, y);
+
+                    if (item.desc && item.desc.length > 0) {
+                        y += 5;
+                        doc.setFontSize(8);
+                        doc.setTextColor(100, 100, 100);
+                        doc.text(item.desc.substring(0, 95), margin + 5, y);
+                        doc.setTextColor(0, 0, 0);
+                        y += 4;
                     }
 
                     y += 5;
