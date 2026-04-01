@@ -379,7 +379,7 @@
             }
 
             /* Hide specific icons on very small screens */
-            .header-actions a[title="TransparÃªncia"],
+            .header-actions a[title="Transparência"],
             .header-actions a[aria-label="Modo noturno"],
             .header-actions a[aria-label="Acessibilidade"],
             .header-actions a[aria-label="Menu de aplicativos"],
@@ -1643,7 +1643,7 @@
             font-weight: 600;
         }
 
-        /* Glassmorphism V3.0 - Fiel Ã  ReferÃªncia */
+        /* Glassmorphism V3.0 - Fiel Ã  Referência */
         .process-modal {
             display: none;
             position: fixed;
@@ -1662,7 +1662,7 @@
             animation: modalBackdropFade 0.6s ease;
         }
 
-        /* Quando o modal estiver visÃ­vel, garante display flex (usado com a classe .visible) */
+        /* Quando o modal estiver visível, garante display flex (usado com a classe .visible) */
         .process-modal.visible {
             display: flex;
         }
@@ -1673,7 +1673,7 @@
             width: 100%;
             max-width: 1200px;
             max-height: 90vh;
-            /* Mantendo dentro da visÃ£o */
+            /* Mantendo dentro da visão */
             overflow-y: auto;
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow:
@@ -1685,7 +1685,7 @@
             animation: modalPopUp 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             scrollbar-width: thin;
             margin: auto;
-            /* ForÃ§a centralizaÃ§Ã£o no flex container */
+            /* Força centralização no flex container */
         }
 
         @keyframes modalPopUp {
@@ -1908,7 +1908,7 @@
             fill: #475569 !important;
         }
 
-        /* ForÃ§ar colunas no Desktop */
+        /* Forçar colunas no Desktop */
         div.process-modal .form-grid-4 {
             display: grid !important;
             grid-template-columns: 1fr 1fr 1fr 1fr !important;
@@ -2654,7 +2654,7 @@
             text-align: center;
         }
 
-        /* Texto longo com reticÃªncias */
+        /* Texto longo com reticências */
         #process-table td:nth-child(5),
         #process-table td:nth-child(6),
         #process-table td:nth-child(10),
@@ -2664,7 +2664,7 @@
             text-overflow: ellipsis;
         }
 
-        /* Coluna de aÃ§Ãµes com botÃµes centralizados */
+        /* Coluna de ações com botões centralizados */
         #process-table td:last-child>div {
             display: flex;
             justify-content: center;
@@ -2846,7 +2846,7 @@
         }
 
         /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-           TELA DE LOGIN â€” SUBINFRA PAINEL SMEDU
+           TELA DE LOGIN "” SUBINFRA PAINEL SMEDU
            Design polished v2 (ref-image match)
         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
         #login-overlay {
@@ -3304,7 +3304,7 @@
         /* --- ESTILOS MOBILE (SUBInfra) --- */
         @media screen and (max-width: 768px) {
 
-            /* CabeÃ§alho Limpo */
+            /* Cabeçalho Limpo */
             body header.govbr-header {
                 justify-content: space-between !important;
                 padding: 10px 15px !important;
@@ -3372,14 +3372,14 @@
                 padding: 0 !important;
             }
 
-            /* Ocultando Footer Grosso e Ajuste de ConteÃºdo Principal */
+            /* Ocultando Footer Grosso e Ajuste de Conteúdo Principal */
             body>p[style*="background: rgba("] {
                 display: none !important;
             }
 
             body main.container {
                 padding-bottom: 85px !important;
-                /* EspaÃ§o para a Bottom Nav */
+                /* Espaço para a Bottom Nav */
             }
 
             /* Modais (Campos Verticais no Mobile) - Especificidade MÃ¡xima */
@@ -3404,7 +3404,7 @@
                 max-height: 88vh !important;
             }
 
-            /* Ajuste de BotÃµes (Table Actions) e Header no Mobile */
+            /* Ajuste de Botões (Table Actions) e Header no Mobile */
             body .table-wrapper {
                 overflow-x: auto !important;
             }
@@ -3416,7 +3416,7 @@
 
             body #menu-settings {
                 display: none !important;
-                /* Oculta Aba de ConfiguraÃ§Ãµes no mobile mesmo para ADMINS */
+                /* Oculta Aba de Configurações no mobile mesmo para ADMINS */
             }
 
             body #processes-section .search-filters {
@@ -3450,23 +3450,23 @@
                 font-size: 0.95rem !important;
             }
 
-            /* Excel e PDF na mesma linha (grid padrÃ£o) */
+            /* Excel e PDF na mesma linha (grid padrão) */
 
-            /* Limpar e Voltar na mesma linha (grid padrÃ£o) */
+            /* Limpar e Voltar na mesma linha (grid padrão) */
             body #processes-section .table-header>div:nth-child(2)>div button:nth-child(4),
             body #processes-section .table-header>div:nth-child(2)>div button:nth-child(5) {
                 font-size: 0.8rem !important;
                 padding: 0.6rem !important;
             }
 
-            /* Melhoria estÃ©tica geral dos botÃµes mobile */
+            /* Melhoria estética geral dos botões mobile */
             body #processes-section .table-header .btn {
                 border-radius: 8px !important;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
                 justify-content: center !important;
             }
 
-            /* AtivaÃ§Ã£o Bottom Navigation */
+            /* Ativação Bottom Navigation */
             body .mobile-bottom-nav {
                 display: flex !important;
             }
@@ -3671,8 +3671,8 @@
             <div class="login-layout">
 
                 <!-- â•â•â• PAINEL ESQUERDO: HERO VERDE â•â•â• -->
-                <section class="login-hero" aria-label="ApresentaÃ§Ã£o do sistema SMEDU SubInfraestrutura">
-                    <!-- vÃ­deo dos mascotes no fundo -->
+                <section class="login-hero" aria-label="Apresentação do sistema SMEDU SubInfraestrutura">
+                    <!-- vídeo dos mascotes no fundo -->
                     <div class="login-hero-video-wrap" aria-hidden="true">
                         <video src="public/assets/images/videologin.mp4" autoplay muted loop playsinline></video>
                     </div>
@@ -3690,12 +3690,12 @@
                                 <span>SubInfraestrutura</span>
                             </h1>
                             <p>
-                                Gerencie os lanÃ§amentos de processos relacionados Ã 
+                                Gerencie os lançamentos de processos relacionados Ã 
                                 <strong>Subsecretaria de Infraestrutura</strong> da SMEDU.
                             </p>
                         </div>
 
-                        <!-- rodapÃ© com dots e contador -->
+                        <!-- rodapé com dots e contador -->
                         <div class="login-hero-footer">
                             <div class="login-hero-footer-dots" aria-hidden="true">
                                 <span class="active"></span>
@@ -3708,16 +3708,16 @@
                 </section>
 
                 <!-- â•â•â• PAINEL DIREITO: FORMULÃRIO â•â•â• -->
-                <section class="login-card" aria-label="AutenticaÃ§Ã£o no sistema SUBInfra">
+                <section class="login-card" aria-label="Autenticação no sistema SUBInfra">
                     <div class="login-card-inner">
 
                         <header class="login-header">
                             <div class="login-header-logo">
                                 <img src="public/assets/images/logo.png"
-                                    alt="BrasÃ£o da Prefeitura de ItaguaÃ­">
+                                    alt=" Brasão da Prefeitura de Itaguaí">
                             </div>
-                            <h1><span class="accent">SUBINFRA</span>&nbsp;â€¢ PAINEL SMEDU</h1>
-                            <p>Plataforma de gestÃ£o de infraestrutura da Secretaria<br>Municipal de EducaÃ§Ã£o de ItaguaÃ­.
+                            <h1><span class="accent">SUBINFRA</span>&nbsp;• PAINEL SMEDU</h1>
+                            <p>Plataforma de gestão de infraestrutura da Secretaria<br>Municipal de Educação de Itaguaí.
                             </p>
                         </header>
 
@@ -3744,7 +3744,7 @@
                                     <label for="login-password" class="normal-label">Senha</label>
                                     <div class="input-icon-wrapper">
                                         <i class="fas fa-lock"></i>
-                                        <input type="password" id="login-password" required placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                                        <input type="password" id="login-password" required placeholder="••••••••"
                                             autocomplete="new-password">
                                         <button type="button" class="toggle-password"
                                             onclick="togglePasswordVisibility()" title="Mostrar/ocultar senha">
@@ -3757,7 +3757,7 @@
                             </form>
 
                             <div class="login-footer">
-                                Prefeitura Municipal de ItaguaÃ­ â€” SMEDU / SUBInfra
+                                Prefeitura Municipal de Itaguaí "” SMEDU / SUBInfra
                             </div>
                         </div>
                     </div>
@@ -3802,7 +3802,7 @@
             <li id="menu-backup" style="display: none;">
                 <a href="#"
                     onclick="window.showSection('backup'); document.getElementById('side-menu').classList.remove('open'); document.getElementById('overlay').classList.remove('visible');">
-                    <i class="fas fa-database menu-icon"></i> <span style="flex-grow: 1;">Backup e RestauraÃ§Ã£o</span>
+                    <i class="fas fa-database menu-icon"></i> <span style="flex-grow: 1;">Backup e Restauração</span>
                 </a>
             </li>
             <li id="menu-logs" style="display: none;">
@@ -3822,7 +3822,7 @@
             </li>
             <li id="menu-settings" style="display: none;">
                 <a href="#" class="has-submenu">
-                    <i class="fas fa-link menu-icon"></i> <span style="flex-grow: 1;">ConfiguraÃ§Ãµes</span> <i
+                    <i class="fas fa-link menu-icon"></i> <span style="flex-grow: 1;">Configurações</span> <i
                         class="fas fa-chevron-right chevron-icon"></i>
                 </a>
                 <div class="submenu">
@@ -3837,7 +3837,7 @@
                                 Cadastro de Objetos</a></li>
                         <li><a href="#" onclick="window.openConfigModal('locations')"><i
                                     class="fas fa-map-marker-alt"></i>
-                                Cadastro de LocalizaÃ§Ã£o</a></li>
+                                Cadastro de Localização</a></li>
                         <li><a href="#" onclick="window.openConfigModal('statuses')"><i class="fas fa-tags"></i>
                                 Cadastro de Status</a></li>
                         <li><a href="#" onclick="window.openConfigModal('handlers')"><i class="fas fa-address-card"></i>
@@ -3861,7 +3861,7 @@
                 </div>
             </li>
             <li class="version-label">
-                <span>versÃ£o v1.0.6</span>
+                <span>versão v1.0.6</span>
             </li>
         </ul>
     </nav>
@@ -3872,13 +3872,13 @@
         <div class="inst-top">
             <div class="inst-brand">
                 <img class="inst-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
-                    alt="Prefeitura de ItaguaÃ­">
+                    alt="Prefeitura de Itaguaí">
                 <div class="inst-brand-text">
                     <span class="inst-state">Estado do Rio de Janeiro</span>
-                    <span class="inst-secretary">Secretaria Municipal de EducaÃ§Ã£o</span>
+                    <span class="inst-secretary">Secretaria Municipal de Educação</span>
                 </div>
             </div>
-            <div class="inst-actions" aria-label="AÃ§Ãµes rÃ¡pidas">
+            <div class="inst-actions" aria-label="Ações rÃ¡pidas">
                 <button class="icon-btn" id="dark-mode-toggle" aria-label="Tema">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
@@ -3893,7 +3893,7 @@
                         <path d="M9 12h6" />
                     </svg>
                 </button>
-                <button class="icon-btn green" id="cookie-toggle" aria-label="NotificaÃ§Ãµes / Chat">
+                <button class="icon-btn green" id="cookie-toggle" aria-label="Notificações / Chat">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
                     </svg>
@@ -3911,7 +3911,7 @@
             </button>
 
             <div class="inst-titles">
-                <span class="inst-main">Secretaria Municipal de EducaÃ§Ã£o</span>
+                <span class="inst-main">Secretaria Municipal de Educação</span>
                 <span class="inst-divider"></span>
                 <span class="inst-sub">Controle de Processos de Pagamentos</span>
                 <span id="header-dept-name" class="hide-on-small">DIRETORIA</span>
@@ -3942,10 +3942,10 @@
                             <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11V7a4 4 0 014-4h10a4 4 0 014 4v10a4 4 0 01-4 4H9"/><path d="M3 15a4 4 0 004 4h1"/><path d="M7 11a5 5 0 015-5"/></svg>Alterar Senha</a></li>
                         </ul>
                         <ul class="menu-section">
-                            <li class="menu-header">Ajuda & DocumentaÃ§Ã£o</li>
+                            <li class="menu-header">Ajuda & Documentação</li>
                             <li><a href="#" data-route="faq"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>Perguntas Frequentes</a></li>
                             <li><a href="#" data-route="manual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.5a2.5 2.5 0 0 1-2 2.5"/></svg>Manual do UsuÃ¡rio</a></li>
-                            <li><a href="#" data-route="termos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>PolÃ­tica de Uso</a></li>
+                            <li><a href="#" data-route="termos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Política de Uso</a></li>
                         </ul>
                         <ul class="menu-section">
                             <li><a href="#" onclick="window.logout(event)" class="logout-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair</a></li>
@@ -3965,20 +3965,20 @@
                     <h3>Total de Processos</h3>
                     <div class="tooltip">Quantidade total de Processos</div>
                 </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('status', '!ConcluÃ­do')">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', '!Concluído')">
                     <p class="stat-number warning-color" id="treating-processes" data-target="0">0</p>
-                    <h3>Processos em TramitaÃ§Ã£o</h3>
-                    <div class="tooltip">Total de Processos em TramitaÃ§Ã£o</div>
+                    <h3>Processos em Tramitação</h3>
+                    <div class="tooltip">Total de Processos em Tramitação</div>
                 </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('status', 'ConcluÃ­do')">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', 'Concluído')">
                     <p class="stat-number success-color" id="completed-processes" data-target="0">0</p>
                     <h3>Processos Liquidados</h3>
                     <div class="tooltip">Total Geral de Processos Liquidados</div>
                 </div>
                 <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number warning-color" id="pending-percent" data-target="0" data-suffix="%">0%</p>
-                    <h3>Percentual de PendÃªncias</h3>
-                    <div class="tooltip">ProporÃ§Ã£o de processos nÃ£o concluÃ­dos</div>
+                    <h3>Percentual de Pendências</h3>
+                    <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
                 <div class="stat-card" onclick="window.filterFromDashboard('delayed', '')">
                     <p class="stat-number danger-color" id="delayed-processes" data-target="0">0</p>
@@ -4013,10 +4013,10 @@
                     <h3>24 - Tesouraria</h3>
                     <div class="tooltip">Total de Processos na Tesouraria</div>
                 </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('location', 'nutriÃ§')">
+                <div class="stat-card" onclick="window.filterFromDashboard('location', 'nutriç')">
                     <p class="stat-number total-color" id="nutrition-processes" data-target="0">0</p>
-                    <h3>147 - NutriÃ§Ã£o</h3>
-                    <div class="tooltip">Total de Processos da NutriÃ§Ã£o</div>
+                    <h3>147 - Nutrição</h3>
+                    <div class="tooltip">Total de Processos da Nutrição</div>
                 </div>
                 <div class="stat-card" onclick="window.filterFromDashboard('location', '142')">
                     <p class="stat-number total-color" id="secretariat-processes" data-target="0">0</p>
@@ -4028,7 +4028,7 @@
             <!-- Listas Mobile (Estilo SUBInfra) - Preenchidas via JS -->
             <div class="list-section-mobile" id="mobileSituationList" onclick="window.openStatusMobileModal()"
                 style="cursor: pointer;" title="Toque para ver os detalhes completos">
-                <div class="list-title">SituaÃ§Ã£o do Processo</div>
+                <div class="list-title">Situação do Processo</div>
                 <div class="list-item">
                     <div><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i> Vencidos / Atrasados</div>
                     <div class="list-badge red" id="mobile-delayed">0</div>
@@ -4045,8 +4045,8 @@
 
             <div class="list-section-mobile" id="mobileLocationList">
                 <div class="list-title">
-                    LocalizaÃ§Ã£o do Processo
-                    <span class="list-subtitle">DistribuiÃ§Ã£o por setor</span>
+                    Localização do Processo
+                    <span class="list-subtitle">Distribuição por setor</span>
                 </div>
                 <div class="list-item">
                     <div><i class="fas fa-briefcase"></i> Gabinete</div>
@@ -4065,7 +4065,7 @@
                     <div class="list-badge blue" id="mobile-treasury">0</div>
                 </div>
                 <div class="list-item">
-                    <div><i class="fas fa-apple-alt"></i> NutriÃ§Ã£o</div>
+                    <div><i class="fas fa-apple-alt"></i> Nutrição</div>
                     <div class="list-badge blue" id="mobile-nutrition">0</div>
                 </div>
                 <div class="list-item">
@@ -4085,7 +4085,7 @@
                 </div>
                 <div class="table-container"
                     style="min-height: 350px; display: flex; flex-direction: column; position: relative;">
-                    <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por LocalizaÃ§Ã£o</h3>
+                    <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Localização</h3>
                     <div style="flex: 1; position: relative; margin-bottom: 85px;">
                         <canvas id="locationChart"></canvas>
                     </div>
@@ -4116,12 +4116,12 @@
                     <h3>Total de Processos</h3>
                     <div class="tooltip">Quantidade total de Processos</div>
                 </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('status', '!ConcluÃ­do')">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', '!Concluído')">
                     <p class="stat-number warning-color" id="list-treating-processes" data-target="0">0</p>
-                    <h3>Processos em TramitaÃ§Ã£o</h3>
-                    <div class="tooltip">Total de Processos em TramitaÃ§Ã£o</div>
+                    <h3>Processos em Tramitação</h3>
+                    <div class="tooltip">Total de Processos em Tramitação</div>
                 </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('status', 'ConcluÃ­do')">
+                <div class="stat-card" onclick="window.filterFromDashboard('status', 'Concluído')">
                     <p class="stat-number success-color" id="list-completed-processes" data-target="0">0</p>
                     <h3>Processos Liquidados</h3>
                     <div class="tooltip">Total Geral de Processos Liquidados</div>
@@ -4129,8 +4129,8 @@
                 <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
                     <p class="stat-number warning-color" id="list-pending-percent" data-target="0" data-suffix="%">0%
                     </p>
-                    <h3>Percentual de PendÃªncias</h3>
-                    <div class="tooltip">ProporÃ§Ã£o de processos nÃ£o concluÃ­dos</div>
+                    <h3>Percentual de Pendências</h3>
+                    <div class="tooltip">Proporção de processos não concluídos</div>
                 </div>
                 <div class="stat-card" onclick="window.filterFromDashboard('delayed', '')">
                     <p class="stat-number danger-color" id="list-delayed-processes" data-target="0">0</p>
@@ -4183,16 +4183,16 @@
                         <div class="form-group">
                             <label
                                 style="font-size: 0.9rem; font-weight: 700; color: var(--govbr-blue); display: flex; align-items: center; gap: 8px;">
-                                <i class="fas fa-map-marker-alt"></i> LocalizaÃ§Ã£o
+                                <i class="fas fa-map-marker-alt"></i> Localização
                             </label>
                             <select id="locationFilter" onchange="window.filterTable(true)"
                                 style="width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; height: 45px; padding: 0 12px; font-size: 0.95rem; background: #fff; box-sizing: border-box !important;">
-                                <option value="">Todas LocalizaÃ§Ãµes</option>
+                                <option value="">Todas Localizações</option>
                             </select>
                         </div>
                     </div>
 
-                    <!-- Grade de AÃ§Ãµes Mobile -->
+                    <!-- Grade de Ações Mobile -->
                     <div class="mobile-actions-grid" style="align-items: center;">
                         <button class="btn btn-primary" style="height: 48px; border-radius: 12px; background: #005a9c;">
                             <i class="fas fa-plus"></i> Novo Processo
@@ -4254,7 +4254,7 @@
                                         data-col="7"> Abertura <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('deadline')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="8"> ConclusÃ£o <i class="fas fa-sort"></i></th>
+                                        data-col="8"> Conclusão <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('status')" style="cursor:pointer;"><input type="checkbox"
                                         class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="9">
                                     Status <i class="fas fa-sort"></i></th>
@@ -4263,11 +4263,11 @@
                                         data-col="10"> Tratado Por <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('location')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="11"> LocalizaÃ§Ã£o <i class="fas fa-sort"></i></th>
+                                        data-col="11"> Localização <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('locationDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
                                         data-col="12"> Dt Local. <i class="fas fa-sort"></i></th>
-                                <th>AÃ§Ãµes</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody id="processTableBody"></tbody>
@@ -4283,8 +4283,8 @@
                 <div style="display:flex; align-items:center; gap:1.5rem;">
                     <div style="font-size:2.5rem; opacity:0.9;"><i class="fas fa-database"></i></div>
                     <div>
-                        <h2 style="font-size:1.8rem; margin:0; color: white;">Backup e RestauraÃ§Ã£o</h2>
-                        <p style="margin:0.25rem 0 0 0; opacity:0.8; font-weight:400;">Gerenciamento de seguranÃ§a e
+                        <h2 style="font-size:1.8rem; margin:0; color: white;">Backup e Restauração</h2>
+                        <p style="margin:0.25rem 0 0 0; opacity:0.8; font-weight:400;">Gerenciamento de segurança e
                             integridade dos dados</p>
                     </div>
                 </div>
@@ -4294,8 +4294,8 @@
                 <div class="details-card feature-card">
                     <div class="card-icon" style="color: #005A9C;"><i class="fas fa-file-export"></i></div>
                     <h3>Backup Manual</h3>
-                    <p style="color: #64748b; margin-bottom: 1.5rem;">Crie uma cÃ³pia de seguranÃ§a completa de todos os
-                        processos, fornecedores, objetos e configuraÃ§Ãµes em um Ãºnico arquivo JSON.</p>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">Crie uma cópia de segurança completa de todos os
+                        processos, fornecedores, objetos e configurações em um único arquivo JSON.</p>
                     <button class="btn btn-primary" onclick="window.downloadFullBackup()"
                         style="width:100%; justify-content: center; padding: 0.8rem;">
                         <i class="fas fa-download"></i>&nbsp;Exportar Base de Dados
@@ -4308,10 +4308,10 @@
 
                 <div class="details-card feature-card danger-zone" style="border-top: 4px solid #ef4444;">
                     <div class="card-icon" style="color: #ef4444;"><i class="fas fa-file-import"></i></div>
-                    <h3 style="color: #b91c1c;">Zona de RestauraÃ§Ã£o</h3>
+                    <h3 style="color: #b91c1c;">Zona de Restauração</h3>
                     <p style="color: #64748b; margin-bottom: 1.5rem;">Importe um arquivo de backup para restaurar o
-                        estado anterior do sistema. <strong style="color: #dc2626;">Aviso: Todos os dados atuais serÃ£o
-                            substituÃ­dos permanentemente.</strong></p>
+                        estado anterior do sistema. <strong style="color: #dc2626;">Aviso: Todos os dados atuais serão
+                            substituídos permanentemente.</strong></p>
 
                     <div
                         style="background: #fef2f2; border: 1px dashed #fee2e2; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
@@ -4321,20 +4321,20 @@
 
                     <button class="btn btn-danger" onclick="window.restoreFromBackup()"
                         style="width:100%; justify-content: center; padding: 0.8rem; background: #990000;">
-                        <i class="fas fa-history"></i>&nbsp;Executar RestauraÃ§Ã£o
+                        <i class="fas fa-history"></i>&nbsp;Executar Restauração
                     </button>
                 </div>
             </div>
 
             <div class="details-card" style="margin-top:1.5rem; background: #f8fafc; border: 1px solid #e2e8f0;">
                 <h4 style="display:flex; align-items:center; gap:0.5rem; margin-top:0; color:#475569;"><i
-                        class="fas fa-shield-alt"></i> PolÃ­tica de Backup</h4>
+                        class="fas fa-shield-alt"></i> Política de Backup</h4>
                 <p style="font-size:0.9rem; color:#64748b; line-height:1.6; margin-bottom:0;">
-                    Devido Ã  arquitetura web cliente-servidor deste painel, os backups sÃ£o processados localmente.
+                    Devido Ã  arquitetura web cliente-servidor deste painel, os backups são processados localmente.
                     <strong>Sempre armazene seus arquivos de backup em um local seguro fora desta mÃ¡quina</strong> (ex:
                     Google Drive, OneDrive ou Servidor de Arquivos da SME).
-                    O arquivo gerado contÃ©m a estrutura completa necessÃ¡ria para reconstruir o banco de dados em caso de
-                    falha crÃ­tica.
+                    O arquivo gerado contém a estrutura completa necessÃ¡ria para reconstruir o banco de dados em caso de
+                    falha crítica.
                 </p>
             </div>
         </div>
@@ -4348,7 +4348,7 @@
                         <div style="font-size:2.5rem; opacity:0.9;"><i class="fas fa-list-ul"></i></div>
                         <div>
                             <h2 style="font-size:1.8rem; margin:0; color: white;">Auditoria do Sistema</h2>
-                            <p style="margin:0.25rem 0 0 0; opacity:0.8; font-weight:400;">Rastreamento de aÃ§Ãµes, erros
+                            <p style="margin:0.25rem 0 0 0; opacity:0.8; font-weight:400;">Rastreamento de ações, erros
                                 e eventos importantes</p>
                         </div>
                     </div>
@@ -4370,18 +4370,18 @@
                         <div style="position:relative;">
                             <i class="fas fa-search"
                                 style="position:absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.8rem;"></i>
-                            <input type="text" id="logsSearch" class="form-control" placeholder="UsuÃ¡rio ou aÃ§Ã£o..."
+                            <input type="text" id="logsSearch" class="form-control" placeholder="UsuÃ¡rio ou ação..."
                                 style="padding-left: 30px;">
                         </div>
                     </div>
                     <div class="form-group">
                         <label
-                            style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase;">NÃ­vel</label>
+                            style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Nível</label>
                         <select id="logsLevel" class="form-control">
                             <option value="">Todos os Eventos</option>
-                            <option value="info">â„¹ï¸ InformaÃ§Ã£o</option>
+                            <option value="info">â„¹ï¸ Informação</option>
                             <option value="warning">âš ï¸ Aviso</option>
-                            <option value="error">âŒ Erro CrÃ­tico</option>
+                            <option value="error">âŒ Erro Crítico</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -4414,7 +4414,7 @@
                         <div>
                             <h2 style="font-size:1.8rem; margin:0; color: white;">SUB INFRA</h2>
                             <p style="margin:0.25rem 0 0 0; opacity:0.8; font-weight:400;">Secretaria Municipal de
-                                EducaÃ§Ã£o de ItaguaÃ­</p>
+                                Educação de Itaguaí</p>
                         </div>
                     </div>
                     <div
@@ -4428,19 +4428,19 @@
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                     <div class="details-card">
                         <h3 style="display:flex; align-items:center; gap:0.75rem; color:#005A9C; margin-top:0;"><i
-                                class="fas fa-eye" style="color:#005A9C;"></i> VisÃ£o Geral</h3>
-                        <p style="color:#475569; line-height:1.7;">O <strong>SUB INFRA</strong> Ã© uma plataforma
-                            estratÃ©gica desenvolvida para centralizar e otimizar o fluxo de gestÃ£o de infraestrutura e
-                            processos de pagamentos. Projetado especificamente para as necessidades da SMEDU-ItaguaÃ­, o
-                            sistema oferece transparÃªncia total sobre a tramitaÃ§Ã£o de cada processo administrativo.</p>
+                                class="fas fa-eye" style="color:#005A9C;"></i> Visão Geral</h3>
+                        <p style="color:#475569; line-height:1.7;">O <strong>SUB INFRA</strong> é uma plataforma
+                            estratégica desenvolvida para centralizar e otimizar o fluxo de gestão de infraestrutura e
+                            processos de pagamentos. Projetado especificamente para as necessidades da SMEDU-Itaguaí, o
+                            sistema oferece transparência total sobre a tramitação de cada processo administrativo.</p>
 
                         <h4 style="margin: 1.5rem 0 0.75rem 0; color:#1e293b; font-size: 0.95rem;">Objetivos
-                            EstratÃ©gicos:</h4>
+                            Estratégicos:</h4>
                         <ul style="color:#475569; padding-left: 1.25rem; line-height: 1.6;">
                             <li>Monitoramento de prazos e alertas de vencimento em tempo real.</li>
-                            <li>Rastreabilidade histÃ³rica completa atravÃ©s de timelines automatizadas.</li>
+                            <li>Rastreabilidade histórica completa através de timelines automatizadas.</li>
                             <li>AnÃ¡lise de desempenho setorial por meio de KPIs visuais.</li>
-                            <li>SeguranÃ§a e integridade via autenticaÃ§Ã£o robusta e criptografia.</li>
+                            <li>Segurança e integridade via autenticação robusta e criptografia.</li>
                         </ul>
                     </div>
 
@@ -4488,7 +4488,7 @@
                                 <span style="font-size:0.85rem; font-weight:700; color:#188038;">PRODUÃ‡ÃƒO</span>
                             </div>
                             <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <span style="font-size:0.85rem; color:#64748b;">ConexÃ£o BD:</span>
+                                <span style="font-size:0.85rem; color:#64748b;">Conexão BD:</span>
                                 <span style="font-size:0.85rem; font-weight:700; color:#188038;"
                                     id="db-status-label">ONLINE</span>
                             </div>
@@ -4508,15 +4508,15 @@
 
                     <div class="details-card" style="border-left: 4px solid #005A9C;">
                         <h3 style="font-size:1.1rem; color:#1e293b; margin-top:0;"><i class="fas fa-shield-halved"></i>
-                            SeguranÃ§a</h3>
-                        <p style="font-size:0.85rem; color:#64748b; line-height:1.6;">Dados protegidos em trÃ¢nsito via
+                            Segurança</h3>
+                        <p style="font-size:0.85rem; color:#64748b; line-height:1.6;">Dados protegidos em trânsito via
                             criptografia TLS 1.3. Acesso autenticado via e-mail institucional gerenciado pelo Supabase
-                            Auth, garantindo que apenas tÃ©cnicos autorizados visualizem processos de infraestrutura.</p>
+                            Auth, garantindo que apenas técnicos autorizados visualizem processos de infraestrutura.</p>
                     </div>
 
                     <div style="text-align: center; margin-top: auto; padding: 1rem;">
                         <p style="font-size: 0.75rem; color: #94a3b8;">&copy; 2026 SUB INFRA<br>Secretaria de
-                            EducaÃ§Ã£o - ItaguaÃ­/RJ</p>
+                            Educação - Itaguaí/RJ</p>
                     </div>
                 </div>
             </div>
@@ -4575,7 +4575,7 @@
                             width: 100% !important;
                         }
 
-                        /* CorreÃ§Ã£o para garantir que o grid nÃ£o quebre em resoluÃ§Ãµes desktop */
+                        /* Correção para garantir que o grid não quebre em resoluções desktop */
                         @media (min-width: 769px) {
 
                             #processControlModal .form-grid-4,
@@ -4603,7 +4603,7 @@
                             <div class="form-group">
                                 <label>ANO EXERCÃCIO OF</label>
                                 <input type="text" id="exerciseYear" class="form-control"
-                                    placeholder="Digite Ano do ExercÃ­cio">
+                                    placeholder="Digite Ano do Exercício">
                             </div>
                             <div class="form-group">
                                 <label>PP ANO ATUAL</label>
@@ -4705,13 +4705,13 @@
                             <label
                                 style="display: block; font-size: 0.62rem; font-weight: 800; color: #64748b; margin-bottom: 0.75rem; text-transform: uppercase;">
                                 <i class="fas fa-comment-dots" style="margin-right: 0.4rem;"></i> Registro de
-                                MovimentaÃ§Ã£o
+                                Movimentação
                             </label>
                             <div class="registration-input-grid">
                                 <input type="text" id="newManualUpdate" class="form-control" style="flex-grow: 1;"
-                                    placeholder="Ex: Processo recebido para conferÃªncia...">
+                                    placeholder="Ex: Processo recebido para conferência...">
                                 <button type="button" id="btnLaunchUpdate" class="btn-navy-launch"
-                                    onclick="launchManualUpdate()">LanÃ§ar</button>
+                                    onclick="launchManualUpdate()">Lançar</button>
                             </div>
                         </div>
 
@@ -4727,7 +4727,7 @@
                         </div>
                         <div class="form-group">
                             <input type="text" id="situation" class="form-control"
-                                placeholder="Descreva brevemente a situaÃ§Ã£o atual do processo">
+                                placeholder="Descreva brevemente a situação atual do processo">
                         </div>
                     </div>
 
@@ -4739,7 +4739,7 @@
                         <div class="form-group">
                             <label>OBSERVAÃ‡ÃƒO</label>
                             <textarea id="notes" class="form-control" rows="2"
-                                placeholder="Insira detalhes complementares ou observaÃ§Ãµes relevantes"></textarea>
+                                placeholder="Insira detalhes complementares ou observações relevantes"></textarea>
                         </div>
                     </div>
                 </div>
@@ -4760,7 +4760,7 @@
             <header class="modal-header">
                 <div class="modal-header-info">
                     <h2 id="detailsModalTitle">Detalhes do Processo</h2>
-                    <p id="detailsModalSubtitle">VisualizaÃ§Ã£o completa do fluxo e informaÃ§Ãµes</p>
+                    <p id="detailsModalSubtitle">Visualização completa do fluxo e informações</p>
                 </div>
                 <div style="display:flex; gap: 10px; align-items: center; margin-right: 20px;">
                     <span id="detailsStatusBadge" class="badge">Status</span>
@@ -4771,10 +4771,10 @@
             <div class="modal-body" style="padding: 2rem;">
                 <!-- Cards Grid -->
                 <div class="details-grid" style="margin-bottom: 1.5rem;">
-                    <!-- InformaÃ§Ãµes Gerais -->
+                    <!-- Informações Gerais -->
                     <div class="details-card">
                         <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i
-                                class="fas fa-info-circle"></i> InformaÃ§Ãµes Gerais</h4>
+                                class="fas fa-info-circle"></i> Informações Gerais</h4>
                         <div class="details-item">
                             <span class="details-label">Fornecedor</span>
                             <span id="detailsSupplier" class="details-value">-</span>
@@ -4798,7 +4798,7 @@
                             <span id="detailsOpeningDate" class="details-value">-</span>
                         </div>
                         <div class="details-item">
-                            <span class="details-label">Data de ConclusÃ£o</span>
+                            <span class="details-label">Data de Conclusão</span>
                             <span id="detailsDeadline" class="details-value">-</span>
                         </div>
                         <div class="details-item">
@@ -4807,21 +4807,21 @@
                         </div>
                     </div>
 
-                    <!-- LocalizaÃ§Ã£o Atual -->
+                    <!-- Localização Atual -->
                     <div class="details-card">
                         <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i
-                                class="fas fa-map-marker-alt"></i> LocalizaÃ§Ã£o Atual</h4>
+                                class="fas fa-map-marker-alt"></i> Localização Atual</h4>
                         <div class="details-item">
-                            <span class="details-label">Setor / Ã“rgÃ£o</span>
+                            <span class="details-label">Setor / Ã“rgão</span>
                             <span id="detailsLocation" class="details-value">-</span>
                         </div>
                         <div class="details-item">
-                            <span class="details-label">Ãšltima MovimentaÃ§Ã£o</span>
+                            <span class="details-label">Ãšltima Movimentação</span>
                             <span id="detailsLocationDate" class="details-value">-</span>
                         </div>
                         <div class="details-item">
                             <span class="details-label">Notas</span>
-                            <span id="detailsNotes" class="details-value">Sem observaÃ§Ãµes.</span>
+                            <span id="detailsNotes" class="details-value">Sem observações.</span>
                         </div>
                     </div>
 
@@ -4839,7 +4839,7 @@
                     </div>
                 </div>
 
-                <!-- AÃ§Ãµes principais (Excluir / Editar) -->
+                <!-- Ações principais (Excluir / Editar) -->
                 <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-bottom: 2rem;">
                     <button class="btn btn-danger" id="detailsBtnDelete"
                         style="min-width: 130px; padding: 0.8rem; font-weight: 600; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
@@ -4851,10 +4851,10 @@
                     </button>
                 </div>
 
-                <!-- HistÃ³rico / Timeline -->
+                <!-- Histórico / Timeline -->
                 <div class="details-card" style="margin-bottom: 0;">
                     <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i
-                            class="fas fa-history"></i> HistÃ³rico de TramitaÃ§Ãµes</h4>
+                            class="fas fa-history"></i> Histórico de Tramitações</h4>
                     <div id="detailsTimeline" class="timeline-vertical" style="padding-top: 1rem;">
                         <!-- Timeline items will be injected here -->
                     </div>
@@ -4873,8 +4873,8 @@
         <div class="process-modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
             <header class="modal-header">
                 <div class="modal-header-info">
-                    <h2 id="configModalTitle" style="color:var(--govbr-blue);">ConfiguraÃ§Ãµes</h2>
-                    <p>Gerencie os itens disponÃ­veis no sistema</p>
+                    <h2 id="configModalTitle" style="color:var(--govbr-blue);">Configurações</h2>
+                    <p>Gerencie os itens disponíveis no sistema</p>
                 </div>
                 <button type="button" class="modal-close"
                     onclick="window.closeModal('processConfigModal')">&times;</button>
@@ -4918,7 +4918,7 @@
                         <i class="fas fa-users-cog" style="font-size: 1.25rem; opacity: 0.8;"></i>
                         Cadastro de UsuÃ¡rios
                     </h2>
-                    <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.9rem;">Controle de acessos e permissÃµes do
+                    <p style="margin: 4px 0 0 0; color: #64748b; font-size: 0.9rem;">Controle de acessos e permissões do
                         sistema</p>
                 </div>
                 <button type="button" class="modal-close" onclick="window.closeModal('userManagementModal')"
@@ -4926,7 +4926,7 @@
             </header>
 
             <div class="modal-body" style="padding: 2rem; background: #fff;">
-                <!-- FormulÃ¡rio de cadastro/ediÃ§Ã£o -->
+                <!-- FormulÃ¡rio de cadastro/edição -->
                 <div id="userFormSection"
                     style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1.5rem; margin-bottom:2rem; position: relative;">
                     <h4 id="userFormTitle"
@@ -4973,7 +4973,7 @@
                                     style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Definir
                                     Senha *</label>
                                 <div style="position:relative;">
-                                    <input type="password" id="userPassword" class="form-control" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                                    <input type="password" id="userPassword" class="form-control" placeholder="••••••••"
                                         style="padding-right:45px; border-radius: 8px;">
                                     <button type="button"
                                         onclick="document.getElementById('userPassword').type = document.getElementById('userPassword').type === 'password' ? 'text' : 'password'"
@@ -4986,7 +4986,7 @@
                                     style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Confirmar
                                     Senha *</label>
                                 <input type="password" id="userConfirmPassword" class="form-control"
-                                    placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" style="border-radius: 8px;">
+                                    placeholder="••••••••" style="border-radius: 8px;">
                             </div>
                         </div>
                     </div>
@@ -5151,7 +5151,7 @@
         <div class="process-modal-content" style="max-width: 600px;">
             <header class="modal-header">
                 <div class="modal-header-info">
-                    <h2 style="color:#1452B5;"><i class="fas fa-history"></i> HistÃ³rico de TramitaÃ§Ã£o</h2>
+                    <h2 style="color:#1452B5;"><i class="fas fa-history"></i> Histórico de Tramitação</h2>
                     <p id="historyProcessSummary">Rastreabilidade completa do processo administrativo</p>
                 </div>
                 <button type="button" class="modal-close"
@@ -5162,7 +5162,7 @@
              </div>
              <footer class="modal-footer">
                  <button type="button" class="btn-action btn-secondary"
-                     onclick="window.closeModal('processHistoryModal')">Fechar HistÃ³rico</button>
+                     onclick="window.closeModal('processHistoryModal')">Fechar Histórico</button>
                  <button type="button" class="btn-navy-save" id="historyTramitarBtn2" 
                      onclick="window.tramitarFromProcessHistoryModal()" style="display:none;">
                      <i class="fas fa-exchange-alt"></i> Tramitar
@@ -5181,16 +5181,16 @@
         <div class="modal-content">
             <button class="close-button" onclick="window.closeModal('accessibility-modal')">&times;</button>
             <h1>Acessibilidade Digital</h1>
-            <p>Acessibilidade Digital Ã© a eliminaÃ§Ã£o de barreiras na Web. O conceito pressupÃµe que os sites e portais
+            <p>Acessibilidade Digital é a eliminação de barreiras na Web. O conceito pressupõe que os sites e portais
                 sejam projetados de modo que todas as pessoas possam perceber, entender, navegar e interagir de maneira
                 efetiva com as pÃ¡ginas.</p>
-            <p>As diversas barreiras encontradas nos sÃ­tios eletrÃ´nicos atingem principalmente as pessoas com
-                deficiÃªncia. Ao utilizarem a Web e seus recursos, as pessoas com deficiÃªncia ou outras limitaÃ§Ãµes,
-                deparam-se com obstÃ¡culos que dificultam e, muitas vezes, impossibilitam o acesso aos conteÃºdos e
-                pÃ¡ginas. No Brasil, segundo o Censo DemogrÃ¡fico do IBGE de 2010, hÃ¡ aproximadamente 45 milhÃµes de
-                pessoas que apresentam pelo menos uma das deficiÃªncias investigadas. Esse nÃºmero representa 23,9% da
-                populaÃ§Ã£o brasileira. Um percentual a ser considerado quando discutimos a importÃ¢ncia de implementar a
-                acessibilidade nos sÃ­tios governamentais.</p>
+            <p>As diversas barreiras encontradas nos sítios eletrônicos atingem principalmente as pessoas com
+                deficiência. Ao utilizarem a Web e seus recursos, as pessoas com deficiência ou outras limitações,
+                deparam-se com obstÃ¡culos que dificultam e, muitas vezes, impossibilitam o acesso aos conteúdos e
+                pÃ¡ginas. No Brasil, segundo o Censo DemogrÃ¡fico do IBGE de 2010, hÃ¡ aproximadamente 45 milhões de
+                pessoas que apresentam pelo menos uma das deficiências investigadas. Esse número representa 23,9% da
+                população brasileira. Um percentual a ser considerado quando discutimos a importância de implementar a
+                acessibilidade nos sítios governamentais.</p>
         </div>
     </div>
 
@@ -5210,10 +5210,10 @@
         <div class="modal-content">
             <button class="close-button" onclick="window.closeModal('cookie-modal')">&times;</button>
             <h1>Respeitamos a sua privacidade</h1>
-            <p class="last-updated">Ãšltima atualizaÃ§Ã£o: 05/02/2024</p>
-            <p>Prezamos pela sua privacidade e proteÃ§Ã£o de seus dados pessoais! Utilizamos cookies para melhorar sua
-                experiÃªncia no site, conforme a nossa PolÃ­tica de Privacidade. Fique Ã  vontade para customizar os
-                cookies que nÃ£o sÃ£o estritamente necessÃ¡rios.</p>
+            <p class="last-updated">Ãšltima atualização: 05/02/2024</p>
+            <p>Prezamos pela sua privacidade e proteção de seus dados pessoais! Utilizamos cookies para melhorar sua
+                experiência no site, conforme a nossa Política de Privacidade. Fique Ã  vontade para customizar os
+                cookies que não são estritamente necessÃ¡rios.</p>
 
             <div class="cookie-controls">
                 <h3>Classes de cookies</h3>
@@ -5225,12 +5225,12 @@
                     <h4>Estritamente NecessÃ¡rio (4)</h4>
                     <span>Sempre ativo</span>
                 </div>
-                <p>Esses cookies sÃ£o indispensÃ¡veis para o funcionamento do site e nÃ£o podem ser desligados em nossos
-                    sistemas por usarem recursos essenciais. Normalmente, eles sÃ£o definidos apenas em resposta a aÃ§Ãµes
-                    feitas por vocÃª que equivalem a uma solicitaÃ§Ã£o de serviÃ§os, como definir suas preferÃªncias de
-                    privacidade, fazer login ou preencher formulÃ¡rios. VocÃª pode configurar seu navegador para bloquear
-                    ou alertÃ¡-lo sobre esses cookies, mas algumas partes do site nÃ£o funcionarÃ£o. Esses cookies nÃ£o
-                    armazenam qualquer informaÃ§Ã£o pessoalmente identificÃ¡vel.</p>
+                <p>Esses cookies são indispensÃ¡veis para o funcionamento do site e não podem ser desligados em nossos
+                    sistemas por usarem recursos essenciais. Normalmente, eles são definidos apenas em resposta a ações
+                    feitas por você que equivalem a uma solicitação de serviços, como definir suas preferências de
+                    privacidade, fazer login ou preencher formulÃ¡rios. Você pode configurar seu navegador para bloquear
+                    ou alertÃ¡-lo sobre esses cookies, mas algumas partes do site não funcionarão. Esses cookies não
+                    armazenam qualquer informação pessoalmente identificÃ¡vel.</p>
             </div>
 
             <div class="cookie-category">
@@ -5238,9 +5238,9 @@
                     <h4>Funcionais (1 de 1)</h4>
                     <button class="deselect-class">Desselecionar toda classe</button>
                 </div>
-                <p>Esses cookies permitem que o site proporcione a vocÃª funcionalidades e personalizaÃ§Ã£o aprimoradas.
-                    Podem ser definidos por nÃ³s ou por provedores terceiros cujos serviÃ§os adicionamos Ã s nossas
-                    pÃ¡ginas. Se vocÃª nÃ£o permitir esses cookies, alguns ou todos esses serviÃ§os podem nÃ£o funcionar
+                <p>Esses cookies permitem que o site proporcione a você funcionalidades e personalização aprimoradas.
+                    Podem ser definidos por nós ou por provedores terceiros cujos serviços adicionamos Ã s nossas
+                    pÃ¡ginas. Se você não permitir esses cookies, alguns ou todos esses serviços podem não funcionar
                     corretamente.</p>
             </div>
 
@@ -5249,13 +5249,13 @@
                     <h4>Redes sociais (3 de 3)</h4>
                     <button class="deselect-class">Desselecionar toda classe</button>
                 </div>
-                <p>Esses cookies permitem que o site mostre as postagens da Prefeitura nas redes sociais. Se vocÃª nÃ£o
-                    permitir esses cookies, as postagens da Prefeitura nas redes sociais nÃ£o serÃ£o exibidas no site.</p>
+                <p>Esses cookies permitem que o site mostre as postagens da Prefeitura nas redes sociais. Se você não
+                    permitir esses cookies, as postagens da Prefeitura nas redes sociais não serão exibidas no site.</p>
             </div>
 
             <div class="cookie-modal-footer">
                 <a href="#">Aviso sobre cookies</a>
-                <a href="#">DeclaraÃ§Ã£o de Conformidade com os PrincÃ­pios de ProteÃ§Ã£o de Dados</a>
+                <a href="#">Declaração de Conformidade com os Princípios de Proteção de Dados</a>
             </div>
         </div>
     </div>
@@ -5279,8 +5279,8 @@
         <div class="container footer-container">
             <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                 <div>
-                    <p><strong>InformaÃ§Ãµes da Secretaria Municipal de EducaÃ§Ã£o | PMI</strong></p>
-                    <p>Rua JoÃ£o Rosa Gonzales, 1242 - Engenho, ItaguaÃ­, Rio de Janeiro - Brasil</p>
+                    <p><strong>Informações da Secretaria Municipal de Educação | PMI</strong></p>
+                    <p>Rua João Rosa Gonzales, 1242 - Engenho, Itaguaí, Rio de Janeiro - Brasil</p>
                     <p>CEP: 23.820-380</p>
                     <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.3); margin: 0.5rem 0;">
                     <p>Telefone: (21) 3782-9003 | RAMAL DA SUBINFRA: 3016</p>
@@ -5290,7 +5290,7 @@
                 <div style="text-align: right;">
                     <img class="logo-govcidades"
                         src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg"
-                        alt="Prefeitura de ItaguaÃ­" style="max-height: 40px; margin-bottom: 1rem;">
+                        alt="Prefeitura de Itaguaí" style="max-height: 40px; margin-bottom: 1rem;">
                     <p><strong>Redes Sociais</strong></p>
                     <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.3); margin: 0.5rem 0;">
                     <div
@@ -5301,7 +5301,7 @@
                             <a href="https://www.facebook.com/?ref=tn_tnmn" aria-label="Facebook"  target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook-f"></i></a>
                         </div>
-                        <!-- <img class="logo-govcidades" src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg" alt="Prefeitura de ItaguaÃ­" style="max-height: 40px; margin-top: 1rem;"> -->
+                        <!-- <img class="logo-govcidades" src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg" alt="Prefeitura de Itaguaí" style="max-height: 40px; margin-top: 1rem;"> -->
                     </div>
                 </div>
             </div>
@@ -5397,7 +5397,7 @@
                 });
 
                 if (list.innerHTML === '') {
-                    list.innerHTML = '<div style="text-align:center; padding: 40px; color: #94a3b8; font-size: 0.9rem;">Nenhum processo encontrado para as situaÃ§Ãµes atuais.</div>';
+                    list.innerHTML = '<div style="text-align:center; padding: 40px; color: #94a3b8; font-size: 0.9rem;">Nenhum processo encontrado para as situações atuais.</div>';
                 }
             }
 
@@ -5439,10 +5439,10 @@
             var m = document.getElementById(id);
             if (!m) return;
             
-            // Remove classe visible (para animaÃ§Ã£o)
+            // Remove classe visible (para animação)
             m.classList.remove('visible');
             
-            // Aguarda transiÃ§Ã£o CSS (300ms) antes de esconder completamente
+            // Aguarda transição CSS (300ms) antes de esconder completamente
             setTimeout(() => {
                 if (!m.classList.contains('visible')) {
                     m.style.display = 'none';
@@ -5460,7 +5460,7 @@
                 }
             }
             
-            // Apenas esconde o overlay se nÃ£o houver modal aberto
+            // Apenas esconde o overlay se não houver modal aberto
             if (!anyModalOpen) {
                 var overlay = document.getElementById('overlay');
                 if (overlay) {
@@ -5547,13 +5547,13 @@
             window._listenersInitialized = true;
             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Inicializando listeners globais...');
 
-            // BotÃµes Novo Processo (Desktop e Mobile)
+            // Botões Novo Processo (Desktop e Mobile)
             const newProcessButtons = document.querySelectorAll('.btn-primary-new, .mobile-actions-grid .btn-primary, .bottom-nav-item i.fa-plus-circle, .nav-item i.fa-plus-circle');
             newProcessButtons.forEach(btn => {
                 const target = btn.closest('a') || btn.closest('button') || btn;
                 target.addEventListener('click', (e) => {
                     e.preventDefault();
-                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('BotÃ£o Novo Processo clicado');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Botão Novo Processo clicado');
                     window.openProcessModal();
                 });
             });
@@ -5571,7 +5571,7 @@
                 });
             });
 
-            // Central de Eventos da Tabela: botÃ£o Editar abre sÃ³ o modal de ediÃ§Ã£o; clique na linha abre detalhes
+            // Central de Eventos da Tabela: botão Editar abre só o modal de edição; clique na linha abre detalhes
             const processTable = document.getElementById('process-table');
             const tbody = document.getElementById('processTableBody');
             if (processTable) {
@@ -5595,7 +5595,7 @@
         };
 
         /**
-         * Manipulador central de aÃ§Ãµes da tabela (Event Delegation).
+         * Manipulador central de ações da tabela (Event Delegation).
          */
         window.handleTableActions = async function (event) {
             const button = event.target.closest('.action-btn');
@@ -5821,7 +5821,7 @@
             }
         };
 
-        // A inicializaÃ§Ã£o agora Ã© disparada via onAuthStateChange apÃ³s confirmar autenticaÃ§Ã£o
+        // A inicialização agora é disparada via onAuthStateChange após confirmar autenticação
         // if (document.readyState === 'complete') window.initApp();
         // else window.addEventListener('load', window.initApp);
 
@@ -5829,52 +5829,52 @@
         const infoContent = {
             faq: {
                 title: '<i class="fas fa-question-circle"></i> Perguntas Frequentes',
-                subtitle: 'Tire suas dÃºvidas sobre o sistema',
+                subtitle: 'Tire suas dúvidas sobre o sistema',
                 content: `
                     <h3>Como fazer login no sistema?</h3>
                     <p>Utilize seu e-mail institucional e senha cadastrada. Em caso de primeiro acesso, entre em contato com o administrador.</p>
                     
                     <h3>Como cadastrar um novo processo?</h3>
-                    <p>Clique no botÃ£o "Novo Processo" no menu lateral ou na navegaÃ§Ã£o inferior (mobile). Preencha todos os campos obrigatÃ³rios e clique em salvar.</p>
+                    <p>Clique no botão "Novo Processo" no menu lateral ou na navegação inferior (mobile). Preencha todos os campos obrigatórios e clique em salvar.</p>
                     
                     <h3>Como rastrear um processo?</h3>
-                    <p>Na seÃ§Ã£o de Consulta, utilize os filtros disponÃ­veis (nÃºmero, status, data, tipo) para encontrar o processo desejado. Clique no Ã­cone de histÃ³rico para ver a tramitaÃ§Ã£o.</p>
+                    <p>Na seção de Consulta, utilize os filtros disponíveis (número, status, data, tipo) para encontrar o processo desejado. Clique no ícone de histórico para ver a tramitação.</p>
                     
                     <h3>Como alterar minha senha?</h3>
                     <p>Acesse "Minha Conta" no menu do usuÃ¡rio e selecione "Alterar Senha".</p>
                     
                     <h3>O que fazer quando um processo estÃ¡ atrasado?</h3>
-                    <p>Processos atrasados aparecem destacados em vermelho. Verifique o motivo do atraso na aba "ObservaÃ§Ãµes" e tome as providÃªncias necessÃ¡rias.</p>
+                    <p>Processos atrasados aparecem destacados em vermelho. Verifique o motivo do atraso na aba "Observações" e tome as providências necessÃ¡rias.</p>
                     
                     <div class="highlight-box">
                         <strong>Precisa de mais ajuda?</strong><br>
-                        Entre em contato com o suporte atravÃ©s do e-mail: suporte@itaguai.rj.gov.br
+                        Entre em contato com o suporte através do e-mail: suporte@itaguai.rj.gov.br
                     </div>
                 `
             },
             manual: {
                 title: '<i class="fas fa-book-open"></i> Manual do UsuÃ¡rio',
-                subtitle: 'Guia completo de utilizaÃ§Ã£o do sistema',
+                subtitle: 'Guia completo de utilização do sistema',
                 content: `
-                    <h3>1. Login e AutenticaÃ§Ã£o</h3>
-                    <p>O sistema utiliza autenticaÃ§Ã£o segura. Cada usuÃ¡rio possui credenciais Ãºnicas fornecidas pelo administrador.</p>
+                    <h3>1. Login e Autenticação</h3>
+                    <p>O sistema utiliza autenticação segura. Cada usuÃ¡rio possui credenciais únicas fornecidas pelo administrador.</p>
                     
                     <h3>2. Dashboard</h3>
-                    <p>A tela inicial mostra estatÃ­sticas em tempo real:</p>
+                    <p>A tela inicial mostra estatísticas em tempo real:</p>
                     <ul>
                         <li><strong>Total de Processos:</strong> Quantidade geral de processos cadastrados</li>
-                        <li><strong>Em TramitaÃ§Ã£o:</strong> Processos ativos no momento</li>
-                        <li><strong>Liquidados:</strong> Processos concluÃ­dos com sucesso</li>
-                        <li><strong>PendÃªncias:</strong> Percentual de processos nÃ£o finalizados</li>
+                        <li><strong>Em Tramitação:</strong> Processos ativos no momento</li>
+                        <li><strong>Liquidados:</strong> Processos concluídos com sucesso</li>
+                        <li><strong>Pendências:</strong> Percentual de processos não finalizados</li>
                         <li><strong>Vencidos:</strong> Processos com prazo excedido</li>
                     </ul>
                     
                     <h3>3. Cadastro de Processos</h3>
                     <p>Para cadastrar um novo processo, clique em "Novo Processo" e preencha:</p>
                     <ul>
-                        <li>NÃºmero do processo</li>
+                        <li>Número do processo</li>
                         <li>Tipo de processo</li>
-                        <li>Objeto/DescriÃ§Ã£o</li>
+                        <li>Objeto/Descrição</li>
                         <li>Fornecedor</li>
                         <li>Local de entrega</li>
                         <li>Valor</li>
@@ -5882,21 +5882,21 @@
                     </ul>
                     
                     <h3>4. Consulta e Filtros</h3>
-                    <p>Use os filtros avanzados para buscar processos especÃ­ficos por status, data, departamento ou fornecedor.</p>
+                    <p>Use os filtros avanzados para buscar processos específicos por status, data, departamento ou fornecedor.</p>
                     
-                    <h3>5. RelatÃ³rios</h3>
-                    <p>Exporte dados para Excel ou gere relatÃ³rios PDF diretamente do sistema.</p>
+                    <h3>5. Relatórios</h3>
+                    <p>Exporte dados para Excel ou gere relatórios PDF diretamente do sistema.</p>
                 `
             },
             termos: {
-                title: '<i class="fas fa-file-contract"></i> PolÃ­tica de Uso',
-                subtitle: 'Termos e condiÃ§Ãµes de uso do sistema',
+                title: '<i class="fas fa-file-contract"></i> Política de Uso',
+                subtitle: 'Termos e condições de uso do sistema',
                 content: `
                     <h3>1. Objetivo</h3>
-                    <p>O Sistema de Controle de Processos de Pagamento tem como objetivo gerenciar e rastrear todos os processos administrativos da Secretaria Municipal de EducaÃ§Ã£o.</p>
+                    <p>O Sistema de Controle de Processos de Pagamento tem como objetivo gerenciar e rastrear todos os processos administrativos da Secretaria Municipal de Educação.</p>
                     
                     <h3>2. UsuÃ¡rios Autorizados</h3>
-                    <p>O acesso Ã© restrito a servidores municipais devidamente cadastrados e autorizados pela administraÃ§Ã£o.</p>
+                    <p>O acesso é restrito a servidores municipais devidamente cadastrados e autorizados pela administração.</p>
                     
                     <h3>3. Responsabilidades do UsuÃ¡rio</h3>
                     <ul>
@@ -5910,21 +5910,21 @@
                     <ul>
                         <li>Verificar diariamente os processos pendentes</li>
                         <li>Manter os dados sempre atualizados</li>
-                        <li>Usar o sistema de forma Ã©tica e profissional</li>
+                        <li>Usar o sistema de forma ética e profissional</li>
                         <li>Respeitar os prazos estabelecidos</li>
                     </ul>
                     
                     <h3>5. Penalidades</h3>
                     <p>O uso indevido do sistema pode resultar em:</p>
                     <ul>
-                        <li>SuspensÃ£o temporÃ¡ria de acesso</li>
+                        <li>Suspensão temporÃ¡ria de acesso</li>
                         <li>Cancelamento definitivo de cadastro</li>
-                        <li>Medidas administrativas cabÃ­veis</li>
+                        <li>Medidas administrativas cabíveis</li>
                     </ul>
                     
                     <div class="highlight-box">
                         <strong>Aviso Legal:</strong><br>
-                        O uso deste sistema implica aceitaÃ§Ã£o completa destes termos. Em caso de dÃºvidas, consulte o regulamento interno.
+                        O uso deste sistema implica aceitação completa destes termos. Em caso de dúvidas, consulte o regulamento interno.
                     </div>
                 `
             }
@@ -5968,7 +5968,7 @@
             if (st === 'EM PAGAMENTO') return '#3498db'; // Azul Claro
             if (st === 'AGUARDANDO') return '#f1c40f'; // Amarelo
             if (st === 'ARQUIVADO') return '#7f8c8d'; // Cinza
-            return '#f39c12'; // Laranja padrÃ£o fallback ou qualquer cor diferenciada para 'outros'
+            return '#f39c12'; // Laranja padrão fallback ou qualquer cor diferenciada para 'outros'
         };
         window.showSection = function (id) {
             document.querySelectorAll('[id$="-section"]').forEach(s => s.style.display = 'none');
@@ -5998,7 +5998,7 @@
 
         window.updateDashboardCounters = function () {
             const total = window.state.processes.length;
-            const pending = window.state.processes.filter(p => p.status && p.status !== 'ConcluÃ­do').length;
+            const pending = window.state.processes.filter(p => p.status && p.status !== 'Concluído').length;
             const pendenteCount = window.state.processes.filter(p => (p.status || '').trim().toLowerCase() === 'pendente').length;
 
             const set = (id, val) => {
@@ -6017,8 +6017,8 @@
             set('finance-processes', pendenteCount);
             set('list-finance-processes', pendenteCount);
 
-            // CorreÃ§Ã£o: Contar explicitamente processos com status "ConcluÃ­do"
-            const completedCount = window.state.processes.filter(p => (p.status || '').trim().toLowerCase() === 'concluÃ­do').length;
+            // Correção: Contar explicitamente processos com status "Concluído"
+            const completedCount = window.state.processes.filter(p => (p.status || '').trim().toLowerCase() === 'concluído').length;
             set('completed-processes', completedCount);
 
             set('pending-percent', total ? ((pending / total) * 100) : 0);
@@ -6033,7 +6033,7 @@
                 'purchase-processes': 'compras',
                 'warehouse-processes': 'almoxarifado',
                 'treasury-processes': 'tesouraria',
-                'nutrition-processes': 'nutriÃ§',
+                'nutrition-processes': 'nutriç',
                 'secretariat-processes': '142',
                 'protocol-processes': 'protocolo'
             };
@@ -6053,7 +6053,7 @@
             }
 
             const delayed = window.state.processes.filter(p => {
-                if (p.status === 'ConcluÃ­do' || !p.deadline) return false;
+                if (p.status === 'Concluído' || !p.deadline) return false;
                 const days = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
                 return days < 0;
             }).length;
@@ -6098,9 +6098,9 @@
                 '#3498db', '#1abc9c', '#f1c40f', '#34495e', '#d35400'
             ];
 
-            // GrÃ¡fico de Status DinÃ¢mico (inclui todos os status presentes no banco)
-            const actualStatuses = [...new Set(window.state.processes.map(p => p.status || 'NÃ£o Definido'))];
-            const statusCounts = actualStatuses.map(s => window.state.processes.filter(p => (p.status || 'NÃ£o Definido') === s).length);
+            // GrÃ¡fico de Status Dinâmico (inclui todos os status presentes no banco)
+            const actualStatuses = [...new Set(window.state.processes.map(p => p.status || 'Não Definido'))];
+            const statusCounts = actualStatuses.map(s => window.state.processes.filter(p => (p.status || 'Não Definido') === s).length);
 
             statusChart = new Chart(sEl.getContext('2d'), {
                 type: 'doughnut',
@@ -6210,7 +6210,7 @@
             if (type === 'all') {
                 // nada a fazer
             } else if (type === 'status') {
-                if (value === '!ConcluÃ­do') {
+                if (value === '!Concluído') {
                     window._dashboardFilter = { type: 'status_not_completed' };
                 } else {
                     const exactStatus = window.state.statuses.find(s => s.toLowerCase() === value.toLowerCase());
@@ -6252,19 +6252,19 @@
 
                 let matchStatus = true;
                 if (!fromDomInteraction && window._dashboardFilter && window._dashboardFilter.type === 'status_not_completed') {
-                    matchStatus = p.status !== 'ConcluÃ­do';
+                    matchStatus = p.status !== 'Concluído';
                 } else {
                     matchStatus = !status || (p.status || '').trim().toLowerCase() === status.trim().toLowerCase();
                 }
 
-                // Remove prefixos numÃ©ricos (ex: "24 - ", "25 -") para comparar corretamente processos antigos
+                // Remove prefixos numéricos (ex: "24 - ", "25 -") para comparar corretamente processos antigos
                 const stripPrefix = (str) => (str || '').replace(/^\d+\s*[-.]*\s*/, '').trim().toLowerCase();
                 const locTarget = stripPrefix(locationArr);
                 const matchLoc = !locationArr || stripPrefix(p.location) === locTarget || (p.location || '').toLowerCase().includes(locTarget);
 
                 let matchDelayed = true;
                 if (!fromDomInteraction && window._dashboardFilter && window._dashboardFilter.type === 'delayed') {
-                    if (p.status === 'ConcluÃ­do' || !p.deadline) {
+                    if (p.status === 'Concluído' || !p.deadline) {
                         matchDelayed = false;
                     } else {
                         const days = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
@@ -6345,7 +6345,7 @@
         // ===== BACKUP & RESTORE UTILITIES =====
         window.downloadFullBackup = async function () {
             if (!supabase) {
-                alert('Supabase nÃ£o inicializado. Verifique sua conexÃ£o.');
+                alert('Supabase não inicializado. Verifique sua conexão.');
                 return;
             }
 
@@ -6380,7 +6380,7 @@
                             backup.tables[table] = data || [];
                         }
                     } catch (err) {
-                        console.error('ExceÃ§Ã£o ao ler tabela', table, err);
+                        console.error('Exceção ao ler tabela', table, err);
                         backup.tables[table] = { error: err.message || String(err) };
                     }
                 }
@@ -6412,7 +6412,7 @@
         };
 
         window.restoreFromBackup = function () {
-            alert('Por seguranÃ§a, a restauraÃ§Ã£o automÃ¡tica ainda nÃ£o estÃ¡ habilitada nesta versÃ£o.\n\nUse este backup apenas para consulta ou para restauraÃ§Ã£o assistida por suporte tÃ©cnico.');
+            alert('Por segurança, a restauração automÃ¡tica ainda não estÃ¡ habilitada nesta versão.\n\nUse este backup apenas para consulta ou para restauração assistida por suporte técnico.');
         };
 
 
@@ -6493,7 +6493,7 @@
                     <div style="padding:0.75rem 1rem; border-bottom:1px solid #f1f5f9; display:flex; align-items:flex-start; gap:1rem; background:${bgColor};">
                         <div style="font-size:1.1rem; margin-top:2px;">${icon}</div>
                         <div style="flex:1;">
-                            <div style="font-size:0.85rem; color:#1e293b; line-height:1.4;">${l.message || 'MovimentaÃ§Ã£o Processual'}</div>
+                            <div style="font-size:0.85rem; color:#1e293b; line-height:1.4;">${l.message || 'Movimentação Processual'}</div>
                             <div style="font-size:0.7rem; color:#94a3b8; margin-top:4px; display:flex; gap:1rem;">
                                 <span><i class="far fa-clock"></i> ${new Date(l.created_at).toLocaleString('pt-BR')}</span>
                                 ${l.user_email ? `<span><i class="far fa-user"></i> ${l.user_email}</span>` : ''}
@@ -6538,7 +6538,7 @@
                                 <div style="font-size:0.75rem; color:#64748b;">${u.email}</div>
                             </td>
                             <td style="padding:1.25rem;">
-                                <span style="font-size:0.85rem; color:#475569; font-weight:500;">${u.department || '<em style="color:#94a3b8;">NÃ£o vinculado</em>'}</span>
+                                <span style="font-size:0.85rem; color:#475569; font-weight:500;">${u.department || '<em style="color:#94a3b8;">Não vinculado</em>'}</span>
                             </td>
                             <td style="padding:1.25rem;">
                                 <div style="display:flex; align-items:center; gap:10px;">
@@ -6548,7 +6548,7 @@
                             </td>
                             <td style="padding:1.25rem; text-align:right;">
                                 <div style="display:flex; gap:8px; justify-content:flex-end;">
-                                    <button class="btn-icon-round btn-edit-user" onclick='window.editUser(${JSON.stringify(u)})' title="Editar InformaÃ§Ãµes">
+                                    <button class="btn-icon-round btn-edit-user" onclick='window.editUser(${JSON.stringify(u)})' title="Editar Informações">
                                         <i class="fas fa-pen" style="font-size: 0.85rem;"></i>
                                     </button>
                                     ${u.active !== false ? 
@@ -6602,7 +6602,7 @@
 
                 if (p.deadline) {
                     const d = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
-                    daysText = p.status === 'ConcluÃ­do' ? 'OK' : d + 'd';
+                    daysText = p.status === 'Concluído' ? 'OK' : d + 'd';
                     daysColor = d < 0 ? 'red' : 'gray';
                 }
 
@@ -6639,7 +6639,7 @@
                          <button class="btn btn-warning action-btn" data-action="edit" data-id="${p.id}" title="Editar" style="padding:4px; width:28px; height:28px">
                              <i class="fas fa-edit"></i>
                          </button>
-                         <button class="btn btn-primary action-btn" data-action="history" data-id="${p.id}" title="HistÃ³rico" style="padding:4px; width:28px; height:28px">
+                         <button class="btn btn-primary action-btn" data-action="history" data-id="${p.id}" title="Histórico" style="padding:4px; width:28px; height:28px">
                              <i class="fas fa-history"></i>
                          </button>
                          <button class="btn btn-danger action-btn" data-action="delete" data-id="${p.id}" title="Excluir" style="padding:4px; width:28px; height:28px">
@@ -6647,7 +6647,7 @@
                          </button>
                      </td>
                             <td style="padding:1.25rem;">
-                                <span style="font-size:0.85rem; color:#475569; font-weight:500;">${u.department || '<em style="color:#94a3b8;">NÃ£o vinculado</em>'}</span>
+                                <span style="font-size:0.85rem; color:#475569; font-weight:500;">${u.department || '<em style="color:#94a3b8;">Não vinculado</em>'}</span>
                             </td>
                             <td style="padding:1.25rem;">
                                 <div style="display:flex; align-items:center; gap:10px;">
@@ -6657,7 +6657,7 @@
                             </td>
                             <td style="padding:1.25rem; text-align:right;">
                                 <div style="display:flex; gap:8px; justify-content:flex-end;">
-                                    <button class="btn-icon-round btn-edit-user" onclick='window.editUser(${JSON.stringify(u)})' title="Editar InformaÃ§Ãµes">
+                                    <button class="btn-icon-round btn-edit-user" onclick='window.editUser(${JSON.stringify(u)})' title="Editar Informações">
                                         <i class="fas fa-pen" style="font-size: 0.85rem;"></i>
                                     </button>
                                     ${u.active !== false
@@ -6690,7 +6690,7 @@
             const errText = document.getElementById('userFormErrorText');
 
             if (!fullName || !email) {
-                errText.innerText = 'Nome e e-mail sÃ£o obrigatÃ³rios.';
+                errText.innerText = 'Nome e e-mail são obrigatórios.';
                 errDiv.style.display = 'block';
                 return;
             }
@@ -6700,7 +6700,7 @@
                 return;
             }
             if (!editingId && password !== confirmPassword) {
-                errText.innerText = 'As senhas digitadas nÃ£o coincidem.';
+                errText.innerText = 'As senhas digitadas não coincidem.';
                 errDiv.style.display = 'block';
                 return;
             }
@@ -6732,7 +6732,7 @@
                             id: userId, full_name: fullName, role: role, department: department
                         });
                     }
-                    alert('UsuÃ¡rio cadastrado! PeÃ§a para confirmar o e-mail de ativaÃ§Ã£o.');
+                    alert('UsuÃ¡rio cadastrado! Peça para confirmar o e-mail de ativação.');
                 }
 
                 // Reset
@@ -6740,7 +6740,7 @@
                 window.loadUsers();
             } catch (err) {
                 console.error('Erro no cadastro:', err);
-                errText.innerText = 'Erro: ' + (err.message || 'Falha na comunicaÃ§Ã£o com o servidor');
+                errText.innerText = 'Erro: ' + (err.message || 'Falha na comunicação com o servidor');
                 errDiv.style.display = 'block';
             } finally {
                 btn.innerHTML = originalBtnHtml;
@@ -6770,7 +6770,7 @@
                 alert('Acesso negado.');
                  return;
              }
-             if (!(await ConfirmModal.show(`ATENÃ‡ÃƒO: Deseja excluir permanentemente o perfil de ${name}?\nEsta aÃ§Ã£o nÃ£o pode ser desfeita.`, {isDangerous: true}))) return;
+             if (!(await ConfirmModal.show(`ATENÃ‡ÃƒO: Deseja excluir permanentemente o perfil de ${name}?\nEsta ação não pode ser desfeita.`, {isDangerous: true}))) return;
             const { error } = await supabase.from('user_profiles').delete().eq('id', id);
             if (error) { alert('Erro ao excluir: ' + error.message); return; }
             alert('Perfil removido com sucesso!');
@@ -6795,7 +6795,7 @@
                     }
 
                     if (profile || isSuperAdmin) {
-                        // Se for Super Admin, forÃ§a cargo de administrador mesmo sem perfil no banco
+                        // Se for Super Admin, força cargo de administrador mesmo sem perfil no banco
                         if (isSuperAdmin) {
                             window.currentUserRole = 'administrador';
                             window.currentUserName = (profile?.full_name || 'CPD INFRA');
@@ -6813,7 +6813,7 @@
                         if (menuBackup) menuBackup.style.display = isAdmin ? 'block' : 'none';
                         if (menuLogs) menuLogs.style.display = isAdmin ? 'block' : 'none';
                     } else {
-                        // Perfil nÃ£o encontrado e nÃ£o Ã© super admin
+                        // Perfil não encontrado e não é super admin
                         window.currentUserRole = 'convidado';
                         userEl.innerText = user.email.split('@')[0];
                         deptEl.innerText = 'CONVIDADO';
@@ -6830,7 +6830,7 @@
             }
         }
 
-         // Esperar pela inicializaÃ§Ã£o do Supabase antes de usar
+         // Esperar pela inicialização do Supabase antes de usar
          function waitForSupabase(callback, maxAttempts = 30) {
              let attempts = 0;
              const checkInterval = setInterval(() => {
@@ -6840,12 +6840,12 @@
                      callback(window.supabaseClient);
                  } else if (attempts >= maxAttempts) {
                      clearInterval(checkInterval);
-                     console.error('Supabase client nÃ£o foi inicializado apÃ³s mÃºltiplas tentativas');
+                     console.error('Supabase client não foi inicializado após múltiplas tentativas');
                  }
              }, 200);
          }
 
-         // Monitorar estado da sessÃ£o com seguranÃ§a
+         // Monitorar estado da sessão com segurança
          waitForSupabase(function(supabaseClient) {
              if (supabaseClient && supabaseClient.auth) {
                  supabaseClient.auth.onAuthStateChange((event, session) => {
@@ -6875,20 +6875,20 @@
                      }
                  });
              } else {
-                 console.error('supabase.auth nÃ£o disponÃ­vel para monitoramento.');
+                 console.error('supabase.auth não disponível para monitoramento.');
              }
          });
 
          window.logout = async function (e) {
               if (e) e.preventDefault();
               // Using a cleaner confirm message and ensuring state is reset
-              if (await ConfirmModal.show('VocÃª tem certeza que deseja sair do sistema?', {title: 'Logout'})) {
+              if (await ConfirmModal.show('Você tem certeza que deseja sair do sistema?', {title: 'Logout'})) {
                   try {
                       // Explicitly reset role before sign out to prevent UI flickers or lingering access
                      window.currentUserRole = 'convidado';
                      
                      if (!window.supabaseClient) {
-                         console.error('Supabase nÃ£o inicializado');
+                         console.error('Supabase não inicializado');
                          window.location.reload();
                          return;
                      }
@@ -6961,16 +6961,16 @@
                 }
             } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
-            // Textos do CabeÃ§alho - Alinhados Ã  Esquerda
+            // Textos do Cabeçalho - Alinhados Ã  Esquerda
             const startX = 35; // Position after logo
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
             doc.setTextColor(20, 20, 20); // Preto mais escuro
             doc.text("PREFEITURA MUNICIPAL DE ITAGUAÃ", startX, 14, { align: 'left' });
-            doc.text("Secretaria Municipal de EducaÃ§Ã£o", startX, 19, { align: 'left' });
+            doc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
 
-            // TÃ­tulo do CabeÃ§alho
+            // Título do Cabeçalho
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(14);
             doc.setTextColor(20, 82, 181); // Azul do GOV.BR
@@ -6981,13 +6981,13 @@
             doc.setLineWidth(0.5);
             doc.line(14, 38, 283, 38);
 
-            // Data de EmissÃ£o
+            // Data de Emissão
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
             doc.setTextColor(150, 150, 150);
             const now = new Date();
             const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            doc.text("Data de EmissÃ£o: " + dateStr, 14, 43);
+            doc.text("Data de Emissão: " + dateStr, 14, 43);
 
             // Tabela com Colunas Seletivas
             const allChecks = document.querySelectorAll('.pdf-col-check');
@@ -7059,7 +7059,7 @@
                 const pdfHeight = doc.internal.pageSize.height;
                 const startX = 35; // Position after logo
 
-                // Esconder todos os botÃµes pdf provisoriamente
+                // Esconder todos os botões pdf provisoriamente
                 const pdfButtons = element.querySelectorAll('button');
                 const originalDisplays = [];
                 pdfButtons.forEach((b, i) => {
@@ -7071,12 +7071,12 @@
                 const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#f2f2f2' });
                 const imgData = canvas.toDataURL('image/jpeg', 1.0);
 
-                // Volta o estado normal dos botÃµes
+                // Volta o estado normal dos botões
                 pdfButtons.forEach((b, i) => {
                     if (b.innerText.includes('PDF')) b.style.display = originalDisplays[i];
                 });
 
-                // --- CabeÃ§alho e Logo ---
+                // --- Cabeçalho e Logo ---
                 try {
                     const logoUrl = 'public/assets/images/logo.png';
                     const imgLogo = new Image();
@@ -7094,14 +7094,14 @@
                     console.warn('Falha ao carregar logo no PDF:', e);
                 }
 
-                // Textos do CabeÃ§alho - Alinhados Ã  Esquerda
+                // Textos do Cabeçalho - Alinhados Ã  Esquerda
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(10);
                 doc.setTextColor(20, 20, 20); // Preto mais escuro
                 doc.text("PREFEITURA MUNICIPAL DE ITAGUAÃ", startX, 14, { align: 'left' });
-                doc.text("Secretaria Municipal de EducaÃ§Ã£o", startX, 19, { align: 'left' });
+                doc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
 
-                // TÃ­tulo do CabeÃ§alho
+                // Título do Cabeçalho
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(14);
                 doc.setTextColor(20, 82, 181); // Azul do GOV.BR
@@ -7112,29 +7112,29 @@
                 doc.setLineWidth(0.5);
                 doc.line(14, 38, 283, 38);
 
-                // Data de EmissÃ£o
+                // Data de Emissão
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(8);
                 doc.setTextColor(150, 150, 150);
                 const now = new Date();
                 const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                doc.text("Data de EmissÃ£o: " + dateStr, 14, 43);
+                doc.text("Data de Emissão: " + dateStr, 14, 43);
 
                 // Imagem do Dashboard
-                // Calcula dimensÃµes, mantendo a proporÃ§Ã£o (aspect ratio) da captura 
+                // Calcula dimensões, mantendo a proporção (aspect ratio) da captura 
                 const canvasAspectRatio = canvas.width / canvas.height;
-                // Margens e Y de comeÃ§o
+                // Margens e Y de começo
                 const marginX = 14;
-                const startY = 48; // ApÃ³s a data de emissÃ£o
+                const startY = 48; // Após a data de emissão
 
-                // DimensÃµes do PDF disponÃ­veis
+                // Dimensões do PDF disponíveis
                 const availablePageWidth = pdfWidth - (marginX * 2);
-                const availablePageHeight = pdfHeight - startY - 10; // 10 Ã© margem inferior
+                const availablePageHeight = pdfHeight - startY - 10; // 10 é margem inferior
 
                 let finalImgWidth = availablePageWidth;
                 let finalImgHeight = finalImgWidth / canvasAspectRatio;
 
-                // Redimensiona se ficar mais alto que o espaÃ§o disponÃ­vel
+                // Redimensiona se ficar mais alto que o espaço disponível
                 if (finalImgHeight > availablePageHeight) {
                     finalImgHeight = availablePageHeight;
                     finalImgWidth = finalImgHeight * canvasAspectRatio;
@@ -7147,7 +7147,7 @@
                 doc.save('dashboard.pdf');
 
             } catch (e) {
-                console.error("Erro na exportaÃ§Ã£o para PDF: ", e);
+                console.error("Erro na exportação para PDF: ", e);
                 alert("Ocorreu um erro ao gerar o PDF. Verifique o console.");
             } finally {
                 if (btn) {
@@ -7158,7 +7158,7 @@
         };
 
         window.exportToExcel = function () {
-            const header = ['NÃšMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSÃƒO', 'TRATADO POR', 'STATUS', 'LocalizaÃ§Ã£o'];
+            const header = ['NÃšMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSÃƒO', 'TRATADO POR', 'STATUS', 'Localização'];
 
             const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
             const dataToExportSource = window._lastFiltered || window.state.processes;
@@ -7216,7 +7216,7 @@
                             let color = "C6E0B4"; // default light green
                             if (val === 'Em AnÃ¡lise') color = "BDD7EE";
                             else if (val === 'Pendente') color = "F8CBAD";
-                            else if (val === 'ConcluÃ­do') color = "A9D08E";
+                            else if (val === 'Concluído') color = "A9D08E";
                             else if (val === 'Aguardando Assinatura') color = "D9D9D9";
                             else if (val === 'Atrasado' || val === 'Vencido') color = "FFC7CE";
 
@@ -7247,7 +7247,7 @@
                  const processId = document.getElementById('processId').value;
                  
                  if (!supabase) {
-                     alert('Erro: Banco de dados nÃ£o inicializado');
+                     alert('Erro: Banco de dados não inicializado');
                      return;
                  }
                  
@@ -7260,7 +7260,7 @@
                  console.log('RPC update result:', { data, error });
                  
                  if (error) {
-                     throw new Error('Erro na atualizaÃ§Ã£o: ' + (error.message || error));
+                     throw new Error('Erro na atualização: ' + (error.message || error));
                  }
                  
                  // Check if RPC returned an error in the response
@@ -7305,7 +7305,7 @@
          window.deleteHistoryItem = async function (historyId) {
              try {
                  // Confirm deletion
-                 if (!await ConfirmModal.show('Tem certeza que deseja excluir este registro de movimentaÃ§Ã£o?', { isDangerous: true })) {
+                 if (!await ConfirmModal.show('Tem certeza que deseja excluir este registro de movimentação?', { isDangerous: true })) {
                      return;
                  }
                  
@@ -7314,7 +7314,7 @@
                  const processId = document.getElementById('processId').value;
                  
                  if (!supabase) {
-                     alert('Erro: Banco de dados nÃ£o inicializado');
+                     alert('Erro: Banco de dados não inicializado');
                      return;
                  }
                  
@@ -7326,7 +7326,7 @@
                  console.log('RPC delete result:', { data, error });
                  
                  if (error) {
-                     throw new Error('Erro na exclusÃ£o: ' + (error.message || error));
+                     throw new Error('Erro na exclusão: ' + (error.message || error));
                  }
                  
                  // Check if RPC returned an error in the response
@@ -7335,7 +7335,7 @@
                  }
                  
                  // Show success
-                 alert('Registro excluÃ­do com sucesso!');
+                 alert('Registro excluído com sucesso!');
                  
                  // Refresh the timeline
                  if (processId) {
@@ -7371,54 +7371,54 @@
          // Checklist Data Structure
          window.CHECKLIST_ITEMS = {
              section1: {
-                 title: 'DocumentaÃ§Ã£o de CobranÃ§a e ExecuÃ§Ã£o',
+                 title: 'Documentação de Cobrança e Execução',
                  icon: 'fa-file-contract',
                  items: [
-                     { id: 'item1', text: 'Requerimento/OfÃ­cio de CobranÃ§a', description: 'FormalizaÃ§Ã£o do pedido de pagamento pela empresa.' },
+                     { id: 'item1', text: 'Requerimento/Ofício de Cobrança', description: 'Formalização do pedido de pagamento pela empresa.' },
                      { id: 'item2', text: 'Nota Fiscal / Fatura', description: 'Original, devidamente atestada no verso por dois servidores ou via assinatura digital.' },
-                     { id: 'item3', text: 'RelatÃ³rio de ExecuÃ§Ã£o do ServiÃ§o', description: 'Descritivo detalhado do que foi realizado no perÃ­odo.' },
-                     { id: 'item4', text: 'Ordem de ServiÃ§o (OS)', description: 'Com as especificaÃ§Ãµes e autorizaÃ§Ãµes prÃ©vias.' },
-                     { id: 'item5', text: 'Mapa de Controle da ExecuÃ§Ã£o Contratual', description: 'Planilha de mediÃ§Ã£o ou controle de saldos do contrato.' }
+                     { id: 'item3', text: 'Relatório de Execução do Serviço', description: 'Descritivo detalhado do que foi realizado no período.' },
+                     { id: 'item4', text: 'Ordem de Serviço (OS)', description: 'Com as especificações e autorizações prévias.' },
+                     { id: 'item5', text: 'Mapa de Controle da Execução Contratual', description: 'Planilha de medição ou controle de saldos do contrato.' }
                  ]
              },
              section2: {
-                 title: 'Regularidade JurÃ­dica e SocietÃ¡ria',
+                 title: 'Regularidade Jurídica e SocietÃ¡ria',
                  icon: 'fa-file-signature',
                  items: [
-                     { id: 'item6', text: 'Contrato Social / ConsolidaÃ§Ã£o', description: 'CÃ³pia autenticada ou com selo de validade da JUCERJA.' },
-                     { id: 'item7', text: 'Documentos dos SÃ³cios', description: 'RG, CPF e comprovante de residÃªncia conforme exigÃªncia do edital/contrato.' },
-                     { id: 'item8', text: 'Protocolo de TransmissÃ£o do CNPJ', description: 'Comprovante de inscriÃ§Ã£o e situaÃ§Ã£o cadastral ativa.' }
+                     { id: 'item6', text: 'Contrato Social / Consolidação', description: 'Cópia autenticada ou com selo de validade da JUCERJA.' },
+                     { id: 'item7', text: 'Documentos dos Sócios', description: 'RG, CPF e comprovante de residência conforme exigência do edital/contrato.' },
+                     { id: 'item8', text: 'Protocolo de Transmissão do CNPJ', description: 'Comprovante de inscrição e situação cadastral ativa.' }
                  ]
              },
              section3: {
                  title: 'Regularidade Fiscal e Trabalhista (DENTRO DA VALIDADE)',
                  icon: 'fa-certificate',
                  items: [
-                     { id: 'item9', text: 'CertidÃ£o de Regularidade do FGTS (CRF)', description: '' },
-                     { id: 'item10', text: 'CertidÃ£o Negativa de DÃ©bitos Trabalhistas (CNDT)', description: '' },
-                     { id: 'item11', text: 'CertidÃ£o Negativa de Tributos Federais e DÃ­vida Ativa da UniÃ£o (PGFN)', description: '' },
-                     { id: 'item12', text: 'CertidÃ£o Negativa de DÃ©bitos Estaduais (DÃ­vida Ativa)', description: '' },
-                     { id: 'item13', text: 'CertidÃ£o Negativa de IPTU e Tributos MobiliÃ¡rios (ISS/Taxas Municipais)', description: '' },
-                     { id: 'item14', text: 'Recibo da DCTFWeb', description: 'ComprovaÃ§Ã£o de obrigaÃ§Ãµes previdenciÃ¡rias.' }
+                     { id: 'item9', text: 'Certidão de Regularidade do FGTS (CRF)', description: '' },
+                     { id: 'item10', text: 'Certidão Negativa de Débitos Trabalhistas (CNDT)', description: '' },
+                     { id: 'item11', text: 'Certidão Negativa de Tributos Federais e Dívida Ativa da União (PGFN)', description: '' },
+                     { id: 'item12', text: 'Certidão Negativa de Débitos Estaduais (Dívida Ativa)', description: '' },
+                     { id: 'item13', text: 'Certidão Negativa de IPTU e Tributos MobiliÃ¡rios (ISS/Taxas Municipais)', description: '' },
+                     { id: 'item14', text: 'Recibo da DCTFWeb', description: 'Comprovação de obrigações previdenciÃ¡rias.' }
                  ]
              },
              section4: {
                  title: 'Instrumentos Contratuais e Atos Oficiais',
                  icon: 'fa-scroll',
                  items: [
-                     { id: 'item15', text: 'Contrato Original', description: 'CÃ³pia com todas as assinaturas colhidas.' },
-                     { id: 'item16', text: 'Termos Aditivos', description: 'Caso existam prorrogaÃ§Ãµes ou reajustes.' },
-                     { id: 'item17', text: 'Portaria de NomeaÃ§Ã£o do Fiscal', description: 'Documento que designa quem atestou a nota.' },
-                     { id: 'item18', text: 'Extrato do Contrato/Aditivo', description: 'CÃ³pia da publicaÃ§Ã£o no DiÃ¡rio Oficial.' }
+                     { id: 'item15', text: 'Contrato Original', description: 'Cópia com todas as assinaturas colhidas.' },
+                     { id: 'item16', text: 'Termos Aditivos', description: 'Caso existam prorrogações ou reajustes.' },
+                     { id: 'item17', text: 'Portaria de Nomeação do Fiscal', description: 'Documento que designa quem atestou a nota.' },
+                     { id: 'item18', text: 'Extrato do Contrato/Aditivo', description: 'Cópia da publicação no DiÃ¡rio Oficial.' }
                  ]
              },
              section5: {
-                 title: 'DocumentaÃ§Ã£o ContÃ¡bil e Financeira',
+                 title: 'Documentação ContÃ¡bil e Financeira',
                  icon: 'fa-coins',
                  items: [
-                     { id: 'item19', text: 'Nota de Empenho', description: 'Original ou cÃ³pia da nota vinculada Ã  despesa.' },
-                     { id: 'item20', text: 'Folha de InformaÃ§Ã£o (ISS)', description: 'Informando retenÃ§Ãµes ou isenÃ§Ãµes tributÃ¡rias.' },
-                     { id: 'item21', text: 'Folha de InformaÃ§Ã£o (Financeiro)', description: 'Parecer autorizando o fluxo para pagamento.' }
+                     { id: 'item19', text: 'Nota de Empenho', description: 'Original ou cópia da nota vinculada Ã  despesa.' },
+                     { id: 'item20', text: 'Folha de Informação (ISS)', description: 'Informando retenções ou isenções tributÃ¡rias.' },
+                     { id: 'item21', text: 'Folha de Informação (Financeiro)', description: 'Parecer autorizando o fluxo para pagamento.' }
                  ]
              }
          };
@@ -7492,10 +7492,10 @@
              const tipsDiv = document.createElement('div');
              tipsDiv.className = 'checklist-tip';
              tipsDiv.innerHTML = `
-                 <strong>ðŸ’¡ Dicas de Ouro para a GestÃ£o PÃºblica:</strong>
-                 <div><strong>Validade das CertidÃµes:</strong> Se uma certidÃ£o vencer durante a tramitaÃ§Ã£o, o setor financeiro nÃ£o deve pagar. Anexe a certidÃ£o atualizada antes da liquidaÃ§Ã£o.</div>
-                 <div style="margin-top: 0.5rem;"><strong>Atesto de Nota:</strong> O atesto deve ser sempre datado. A data do atesto nÃ£o pode ser anterior Ã  data da emissÃ£o da Nota de Empenho.</div>
-                 <div style="margin-top: 0.5rem;"><strong>Ordem CronolÃ³gica:</strong> A Lei de LicitaÃ§Ãµes exige o respeito Ã  ordem cronolÃ³gica de pagamentos, salvo exceÃ§Ãµes justificadas.</div>
+                 <strong>ðŸ’¡ Dicas de Ouro para a Gestão Pública:</strong>
+                 <div><strong>Validade das Certidões:</strong> Se uma certidão vencer durante a tramitação, o setor financeiro não deve pagar. Anexe a certidão atualizada antes da liquidação.</div>
+                 <div style="margin-top: 0.5rem;"><strong>Atesto de Nota:</strong> O atesto deve ser sempre datado. A data do atesto não pode ser anterior Ã  data da emissão da Nota de Empenho.</div>
+                 <div style="margin-top: 0.5rem;"><strong>Ordem Cronológica:</strong> A Lei de Licitações exige o respeito Ã  ordem cronológica de pagamentos, salvo exceções justificadas.</div>
              `;
              container.appendChild(tipsDiv);
 
@@ -7531,7 +7531,7 @@
          };
 
          window.downloadChecklistPDF = function () {
-             alert('FunÃ§Ã£o de download de PDF serÃ¡ implementada em breve.');
+             alert('Função de download de PDF serÃ¡ implementada em breve.');
          };
 
          window.launchManualUpdate = async function () {
@@ -7566,7 +7566,7 @@
         <div class="modal-content">
             <button id="close-comments-modal-button" class="close-button">&times;</button>
             <h1>ComentÃ¡rios e Feedback</h1>
-            <p>Em breve disponÃ­vel - Estamos trabalhando em um sistema de comentÃ¡rios para melhorar nosso serviÃ§o.</p>
+            <p>Em breve disponível - Estamos trabalhando em um sistema de comentÃ¡rios para melhorar nosso serviço.</p>
         </div>
     </div>
 
@@ -7574,8 +7574,8 @@
         <div class="modal-content">
             <button id="close-remanejamento-modal-button" class="close-button">&times;</button>
             <h1>Remanejamento de Alunos</h1>
-            <p>Antes de remanejar o aluno para o ano seguinte, por favor, verifique se todos os alunos (Aptos e NÃ£o
-                Aptos) tÃªm a matrÃ­cula renovada.</p>
+            <p>Antes de remanejar o aluno para o ano seguinte, por favor, verifique se todos os alunos (Aptos e Não
+                Aptos) têm a matrícula renovada.</p>
             <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
                 <button id="cancel-remanejamento-button"
                     style="padding: 0.5rem 1rem; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer;">Fechar</button>
@@ -7661,13 +7661,13 @@
         <div class="process-modal-content" style="max-width: 600px;">
             <header class="modal-header">
                 <div class="modal-header-info">
-                    <h2 id="history-process-identifier">HistÃ³rico do Processo</h2>
-                    <p>TramitaÃ§Ãµes e movimentaÃ§Ãµes registradas</p>
+                    <h2 id="history-process-identifier">Histórico do Processo</h2>
+                    <p>Tramitações e movimentações registradas</p>
                 </div>
                 <button type="button" class="modal-close" onclick="window.closeModal('history-modal')">&times;</button>
             </header>
             <div id="history-body" class="modal-body" style="max-height: 450px; overflow-y: auto;">
-                <!-- ConteÃºdo dinÃ¢mico aqui -->
+                <!-- Conteúdo dinâmico aqui -->
             </div>
             <footer class="modal-footer">
                 <button class="btn-glass-cancel" onclick="window.closeModal('history-modal')">Fechar</button>
@@ -7683,8 +7683,8 @@
         <div class="process-modal-content">
             <header class="modal-header">
                 <div class="modal-header-info">
-                    <h2 id="infoModalTitle"><i class="fas fa-question-circle"></i> InformaÃ§Ãµes</h2>
-                    <p id="infoModalSubtitle">Detalhes e orientaÃ§Ãµes</p>
+                    <h2 id="infoModalTitle"><i class="fas fa-question-circle"></i> Informações</h2>
+                    <p id="infoModalSubtitle">Detalhes e orientações</p>
                 </div>
                 <button type="button" class="modal-close" onclick="window.closeModal('infoModal')">&times;</button>
             </header>
@@ -7830,28 +7830,28 @@
 
     <script>
 
-        // DetecÃ§Ã£o de ambiente de teste para desativar tours intrusivos
+        // Detecção de ambiente de teste para desativar tours intrusivos
         if (window.location.search.includes('test=true') || (window.location.hostname === 'localhost' && window.location.search.includes('disable_tour=true'))) {
             window.DISABLE_TOUR = true;
             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('%c SMEDU TEST MODE: ON ', 'background: #222; color: #bada55');
         }
 
         window.TOUR_STEPS = [
-            { target: '#parentProc', title: 'NÂº Proc. MÃ£e', description: 'NÃºmero do processo original (quando for uma complementaÃ§Ã£o ou aditivo). Preencha apenas se houver processo pai.' },
-            { target: '#ppNumber', title: 'NÃºmero do P.P.', description: 'NÃºmero do Processo de Pagamento. Este campo Ã© gerado automaticamente ao salvar.' },
-            { target: '#exerciseYear', title: 'Ano de ExercÃ­cio', description: 'Ano de referÃªncia do exercÃ­cio financeiro (ex: 2025, 2026).' },
-            { target: '#ppAno', title: 'P.P. Ano Atual', description: 'CombinaÃ§Ã£o do nÃºmero do processo com o ano atual (ex: 0125/2026).' },
+            { target: '#parentProc', title: 'NÂº Proc. Mãe', description: 'Número do processo original (quando for uma complementação ou aditivo). Preencha apenas se houver processo pai.' },
+            { target: '#ppNumber', title: 'Número do P.P.', description: 'Número do Processo de Pagamento. Este campo é gerado automaticamente ao salvar.' },
+            { target: '#exerciseYear', title: 'Ano de Exercício', description: 'Ano de referência do exercício financeiro (ex: 2025, 2026).' },
+            { target: '#ppAno', title: 'P.P. Ano Atual', description: 'Combinação do número do processo com o ano atual (ex: 0125/2026).' },
             { target: '#coverValue', title: 'Valor de Capa', description: 'Valor total constante na capa do processo. Use formato: 1.234,56' },
             { target: '#openingDate', title: 'Data de Abertura', description: 'Data em que o processo foi aberto/criado no sistema.' },
-            { target: '#deadline', title: 'Prazo', description: 'Data limite para tramitaÃ§Ã£o do processo. Processo vence apÃ³s esta data.' },
-            { target: '#supplierSelect', title: 'Fornecedor', description: 'Empresa ou pessoa fÃ­sica fornecedora. Selecione na lista ou adicione novo fornecedor.' },
-            { target: '#objectSelect', title: 'Objeto', description: 'DescriÃ§Ã£o do objeto/produto/serviÃ§o do processo. Selecione ou cadastre novo objeto.' },
+            { target: '#deadline', title: 'Prazo', description: 'Data limite para tramitação do processo. Processo vence após esta data.' },
+            { target: '#supplierSelect', title: 'Fornecedor', description: 'Empresa ou pessoa física fornecedora. Selecione na lista ou adicione novo fornecedor.' },
+            { target: '#objectSelect', title: 'Objeto', description: 'Descrição do objeto/produto/serviço do processo. Selecione ou cadastre novo objeto.' },
             { target: '#treatedBy', title: 'ResponsÃ¡vel', description: 'Servidor responsÃ¡vel pelo tratamento do processo.' },
-            { target: '#statusSelect', title: 'Status', description: 'Status atual do processo (Pendente, Em Andamento, ConcluÃ­do, etc).' },
-            { target: '#locationSelect', title: 'LocalizaÃ§Ã£o Atual', description: 'Setor onde o processo estÃ¡ atualmente (Gabinete, Compras, Tesouraria, etc).' },
-            { target: '#locationDate', title: 'Data LocalizaÃ§Ã£o', description: 'Data da Ãºltima movimentaÃ§Ã£o/localizaÃ§Ã£o do processo.' },
-            { target: '#situation', title: 'SituaÃ§Ã£o', description: 'DescriÃ§Ã£o resumida da situaÃ§Ã£o atual do processo.' },
-            { target: '#notes', title: 'ObservaÃ§Ãµes', description: 'Campo para observaÃ§Ãµes adicionais, informaÃ§Ãµes complementares ou histÃ³rico.' }
+            { target: '#statusSelect', title: 'Status', description: 'Status atual do processo (Pendente, Em Andamento, Concluído, etc).' },
+            { target: '#locationSelect', title: 'Localização Atual', description: 'Setor onde o processo estÃ¡ atualmente (Gabinete, Compras, Tesouraria, etc).' },
+            { target: '#locationDate', title: 'Data Localização', description: 'Data da última movimentação/localização do processo.' },
+            { target: '#situation', title: 'Situação', description: 'Descrição resumida da situação atual do processo.' },
+            { target: '#notes', title: 'Observações', description: 'Campo para observações adicionais, informações complementares ou histórico.' }
         ];
 
         window.currentTourStep = 0;
@@ -7913,7 +7913,7 @@
                         <div class="tour-buttons">
                             <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular Tour</button>
                             <button class="tour-btn tour-btn-next" onclick="window.nextTourStep()">
-                                ${window.currentTourStep === window.TOUR_STEPS.length - 1 ? 'Finalizar' : 'PrÃ³ximo'}
+                                ${window.currentTourStep === window.TOUR_STEPS.length - 1 ? 'Finalizar' : 'Próximo'}
                             </button>
                         </div>
                     </div>
