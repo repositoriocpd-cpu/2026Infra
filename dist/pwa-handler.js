@@ -2,9 +2,18 @@
     let deferredPrompt;
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    const isAlreadyInstalled = localStorage.getItem('pwa_installed') === 'true';
+    const installOffered = localStorage.getItem('pwa_install_offered') === 'true';
 
-    // Criar o HTML do Banner se não for standalone
-    if (!isStandalone) {
+    // Salvar estado quando o app for instalado
+    window.addEventListener('appinstalled', () => {
+        localStorage.setItem('pwa_installed', 'true');
+        const banner = document.getElementById('pwa-install-banner');
+        if (banner) banner.style.transform = 'translateY(150%)';
+    });
+
+    // Criar o HTML do Banner se não for standalone, não estiver instalado e ainda não tiver sido oferecido
+    if (!isStandalone && !isAlreadyInstalled && !installOffered) {
         window.addEventListener('load', () => {
             const banner = document.createElement('div');
             banner.id = 'pwa-install-banner';
@@ -29,7 +38,7 @@
             `;
 
             banner.innerHTML = `
-                <img src="icons/icon-192.png" style="width: 48px; height: 48px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                <img src="icons/icon-192.png" alt="Ícone do PWA" style="width: 48px; height: 48px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
                 <div style="flex: 1;">
                     <h4 style="margin: 0; font-size: 16px; font-weight: 600;">Instalar INFRASMEDU</h4>
                     <p id="pwa-text" style="margin: 4px 0 0; font-size: 13px; opacity: 0.9;">${isIOS ? 'Toque em Compartilhar > Adicionar à Tela de Início' : 'Adicione à tela inicial para acesso rápido'}</p>
@@ -41,18 +50,24 @@
             document.body.appendChild(banner);
 
             const showBanner = () => banner.style.transform = 'translateY(0)';
-            const hideBanner = () => banner.style.transform = 'translateY(150%)';
+            const hideBanner = () => {
+                banner.style.transform = 'translateY(150%)';
+                localStorage.setItem('pwa_install_offered', 'true');
+            };
 
             document.getElementById('pwa-close-btn').onclick = hideBanner;
 
             if (isIOS) {
-                // Mostrar para iOS após 3 segundos se não for standalone
-                setTimeout(showBanner, 3000);
+                setTimeout(() => {
+                    localStorage.setItem('pwa_install_offered', 'true');
+                    showBanner();
+                }, 3000);
             }
 
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
+                localStorage.setItem('pwa_install_offered', 'true');
                 showBanner();
 
                 const installBtn = document.getElementById('pwa-install-btn');
@@ -121,33 +136,35 @@
         updateBanner.id = 'pwa-update-banner';
         updateBanner.style.cssText = `
             position: fixed;
-            top: 20px;
+            bottom: 20px;
             left: 20px;
             right: 20px;
-            background: #1e293b;
-            color: white;
+            background: rgba(6, 78, 59, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
             padding: 16px;
-            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 16px;
             z-index: 10000;
+            color: white;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-            animation: slideInDown 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideInUpPWA 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         `;
 
         updateBanner.innerHTML = `
             <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="background: #3b82f6; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                    <i class="fas fa-sync-alt fa-spin"></i>
+                <div style="background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-sync-alt fa-spin" style="font-size: 18px;"></i>
                 </div>
                 <div>
                     <h5 style="margin: 0; font-size: 14px; font-weight: 700;">Nova Atualização!</h5>
                     <p style="margin: 2px 0 0; font-size: 12px; opacity: 0.8;">Versão ${version} disponível</p>
                 </div>
             </div>
-            <button id="pwa-refresh-btn" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; transition: background 0.2s;">
+            <button id="pwa-refresh-btn" style="background: white; color: #064e3b; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; transition: transform 0.2s;">
                 Atualizar Agora
             </button>
         `;
@@ -157,8 +174,8 @@
             const style = document.createElement('style');
             style.id = 'pwa-animations';
             style.textContent = `
-                @keyframes slideInDown {
-                    from { transform: translateY(-150%); opacity: 0; }
+                @keyframes slideInUpPWA {
+                    from { transform: translateY(150%); opacity: 0; }
                     to { transform: translateY(0); opacity: 1; }
                 }
             `;

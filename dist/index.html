@@ -1462,6 +1462,28 @@
             color: white;
         }
 
+        .btn-tiny {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+        }
+
+        .btn-tiny.btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-tiny.btn-warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .btn-tiny:hover {
+            opacity: 0.8;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -3678,14 +3700,7 @@
                     </div>
                 </div>
 
-                <div id="header-right-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-right: 1rem;">
-                    <button id="global-tour-btn"
-                        class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                        title="Tour Pelo Sistema" style="background: none; border: none; cursor: pointer;"
-                        onclick="window.startProcessTour()">
-                        <i class="fa-solid fa-circle-question text-xl" style="color: #005A9C;"></i>
-                    </button>
-                </div>
+
                 <div class="user-info">
                     <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
                     <i class="fa-solid fa-user-circle"></i>
@@ -3701,6 +3716,7 @@
                             <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas Frequentes</a></li>
                             <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a></li>
                             <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a></li>
+                            <li><a href="#" onclick="window.startProcessTour(); return false;"><i class="fas fa-circle-question"></i> Tour pelo Sistema</a></li>
                         </ul>
                         <ul class="menu-section">
                             <li><a href="#" onclick="window.logout(event)" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
@@ -3982,46 +3998,46 @@
                     <table id="process-table">
                         <thead>
                             <tr>
+                                <th>Ações</th>
                                 <th onclick="window.sortTable('parentProc')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="0"> Nº PROC. MÃE <i class="fas fa-sort"></i></th>
+                                        data-col="1"> Nº PROC. MÃE <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('ppNumber')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="1"> Nº P.P. <i class="fas fa-sort"></i></th>
+                                        data-col="2"> Nº P.P. <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('exerciseYear')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="2"> ANO <i class="fas fa-sort"></i></th>
+                                        data-col="3"> ANO <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('ppAno')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="3">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="4">
                                     P.P.ANO <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('supplier')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="4"> Fornecedor <i class="fas fa-sort"></i></th>
+                                        data-col="5"> Fornecedor <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('object')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="5">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="6">
                                     Objeto <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('coverValue')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="6"> Valor Capa <i class="fas fa-sort"></i></th>
+                                        data-col="7"> Valor Capa <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('openingDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="7"> Abertura <i class="fas fa-sort"></i></th>
+                                        data-col="8"> Abertura <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('deadline')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="8"> Conclusão <i class="fas fa-sort"></i></th>
+                                        data-col="9"> Conclusão <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('status')" style="cursor:pointer;"><input type="checkbox"
-                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="9">
+                                        class="pdf-col-check" checked onclick="event.stopPropagation()" data-col="10">
                                     Status <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('treatedBy')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="10"> Tratado Por <i class="fas fa-sort"></i></th>
+                                        data-col="11"> Tratado Por <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('location')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="11"> Localização <i class="fas fa-sort"></i></th>
+                                        data-col="12"> Localização <i class="fas fa-sort"></i></th>
                                 <th onclick="window.sortTable('locationDate')" style="cursor:pointer;"><input
                                         type="checkbox" class="pdf-col-check" checked onclick="event.stopPropagation()"
-                                        data-col="12"> Dt Local. <i class="fas fa-sort"></i></th>
-                                <th>Ações</th>
+                                        data-col="13"> Dt Local. <i class="fas fa-sort"></i></th>
                             </tr>
                         </thead>
                         <tbody id="processTableBody"></tbody>
@@ -4426,7 +4442,7 @@
                     </div>
 
                     <!-- Section 4: CONTROLE DE FLUXO & TRAMITAÇÃO -->
-                    <div class="form-section">
+                    <div class="form-section" id="transitSection">
                         <div class="form-section-title">
                             <i class="fas fa-exchange-alt"></i> NOVA ATUALIZAÇÃO / TRAMITAÇÃO
                         </div>
@@ -4514,6 +4530,7 @@
             <header class="modal-header">
                 <div class="modal-header-info">
                     <h2 id="detailsModalTitle">Detalhes do Processo</h2>
+                    <input type="hidden" id="detailsProcessId">
                     <p id="detailsModalSubtitle">Visualização completa do fluxo e informações</p>
                 </div>
                 <div style="display:flex; gap: 10px; align-items: center; margin-right: 20px;">
@@ -4607,8 +4624,12 @@
 
                 <!-- Histórico / Timeline -->
                 <div class="details-card" style="margin-bottom: 0;">
-                    <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i
-                            class="fas fa-history"></i> Histórico de Tramitações</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                        <h4 style="margin: 0;"><i class="fas fa-history"></i> Histórico de Tramitações</h4>
+                        <button class="btn btn-success" onclick="window.tramitarFromHistory()" style="padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-exchange-alt"></i> Tramitar
+                        </button>
+                    </div>
                     <div id="detailsTimeline" class="timeline-vertical" style="padding-top: 1rem;">
                         <!-- Timeline items will be injected here -->
                     </div>
@@ -4616,12 +4637,40 @@
             </div>
 
             <footer class="modal-footer"
-                style="padding: 1.5rem 2rem; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; border-radius: 0 0 16px 16px;">
+                style="padding: 1.5rem 2rem; background: #fff; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end; gap: 10px; border-radius: 0 0 16px 16px;">
+                <button class="btn btn-primary" onclick="window.generateProcessPDF()"
+                    style="min-width: 130px; background: #005a9c; color: white; border: none;">
+                    <i class="fas fa-file-pdf"></i> Gerar PDF
+                </button>
                 <button class="btn btn-secondary" onclick="window.closeModal('processDetailsModal')"
                     style="min-width: 110px; background: white; color: #64748b; border: 1px solid #e2e8f0;">Fechar</button>
             </footer>
         </div>
     </div>
+
+    <!-- CHECKLIST MODAL -->
+    <div id="checklistModal" class="process-modal" onclick="if(event.target===this) window.closeModal('checklistModal')">
+        <div class="process-modal-content" style="max-width: 800px;" onclick="event.stopPropagation()">
+            <header class="modal-header">
+                <div class="modal-header-info">
+                    <h2 id="checklistModalTitle" style="color: var(--govbr-blue);"><i class="fas fa-list-check"></i> Checklist de Pagamento</h2>
+                    <p>Processo <span id="checklistProcessNumber">-</span></p>
+                    <input type="hidden" id="checklistProcessId">
+                </div>
+                <button type="button" class="modal-close" onclick="window.closeModal('checklistModal')">&times;</button>
+            </header>
+            <div class="modal-body" id="checklistModalBody">
+                <!-- Checklist items will be injected here -->
+            </div>
+            <footer class="modal-footer" style="padding: 1rem 2rem; display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-primary" onclick="window.downloadChecklistPDF()">
+                    <i class="fas fa-file-pdf"></i> Baixar PDF
+                </button>
+                <button class="btn btn-secondary" onclick="window.closeModal('checklistModal')">Fechar</button>
+            </footer>
+        </div>
+    </div>
+
     <div id="processConfigModal" class="process-modal"
         onclick="if(event.target===this) window.closeModal('processConfigModal')">
         <div class="process-modal-content" style="max-width: 500px;" onclick="event.stopPropagation()">
@@ -5286,6 +5335,12 @@
             switch (action) {
                 case 'edit':
                     window.openProcessModal(process);
+                    break;
+                case 'transit':
+                    window.openProcessModalForTransit(process);
+                    break;
+                case 'checklist':
+                    window.openChecklistModal(process);
                     break;
                 case 'history':
                     await window.showHistoryModal(id);
@@ -6210,6 +6265,23 @@
 
                 const parentDisplay = p.parentProc || p.ppNumber || '';
                 tr.innerHTML = `
+                    <td style="display:flex; flex-direction: row; gap:4px; align-items:center;">
+                        <button class="btn btn-info action-btn" data-action="checklist" data-id="${p.id}" title="Checklist de Pagamento" style="padding:4px; width:28px; height:28px">
+                            <i class="fas fa-list-check"></i>
+                        </button>
+                        <button class="btn btn-success action-btn" data-action="transit" data-id="${p.id}" title="Tramitar" style="padding:4px; width:28px; height:28px">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                        <button class="btn btn-warning action-btn" data-action="edit" data-id="${p.id}" title="Editar" style="padding:4px; width:28px; height:28px">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-primary action-btn" data-action="history" data-id="${p.id}" title="Histórico" style="padding:4px; width:28px; height:28px">
+                            <i class="fas fa-history"></i>
+                        </button>
+                        <button class="btn btn-danger action-btn" data-action="delete" data-id="${p.id}" title="Excluir" style="padding:4px; width:28px; height:28px">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
                     <td>${parentDisplay}</td>
                     <td>${p.ppNumber || ''}</td>
                     <td>${p.exerciseYear || ''}</td>
@@ -6222,18 +6294,7 @@
                     <td><span class="badge" style="background:${color}; color:white">${p.status}</span></td>
                     <td>${p.treatedBy || ''}</td>
                     <td>${p.location && p.location !== 'null' ? p.location : ''}</td>
-                    <td>${formatDate(p.locationDate)}</td>
-                    <td style="display:flex; flex-direction: row; gap:4px; align-items:center;">
-                        <button class="btn btn-warning action-btn" data-action="edit" data-id="${p.id}" title="Editar" style="padding:4px; width:28px; height:28px">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-primary action-btn" data-action="history" data-id="${p.id}" title="Histórico" style="padding:4px; width:28px; height:28px">
-                            <i class="fas fa-history"></i>
-                        </button>
-                        <button class="btn btn-danger action-btn" data-action="delete" data-id="${p.id}" title="Excluir" style="padding:4px; width:28px; height:28px">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>`;
+                    <td>${formatDate(p.locationDate)}</td>`;
 
                 tbody.appendChild(tr);
             });
@@ -6388,7 +6449,7 @@
                                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
                                     if (!error) {
                                         p.history = (data || []).map(h => ({
-                                            date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                                            id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
                                         }));
                                         window.renderModalHistory(p.history);
                                     }
@@ -6448,37 +6509,89 @@
             if (!cont) return;
             cont.innerHTML = history.length ? '' : '<p style="text-align:center; color:#888; font-size:12px; padding: 1rem;">Nenhuma movimentação registrada.</p>';
 
-            [...history].reverse().forEach(h => {
+            [...history].reverse().forEach((h, idx) => {
                 const div = document.createElement('div');
                 div.className = 'modal-timeline-item';
+                div.dataset.historyIdx = idx;
 
-                // Extração de metadados simulados ou reais
-                const userName = h.user || 'Usuário';
+                const userName = h.user || window.currentUserName || 'Usuário';
                 const initial = userName.charAt(0).toUpperCase();
                 const time = h.date ? h.date.split(',')[1]?.trim() || '' : '';
                 const displayDate = h.date ? h.date.split(',')[0].trim() : '';
 
                 div.innerHTML = `
                     <div class="avatar-circle">${initial}</div>
-                    <div class="timeline-body">
+                    <div class="timeline-body" style="flex: 1;">
                         <div class="timeline-meta">
-                            <i class="fas fa-user-clock"></i> 1min atrás • ${time}
+                            <i class="fas fa-user-clock"></i> ${displayDate} • ${time}
                         </div>
                         <div class="timeline-content-bubble">
-                            <strong>${userName} registrou:</strong> ${h.from ? `Movimentação de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
+                            <strong>${userName}</strong> ${h.from ? `tramitou de <em>${h.from}</em> para <em>${h.to}</em>` : h.msg || h.message}
                         </div>
-                        <div class="timeline-footer-date">Hoje, ${time}</div>
+                    </div>
+                    <div class="timeline-actions" style="display: flex; gap: 4px; margin-left: 8px;">
+                        <button class="btn-tiny btn-warning" onclick="window.editHistoryItem(${idx}, '${(h.msg || h.message || '').replace(/'/g, "\\'")}')" title="Editar">
+                            <i class="fas fa-pen" style="font-size: 10px;"></i>
+                        </button>
+                        <button class="btn-tiny btn-danger" onclick="window.deleteHistoryItem(${idx})" title="Excluir">
+                            <i class="fas fa-trash" style="font-size: 10px;"></i>
+                        </button>
                     </div>
                 `;
                 cont.appendChild(div);
             });
         };
 
+        window.editHistoryItem = async function (idx, currentMsg) {
+            const newMsg = prompt('Editar movimentação:', currentMsg);
+            if (!newMsg || newMsg.trim() === '' || newMsg.trim() === currentMsg) return;
+            
+            const processId = document.getElementById('processId').value;
+            const p = window.state.processes.find(x => x.id === processId);
+            if (p && p.history && p.history[idx]) {
+                p.history[idx].msg = newMsg.trim();
+                p.history[idx].message = newMsg.trim();
+                window.renderModalHistory(p.history);
+                
+                if (supabase && p.history[idx].id) {
+                    const { error } = await supabase.from('process_history').update({ message: newMsg.trim() }).eq('id', p.history[idx].id);
+                    if (error) {
+                        console.error('Erro ao atualizar histórico:', error);
+                        alert('Erro ao atualizar o registro.');
+                        return;
+                    }
+                }
+                alert('Registro atualizado!');
+            }
+        };
+
+        window.deleteHistoryItem = async function (idx) {
+            if (!confirm('Deseja excluir esta movimentação?')) return;
+            
+            const processId = document.getElementById('processId').value;
+            const p = window.state.processes.find(x => x.id === processId);
+            if (p && p.history && p.history[idx]) {
+                const itemToDelete = p.history[idx];
+                
+                if (supabase && itemToDelete.id) {
+                    const { error } = await supabase.from('process_history').delete().eq('id', itemToDelete.id);
+                    if (error) {
+                        console.error('Erro ao excluir histórico:', error);
+                        alert('Erro ao excluir o registro.');
+                        return;
+                    }
+                }
+                
+                p.history.splice(idx, 1);
+                window.renderModalHistory(p.history);
+            }
+        };
+
         window.launchManualUpdate = async function () {
             const input = document.getElementById('newManualUpdate');
             const msg = input.value.trim();
             if (!msg) return;
-            const id = document.getElementById('processId').value;
+            const processId = document.getElementById('processId').value;
             const userName = window.currentUserName || 'Usuário';
             const item = {
                 date: new Date().toLocaleString(),
@@ -6486,19 +6599,93 @@
                 user: userName
             };
 
-            if (id && supabase) {
-                await supabase.from('process_history').insert({
-                    process_id: id,
+            if (processId && supabase) {
+                const { data: inserted, error } = await supabase.from('process_history').insert({
+                    process_id: processId,
                     history_date: item.date,
                     message: msg,
-                    user: userName // Salva quem registrou
-                });
-                const p = window.state.processes.find(x => x.id === id);
+                    user: userName
+                }).select().single();
+                
+                if (!error && inserted) {
+                    item.id = inserted.id;
+                }
+                
+                const p = window.state.processes.find(x => x.id === processId);
                 if (p) { p.history.push(item); window.renderModalHistory(p.history); }
             } else {
                 window._tempHistory.push(item); window.renderModalHistory(window._tempHistory);
             }
             input.value = '';
+        };
+
+        window.openProcessModalForTransit = function (p = null) {
+            const modal = document.getElementById('processControlModal');
+            const overlay = document.getElementById('overlay');
+
+            if (modal) {
+                modal.classList.add('visible');
+                modal.style.display = 'flex';
+            }
+            if (overlay) {
+                overlay.style.display = 'block';
+                setTimeout(() => overlay.classList.add('visible'), 10);
+            }
+
+            setTimeout(() => {
+                if (typeof p === 'string') {
+                    p = window.state.processes.find(proc => proc.id === p) || null;
+                }
+
+                const form = document.getElementById('processForm');
+                if (!form) return;
+                form.reset();
+                window._tempHistory = [];
+
+                if (p) {
+                    document.getElementById('processModalTitle').innerText = 'Tramitar Processo';
+                    document.getElementById('processId').value = p.id;
+                    document.getElementById('parentProc').value = p.parentProc || '';
+                    document.getElementById('ppNumber').value = p.ppNumber || '';
+                    document.getElementById('exerciseYear').value = p.exerciseYear || '';
+                    document.getElementById('ppAno').value = p.ppAno || '';
+                    document.getElementById('coverValue').value = p.coverValue || '';
+                    document.getElementById('openingDate').value = p.openingDate || '';
+                    document.getElementById('deadline').value = p.deadline || '';
+
+                    const setChoice = (id, val) => {
+                        const inst = window.choicesInstances[id];
+                        if (inst) inst.setChoiceByValue(val || '');
+                    };
+
+                    setChoice('supplierSelect', p.supplier || '');
+                    setChoice('objectSelect', p.object || '');
+                    setChoice('treatedBy', p.treatedBy || '');
+                    setChoice('statusSelect', p.status || '');
+                    setChoice('locationSelect', p.location || '');
+                    document.getElementById('locationDate').value = p.locationDate || '';
+
+                    window.renderModalHistory(p.history || []);
+
+                    const manualInput = document.getElementById('newManualUpdate');
+                    const manualBtn = document.getElementById('btnLaunchUpdate');
+                    if (manualInput && manualBtn) {
+                        manualInput.disabled = false;
+                        manualBtn.disabled = false;
+                    }
+                }
+
+                window.updateSelects(true);
+
+                setTimeout(() => {
+                    const transitSection = document.getElementById('transitSection');
+                    if (transitSection) {
+                        transitSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    const transitInput = document.getElementById('newManualUpdate');
+                    if (transitInput) transitInput.focus();
+                }, 400);
+            }, 50);
         };
 
         const procForm = document.getElementById('processForm');
@@ -6607,7 +6794,7 @@
                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
                     if (error) throw error;
                     p.history = (data || []).map(h => ({
-                        date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                        id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
                     }));
                 } catch (err) {
                     console.error('Erro ao carregar histórico:', err);
@@ -6642,6 +6829,7 @@
             };
 
             // Basic Info
+            document.getElementById('detailsProcessId').value = p.id;
             document.getElementById('detailsModalTitle').innerText = `Processo ${p.ppAno}`;
             document.getElementById('detailsSupplier').innerText = p.supplier || '-';
             document.getElementById('detailsObject').innerText = p.object || '-';
@@ -6673,7 +6861,7 @@
                     const { data, error } = await supabase.from('process_history').select('*').eq('process_id', p.id).order('history_date', { ascending: true });
                     if (error) throw error;
                     p.history = (data || []).map(h => ({
-                        date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
+                        id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user
                     }));
                 } catch (err) {
                     console.error('Erro ao carregar histórico nos detalhes:', err);
@@ -6741,6 +6929,658 @@
             };
 
             modal.style.display = 'flex';
+        };
+
+        window.tramitarFromHistory = function () {
+            const processId = document.getElementById('detailsProcessId')?.value;
+            if (!processId) return;
+            const p = window.state.processes.find(x => x.id === processId);
+            if (p) {
+                window.closeModal('processDetailsModal');
+                setTimeout(() => window.openProcessModalForTransit(p), 200);
+            }
+        };
+
+        window.generateProcessPDF = function () {
+            const processId = document.getElementById('detailsProcessId')?.value;
+            if (!processId) {
+                alert('Processo não encontrado.');
+                return;
+            }
+
+            const p = window.state.processes.find(x => x.id === processId);
+            if (!p) {
+                alert('Processo não encontrado.');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 15;
+            let y = 20;
+
+            // Cabeçalho
+            doc.setFillColor(0, 90, 156);
+            doc.rect(0, 0, pageWidth, 35, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PREFEITURA MUNICIPAL DE ITAGUAÍ', margin, 15);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Secretaria Municipal de Educação', margin, 23);
+            doc.setFontSize(10);
+            doc.text('SUB INFRA - Painel de Controle de Processos', margin, 30);
+
+            doc.setTextColor(0, 0, 0);
+            y = 45;
+
+            // Título do Relatório
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('RELATÓRIO DE PROCESSO', margin, y);
+            y += 10;
+
+            // Linha separadora
+            doc.setDrawColor(0, 90, 156);
+            doc.setLineWidth(0.5);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 10;
+
+            // Informações do Processo
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text('IDENTIFICAÇÃO DO PROCESSO', margin, y);
+            y += 7;
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+
+            const infoItems = [
+                ['Nº Processo:', p.ppAno || '-'],
+                ['Nº P.P.:', p.ppNumber || '-'],
+                ['Ano Exercício:', p.exerciseYear || '-'],
+                ['Fornecedor:', p.supplier || '-'],
+                ['Objeto:', p.object || '-'],
+                ['Valor:', p.coverValue ? `R$ ${parseFloat(p.coverValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '-'],
+                ['Data de Abertura:', p.openingDate ? p.openingDate.split('-').reverse().join('/') : '-'],
+                ['Prazo/Vencimento:', p.deadline ? p.deadline.split('-').reverse().join('/') : '-'],
+                ['Status:', p.status || '-'],
+                ['Tratado por:', p.treatedBy || '-'],
+                ['Localização Atual:', p.location || '-'],
+                ['Data Localização:', p.locationDate ? p.locationDate.split('-').reverse().join('/') : '-']
+            ];
+
+            infoItems.forEach(([label, value]) => {
+                doc.setFont('helvetica', 'bold');
+                doc.text(label, margin, y);
+                doc.setFont('helvetica', 'normal');
+                doc.text(String(value), margin + 45, y);
+                y += 6;
+            });
+
+            y += 5;
+
+            // Linha separadora
+            doc.setDrawColor(200, 200, 200);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 10;
+
+            // Histórico de Tramitações
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text('HISTÓRICO DE TRAMITAÇÕES', margin, y);
+            y += 8;
+
+            const history = p.history || [];
+
+            if (history.length === 0) {
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'italic');
+                doc.setTextColor(128, 128, 128);
+                doc.text('Nenhuma tramitação registrada.', margin, y);
+                doc.setTextColor(0, 0, 0);
+            } else {
+                doc.setFontSize(9);
+
+                history.forEach((h, index) => {
+                    // Verificar se precisa de nova página
+                    if (y > 260) {
+                        doc.addPage();
+                        y = 20;
+                    }
+
+                    const userName = h.user || 'Sistema';
+                    const date = h.date || '';
+                    const msg = h.msg || h.message || '';
+                    const fromTo = h.from && h.to ? `De ${h.from} para ${h.to}` : '';
+
+                    // Fundo alternado
+                    if (index % 2 === 0) {
+                        doc.setFillColor(245, 247, 250);
+                        doc.rect(margin, y - 4, pageWidth - margin * 2, 18, 'F');
+                    }
+
+                    // Número do registro
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(`${index + 1}.`, margin, y);
+
+                    // Usuário e data
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 90, 156);
+                    doc.text(userName, margin + 8, y);
+                    doc.setTextColor(0, 0, 0);
+
+                    // Data
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(100, 100, 100);
+                    doc.text(date, pageWidth - margin - doc.getTextWidth(date), y);
+                    doc.setTextColor(0, 0, 0);
+
+                    y += 5;
+
+                    // Mensagem ou tramitação
+                    if (fromTo) {
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(fromTo, margin + 8, y);
+                        y += 5;
+                        if (msg) {
+                            doc.text(msg, margin + 8, y);
+                        }
+                    } else if (msg) {
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(msg, margin + 8, y);
+                    }
+
+                    y += 8;
+                });
+            }
+
+            // Rodapé
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(128, 128, 128);
+                doc.text(
+                    `Página ${i} de ${totalPages} | Gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`,
+                    pageWidth / 2,
+                    doc.internal.pageSize.getHeight() - 10,
+                    { align: 'center' }
+                );
+                doc.text(
+                    'SUB INFRA - Secretaria Municipal de Educação de Itaguaí',
+                    pageWidth / 2,
+                    doc.internal.pageSize.getHeight() - 5,
+                    { align: 'center' }
+                );
+            }
+
+            // Salvar
+            doc.save(`processo_${p.ppAno || 'relatorio'}_${new Date().toISOString().split('T')[0]}.pdf`);
+        };
+
+        // ===== CHECKLIST FUNCTIONS =====
+        window.CHECKLIST_ITEMS = {
+            documentacao: {
+                title: 'Documentação de Cobrança e Execução',
+                icon: 'fa-file-contract',
+                items: [
+                    { id: 'doc1', text: 'Requerimento/Ofício de Cobrança', desc: 'Formalização do pedido de pagamento pela empresa.' },
+                    { id: 'doc2', text: 'Nota Fiscal / Fatura', desc: 'Original, devidamente atestada no verso por dois servidores ou via assinatura digital.' },
+                    { id: 'doc3', text: 'Relatório de Execução do Serviço', desc: 'Descritivo detalhado do que foi realizado no período.' },
+                    { id: 'doc4', text: 'Ordem de Serviço (OS)', desc: 'Com as especificações e autorizações prévias.' },
+                    { id: 'doc5', text: 'Mapa de Controle da Execução Contratual', desc: 'Planilha de medição ou controle de saldos do contrato.' }
+                ]
+            },
+            juridica: {
+                title: 'Regularidade Jurídica e Societária',
+                icon: 'fa-file-signature',
+                items: [
+                    { id: 'jur1', text: 'Contrato Social / Consolidação', desc: 'Cópia autenticada ou com selo de validade da JUCERJA.' },
+                    { id: 'jur2', text: 'Documentos dos Sócios', desc: 'RG, CPF e comprovante de residência conforme exigência do edital/contrato.' },
+                    { id: 'jur3', text: 'Protocolo de Transmissão do CNPJ', desc: 'Comprovante de inscrição e situação cadastral ativa.' }
+                ]
+            },
+            fiscal: {
+                title: 'Regularidade Fiscal e Trabalhista',
+                icon: 'fa-certificate',
+                items: [
+                    { id: 'fis1', text: 'Certidão de Regularidade do FGTS (CRF)', desc: '' },
+                    { id: 'fis2', text: 'Certidão Negativa de Débitos Trabalhistas (CNDT)', desc: '' },
+                    { id: 'fis3', text: 'Certidão Negativa de Tributos Federais (PGFN)', desc: '' },
+                    { id: 'fis4', text: 'Certidão Negativa de Débitos Estaduais', desc: '' },
+                    { id: 'fis5', text: 'Certidão Negativa de IPTU/ISS', desc: '' },
+                    { id: 'fis6', text: 'Recibo da DCTFWeb', desc: 'Comprovação de obrigações previdenciárias.' }
+                ]
+            },
+            contratuais: {
+                title: 'Instrumentos Contratuais e Atos Oficiais',
+                icon: 'fa-scroll',
+                items: [
+                    { id: 'con1', text: 'Contrato Original', desc: 'Cópia com todas as assinaturas colhidas.' },
+                    { id: 'con2', text: 'Termos Aditivos', desc: 'Caso existam prorrogações ou reajustes.' },
+                    { id: 'con3', text: 'Portaria de Nomeação do Fiscal', desc: 'Documento que designa quem atestou a nota.' },
+                    { id: 'con4', text: 'Extrato do Contrato/Aditivo', desc: 'Cópia da publicação no Diário Oficial.' }
+                ]
+            },
+            contabeis: {
+                title: 'Documentação Contábil e Financeira',
+                icon: 'fa-coins',
+                items: [
+                    { id: 'ctb1', text: 'Nota de Empenho', desc: 'Original ou cópia da nota vinculada à despesa.' },
+                    { id: 'ctb2', text: 'Folha de Informação (ISS)', desc: 'Informando retenções ou isenções tributárias.' },
+                    { id: 'ctb3', text: 'Folha de Informação (Financeiro)', desc: 'Parecer autorizando o fluxo para pagamento.' }
+                ]
+            }
+        };
+
+        window.openChecklistModal = function (process) {
+            if (!process) return;
+
+            document.getElementById('checklistProcessNumber').textContent = process.ppAno || '-';
+            document.getElementById('checklistProcessId').value = process.id;
+            window._currentChecklistProcessId = process.id;
+
+            const body = document.getElementById('checklistModalBody');
+            body.innerHTML = '';
+
+            const savedState = JSON.parse(localStorage.getItem(`checklist_${process.id}`) || '{}');
+            const customItems = JSON.parse(localStorage.getItem(`checklist_custom_${process.id}`) || '{}');
+
+            Object.entries(window.CHECKLIST_ITEMS).forEach(([key, section]) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'checklist-section';
+                sectionDiv.style.cssText = 'background: #f8fafc; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;';
+
+                const titleDiv = document.createElement('div');
+                titleDiv.style.cssText = 'font-weight: 700; color: #1e293b; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;';
+
+                const titleLeft = document.createElement('span');
+                titleLeft.innerHTML = `<i class="fas ${section.icon}" style="color: var(--govbr-blue); margin-right: 8px;"></i> ${section.title}`;
+                titleDiv.appendChild(titleLeft);
+
+                const addBtn = document.createElement('button');
+                addBtn.className = 'btn btn-sm btn-primary';
+                addBtn.style.cssText = 'padding: 4px 10px; font-size: 11px;';
+                addBtn.innerHTML = '<i class="fas fa-plus"></i> Adicionar';
+                addBtn.onclick = () => window.addCustomChecklistItem(process.id, key);
+                titleDiv.appendChild(addBtn);
+
+                sectionDiv.appendChild(titleDiv);
+
+                // Render default items
+                section.items.forEach(item => {
+                    const isChecked = savedState[item.id] || false;
+                    const itemId = `checklist-${process.id}-${item.id}`;
+
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.cssText = 'display: flex; align-items: flex-start; gap: 8px; padding: 8px; background: white; border-radius: 6px; margin-bottom: 6px;';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = itemId;
+                    checkbox.checked = isChecked;
+                    checkbox.style.cssText = 'width: 18px; height: 18px; margin-top: 2px; cursor: pointer; accent-color: var(--govbr-blue);';
+                    checkbox.addEventListener('change', () => {
+                        savedState[item.id] = checkbox.checked;
+                        localStorage.setItem(`checklist_${process.id}`, JSON.stringify(savedState));
+                    });
+
+                    const label = document.createElement('label');
+                    label.htmlFor = itemId;
+                    label.style.cssText = 'flex: 1; cursor: pointer;';
+                    label.innerHTML = `<strong>${item.text}</strong>${item.desc ? `<br><small style="color: #64748b;">${item.desc}</small>` : ''}`;
+
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(label);
+                    sectionDiv.appendChild(itemDiv);
+                });
+
+                // Render custom items for this section
+                const sectionCustomItems = customItems[key] || [];
+                sectionCustomItems.forEach((customItem, idx) => {
+                    const customId = `custom-${key}-${idx}`;
+                    const isChecked = savedState[customId] || false;
+                    const itemId = `checklist-${process.id}-${customId}`;
+
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.cssText = 'display: flex; align-items: flex-start; gap: 8px; padding: 8px; background: #fffbeb; border-radius: 6px; margin-bottom: 6px; border: 1px dashed #f59e0b;';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = itemId;
+                    checkbox.checked = isChecked;
+                    checkbox.style.cssText = 'width: 18px; height: 18px; margin-top: 2px; cursor: pointer; accent-color: var(--govbr-blue);';
+                    checkbox.addEventListener('change', () => {
+                        savedState[customId] = checkbox.checked;
+                        localStorage.setItem(`checklist_${process.id}`, JSON.stringify(savedState));
+                    });
+
+                    const label = document.createElement('label');
+                    label.htmlFor = itemId;
+                    label.style.cssText = 'flex: 1; cursor: pointer;';
+                    label.innerHTML = `<strong>${customItem.text}</strong>${customItem.desc ? `<br><small style="color: #64748b;">${customItem.desc}</small>` : ''}`;
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'btn btn-sm btn-danger';
+                    deleteBtn.style.cssText = 'padding: 4px 8px; font-size: 10px;';
+                    deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                    deleteBtn.onclick = () => {
+                        sectionCustomItems.splice(idx, 1);
+                        customItems[key] = sectionCustomItems;
+                        localStorage.setItem(`checklist_custom_${process.id}`, JSON.stringify(customItems));
+                        window.openChecklistModal(process);
+                    };
+
+                    itemDiv.appendChild(checkbox);
+                    itemDiv.appendChild(label);
+                    itemDiv.appendChild(deleteBtn);
+                    sectionDiv.appendChild(itemDiv);
+                });
+
+                body.appendChild(sectionDiv);
+            });
+
+            // Dicas
+            const tipsDiv = document.createElement('div');
+            tipsDiv.style.cssText = 'background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 6px; margin-top: 1rem;';
+            tipsDiv.innerHTML = `
+                <strong style="color: #92400e;">💡 Dicas importantes:</strong>
+                <ul style="margin: 0.5rem 0 0 1.2rem; color: #78350f; font-size: 0.9rem;">
+                    <li>Validade das Certidões: Se vencerem durante a tramitação, é necessário atualizar antes da liquidação.</li>
+                    <li>Atesto de Nota: Deve ser sempre datado e não pode ser anterior à Nota de Empenho.</li>
+                    <li>Este checklist atende às exigências do TCE-RJ.</li>
+                </ul>
+            `;
+            body.appendChild(tipsDiv);
+
+            const modal = document.getElementById('checklistModal');
+            modal.classList.add('visible');
+            modal.style.display = 'flex';
+        };
+
+        window.addCustomChecklistItem = function (processId, sectionKey) {
+            const process = window.state.processes.find(p => p.id === processId);
+            if (!process) return;
+
+            const text = prompt('Digite a descrição do novo item:');
+            if (!text || text.trim() === '') return;
+
+            const desc = prompt('Digite uma observação (opcional):') || '';
+
+            const customItems = JSON.parse(localStorage.getItem(`checklist_custom_${processId}`) || '{}');
+            if (!customItems[sectionKey]) customItems[sectionKey] = [];
+
+            customItems[sectionKey].push({
+                text: text.trim(),
+                desc: desc.trim()
+            });
+
+            localStorage.setItem(`checklist_custom_${processId}`, JSON.stringify(customItems));
+            window.openChecklistModal(process);
+        };
+
+        window.updateChecklistProgress = function (processId) {
+            const savedState = JSON.parse(localStorage.getItem(`checklist_${processId}`) || '{}');
+            let total = 0, checked = 0;
+            Object.values(window.CHECKLIST_ITEMS).forEach(section => {
+                section.items.forEach(item => {
+                    total++;
+                    if (savedState[item.id]) checked++;
+                });
+            });
+            const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+            console.log(`Checklist: ${checked}/${total} (${percent}%)`);
+        };
+
+        window.downloadChecklistPDF = function () {
+            const processId = document.getElementById('checklistProcessId')?.value;
+            const processNumber = document.getElementById('checklistProcessNumber')?.textContent || '-';
+            
+            let process = null;
+            if (processId) {
+                process = window.state.processes.find(p => p.id === processId);
+            }
+            
+            if (!process) {
+                process = window.state.processes.find(p => p.ppAno === processNumber);
+            }
+
+            const savedState = JSON.parse(localStorage.getItem(`checklist_${process?.id}`) || '{}');
+            const customItems = JSON.parse(localStorage.getItem(`checklist_custom_${process?.id}`) || '{}');
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 15;
+            let y = 20;
+
+            // Cabeçalho
+            doc.setFillColor(0, 90, 156);
+            doc.rect(0, 0, pageWidth, 35, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.text('PREFEITURA MUNICIPAL DE ITAGUAÍ', margin, 15);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Secretaria Municipal de Educação', margin, 23);
+            doc.setFontSize(10);
+            doc.text('SUB INFRA - Painel de Controle de Processos', margin, 30);
+
+            doc.setTextColor(0, 0, 0);
+            y = 45;
+
+            // Título
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('CHECKLIST DE PAGAMENTO', margin, y);
+            y += 8;
+
+            // Informações do Processo
+            if (process) {
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text('IDENTIFICAÇÃO DO PROCESSO', margin, y);
+                y += 7;
+
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+
+                const infoData = [
+                    ['Nº Processo:', process.ppAno || '-'],
+                    ['Fornecedor:', process.supplier || '-'],
+                    ['Objeto:', process.object || '-'],
+                    ['Valor:', process.coverValue ? `R$ ${parseFloat(process.coverValue).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : '-'],
+                    ['Status:', process.status || '-'],
+                    ['Tratado por:', process.treatedBy || '-']
+                ];
+
+                infoData.forEach(([label, value]) => {
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(label, margin, y);
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(String(value), margin + 35, y);
+                    y += 5;
+                });
+
+                y += 5;
+            }
+
+            // Linha separadora
+            doc.setDrawColor(0, 90, 156);
+            doc.setLineWidth(0.5);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 8;
+
+            // Seções do Checklist
+            let totalItems = 0;
+            let checkedItems = 0;
+
+            Object.entries(window.CHECKLIST_ITEMS).forEach(([key, section]) => {
+                if (y > 240) {
+                    doc.addPage();
+                    y = 20;
+                }
+
+                // Título da seção
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(0, 90, 156);
+                doc.text(section.title, margin, y);
+                doc.setTextColor(0, 0, 0);
+                y += 7;
+
+                // Itens
+                doc.setFontSize(9);
+                section.items.forEach(item => {
+                    if (y > 270) {
+                        doc.addPage();
+                        y = 20;
+                    }
+
+                    const isChecked = savedState[item.id] || false;
+                    totalItems++;
+                    if (isChecked) checkedItems++;
+
+                    // Fundo colorido
+                    const bgColor = isChecked ? [232, 245, 233] : [255, 235, 238];
+                    doc.setFillColor(bgColor[0], bgColor[1], bgColor[2]);
+                    doc.rect(margin, y - 4, pageWidth - margin * 2, 7, 'F');
+
+                    // Status [OK] ou [FALTANDO] e texto na mesma linha
+                    const status = isChecked ? '[OK]' : '[FALTANDO]';
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(isChecked ? 34 : 220, isChecked ? 197 : 38, isChecked ? 94 : 38);
+                    doc.text(status, margin + 2, y);
+
+                    // Texto do item na mesma linha
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(0, 0, 0);
+                    const itemText = item.text.length > 70 ? item.text.substring(0, 67) + '...' : item.text;
+                    doc.text(itemText, margin + 18, y);
+
+                    // Descrição se existir
+                    if (item.desc && item.desc.length > 0) {
+                        y += 5;
+                        doc.setFontSize(8);
+                        doc.setTextColor(100, 100, 100);
+                        doc.text(item.desc.substring(0, 95), margin + 5, y);
+                        doc.setTextColor(0, 0, 0);
+                        y += 4;
+                    }
+
+                    y += 5;
+                });
+
+                // Itens personalizados
+                const sectionCustomItems = customItems[key] || [];
+                sectionCustomItems.forEach((item) => {
+                    if (y > 270) {
+                        doc.addPage();
+                        y = 20;
+                    }
+
+                    const customId = `custom-${key}-${item.idx || Math.random().toString(36).substr(2, 9)}`;
+                    const isChecked = savedState[customId] || false;
+                    totalItems++;
+                    if (isChecked) checkedItems++;
+
+                    // Fundo colorido com borda para personalizados
+                    const bgColor = isChecked ? [232, 245, 233] : [255, 251, 235];
+                    doc.setFillColor(bgColor[0], bgColor[1], bgColor[2]);
+                    doc.rect(margin, y - 4, pageWidth - margin * 2, 7, 'FD');
+
+                    // Status e texto
+                    const status = isChecked ? '[OK]' : '[FALTANDO]';
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(isChecked ? 34 : 220, isChecked ? 197 : 38, isChecked ? 94 : 38);
+                    doc.text(status, margin + 2, y);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(0, 0, 0);
+                    const itemText = item.text.length > 70 ? item.text.substring(0, 67) + '...' : item.text;
+                    doc.text(itemText, margin + 18, y);
+
+                    if (item.desc && item.desc.length > 0) {
+                        y += 5;
+                        doc.setFontSize(8);
+                        doc.setTextColor(100, 100, 100);
+                        doc.text(item.desc.substring(0, 95), margin + 5, y);
+                        doc.setTextColor(0, 0, 0);
+                        y += 4;
+                    }
+
+                    y += 5;
+                });
+
+                y += 3;
+            });
+
+            // Resumo
+            if (y > 250) {
+                doc.addPage();
+                y = 20;
+            }
+
+            y += 5;
+            doc.setDrawColor(200, 200, 200);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 8;
+
+            // Box de resumo
+            doc.setFillColor(245, 247, 250);
+            doc.rect(margin, y - 5, pageWidth - margin * 2, 25, 'F');
+
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text('RESUMO DO CHECKLIST', margin + 5, y + 3);
+
+            const percent = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+            doc.setFontSize(14);
+            doc.setTextColor(0, 90, 156);
+            doc.text(`${percent}%`, margin + 80, y + 5);
+
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(0, 0, 0);
+            doc.text(`${checkedItems} de ${totalItems} itens conformpliance`, margin + 95, y + 5);
+
+            // Barra de progresso
+            doc.setFillColor(220, 220, 220);
+            doc.rect(margin + 5, y + 10, pageWidth - margin * 2 - 10, 6, 'F');
+            doc.setFillColor(34, 197, 94);
+            doc.rect(margin + 5, y + 10, (pageWidth - margin * 2 - 10) * (percent / 100), 6, 'F');
+
+            y += 25;
+
+            // Rodapé
+            const totalPages = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPages; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setTextColor(128, 128, 128);
+                doc.text(
+                    `Página ${i} de ${totalPages} | Gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`,
+                    pageWidth / 2,
+                    doc.internal.pageSize.getHeight() - 10,
+                    { align: 'center' }
+                );
+                doc.text(
+                    'SUB INFRA - Secretaria Municipal de Educação de Itaguaí',
+                    pageWidth / 2,
+                    doc.internal.pageSize.getHeight() - 5,
+                    { align: 'center' }
+                );
+            }
+
+            // Salvar
+            const filename = process ? `checklist_${process.ppAno}_${new Date().toISOString().split('T')[0]}.pdf` : `checklist_${new Date().toISOString().split('T')[0]}.pdf`;
+            doc.save(filename);
         };
 
         window.choicesInstances = {};

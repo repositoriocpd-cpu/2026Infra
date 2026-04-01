@@ -3729,149 +3729,149 @@
     <main class="container" style="margin-top: 2rem;">
         <!-- Dashboard Section -->
         <div id="dashboard-section">
-            <div class="stats-grid">
-                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
-                    <p class="stat-number total-color" id="total-processes" data-target="0">0</p>
-                    <h3>Total de Processos</h3>
-                    <div class="tooltip">Quantidade total de Processos</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('status', '!Concluído')">
-                    <p class="stat-number warning-color" id="treating-processes" data-target="0">0</p>
-                    <h3>Processos em Tramitação</h3>
-                    <div class="tooltip">Total de Processos em Tramitação</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('status', 'Concluído')">
-                    <p class="stat-number success-color" id="completed-processes" data-target="0">0</p>
-                    <h3>Processos Liquidados</h3>
-                    <div class="tooltip">Total Geral de Processos Liquidados</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('all', '')">
-                    <p class="stat-number warning-color" id="pending-percent" data-target="0" data-suffix="%">0%</p>
-                    <h3>Percentual de Pendências</h3>
-                    <div class="tooltip">Proporção de processos não concluídos</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('delayed', '')">
-                    <p class="stat-number danger-color" id="delayed-processes" data-target="0">0</p>
-                    <h3>Vencidos / Atrasados</h3>
-                    <div class="tooltip">Total de Processos Vencidos</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('status', 'Pendente')">
-                    <p class="stat-number total-color" id="finance-processes" data-target="0">0</p>
-                    <h3>Pendentes</h3>
-                    <div class="tooltip">Total de Processos com Status Pendente</div>
-                </div>
-            </div>
+            <div class="db-container">
+                <!-- Header -->
+                <header class="db-header">
+                    <h1>Dashboard de Processos</h1>
+                    <p>Visão geral dos processos | Última atualização dinâmica</p>
+                </header>
 
-            <div class="stats-grid" style="margin-top: 1rem;">
-                <div class="stat-card" onclick="window.filterFromDashboard('location', 'gabinete')">
-                    <p class="stat-number total-color" id="cabinet-processes" data-target="0">0</p>
-                    <h3>143 - Gabinete</h3>
-                    <div class="tooltip">Total de Processos no Gabinete</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('location', 'compras')">
-                    <p class="stat-number total-color" id="purchase-processes" data-target="0">0</p>
-                    <h3>Compras</h3>
-                    <div class="tooltip">Total de Processos em Compras</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('location', 'almoxarifado')">
-                    <p class="stat-number total-color" id="warehouse-processes" data-target="0">0</p>
-                    <h3>131 - Almoxarifado</h3>
-                    <div class="tooltip">Total de Processos no Almoxarifado</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('location', 'tesouraria')">
-                    <p class="stat-number total-color" id="treasury-processes" data-target="0">0</p>
-                    <h3>24 - Tesouraria</h3>
-                    <div class="tooltip">Total de Processos na Tesouraria</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('location', 'nutriç')">
-                    <p class="stat-number total-color" id="nutrition-processes" data-target="0">0</p>
-                    <h3>147 - Nutrição</h3>
-                    <div class="tooltip">Total de Processos da Nutrição</div>
-                </div>
-                <div class="stat-card" onclick="window.filterFromDashboard('location', '142')">
-                    <p class="stat-number total-color" id="secretariat-processes" data-target="0">0</p>
-                    <h3>142 - Financeiro</h3>
-                    <div class="tooltip">Total de Processos no 142 - Financeiro</div>
-                </div>
-            </div>
-
-            <!-- Listas Mobile (Estilo SUBInfra) - Preenchidas via JS -->
-            <div class="list-section-mobile" id="mobileSituationList" onclick="window.openStatusMobileModal()"
-                style="cursor: pointer;" title="Toque para ver os detalhes completos">
-                <div class="list-title">Situação do Processo</div>
-                <div class="list-item">
-                    <div><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i> Vencidos / Atrasados</div>
-                    <div class="list-badge red" id="mobile-delayed">0</div>
-                </div>
-                <div class="list-item">
-                    <div><i class="fas fa-coins" style="color:#f59e0b;"></i> Pendentes</div>
-                    <div class="list-badge" id="mobile-finance">0</div>
-                </div>
-                <div class="list-item">
-                    <div><i class="fas fa-check-circle" style="color:#10b981;"></i> Liquidados</div>
-                    <div class="list-badge green" id="mobile-completed">0</div>
-                </div>
-            </div>
-
-            <div class="list-section-mobile" id="mobileLocationList">
-                <div class="list-title">
-                    Localização do Processo
-                    <span class="list-subtitle">Distribuição por setor</span>
-                </div>
-                <div class="list-item">
-                    <div><i class="fas fa-briefcase"></i> Gabinete</div>
-                    <div class="list-badge blue" id="mobile-cabinet">0</div>
-                </div>
-                <div class="list-item">
-                    <div><i class="fas fa-shopping-cart"></i> Em Compras</div>
-                    <div class="list-badge blue" id="mobile-purchase">0</div>
-                </div>
-                <div class="list-item">
-                    <div><i class="fas fa-box-open"></i> Almoxarifado</div>
-                    <div class="list-badge blue" id="mobile-warehouse">0</div>
-                </div>
-                <div class="list-item">
-                    <div><i class="fas fa-money-bill-wave"></i> Tesouraria</div>
-                    <div class="list-badge blue" id="mobile-treasury">0</div>
-                </div>
-                <div class="list-item">
-                    <div><i class="fas fa-apple-alt"></i> Nutrição</div>
-                    <div class="list-badge blue" id="mobile-nutrition">0</div>
-                </div>
-                <div class="list-item">
-                    <div><i class="fas fa-building"></i> 142 - Financeiro</div>
-                    <div class="list-badge blue" id="mobile-secretariat">0</div>
-                </div>
-            </div>
-
-            <!-- Charts Section (Ported from original) -->
-            <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                <div class="table-container" style="min-height: 350px; display: flex; flex-direction: column;">
-                    <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Status</h3>
-                    <div style="flex: 1; position: relative;">
-                        <canvas id="statusChart"></canvas>
+                <!-- Filters -->
+                <div class="db-filters">
+                    <div class="form-group">
+                        <label for="filter-periodo">Período</label>
+                        <select id="filter-periodo">
+                            <option value="mes">Este mês</option>
+                            <option value="trimestre">Últimos 3 meses</option>
+                            <option value="ano">Este ano</option>
+                            <option value="todos">Todo o período</option>
+                        </select>
                     </div>
-                </div>
-                <div class="table-container"
-                    style="min-height: 350px; display: flex; flex-direction: column; position: relative;">
-                    <h3 style="margin-bottom: 1rem; color: var(--govbr-blue);">Processos por Localização</h3>
-                    <div style="flex: 1; position: relative; margin-bottom: 85px;">
-                        <canvas id="locationChart"></canvas>
+                    <div class="form-group">
+                        <label for="filter-status">Status</label>
+                        <select id="filter-status">
+                            <option value="">Todos os Status</option>
+                            <!-- Dynamic options -->
+                        </select>
                     </div>
-                    <div style="position: absolute; bottom: 15px; left: 15px; right: 15px; display: flex; gap: 12px;">
-                        <button class="btn btn-success" onclick="window.openProcessModal()"
-                            style="height: 48px; display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); transition: all 0.2s; padding: 0 1.5rem;">
+                    <div class="form-group">
+                        <label for="filter-setor">Setor</label>
+                        <select id="filter-setor">
+                            <option value="">Todos os Setores</option>
+                            <!-- Dynamic options -->
+                        </select>
+                    </div>
+                    <button class="btn-apply-filters" onclick="window.applyDashboardFilters()">
+                        <i class="fas fa-filter"></i> Aplicar Filtros
+                    </button>
+                    
+                    <div class="db-actions-row" style="margin-top: 0; align-items: center;">
+                        <button class="btn-db-action btn-db-new" onclick="window.openProcessModal()">
                             <i class="fas fa-plus"></i> Novo Processo
                         </button>
-                        <button class="btn btn-primary" onclick="window.showSection('processes')"
-                            style="flex: 1; height: 48px; display: flex; align-items: center; justify-content: center; gap: 10px; background: #005a9c; border: none; border-radius: 10px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 12px rgba(0, 90, 156, 0.2); transition: all 0.2s;">
-                            <i class="fas fa-search"></i> Consultar Cadastrados
+                        <button class="btn-db-action btn-db-consult" onclick="window.showSection('processes')">
+                            <i class="fas fa-search"></i> Consultar
                         </button>
-                        <button class="btn btn-danger" onclick="window.exportDashboardToPDF()"
-                            style="width: 100px; height: 48px; border-radius: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; background: #ef4444; border: none; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: all 0.2s;">
+                        <button class="btn-db-action btn-db-export" onclick="window.exportDashboardToPDF()">
                             <i class="fas fa-file-pdf"></i> PDF
                         </button>
+                    </div>
+                </div>
+
+                <!-- KPIs -->
+                <div class="db-kpi-row">
+                    <div class="db-kpi-card blue" onclick="window.filterFromDashboard('all', '')">
+                        <i class="fas fa-file-invoice"></i>
+                        <p class="stat-number" id="total-processes" data-target="0">0</p>
+                        <h3>Total de Processos</h3>
+                    </div>
+                    <div class="db-kpi-card orange" onclick="window.filterFromDashboard('status', '!Concluído')">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p class="stat-number" id="treating-processes" data-target="0">0</p>
+                        <h3>Em Tramitação</h3>
+                    </div>
+                    <div class="db-kpi-card green" onclick="window.filterFromDashboard('status', 'Concluído')">
+                        <i class="fas fa-check-double"></i>
+                        <p class="stat-number" id="completed-processes" data-target="0">0</p>
+                        <h3>Liquidados</h3>
+                    </div>
+                    <div class="db-kpi-card blue" onclick="window.filterFromDashboard('status', 'Pendente')">
+                        <i class="fas fa-clock"></i>
+                        <p class="stat-number" id="finance-processes" data-target="0">0</p>
+                        <h3>Pendentes</h3>
+                        <div class="stat-subtitle" id="pending-percent-label">0% de pendências</div>
+                        <p style="display:none;" id="pending-percent" data-target="0" data-suffix="%">0%</p>
+                    </div>
+                    <div class="db-kpi-card red" onclick="window.filterFromDashboard('delayed', '')">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p class="stat-number" id="delayed-processes" data-target="0">0</p>
+                        <h3>Vencidos / Atrasados</h3>
+                    </div>
+                </div>
+
+                <!-- Analytical Grid -->
+                <div class="db-analytical-grid">
+                    <div class="db-chart-block">
+                        <h3>Processos por Status</h3>
+                        <div style="height: 300px; position: relative;">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="db-chart-block">
+                        <h3>Processos por Localização</h3>
+                        <div style="height: 300px; position: relative;">
+                            <canvas id="locationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sectors Distribution -->
+                <div class="db-sectors-block">
+                    <h3>Distribuição por Setor</h3>
+                    <div class="db-sectors-list" id="db-sectors-list">
+                        <!-- Will be populated by JS -->
+                        <div class="db-sector-item">
+                            <div class="db-sector-name">143 - Gabinete</div>
+                            <div class="db-sector-bar-wrap">
+                                <div class="db-sector-bar" id="bar-gabinete" style="width: 0%; border-radius: 5px;"></div>
+                            </div>
+                            <div class="db-sector-value" id="cabinet-processes" data-target="0">0</div>
+                        </div>
+                        <div class="db-sector-item">
+                            <div class="db-sector-name">Compras</div>
+                            <div class="db-sector-bar-wrap">
+                                <div class="db-sector-bar" id="bar-compras" style="width: 0%; border-radius: 5px;"></div>
+                            </div>
+                            <div class="db-sector-value" id="purchase-processes" data-target="0">0</div>
+                        </div>
+                        <div class="db-sector-item">
+                            <div class="db-sector-name">131 - Almoxarifado</div>
+                            <div class="db-sector-bar-wrap">
+                                <div class="db-sector-bar" id="bar-almoxarifado" style="width: 0%; border-radius: 5px;"></div>
+                            </div>
+                            <div class="db-sector-value" id="warehouse-processes" data-target="0">0</div>
+                        </div>
+                        <div class="db-sector-item">
+                            <div class="db-sector-name">24 - Tesouraria</div>
+                            <div class="db-sector-bar-wrap">
+                                <div class="db-sector-bar" id="bar-tesouraria" style="width: 0%; border-radius: 5px;"></div>
+                            </div>
+                            <div class="db-sector-value" id="treasury-processes" data-target="0">0</div>
+                        </div>
+                        <div class="db-sector-item">
+                            <div class="db-sector-name">147 - Nutrição</div>
+                            <div class="db-sector-bar-wrap">
+                                <div class="db-sector-bar" id="bar-nutricao" style="width: 0%; border-radius: 5px;"></div>
+                            </div>
+                            <div class="db-sector-value" id="nutrition-processes" data-target="0">0</div>
+                        </div>
+                        <div class="db-sector-item">
+                            <div class="db-sector-name">142 - Financeiro</div>
+                            <div class="db-sector-bar-wrap">
+                                <div class="db-sector-bar" id="bar-financeiro" style="width: 0%; border-radius: 5px;"></div>
+                            </div>
+                            <div class="db-sector-value" id="secretariat-processes" data-target="0">0</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -5672,17 +5672,91 @@
 
         window.getStatusColor = function (status) {
             const st = (status || '').toUpperCase();
-            if (st === 'LIQUIDADO') return '#2ecc71'; // Verde
-            if (st === 'DESPACHADO') return '#e67e22'; // Laranja
-            if (st === 'CONCLUÍDO') return '#27ae60'; // Verde Escuro
-            if (st === 'EM ANÁLISE') return '#005A9C'; // Azul
-            if (st === 'PENDENTE') return '#e74c3c'; // Vermelho
-            if (st === 'DEVOLVIDO') return '#9b59b6'; // Roxo
-            if (st === 'CANCELADO') return '#c0392b'; // Vermelho Escuro
-            if (st === 'EM PAGAMENTO') return '#3498db'; // Azul Claro
-            if (st === 'AGUARDANDO') return '#f1c40f'; // Amarelo
-            if (st === 'ARQUIVADO') return '#7f8c8d'; // Cinza
-            return '#f39c12'; // Laranja padrão fallback ou qualquer cor diferenciada para 'outros'
+            if (st === 'LIQUIDADO') return '#2ecc71';
+            if (st === 'DESPACHADO') return '#e67e22';
+            if (st === 'CONCLUÍDO') return '#27ae60';
+            if (st === 'EM ANÁLISE') return '#005A9C';
+            if (st === 'PENDENTE') return '#e74c3c';
+            if (st === 'DEVOLVIDO') return '#9b59b6';
+            if (st === 'CANCELADO') return '#c0392b';
+            if (st === 'EM PAGAMENTO') return '#3498db';
+            if (st === 'AGUARDANDO') return '#f1c40f';
+            if (st === 'ARQUIVADO') return '#7f8c8d';
+            return '#f39c12';
+        };
+
+        window.animateCounter = function (el) {
+            const target = parseFloat(el.getAttribute('data-target')) || 0;
+            const suffix = el.getAttribute('data-suffix') || '';
+            const duration = 1000;
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const current = start + progress * (target - start);
+                
+                const isFloat = target % 1 !== 0;
+                el.innerText = (isFloat ? current.toFixed(1) : Math.floor(current).toLocaleString('pt-BR')) + suffix;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    el.innerText = (isFloat ? target.toFixed(1) : Math.floor(target).toLocaleString('pt-BR')) + suffix;
+                }
+            }
+            requestAnimationFrame(update);
+        };
+
+        window.exportDashboardToPDF = async function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const canvasStatus = document.getElementById('statusChart');
+            const canvasLocation = document.getElementById('locationChart');
+            
+            doc.setFillColor(0, 90, 156);
+            doc.rect(0, 0, 210, 30, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(18);
+            doc.text('Relatório Executivo - SUB INFRA', 15, 15);
+            doc.setFontSize(10);
+            doc.text(`Gerado em: ${new Date().toLocaleString('pt-BR')}`, 15, 22);
+
+            let y = 45;
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(14);
+            doc.text('Resumo de Indicadores', 15, y);
+            y += 10;
+
+            const kpis = [
+                { l: 'Total de Processos', v: document.getElementById('total-processes')?.innerText },
+                { l: 'Em Tramitação', v: document.getElementById('treating-processes')?.innerText },
+                { l: 'Liquidados', v: document.getElementById('completed-processes')?.innerText },
+                { l: 'Pendentes', v: document.getElementById('finance-processes')?.innerText },
+                { l: 'Vencidos', v: document.getElementById('delayed-processes')?.innerText }
+            ];
+
+            doc.setFontSize(10);
+            kpis.forEach(k => {
+                doc.text(`${k.l}: ${k.v}`, 20, y);
+                y += 7;
+            });
+
+            y += 10;
+            if (canvasStatus) {
+                const img = canvasStatus.toDataURL('image/png');
+                doc.text('Distribuição por Status', 15, y);
+                doc.addImage(img, 'PNG', 15, y + 5, 80, 60);
+            }
+
+            if (canvasLocation) {
+                const img = canvasLocation.toDataURL('image/png');
+                doc.text('Distribuição por Setor', 110, y);
+                doc.addImage(img, 'PNG', 110, y + 5, 80, 60);
+            }
+
+            doc.save(`dashboard_smedu_${new Date().toISOString().split('T')[0]}.pdf`);
         };
         window.showSection = function (id) {
             document.querySelectorAll('[id$="-section"]').forEach(s => s.style.display = 'none');
@@ -5710,16 +5784,16 @@
             }
         };
 
-        window.updateDashboardCounters = function () {
-            const total = window.state.processes.length;
-            const pending = window.state.processes.filter(p => p.status && p.status !== 'Concluído').length;
-            const pendenteCount = window.state.processes.filter(p => (p.status || '').trim().toLowerCase() === 'pendente').length;
+        window.updateDashboardCounters = function (filteredData = null) {
+            const data = filteredData || window.state.processes;
+            const total = data.length;
+            const pending = data.filter(p => p.status && p.status !== 'Concluído').length;
+            const pendenteCount = data.filter(p => (p.status || '').trim().toLowerCase() === 'pendente').length;
 
             const set = (id, val) => {
                 const el = document.getElementById(id);
                 if (el) {
                     el.setAttribute('data-target', val);
-                    // Update innerText immediately to avoid blank display
                     const suffix = el.getAttribute('data-suffix') || '';
                     const isFloat = val % 1 !== 0;
                     el.innerText = (isFloat ? val.toFixed(1) : Math.floor(val).toLocaleString('pt-BR')) + suffix;
@@ -5729,78 +5803,105 @@
             set('total-processes', total);
             set('treating-processes', pending);
             set('finance-processes', pendenteCount);
-            set('list-finance-processes', pendenteCount);
 
-            // Correção: Contar explicitamente processos com status "Concluído"
-            const completedCount = window.state.processes.filter(p => (p.status || '').trim().toLowerCase() === 'concluído').length;
+            const completedCount = data.filter(p => (p.status || '').trim().toLowerCase() === 'concluído').length;
             set('completed-processes', completedCount);
 
-            set('pending-percent', total ? ((pending / total) * 100) : 0);
+            const pendPercent = total ? Math.round((pending / total) * 100) : 0;
+            set('pending-percent', pendPercent);
+            const pendLabel = document.getElementById('pending-percent-label');
+            if (pendLabel) pendLabel.innerText = `${pendPercent}% de pendências`;
 
-            set('list-total-processes', total);
-            set('list-treating-processes', pending);
-            set('list-completed-processes', completedCount);
-            set('list-pending-percent', total ? ((pending / total) * 100) : 0);
-
-            const localeMap = {
-                'cabinet-processes': 'gabinete',
-                'purchase-processes': 'compras',
-                'warehouse-processes': 'almoxarifado',
-                'treasury-processes': 'tesouraria',
-                'nutrition-processes': 'nutriç',
-                'secretariat-processes': '142',
-                'protocol-processes': 'protocolo'
-            };
-
-            Object.keys(localeMap).forEach(id => {
-                const count = window.state.processes.filter(p => p.location && p.location.toLowerCase().includes(localeMap[id])).length;
-                set(id, count);
-            });
-
-            // Trigger animation for visible counters in dashboard
-            if (document.getElementById('dashboard-section').style.display !== 'none') {
-                document.querySelectorAll('#dashboard-section .stat-number').forEach(el => window.animateCounter(el));
-            }
-            // Also trigger for process list if visible
-            if (document.getElementById('processes-section').style.display !== 'none') {
-                document.querySelectorAll('#processes-section .stat-number').forEach(el => window.animateCounter(el));
-            }
-
-            const delayed = window.state.processes.filter(p => {
+            const delayed = data.filter(p => {
                 if (p.status === 'Concluído' || !p.deadline) return false;
                 const days = Math.ceil((new Date(p.deadline + 'T23:59:59') - new Date()) / 86400000);
                 return days < 0;
             }).length;
             set('delayed-processes', delayed);
+
+            // Update Sector Bars
+            const localeMap = {
+                'cabinet-processes': { query: 'gabinete', barId: 'bar-gabinete' },
+                'purchase-processes': { query: 'compras', barId: 'bar-compras' },
+                'warehouse-processes': { query: 'almoxarifado', barId: 'bar-almoxarifado' },
+                'treasury-processes': { query: 'tesouraria', barId: 'bar-tesouraria' },
+                'nutrition-processes': { query: 'nutriç', barId: 'bar-nutricao' },
+                'secretariat-processes': { query: '142', barId: 'bar-financeiro' }
+            };
+
+            let maxVal = 0;
+            const counts = {};
+            Object.keys(localeMap).forEach(id => {
+                const count = data.filter(p => p.location && p.location.toLowerCase().includes(localeMap[id].query)).length;
+                counts[id] = count;
+                if (count > maxVal) maxVal = count;
+                set(id, count);
+            });
+
+            Object.keys(localeMap).forEach(id => {
+                const bar = document.getElementById(localeMap[id].barId);
+                if (bar) {
+                    const pct = maxVal > 0 ? (counts[id] / maxVal) * 100 : 0;
+                    bar.style.width = pct + '%';
+                }
+            });
+
+            // Legacy support
+            set('list-total-processes', total);
+            set('list-treating-processes', pending);
+            set('list-completed-processes', completedCount);
+            set('list-finance-processes', pendenteCount);
             set('list-delayed-processes', delayed);
+            set('list-pending-percent', total ? ((pending / total) * 100) : 0);
 
-            // Popula os badges das listas exclusivas do Mobile (Estilo SUBInfra)
-            if (document.getElementById('mobile-delayed')) {
-                set('mobile-delayed', delayed);
-                set('mobile-finance', pendenteCount);
-                set('mobile-completed', total - pending);
+            window.renderCharts(data);
+        };
 
-                Object.keys(localeMap).forEach(id => {
-                    const count = window.state.processes.filter(p => p.location && p.location.toLowerCase().includes(localeMap[id])).length;
-                    const mobileIdMap = {
-                        'cabinet-processes': 'mobile-cabinet',
-                        'purchase-processes': 'mobile-purchase',
-                        'warehouse-processes': 'mobile-warehouse',
-                        'treasury-processes': 'mobile-treasury',
-                        'nutrition-processes': 'mobile-nutrition',
-                        'secretariat-processes': 'mobile-secretariat'
-                    };
-                    if (mobileIdMap[id]) set(mobileIdMap[id], count);
+        window.applyDashboardFilters = function() {
+            const periodo = document.getElementById('filter-periodo').value;
+            const status = document.getElementById('filter-status').value;
+            const setor = document.getElementById('filter-setor').value;
+            
+            let filtered = [...window.state.processes];
+            
+            // Período Filter
+            if (periodo !== 'todos') {
+                const now = new Date();
+                filtered = filtered.filter(p => {
+                    if (!p.openingDate) return false;
+                    const pDate = new Date(p.openingDate);
+                    if (periodo === 'mes') return pDate.getMonth() === now.getMonth() && pDate.getFullYear() === now.getFullYear();
+                    if (periodo === 'trimestre') {
+                        const threeMonthsAgo = new Date();
+                        threeMonthsAgo.setMonth(now.getMonth() - 3);
+                        return pDate >= threeMonthsAgo;
+                    }
+                    if (periodo === 'ano') return pDate.getFullYear() === now.getFullYear();
+                    return true;
                 });
             }
-
-            window.renderCharts();
+            
+            // Status Filter
+            if (status) {
+                filtered = filtered.filter(p => p.status === status);
+            }
+            
+            // Setor Filter
+            if (setor) {
+                filtered = filtered.filter(p => p.location === setor);
+            }
+            
+            window.updateDashboardCounters(filtered);
+            
+            // Re-animate counters
+            document.querySelectorAll('#dashboard-section .stat-number').forEach(el => window.animateCounter(el));
         };
 
         // Move Chart.register outside the function to ensure it's registered only once
         Chart.register(ChartDataLabels);
 
-        window.renderCharts = function () {
+        window.renderCharts = function (filteredData = null) {
+            const data = filteredData || window.state.processes;
             const sEl = document.getElementById('statusChart');
             const lEl = document.getElementById('locationChart');
             if (!sEl || !lEl) return;
@@ -5813,8 +5914,8 @@
             ];
 
             // Gráfico de Status Dinâmico (inclui todos os status presentes no banco)
-            const actualStatuses = [...new Set(window.state.processes.map(p => p.status || 'Não Definido'))];
-            const statusCounts = actualStatuses.map(s => window.state.processes.filter(p => (p.status || 'Não Definido') === s).length);
+            const actualStatuses = [...new Set(data.map(p => p.status || 'Não Definido'))];
+            const statusCounts = actualStatuses.map(s => data.filter(p => (p.status || 'Não Definido') === s).length);
 
             statusChart = new Chart(sEl.getContext('2d'), {
                 type: 'doughnut',
@@ -5828,28 +5929,29 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    cutout: '70%',
                     plugins: {
                         legend: {
-                            position: 'top',
+                            position: 'bottom',
                             labels: {
                                 padding: 20,
                                 usePointStyle: true,
-                                font: { size: 10 }
+                                font: { size: 11, weight: '600' },
+                                color: '#475569'
                             }
                         },
                         datalabels: {
                             color: '#fff',
-                            fontWeight: 'bold',
-                            font: { size: 11 },
+                            fontWeight: '800',
+                            font: { size: 12 },
                             formatter: (value, ctx) => {
                                 if (!value || value === 0) return null;
                                 let sum = 0;
                                 let dataArr = ctx.chart.data.datasets[0].data;
                                 dataArr.map(data => { sum += data; });
-                                let percentage = (value * 100 / sum).toFixed(1) + "%";
-                                return `${value}\n(${percentage})`;
+                                let percentage = (value * 100 / sum).toFixed(0) + "%";
+                                return `${percentage}`;
                             },
-                            textAlign: 'center'
                         }
                     }
                 }
@@ -5861,7 +5963,7 @@
                     labels: window.state.locations,
                     datasets: [{
                         label: 'Processos',
-                        data: window.state.locations.map(l => window.state.processes.filter(p => p.location === l).length),
+                        data: window.state.locations.map(l => data.filter(p => p.location === l).length),
                         backgroundColor: vibrantColors,
                         borderRadius: 4
                     }]
@@ -7596,7 +7698,9 @@
                 { id: 'userFilterDept', data: window.state.departments, opt: true, placeholder: 'Todos os Departamentos', searchable: false, isFilter: true },
                 { id: 'statusFilter', data: window.state.statuses, opt: true, placeholder: 'Todos os Status', searchable: false, isFilter: true },
                 { id: 'locationFilter', data: window.state.locations, opt: true, placeholder: 'Todas Localizações', searchable: false, isFilter: true },
-                { id: 'handlerFilter', data: window.state.handlers, opt: true, placeholder: 'Todos os Tratadores', searchable: false, isFilter: true }
+                { id: 'handlerFilter', data: window.state.handlers, opt: true, placeholder: 'Todos os Tratadores', searchable: false, isFilter: true },
+                { id: 'filter-status', data: window.state.statuses, opt: true, placeholder: 'Todos os Status', searchable: false, isFilter: true },
+                { id: 'filter-setor', data: window.state.locations, opt: true, placeholder: 'Todos os Setores', searchable: false, isFilter: true }
             ];
 
             // Escalona a inicialização dos campos Choices para não travar o thread principal
