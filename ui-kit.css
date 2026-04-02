@@ -705,16 +705,226 @@ body.dark-mode .ui-toast__desc { color: var(--ui-text-3); }
 .db-latest-status.green { background: #f0fdf4; color: #15803d; }
 .db-latest-status.red { background: #fef2f2; color: #b91c1c; }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .db-kpi-row { grid-template-columns: repeat(3, 1fr); }
-  .db-analytical-grid { grid-template-columns: 1fr; }
+/* FAQ Modal Styles */
+.faq-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.faq-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.faq-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.faq-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.faq-item:hover {
+  border-color: #005a9c;
+  box-shadow: 0 2px 8px rgba(0, 90, 156, 0.1);
+}
+
+.faq-item summary {
+  padding: 14px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #1e293b;
+  background: #fff;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.2s ease;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: '+';
+  font-size: 1.2rem;
+  color: #005a9c;
+  transition: transform 0.2s ease;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.faq-item summary:hover {
+  background: #f1f5f9;
+}
+
+.faq-item p {
+  padding: 0 16px 14px;
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.faq-item strong {
+  color: #005a9c;
 }
 
 @media (max-width: 600px) {
-  .db-kpi-row { grid-template-columns: repeat(2, 1fr); }
-  .db-header h1 { font-size: 1.8rem; }
-  .db-filters { flex-direction: column; align-items: stretch; }
-  .db-filters .form-group { min-width: 100%; }
-  .db-actions-row { flex-direction: column; align-items: stretch; }
+  .faq-container {
+    max-height: 50vh;
+  }
+  
+  .faq-item summary {
+    font-size: 0.9rem;
+    padding: 12px 14px;
+  }
+}
+
+/* Manual do Usuário Styles */
+.manual-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-height: 65vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.manual-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.manual-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.manual-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.manual-section h3 {
+  color: #005a9c;
+  font-size: 1.1rem;
+  margin: 0 0 12px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.manual-section h3 i {
+  font-size: 1rem;
+}
+
+.manual-section p {
+  color: #475569;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.manual-section ul, 
+.manual-section ol {
+  margin: 0;
+  padding-left: 20px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.manual-section li {
+  margin-bottom: 6px;
+}
+
+.manual-section strong {
+  color: #1e293b;
+}
+
+.approval-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.flow-step {
+  background: #005a9c;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.flow-arrow {
+  color: #005a9c;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.manual-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.manual-table th,
+.manual-table td {
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.manual-table th {
+  background: #005a9c;
+  color: #fff;
+  font-weight: 600;
+}
+
+.manual-table tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+@media (max-width: 600px) {
+  .manual-container {
+    max-height: 55vh;
+  }
+  
+  .manual-section {
+    padding: 14px;
+  }
+  
+  .manual-section h3 {
+    font-size: 1rem;
+  }
+  
+  .approval-flow {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .flow-arrow {
+    transform: rotate(90deg);
+  }
 }
