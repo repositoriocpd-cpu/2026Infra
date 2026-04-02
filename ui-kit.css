@@ -728,8 +728,7 @@ body.dark-mode .ui-toast__desc { color: var(--ui-text-3); }
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.2s ease;
+  display: block; /* Garante que o details se comporte como um contêiner de bloco */
 }
 
 .faq-item:hover {
