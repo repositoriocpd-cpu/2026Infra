@@ -401,42 +401,118 @@
             }
         }
 
-        /* O cabeçalho agora é gerenciado pelo ui-kit.css para manter a barra azul no topo */
+        /* Cabeçalho SMEDU Realinhado */
         .govbr-header {
-             background-color: #ffffff !important;
-             color: #1e293b !important;
-             border-top: 5px solid #005a9c !important;
-        }
-        
-        .govbr-header .department-info a, 
-        .govbr-header .user-info span,
-        .govbr-header .department-info span {
-            color: #1e293b !important;
-            font-family: 'Sora', sans-serif !important;
-        }
-
-        .govbr-header .header-actions a, .govbr-header .menu-icon {
-            color: #005a9c !important;
-        }
-
-        /* Garantir visibilidade do menu suspenso no cabeçalho branco */
-        .header-sign-in {
             background-color: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+            border-top: 4px solid #005a9c !important;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
         }
 
-        .header-sign-in li a {
-            color: #334155 !important;
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #ffffff;
         }
 
-        .header-sign-in .menu-header {
-            color: #64748b !important;
+        .header-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 2rem;
+            background-color: #ffffff;
         }
 
-        .header-sign-in li a:hover {
-            background-color: #f1f5f9 !important;
-            color: #005a9c !important;
+        .header-top-links {
+            font-size: 0.85rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-top-links span#header-current-date {
+            color: #005a9c;
+            font-weight: 500;
+        }
+
+        .header-top-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #005a9c;
+        }
+
+        .header-top-links a {
+            color: #005a9c;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .header-top-links a:hover {
+            color: #1e40af;
+        }
+
+        .header-top-links .separator {
+            color: #93c5fd;
+            font-weight: 300;
+        }
+
+        #dark-mode-toggle {
+            color: #005a9c;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+
+        .dept-title-group {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: #005a9c;
+        }
+
+        .dept-title-group strong {
+            font-weight: 800;
+            font-size: 1rem;
+            text-transform: none;
+        }
+
+        .dept-title-group .seg-label {
+            font-weight: 400;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .dept-title-group .dept-label {
+            font-weight: 400;
+            font-size: 0.95rem;
+            color: #005a9c;
+        }
+
+        .dept-title-group .v-sep {
+            color: #cbd5e1;
+            font-weight: 100;
+            font-size: 1.2rem;
+        }
+
+        .user-header-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #005a9c;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-header-info i {
+            font-size: 1.5rem;
         }
 
         .db-kpi-row {
@@ -649,9 +725,9 @@
             z-index: 100;
         }
 
-        .user-info:hover .header-sign-in {
-            opacity: 1;
-            visibility: visible;
+        .user-header-info:hover .header-sign-in {
+            opacity: 1 !important;
+            visibility: visible !important;
         }
 
         .header-sign-in ul {
@@ -3668,67 +3744,53 @@
                 <img class="header-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
                     alt="Prefeitura de Itaguaí">
                 <div class="logo-separator"></div>
-                <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span>
+                <!-- <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span> -->
             </div>
-            <div class="header-actions">
-                <!--
-                <div class="actions-separator"></div>
-                <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank"
-                    rel="noopener noreferrer" class="header-link" title="Jornal Oficial"><i
-                        class="fas fa-newspaper"></i><span class="hide-on-small">Jornal Oficial</span></a>
-                <div class="actions-separator"></div>
-                <a href="https://portal.transparencia.itaguai.rj.gov.br/" target="_blank" rel="noopener noreferrer"
-                    class="header-link" title="Transparência"><i class="fas fa-search-dollar"></i><span
-                        class="hide-on-small">Transparência</span></a>
-
-                <div class="actions-separator"></div>
-                <a href="#" aria-label="Modo noturno" id="dark-mode-toggle"><i class="fa-solid fa-moon"></i><span
-                        class="hide-on-small"></span></a>
-                <a href="#" aria-label="Acessibilidade" id="accessibility-toggle"><i
-                        class="fa-solid fa-universal-access"></i><span class="hide-on-small"></span></a>
-                <a href="#" aria-label="Privacidade" id="cookie-toggle"><i
-                        class="fa-solid fa-cookie-bite"></i><span class="hide-on-small"></span></a>
-            </div> -->
+            
+            <div class="header-top-links">
+                <span id="header-current-date">Carregando data...</span>
+                <span class="separator">|</span>
+                <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank">Jornal Oficial</a>
+                <span class="separator">|</span>
+                <a href="https://portal.transparencia.itaguai.rj.gov.br/" target="_blank">Transparência</a>
+                <span class="separator">|</span>
+                <a href="#" id="dark-mode-toggle" title="Alternar Modo Noturno"><i class="fa-solid fa-moon"></i></a>
             </div>
-            <div class="header-bottom">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <i id="menu-toggle" class="fa-solid fa-bars menu-icon"></i>
-                    <div class="department-info">
-                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
-                            class="hide-on-small">Secretaria
-                            Municipal de Educação</a>
-                        <a href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
-                            class="show-on-small">SMEDU</a>
-                        <span class="hide-on-small"
-                            style="color: #E5E7EB; font-weight: 300; margin: 0 0.25rem;">|</span>
-                        <a href="#" class="hide-on-small hide-on-medium">CONTROLE DE PROCESSOS DE PAGAMENTO</a>
-                    </div>
-                </div>
+        </div>
 
+        <div class="header-bottom">
+            <div class="dept-title-group">
+                <i id="menu-toggle" class="fa-solid fa-bars menu-icon" style="color: #005a9c; cursor: pointer; font-size: 1.2rem;"></i>
+                <strong>Secretaria Municipal de Educação</strong>
+                <span class="v-sep">|</span>
+                <span class="seg-label">CONTROLE DE PROCESSOS DE PAGAMENTO</span>
+                <span class="v-sep">|</span>
+                <span id="header-dept-name" class="dept-label">Carregando departamento...</span>
+            </div>
 
-                <div class="user-info">
-                    <span id="header-dept-name" class="hide-on-small">Aguardando login...</span>
-                    <i class="fa-solid fa-user-circle"></i>
-                    <span id="header-user-name">Usuário</span>
-                    <div class="header-sign-in">
-                        <ul class="menu-section">
-                            <li class="menu-header">Sua Conta</li>
-                            <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                            <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
-                        </ul>
-                        <ul class="menu-section">
-                            <li class="menu-header">Links Externo</li>
-                            <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas Frequentes</a></li>
-                            <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a></li>
-                            <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a></li>
-                            <li><a href="#" onclick="window.startProcessTour(); return false;"><i class="fas fa-circle-question"></i> Tour pelo Sistema</a></li>
-                        </ul>
-                        <ul class="menu-section">
-                            <li><a href="#" onclick="window.logout(event)" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-                        </ul>
-                    </div>
+            <div class="user-header-info" id="user-info-trigger" onclick="e => e.stopPropagation()">
+                <i class="fa-solid fa-user-circle"></i>
+                <span id="header-user-name">Carregando usuário...</span>
+                
+                <!-- Menu Dropdown (dropdown original realinhado) -->
+                <div class="header-sign-in" id="header-dropdown-menu">
+                    <ul class="menu-section">
+                        <li class="menu-header">Sua Conta</li>
+                        <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
+                        <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
+                    </ul>
+                    <ul class="menu-section">
+                        <li class="menu-header">Links Externo</li>
+                        <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas Frequentes</a></li>
+                        <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a></li>
+                        <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a></li>
+                    </ul>
+                    <ul class="menu-section">
+                        <li><a href="#" onclick="window.logout(event)" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                    </ul>
                 </div>
             </div>
+        </div>
     </header>
 
     <main class="container" style="margin-top: 2rem;">
@@ -5252,6 +5314,16 @@
             }
         } catch (e) { console.error('Supabase Client Error:', e); }
 
+        // --- DATE UTILITY ---
+        window.updateHeaderDate = function() {
+            var el = document.getElementById('header-current-date');
+            if (el) {
+                var now = new Date();
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                el.textContent = now.toLocaleDateString('pt-BR', options);
+            }
+        };
+
         // --- STATE ---
         window.state = {
             processes: [], suppliers: [], locations: [], objects: [], departments: [],
@@ -5265,6 +5337,9 @@
             if (window._listenersInitialized) return;
             window._listenersInitialized = true;
             console.log('Inicializando listeners globais...');
+
+            // Date Setup
+            window.updateHeaderDate();
 
             // Botões Novo Processo (Desktop e Mobile)
             const newProcessButtons = document.querySelectorAll('.btn-primary-new, .mobile-actions-grid .btn-primary, .bottom-nav-item i.fa-plus-circle, .nav-item i.fa-plus-circle');
@@ -8703,7 +8778,7 @@
             const email = emailInput.value.trim();
             const password = passwordInput.value;
             const errorMsg = document.getElementById('login-error-msg');
-            const submitBtn = event.target.querySelector('button');
+            const submitBtn = event.target.querySelector('.login-btn');
 
             if (!email || !password) {
                 errorMsg.innerText = 'Preencha todos os campos.';
@@ -8719,13 +8794,14 @@
             const loginTimeout = setTimeout(() => {
                 if (submitBtn.disabled) {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Entrar';
+                    submitBtn.innerHTML = 'Entrar na Plataforma';
                     errorMsg.innerText = 'O servidor está demorando a responder. Tente novamente.';
                     errorMsg.style.display = 'block';
                 }
             }, 10000);
 
             try {
+                console.log('Tentando autenticação para:', email);
                 const { data, error } = await supabase.auth.signInWithPassword({ email, password });
                 clearTimeout(loginTimeout);
                 if (error) throw error;
