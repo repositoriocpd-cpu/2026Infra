@@ -3855,52 +3855,18 @@
                     </div>
                 </div>
 
-                <!-- Sectors Distribution -->
-                <div class="db-sectors-block">
-                    <h3>Distribuição por Setor</h3>
-                    <div class="db-sectors-list" id="db-sectors-list">
-                        <!-- Will be populated by JS -->
-                        <div class="db-sector-item">
-                            <div class="db-sector-name">143 - Gabinete</div>
-                            <div class="db-sector-bar-wrap">
-                                <div class="db-sector-bar" id="bar-gabinete" style="width: 0%; border-radius: 5px;"></div>
-                            </div>
-                            <div class="db-sector-value" id="cabinet-processes" data-target="0">0</div>
+                <!-- Sectors and Latest Updates -->
+                <div class="db-analytical-grid" style="margin-top: 2rem;">
+                    <div class="db-chart-block">
+                        <h3>Distribuição por Setor</h3>
+                        <div class="db-sectors-list" id="db-sectors-list">
+                            <!-- Populated by JS -->
                         </div>
-                        <div class="db-sector-item">
-                            <div class="db-sector-name">Compras</div>
-                            <div class="db-sector-bar-wrap">
-                                <div class="db-sector-bar" id="bar-compras" style="width: 0%; border-radius: 5px;"></div>
-                            </div>
-                            <div class="db-sector-value" id="purchase-processes" data-target="0">0</div>
-                        </div>
-                        <div class="db-sector-item">
-                            <div class="db-sector-name">131 - Almoxarifado</div>
-                            <div class="db-sector-bar-wrap">
-                                <div class="db-sector-bar" id="bar-almoxarifado" style="width: 0%; border-radius: 5px;"></div>
-                            </div>
-                            <div class="db-sector-value" id="warehouse-processes" data-target="0">0</div>
-                        </div>
-                        <div class="db-sector-item">
-                            <div class="db-sector-name">24 - Tesouraria</div>
-                            <div class="db-sector-bar-wrap">
-                                <div class="db-sector-bar" id="bar-tesouraria" style="width: 0%; border-radius: 5px;"></div>
-                            </div>
-                            <div class="db-sector-value" id="treasury-processes" data-target="0">0</div>
-                        </div>
-                        <div class="db-sector-item">
-                            <div class="db-sector-name">147 - Nutrição</div>
-                            <div class="db-sector-bar-wrap">
-                                <div class="db-sector-bar" id="bar-nutricao" style="width: 0%; border-radius: 5px;"></div>
-                            </div>
-                            <div class="db-sector-value" id="nutrition-processes" data-target="0">0</div>
-                        </div>
-                        <div class="db-sector-item">
-                            <div class="db-sector-name">142 - Financeiro</div>
-                            <div class="db-sector-bar-wrap">
-                                <div class="db-sector-bar" id="bar-financeiro" style="width: 0%; border-radius: 5px;"></div>
-                            </div>
-                            <div class="db-sector-value" id="secretariat-processes" data-target="0">0</div>
+                    </div>
+                    <div class="db-chart-block">
+                        <h3>Últimos Lançamentos</h3>
+                        <div id="db-latest-updates" class="db-latest-list">
+                            <p style="text-align:center; color:#64748b; padding:2rem;">Carregando atualizações...</p>
                         </div>
                     </div>
                 </div>
@@ -5879,6 +5845,37 @@
                     bar.style.width = (count / maxVal * 100) + '%';
                 }
             });
+
+            // Update Latest Updates (New Block)
+            const latestContainer = document.getElementById('db-latest-updates');
+            if (latestContainer) {
+                // data já vem ordenado por created_at se for window.state.processes
+                // mas garantimos a ordenação para os últimos lançamentos
+                const sorted = [...data].sort((a,b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+                const latest = sorted.slice(0, 5);
+                
+                if (latest.length === 0) {
+                    latestContainer.innerHTML = '<p style="text-align:center; color:#64748b; padding:2rem;">Nenhuma atualização recente.</p>';
+                } else {
+                    latestContainer.innerHTML = latest.map(p => {
+                        const statusClass = (p.status || '').toLowerCase().includes('concluído') ? 'green' :
+                                          (p.status || '').toLowerCase().includes('pendente') ? 'blue' :
+                                          (p.status || '').toLowerCase().includes('atrasado') ? 'red' : 'orange';
+                        return `
+                            <div class="db-latest-item" onclick="window.showProcessDetails(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+                                <div class="db-latest-icon">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <div class="db-latest-info">
+                                    <h4>${p.ppNumber || 'PP S/N'}</h4>
+                                    <p>${p.object || 'Objeto não informado'}</p>
+                                </div>
+                                <span class="db-latest-status ${statusClass}">${p.status || 'S/ Status'}</span>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
 
             // Legacy support
             set('list-total-processes', total);
