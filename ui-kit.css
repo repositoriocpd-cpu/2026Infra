@@ -709,10 +709,10 @@ body.dark-mode .ui-toast__desc { color: var(--ui-text-3); }
 .faq-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-height: 60vh;
+  gap: 14px;
+  max-height: 75vh;
   overflow-y: auto;
-  padding-right: 10px;
+  padding-right: 12px;
 }
 
 .faq-container::-webkit-scrollbar {
@@ -770,11 +770,12 @@ body.dark-mode .ui-toast__desc { color: var(--ui-text-3); }
 }
 
 .faq-item p {
-  padding: 0 16px 14px;
+  padding: 16px 20px 18px;
   margin: 0;
   color: #475569;
-  line-height: 1.6;
+  line-height: 1.7;
   font-size: 0.95rem;
+  background: #f8fafc;
 }
 
 .faq-item strong {
