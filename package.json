@@ -3,6 +3,7 @@
   "version": "1.0.6",
   "scripts": {
     "build": "rm -rf dist && mkdir -p dist && cp index.html robots.txt 2026_script.js pwa-handler.js manifest.json sw.js _redirects icone_logo.png ui-kit.css ui-kit.js dist/ && cp -r icons dist/ && cp -r public dist/",
+    "dev": "npx -y http-server . -p 8080",
     "prebuild": ""
   },
   "dependencies": {

@@ -32,6 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <link rel="stylesheet" href="ui-kit.css?v=2">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
         /* Timeline Modal Styles */
@@ -400,14 +401,47 @@
             }
         }
 
+        /* O cabeçalho agora é gerenciado pelo ui-kit.css para manter a barra azul no topo */
         .govbr-header {
-            background-color: white;
-            color: var(--text-color);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+             background-color: #ffffff !important;
+             color: #1e293b !important;
+             border-top: 5px solid #005a9c !important;
+        }
+        
+        .govbr-header .department-info a, 
+        .govbr-header .user-info span,
+        .govbr-header .department-info span {
+            color: #1e293b !important;
+            font-family: 'Sora', sans-serif !important;
+        }
+
+        .govbr-header .header-actions a, .govbr-header .menu-icon {
+            color: #005a9c !important;
+        }
+
+        /* Garantir visibilidade do menu suspenso no cabeçalho branco */
+        .header-sign-in {
+            background-color: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .header-sign-in li a {
+            color: #334155 !important;
+        }
+
+        .header-sign-in .menu-header {
+            color: #64748b !important;
+        }
+
+        .header-sign-in li a:hover {
+            background-color: #f1f5f9 !important;
+            color: #005a9c !important;
+        }
+
+        .db-kpi-row {
+            grid-template-columns: repeat(6, 1fr) !important;
+            gap: 1.25rem !important;
         }
 
         .header-top {
@@ -740,35 +774,6 @@
         }
 
         @media (max-width: 600px) {
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr) !important;
-                gap: 8px !important;
-            }
-
-            .stat-card {
-                padding: 10px 4px !important;
-                text-align: center;
-                min-width: 0 !important;
-            }
-
-            .stat-card i {
-                font-size: 1.1rem !important;
-                margin-bottom: 4px !important;
-            }
-
-            .stat-card .stat-number {
-                font-size: 1.3rem !important;
-                margin-bottom: 2px;
-                font-weight: 800 !important;
-            }
-
-            .stat-card h3 {
-                font-size: 0.6rem !important;
-                line-height: 1.2 !important;
-                font-weight: 600;
-                white-space: normal !important;
-            }
-
             /* Ajustes gerais para mobile */
             .header-actions {
                 gap: 0.5rem;
@@ -3761,51 +3766,76 @@
                             <!-- Dynamic options -->
                         </select>
                     </div>
-                    <button class="btn-apply-filters" onclick="window.applyDashboardFilters()">
-                        <i class="fas fa-filter"></i> Aplicar Filtros
-                    </button>
                     
-                    <div class="db-actions-row" style="margin-top: 0; align-items: center;">
-                        <button class="btn-db-action btn-db-new" onclick="window.openProcessModal()">
-                            <i class="fas fa-plus"></i> Novo Processo
+                    <div class="db-actions-row" style="margin-top: 0; align-items: center; width: auto;">
+                        <button class="btn-apply-filters" onclick="window.applyDashboardFilters()" style="height: 42px;">
+                            <i class="fas fa-filter"></i> Aplicar Filtros
                         </button>
-                        <button class="btn-db-action btn-db-consult" onclick="window.showSection('processes')">
+                        <button class="btn-db-action btn-db-new" onclick="window.openProcessModal()" style="height: 42px; font-size: 0.9rem;">
+                            <i class="fas fa-plus"></i> Novo
+                        </button>
+                        <button class="btn-db-action btn-db-consult" onclick="window.showSection('processes')" style="height: 42px; font-size: 0.9rem;">
                             <i class="fas fa-search"></i> Consultar
                         </button>
-                        <button class="btn-db-action btn-db-export" onclick="window.exportDashboardToPDF()">
+                        <button class="btn-db-action btn-db-export" onclick="window.exportDashboardToPDF()" style="height: 42px; font-size: 0.9rem;">
                             <i class="fas fa-file-pdf"></i> PDF
                         </button>
                     </div>
                 </div>
 
-                <!-- KPIs -->
+                <!-- Main KPIs First Row -->
                 <div class="db-kpi-row">
                     <div class="db-kpi-card blue" onclick="window.filterFromDashboard('all', '')">
-                        <i class="fas fa-file-invoice"></i>
-                        <p class="stat-number" id="total-processes" data-target="0">0</p>
+                        <p class="stat-number" id="total-processes" data-target="0" style="color: #005a9c;">0</p>
                         <h3>Total de Processos</h3>
                     </div>
                     <div class="db-kpi-card orange" onclick="window.filterFromDashboard('status', '!Concluído')">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <p class="stat-number" id="treating-processes" data-target="0">0</p>
-                        <h3>Em Tramitação</h3>
+                        <p class="stat-number" id="treating-processes" data-target="0" style="color: #e67e22;">0</p>
+                        <h3>Processos em Tramitação</h3>
                     </div>
                     <div class="db-kpi-card green" onclick="window.filterFromDashboard('status', 'Concluído')">
-                        <i class="fas fa-check-double"></i>
-                        <p class="stat-number" id="completed-processes" data-target="0">0</p>
-                        <h3>Liquidados</h3>
+                        <p class="stat-number" id="completed-processes" data-target="0" style="color: #2ecc71;">0</p>
+                        <h3>Processos Liquidados</h3>
                     </div>
-                    <div class="db-kpi-card blue" onclick="window.filterFromDashboard('status', 'Pendente')">
-                        <i class="fas fa-clock"></i>
-                        <p class="stat-number" id="finance-processes" data-target="0">0</p>
-                        <h3>Pendentes</h3>
-                        <div class="stat-subtitle" id="pending-percent-label">0% de pendências</div>
-                        <p style="display:none;" id="pending-percent" data-target="0" data-suffix="%">0%</p>
+                    <div class="db-kpi-card orange" style="cursor: default;">
+                        <p class="stat-number" id="pending-percent" data-target="0" data-suffix="%" style="color: #e67e22;">0%</p>
+                        <h3>Percentual de Pendências</h3>
                     </div>
                     <div class="db-kpi-card red" onclick="window.filterFromDashboard('delayed', '')">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <p class="stat-number" id="delayed-processes" data-target="0">0</p>
+                        <p class="stat-number" id="delayed-processes" data-target="0" style="color: #e74c3c;">0</p>
                         <h3>Vencidos / Atrasados</h3>
+                    </div>
+                    <div class="db-kpi-card blue" onclick="window.filterFromDashboard('status', 'Pendente')">
+                        <p class="stat-number" id="finance-processes" data-target="0" style="color: #005a9c;">0</p>
+                        <h3>Pendentes</h3>
+                    </div>
+                </div>
+
+                <!-- Sector KPIs Second Row -->
+                <div class="db-kpi-row" style="margin-top: 1rem;">
+                    <div class="db-kpi-card blue">
+                        <p class="stat-number" id="cabinet-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                        <h3>143 - Gabinete</h3>
+                    </div>
+                    <div class="db-kpi-card blue">
+                        <p class="stat-number" id="compras-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                        <h3>Compras</h3>
+                    </div>
+                    <div class="db-kpi-card blue">
+                        <p class="stat-number" id="almoxarifado-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                        <h3>131 - Almoxarifado</h3>
+                    </div>
+                    <div class="db-kpi-card blue">
+                        <p class="stat-number" id="tesouraria-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                        <h3>24 - Tesouraria</h3>
+                    </div>
+                    <div class="db-kpi-card blue">
+                        <p class="stat-number" id="nutricao-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                        <h3>147 - Nutrição</h3>
+                    </div>
+                    <div class="db-kpi-card blue">
+                        <p class="stat-number" id="financeiro-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                        <h3>142 - Financeiro</h3>
                     </div>
                 </div>
 
@@ -5809,8 +5839,6 @@
 
             const pendPercent = total ? Math.round((pending / total) * 100) : 0;
             set('pending-percent', pendPercent);
-            const pendLabel = document.getElementById('pending-percent-label');
-            if (pendLabel) pendLabel.innerText = `${pendPercent}% de pendências`;
 
             const delayed = data.filter(p => {
                 if (p.status === 'Concluído' || !p.deadline) return false;
@@ -5819,30 +5847,36 @@
             }).length;
             set('delayed-processes', delayed);
 
-            // Update Sector Bars
+            // Update Sector Cards (New IDs)
             const localeMap = {
-                'cabinet-processes': { query: 'gabinete', barId: 'bar-gabinete' },
-                'purchase-processes': { query: 'compras', barId: 'bar-compras' },
-                'warehouse-processes': { query: 'almoxarifado', barId: 'bar-almoxarifado' },
-                'treasury-processes': { query: 'tesouraria', barId: 'bar-tesouraria' },
-                'nutrition-processes': { query: 'nutriç', barId: 'bar-nutricao' },
-                'secretariat-processes': { query: '142', barId: 'bar-financeiro' }
+                'cabinet-processes-card': { query: 'gabinete' },
+                'compras-processes-card': { query: 'compras' },
+                'almoxarifado-processes-card': { query: 'almoxarifado' },
+                'tesouraria-processes-card': { query: 'tesouraria' },
+                'nutricao-processes-card': { query: 'nutriç' },
+                'financeiro-processes-card': { query: '142' }
             };
 
-            let maxVal = 0;
-            const counts = {};
             Object.keys(localeMap).forEach(id => {
                 const count = data.filter(p => p.location && p.location.toLowerCase().includes(localeMap[id].query)).length;
-                counts[id] = count;
-                if (count > maxVal) maxVal = count;
                 set(id, count);
             });
 
-            Object.keys(localeMap).forEach(id => {
-                const bar = document.getElementById(localeMap[id].barId);
+            // Legacy bar updates (keep for compatibility if needed elsewhere)
+            const legacyBarMap = {
+                'bar-gabinete': 'gabinete',
+                'bar-compras': 'compras',
+                'bar-almoxarifado': 'almoxarifado',
+                'bar-tesouraria': 'tesouraria',
+                'bar-nutricao': 'nutriç',
+                'bar-financeiro': '142'
+            };
+            let maxVal = Math.max(...Object.values(legacyBarMap).map(q => data.filter(p => p.location && p.location.toLowerCase().includes(q)).length), 1);
+            Object.keys(legacyBarMap).forEach(barId => {
+                const bar = document.getElementById(barId);
                 if (bar) {
-                    const pct = maxVal > 0 ? (counts[id] / maxVal) * 100 : 0;
-                    bar.style.width = pct + '%';
+                    const count = data.filter(p => p.location && p.location.toLowerCase().includes(legacyBarMap[barId])).length;
+                    bar.style.width = (count / maxVal * 100) + '%';
                 }
             });
 
