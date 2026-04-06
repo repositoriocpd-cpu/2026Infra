@@ -516,10 +516,6 @@
             font-size: 1.5rem;
         }
 
-        .db-kpi-row {
-            grid-template-columns: repeat(6, 1fr) !important;
-            gap: 1.25rem !important;
-        }
 
         .header-top {
             display: flex;
@@ -3506,32 +3502,6 @@
             color: #15803d;
         }
 
-        /* FORÇAR 3 COLUNAS NO MOBILE - REGRAS FINAIS */
-        @media (max-width: 768px) {
-
-            html body #dashboard-section div.stats-grid,
-            html body #processes-section div.stats-grid {
-                display: grid !important;
-                grid-template-columns: repeat(3, 1fr) !important;
-                gap: 6px !important;
-                width: 100% !important;
-            }
-
-            html body div.stat-card {
-                padding: 8px 2px !important;
-                min-width: 0 !important;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-                border-radius: 12px !important;
-            }
-
-            html body div.stat-card .stat-number {
-                font-size: 1.2rem !important;
-            }
-
-            html body div.stat-card h3 {
-                font-size: 0.55rem !important;
-            }
-        }
     </style>
 </head>
 
@@ -3848,27 +3818,27 @@
 
                 <!-- Main KPIs First Row -->
                 <div class="db-kpi-row">
-                    <div class="db-kpi-card blue" onclick="window.filterFromDashboard('all', '')">
+                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Clique para visualizar todos os processos cadastrados no sistema" onclick="window.filterFromDashboard('all', '')">
                         <p class="stat-number" id="total-processes" data-target="0" style="color: #005a9c;">0</p>
                         <h3>Total de Processos</h3>
                     </div>
-                    <div class="db-kpi-card orange" onclick="window.filterFromDashboard('status', '!Concluído')">
+                    <div class="db-kpi-card orange tooltip-container" data-tooltip="Processos que ainda não foram concluídos e estão em tramitação" onclick="window.filterFromDashboard('status', '!Concluído')">
                         <p class="stat-number" id="treating-processes" data-target="0" style="color: #e67e22;">0</p>
                         <h3>Processos em Tramitação</h3>
                     </div>
-                    <div class="db-kpi-card green" onclick="window.filterFromDashboard('status', 'Concluído')">
+                    <div class="db-kpi-card green tooltip-container" data-tooltip="Processos finalizados e pagos com sucesso" onclick="window.filterFromDashboard('status', 'Concluído')">
                         <p class="stat-number" id="completed-processes" data-target="0" style="color: #2ecc71;">0</p>
                         <h3>Processos Liquidados</h3>
                     </div>
-                    <div class="db-kpi-card orange" style="cursor: default;">
+                    <div class="db-kpi-card orange tooltip-container" data-tooltip="Percentual de processos pendentes em relação ao total" style="cursor: default;">
                         <p class="stat-number" id="pending-percent" data-target="0" data-suffix="%" style="color: #e67e22;">0%</p>
                         <h3>Percentual de Pendências</h3>
                     </div>
-                    <div class="db-kpi-card red" onclick="window.filterFromDashboard('delayed', '')">
+                    <div class="db-kpi-card red tooltip-container" data-tooltip="Processos com prazo vencido que necessitam atenção imediata" onclick="window.filterFromDashboard('delayed', '')">
                         <p class="stat-number" id="delayed-processes" data-target="0" style="color: #e74c3c;">0</p>
                         <h3>Vencidos / Atrasados</h3>
                     </div>
-                    <div class="db-kpi-card blue" onclick="window.filterFromDashboard('status', 'Pendente')">
+                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos aguardando análise ou providência" onclick="window.filterFromDashboard('status', 'Pendente')">
                         <p class="stat-number" id="finance-processes" data-target="0" style="color: #005a9c;">0</p>
                         <h3>Pendentes</h3>
                     </div>
@@ -3876,27 +3846,27 @@
 
                 <!-- Sector KPIs Second Row -->
                 <div class="db-kpi-row" style="margin-top: 1rem;">
-                    <div class="db-kpi-card blue">
+                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos localizados no Gabinete do Secretário">
                         <p class="stat-number" id="cabinet-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>143 - Gabinete</h3>
                     </div>
-                    <div class="db-kpi-card blue">
+                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos no setor de Compras para cotação e aquisição">
                         <p class="stat-number" id="compras-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>Compras</h3>
                     </div>
-                    <div class="db-kpi-card blue">
+                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos no Almoxarifado para conferência de estoque">
                         <p class="stat-number" id="almoxarifado-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>131 - Almoxarifado</h3>
                     </div>
-                    <div class="db-kpi-card blue">
+                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos na Tesouraria para pagamento e conferência financeira">
                         <p class="stat-number" id="tesouraria-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>24 - Tesouraria</h3>
                     </div>
-                    <div class="db-kpi-card blue">
+                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos no setor de Nutrição Escolar">
                         <p class="stat-number" id="nutricao-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>147 - Nutrição</h3>
                     </div>
-                    <div class="db-kpi-card blue">
+                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos no setor Financeiro para análise e aprovação">
                         <p class="stat-number" id="financeiro-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>142 - Financeiro</h3>
                     </div>
@@ -8595,101 +8565,115 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando PDF...';
             btn.disabled = true;
 
-            const element = document.getElementById('dashboard-section');
-
             try {
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('l', 'mm', 'a4'); // Paisagem para caber o Dashboard largo
+                const doc = new jsPDF('l', 'mm', 'a4');
                 const pdfWidth = doc.internal.pageSize.width;
                 const pdfHeight = doc.internal.pageSize.height;
+                const marginX = 14;
                 const startX = 35; // Position after logo
 
-                // Esconder todos os botões pdf provisoriamente
-                const pdfButtons = element.querySelectorAll('button');
-                const originalDisplays = [];
-                pdfButtons.forEach((b, i) => {
-                    originalDisplays[i] = b.style.display;
-                    if (b.innerText.includes('PDF')) b.style.display = 'none';
-                });
+                // --- Função Auxiliar: Desenhar Cabeçalho ---
+                const drawHeader = async (pageDoc) => {
+                    // Logo
+                    try {
+                        const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                        const imgLogo = new Image();
+                        imgLogo.crossOrigin = 'Anonymous';
+                        imgLogo.src = logoUrl;
+                        await new Promise((resolve) => {
+                            imgLogo.onload = resolve;
+                            imgLogo.onerror = resolve;
+                        });
+                        if (imgLogo.naturalWidth > 0) {
+                            pageDoc.addImage(imgLogo, 'JPEG', 14, 10, 16, 20);
+                        }
+                    } catch (e) { console.warn('Logo falhou no header:', e); }
 
-                // Captura a tela atual do dashboard
-                const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: '#f2f2f2' });
-                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    // Textos
+                    pageDoc.setFont('helvetica', 'normal');
+                    pageDoc.setFontSize(10);
+                    pageDoc.setTextColor(20, 20, 20);
+                    pageDoc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", startX, 14, { align: 'left' });
+                    pageDoc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
 
-                // Volta o estado normal dos botões
-                pdfButtons.forEach((b, i) => {
-                    if (b.innerText.includes('PDF')) b.style.display = originalDisplays[i];
-                });
+                    pageDoc.setFontSize(14);
+                    pageDoc.setTextColor(20, 82, 181);
+                    pageDoc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", startX, 26, { align: 'left' });
 
-                // --- Cabeçalho e Logo ---
-                try {
-                    const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
-                    const imgLogo = new Image();
-                    imgLogo.crossOrigin = 'Anonymous';
-                    imgLogo.src = logoUrl;
-                    await new Promise((resolve) => {
-                        imgLogo.onload = resolve;
-                        imgLogo.onerror = resolve;
+                    pageDoc.setDrawColor(220, 220, 220);
+                    pageDoc.setLineWidth(0.5);
+                    pageDoc.line(14, 38, 283, 38);
+
+                    pageDoc.setFont('helvetica', 'normal');
+                    pageDoc.setFontSize(8);
+                    pageDoc.setTextColor(150, 150, 150);
+                    const now = new Date();
+                    const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    pageDoc.text("Data de Emissão: " + dateStr, 14, 43);
+                };
+
+                // --- Função Auxiliar: Capturar Grupo de Elementos ---
+                const captureGroup = async (selectors) => {
+                    const container = document.createElement('div');
+                    container.style.position = 'fixed';
+                    container.style.left = '-9999px';
+                    container.style.top = '0';
+                    container.style.width = '1200px'; // Largura fixa para consistência
+                    container.style.padding = '20px';
+                    container.style.backgroundColor = '#f2f2f2';
+                    container.style.display = 'flex';
+                    container.style.flexDirection = 'column';
+                    container.style.gap = '20px';
+                    document.body.appendChild(container);
+
+                    selectors.forEach(sel => {
+                        const els = document.querySelectorAll(sel);
+                        els.forEach(el => {
+                            const clone = el.cloneNode(true);
+                            // Esconder botões PDF nos clones dos gráficos
+                            clone.querySelectorAll('button').forEach(b => {
+                                if (b.innerText.includes('PDF')) b.style.display = 'none';
+                            });
+                            container.appendChild(clone);
+                        });
                     });
 
-                    if (imgLogo.naturalWidth > 0) {
-                        doc.addImage(imgLogo, 'JPEG', 14, 10, 16, 20);
-                    }
-                } catch (e) {
-                    console.warn('Falha ao carregar logo no PDF:', e);
+                    const canvas = await html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#f2f2f2' });
+                    document.body.removeChild(container);
+                    return canvas;
+                };
+
+                // --- PÁGINA 1: KPIs ---
+                await drawHeader(doc);
+                const kpiCanvas = await captureGroup(['#dashboard-section .db-kpi-row']);
+                const kpiImg = kpiCanvas.toDataURL('image/jpeg', 0.95);
+                const kpiRatio = kpiCanvas.width / kpiCanvas.height;
+                let kpiW = pdfWidth - (marginX * 2);
+                let kpiH = kpiW / kpiRatio;
+                if (kpiH > (pdfHeight - 60)) {
+                    kpiH = pdfHeight - 60;
+                    kpiW = kpiH * kpiRatio;
                 }
+                const kpiX = (pdfWidth - kpiW) / 2;
+                doc.addImage(kpiImg, 'JPEG', kpiX, 48, kpiW, kpiH);
 
-                // Textos do Cabeçalho - Alinhados à Esquerda
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(10);
-                doc.setTextColor(20, 20, 20); // Preto mais escuro
-                doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", startX, 14, { align: 'left' });
-                doc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
-
-                // Título do Cabeçalho
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(14);
-                doc.setTextColor(20, 82, 181); // Azul do GOV.BR
-                doc.text("CONTROLE DE PROCESSOS DE PAGAMENTOS", startX, 26, { align: 'left' });
-
-                // Linha Separadora
-                doc.setDrawColor(220, 220, 220);
-                doc.setLineWidth(0.5);
-                doc.line(14, 38, 283, 38);
-
-                // Data de Emissão
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(8);
-                doc.setTextColor(150, 150, 150);
-                const now = new Date();
-                const dateStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                doc.text("Data de Emissão: " + dateStr, 14, 43);
-
-                // Imagem do Dashboard
-                // Calcula dimensões, mantendo a proporção (aspect ratio) da captura 
-                const canvasAspectRatio = canvas.width / canvas.height;
-                // Margens e Y de começo
-                const marginX = 14;
-                const startY = 48; // Após a data de emissão
-
-                // Dimensões do PDF disponíveis
-                const availablePageWidth = pdfWidth - (marginX * 2);
-                const availablePageHeight = pdfHeight - startY - 10; // 10 é margem inferior
-
-                let finalImgWidth = availablePageWidth;
-                let finalImgHeight = finalImgWidth / canvasAspectRatio;
-
-                // Redimensiona se ficar mais alto que o espaço disponível
-                if (finalImgHeight > availablePageHeight) {
-                    finalImgHeight = availablePageHeight;
-                    finalImgWidth = finalImgHeight * canvasAspectRatio;
+                // --- PÁGINA 2: GRÁFICOS ---
+                doc.addPage();
+                await drawHeader(doc);
+                const chartsCanvas = await captureGroup(['#dashboard-section .db-analytical-grid']);
+                const chartsImg = chartsCanvas.toDataURL('image/jpeg', 0.95);
+                const chartsRatio = chartsCanvas.width / chartsCanvas.height;
+                let chartsW = pdfWidth - (marginX * 2);
+                let chartsH = chartsW / chartsRatio;
+                if (chartsH > (pdfHeight - 60)) {
+                    chartsH = pdfHeight - 60;
+                    chartsW = chartsH * chartsRatio;
                 }
+                const chartsX = (pdfWidth - chartsW) / 2;
+                doc.addImage(chartsImg, 'JPEG', chartsX, 48, chartsW, chartsH);
 
-                // Centraliza horizontalmente
-                const finalImgX = (pdfWidth - finalImgWidth) / 2;
-
-                doc.addImage(imgData, 'JPEG', finalImgX, startY, finalImgWidth, finalImgHeight);
-                doc.save('dashboard.pdf');
+                doc.save('dashboard_completo.pdf');
 
             } catch (e) {
                 console.error("Erro na exportação para PDF: ", e);
