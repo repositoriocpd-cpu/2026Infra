@@ -4475,7 +4475,7 @@
                     <div class="form-section" id="transitSection">
                         <div class="form-section-title" style="display: flex; justify-content: space-between; align-items: center;">
                             <div><i class="fas fa-exchange-alt"></i> NOVA ATUALIZAÇÃO / TRAMITAÇÃO</div>
-                            <a href="#" onclick="window.startProcessTour(); return false;" style="font-size: 0.65rem; color: var(--govbr-blue); text-decoration: underline; font-weight: 700;">
+                            <a href="#" onclick="window.startTramitationTour(); return false;" style="font-size: 0.65rem; color: var(--govbr-blue); text-decoration: underline; font-weight: 700;">
                                 <i class="fas fa-play-circle"></i> Tour pelo sistema/ Como Tramitar
                             </a>
                         </div>
@@ -9081,6 +9081,16 @@
             { target: '#notes', title: 'Observações', description: 'Campo para observações adicionais, informações complementares ou histórico.' }
         ];
 
+        window.TRAMITATION_TOUR_STEPS = [
+            { target: '#statusSelect', title: 'Alterar Status', description: 'Selecione o novo status do processo para refletir a fase atual da tramitação.' },
+            { target: '#locationSelect', title: 'Nova Localização', description: 'Indique para qual setor ou departamento o processo está sendo movimentado.' },
+            { target: '#locationDate', title: 'Data da Movimentação', description: 'Confirme a data em que esta movimentação está ocorrendo.' },
+            { target: '#newManualUpdate', title: 'Registro de Movimentação', description: 'Descreva detalhadamente o que foi feito ou o motivo da tramitação para o histórico.' },
+            { target: '#btnLaunchUpdate', title: 'Lançar Atualização', description: 'Clique aqui para registrar a nova tramitação no sistema e atualizar o histórico abaixo.' },
+            { target: '#modalTimeline', title: 'Histórico de Tramitações', description: 'Aqui você pode visualizar todas as movimentações anteriores registradas para este processo.' }
+        ];
+
+        window.currentTourSteps = window.TOUR_STEPS;
         window.currentTourStep = 0;
         window.tourActive = false;
 
@@ -9090,16 +9100,22 @@
             const modal = document.getElementById('processControlModal');
             if (!modal || !modal.classList.contains('visible')) {
                 window.openProcessModal();
-                setTimeout(() => window.runTour(), 800);
+                setTimeout(() => window.runTour(window.TOUR_STEPS), 800);
             } else {
-                window.runTour();
+                window.runTour(window.TOUR_STEPS);
             }
         };
 
-        window.runTour = function() {
+        window.startTramitationTour = function() {
+            if (window.DISABLE_TOUR) return;
+            window.runTour(window.TRAMITATION_TOUR_STEPS);
+        };
+
+        window.runTour = function(steps = window.TOUR_STEPS) {
             if (window.DISABLE_TOUR) return;
             
             window.tourActive = true;
+            window.currentTourSteps = steps;
             window.currentTourStep = 0;
             window.showTourStep();
         };
@@ -9108,7 +9124,7 @@
             if (!window.tourActive) return;
             
             const container = document.getElementById('tour-container');
-            const step = window.TOUR_STEPS[window.currentTourStep];
+            const step = window.currentTourSteps[window.currentTourStep];
             
             if (!step) {
                 window.endTour();
@@ -9129,7 +9145,7 @@
             targetEl.classList.add('tour-highlight');
             targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            const progress = (window.currentTourStep + 1) + ' de ' + window.TOUR_STEPS.length;
+            const progress = (window.currentTourStep + 1) + ' de ' + window.currentTourSteps.length;
             
             container.innerHTML = `
                 <div class="tour-overlay" onclick="window.handleTourOverlayClick(event)">
@@ -9141,7 +9157,7 @@
                         <div class="tour-buttons">
                             <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular Tour</button>
                             <button class="tour-btn tour-btn-next" onclick="window.nextTourStep()">
-                                ${window.currentTourStep === window.TOUR_STEPS.length - 1 ? 'Finalizar' : 'Próximo'}
+                                ${window.currentTourStep === window.currentTourSteps.length - 1 ? 'Finalizar' : 'Próximo'}
                             </button>
                         </div>
                     </div>
