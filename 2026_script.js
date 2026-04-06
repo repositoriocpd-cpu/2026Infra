@@ -34,8 +34,8 @@ window.closeModal = function (id) {
 };
 
 // Config e Estado Global
-var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+var SUPABASE_URL = '___SUPABASE_URL___';
+var SUPABASE_KEY = '___SUPABASE_KEY___';
 
 window.supabase = window.supabase || {};
 if (window.supabase.createClient) {

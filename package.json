@@ -3,7 +3,9 @@
   "version": "1.0.6",
   "scripts": {
     "build": "npx -y rimraf dist && npx -y shx mkdir -p dist && npx -y shx cp index.html robots.txt 2026_script.js pwa-handler.js manifest.json sw.js _redirects icone_logo.png ui-kit.css ui-kit.js dist/ && npx -y shx cp -r icons dist/ && npx -y shx cp -r public dist/",
+    "build:netlify": "npm run build && sed -i \"s|___SUPABASE_URL___|${SUPABASE_URL}|g\" dist/2026_script.js && sed -i \"s|___SUPABASE_KEY___|${SUPABASE_KEY}|g\" dist/2026_script.js",
     "dev": "npx -y http-server . -p 8080",
+    "deploy": "npm run build && npx -y gh-pages -d dist -b 2026Infra -r https://github.com/repositoriocpd-cpu/2026Infra.git",
     "prebuild": ""
   },
   "dependencies": {
