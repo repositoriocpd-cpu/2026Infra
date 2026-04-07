@@ -4143,8 +4143,6 @@
                 <div class="header-sign-in" id="header-dropdown-menu">
                     <ul class="menu-section">
                         <li class="menu-header">Sua Conta</li>
-                        <li><a href="#"><i class="fas fa-user"></i> Meu Perfil</a></li>
-                        <li><a href="#"><i class="fas fa-key"></i> Alterar Senha</a></li>
                         <li><a href="#" onclick="window.startProcessTour(); return false;"><i class="fas fa-route"></i> Tour pelo Sistema</a></li>
                     </ul>
                     <ul class="menu-section">
@@ -9942,7 +9940,6 @@
                     <div class="tour-tooltip" onclick="event.stopPropagation()">
                         <div class="tour-progress">${progress}</div>
                         ${step.title ? `<div class="tour-field-name">${step.title}</div>` : ''}
-                        <h3>${step.title}</h3>
                         <p>${step.description}</p>
                         <div class="tour-buttons">
                             <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular Tour</button>

@@ -24,7 +24,7 @@ const CDN_ASSETS = [
 const CACHE_STRATEGIES = {
   // Network first - for critical documents and data
   networkFirst: ['/index.html', '/'],
-  
+
   // Cache first - for static assets
   cacheFirst: [
     '.css',
@@ -39,13 +39,13 @@ const CACHE_STRATEGIES = {
     '.ttf',
     '.eot',
   ],
-  
+
   // Network only - for API calls and sensitive data
   networkOnly: [
     '/api',
     'supabase.co',
   ],
-  
+
   // Stale while revalidate - for images and less critical assets
   staleWhileRevalidate: [
     '.png',
@@ -61,19 +61,19 @@ const CACHE_STRATEGIES = {
  */
 function getCacheStrategy(url) {
   const urlPath = new URL(url).pathname;
-  
+
   if (CACHE_STRATEGIES.networkFirst.some(pattern => urlPath.includes(pattern))) {
     return 'networkFirst';
   }
-  
+
   if (CACHE_STRATEGIES.networkOnly.some(pattern => url.includes(pattern))) {
     return 'networkOnly';
   }
-  
+
   if (CACHE_STRATEGIES.cacheFirst.some(pattern => url.endsWith(pattern))) {
     return 'cacheFirst';
   }
-  
+
   return 'staleWhileRevalidate';
 }
 
@@ -83,13 +83,13 @@ function getCacheStrategy(url) {
 async function networkFirstStrategy(request) {
   try {
     const response = await fetch(request);
-    
+
     // Cache successful responses
     if (response.status === 200) {
       const cache = await caches.open(CACHE_NAME);
       cache.put(request, response.clone());
     }
-    
+
     return response;
   } catch (error) {
     // Fallback to cache on network error
@@ -109,7 +109,7 @@ async function cacheFirstStrategy(request) {
   if (cached) {
     return cached;
   }
-  
+
   try {
     const response = await fetch(request);
     if (response.status === 200) {
@@ -128,7 +128,7 @@ async function cacheFirstStrategy(request) {
  */
 async function staleWhileRevalidateStrategy(request) {
   const cached = await caches.match(request);
-  
+
   const fetchPromise = fetch(request).then((response) => {
     if (response.status === 200) {
       const cache = caches.open(CACHE_NAME);
@@ -136,7 +136,7 @@ async function staleWhileRevalidateStrategy(request) {
     }
     return response;
   });
-  
+
   return cached || fetchPromise;
 }
 
@@ -146,8 +146,8 @@ async function staleWhileRevalidateStrategy(request) {
  * Install event - cache essential assets
  */
 self.addEventListener('install', (event) => {
-    console.log('[SW] Installing...', CACHE_NAME);
-  
+  console.log('[SW] Installing...', CACHE_NAME);
+
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE).catch((error) => {
@@ -157,7 +157,7 @@ self.addEventListener('install', (event) => {
       });
     })
   );
-  
+
   // Force new SW to take over immediately
   self.skipWaiting();
 });
@@ -166,8 +166,8 @@ self.addEventListener('install', (event) => {
  * Activate event - clean up old caches
  */
 self.addEventListener('activate', (event) => {
-    console.log('[SW] Activating...');
-  
+  console.log('[SW] Activating...');
+
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -176,7 +176,7 @@ self.addEventListener('activate', (event) => {
           if (!cacheName.startsWith('infrasmedu-cache-')) {
             return caches.delete(cacheName);
           }
-          
+
           // Delete caches from different dates (keep only current date)
           if (cacheName !== CACHE_NAME) {
             console.log('[SW] Deleting old cache:', cacheName);
@@ -198,10 +198,10 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
-  
+
   if (event.data && event.data.type === 'CLEAR_CACHE') {
     caches.delete(CACHE_NAME).then(() => {
-      event.ports[0].postMessage({success: true});
+      event.ports[0].postMessage({ success: true });
     });
   }
 });
@@ -212,44 +212,44 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = request.url;
-  
+
   // Skip non-GET requests
   if (request.method !== 'GET') {
     return;
   }
-  
+
   // Skip video/media requests (they use Range headers)
   if (url.match(/\.(mp4|webm|ogg|mov|mp3|wav)$/i)) {
     return;
   }
-  
+
   // Skip blob URLs
   if (url.startsWith('blob:')) {
     return;
   }
-  
+
   // Apply appropriate caching strategy
   const strategy = getCacheStrategy(url);
-  
+
   try {
     switch (strategy) {
       case 'networkFirst':
         event.respondWith(networkFirstStrategy(request));
         break;
-      
+
       case 'cacheFirst':
         event.respondWith(cacheFirstStrategy(request));
         break;
-      
+
       case 'networkOnly':
         event.respondWith(fetch(request));
         break;
-      
+
       case 'staleWhileRevalidate':
       default:
         event.respondWith(staleWhileRevalidateStrategy(request));
     }
   } catch (error) {
-      console.error('[SW] Fetch error:', error);
+    console.error('[SW] Fetch error:', error);
   }
 });
