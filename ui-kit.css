@@ -1132,22 +1132,28 @@ body.dark-mode .ui-toast__desc { color: var(--ui-text-3); }
     border-bottom: 1px solid #f1f5f9 !important;
   }
 
-  /* Full Width Action Row */
+  /* Full Width Action Row - Adjusted for horizontal alignment */
   .db-actions-row {
-    flex-direction: column !important;
+    flex-direction: row !important;
     gap: 12px !important;
     width: 100% !important;
     margin-top: 1.5rem !important;
   }
 
-  .btn-db-action {
-    width: 100% !important;
+  /* Hide New and Consult buttons as requested */
+  .btn-db-new, .btn-db-consult {
+    display: none !important;
+  }
+
+  .btn-db-action, .btn-apply-filters {
+    flex: 1 !important;
     justify-content: center !important;
     height: 54px !important;
     border-radius: 12px !important;
     font-size: 1.05rem !important;
     margin: 0 !important;
   }
+
 
   /* Sector items optimization */
   .db-sector-item {
