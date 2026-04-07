@@ -4258,7 +4258,8 @@
                         <h3>Processos Liquidados</h3>
                     </div>
                     <div class="db-kpi-card orange tooltip-container"
-                        data-tooltip="Percentual de processos pendentes em relação ao total" style="cursor: default;">
+                        data-tooltip="Percentual de processos pendentes em relação ao total"
+                        onclick="window.filterFromDashboard('status', 'Pendente')">
                         <p class="stat-number" id="pending-percent" data-target="0" data-suffix="%"
                             style="color: #e67e22;">0%</p>
                         <h3>Percentual de Pendências</h3>
@@ -4280,35 +4281,41 @@
                 <!-- Sector KPIs Second Row -->
                 <div class="db-kpi-row" style="margin-top: 1rem;">
                     <div class="db-kpi-card blue tooltip-container"
-                        data-tooltip="Processos localizados no Gabinete do Secretário">
+                        data-tooltip="Processos localizados no Gabinete do Secretário"
+                        onclick="window.filterFromDashboard('location', '143 - Gabinete')">
                         <p class="stat-number" id="cabinet-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>143 - Gabinete</h3>
                     </div>
                     <div class="db-kpi-card blue tooltip-container"
-                        data-tooltip="Processos no setor de Compras para cotação e aquisição">
+                        data-tooltip="Processos no setor de Compras para cotação e aquisição"
+                        onclick="window.filterFromDashboard('location', 'Compras')">
                         <p class="stat-number" id="compras-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>Compras</h3>
                     </div>
                     <div class="db-kpi-card blue tooltip-container"
-                        data-tooltip="Processos no Almoxarifado para conferência de estoque">
+                        data-tooltip="Processos no Almoxarifado para conferência de estoque"
+                        onclick="window.filterFromDashboard('location', '131 - Almoxarifado')">
                         <p class="stat-number" id="almoxarifado-processes-card" data-target="0" style="color: #005a9c;">
                             0</p>
                         <h3>131 - Almoxarifado</h3>
                     </div>
                     <div class="db-kpi-card blue tooltip-container"
-                        data-tooltip="Processos na Tesouraria para pagamento e conferência financeira">
+                        data-tooltip="Processos na Tesouraria para pagamento e conferência financeira"
+                        onclick="window.filterFromDashboard('location', '24 - Tesouraria')">
                         <p class="stat-number" id="tesouraria-processes-card" data-target="0" style="color: #005a9c;">0
                         </p>
                         <h3>24 - Tesouraria</h3>
                     </div>
                     <div class="db-kpi-card blue tooltip-container"
-                        data-tooltip="Processos no setor de Nutrição Escolar">
+                        data-tooltip="Processos no setor de Nutrição Escolar"
+                        onclick="window.filterFromDashboard('location', '147 - Nutrição')">
                         <p class="stat-number" id="nutricao-processes-card" data-target="0" style="color: #005a9c;">0
                         </p>
                         <h3>147 - Nutrição</h3>
                     </div>
                     <div class="db-kpi-card blue tooltip-container"
-                        data-tooltip="Processos no setor Financeiro para análise e aprovação">
+                        data-tooltip="Processos no setor Financeiro para análise e aprovação"
+                        onclick="window.filterFromDashboard('location', '142 - Financeiro')">
                         <p class="stat-number" id="financeiro-processes-card" data-target="0" style="color: #005a9c;">0
                         </p>
                         <h3>142 - Financeiro</h3>
