@@ -9259,6 +9259,26 @@
                             clone.querySelectorAll('button').forEach(b => {
                                 if (b.innerText.includes('PDF')) b.style.display = 'none';
                             });
+                            // Converter canvases (Chart.js) em imagens para preservar o conteúdo
+                            const cloneCanvases = clone.querySelectorAll('canvas');
+                            const originalCanvases = el.querySelectorAll('canvas');
+                            cloneCanvases.forEach((cloneCanvas, i) => {
+                                const origCanvas = originalCanvases[i];
+                                if (origCanvas) {
+                                    try {
+                                        const dataUrl = origCanvas.toDataURL('image/png');
+                                        const img = document.createElement('img');
+                                        img.src = dataUrl;
+                                        img.style.width = cloneCanvas.style.width || cloneCanvas.offsetWidth + 'px';
+                                        img.style.height = cloneCanvas.style.height || cloneCanvas.offsetHeight + 'px';
+                                        img.style.maxWidth = '100%';
+                                        img.style.display = 'block';
+                                        cloneCanvas.parentNode.replaceChild(img, cloneCanvas);
+                                    } catch (e) {
+                                        console.warn('Falha ao converter canvas para imagem:', e);
+                                    }
+                                }
+                            });
                             container.appendChild(clone);
                         });
                     });
