@@ -1,0 +1,452 @@
+{
+  "generated_at": "2026-04-01T12:43:53.859Z",
+  "tables": {
+    "processes": [
+      {
+        "id": "bf031894-a93e-4d33-84c1-af45920f59c5",
+        "pp_number": "4087/2026",
+        "exercise_year": "2025",
+        "pp_ano": "4087",
+        "cover_value": "13254174",
+        "supplier_name": "Custom Informática Ltda.",
+        "object_name": "Sistema SEI (Custom)",
+        "opening_date": "2026-01-30",
+        "deadline": "2027-02-28",
+        "treated_by": "Joe Amado",
+        "status": "Pendente",
+        "location": "CPD",
+        "location_date": "2026-04-01",
+        "situation": "",
+        "notes": "",
+        "created_at": "2026-03-31T19:10:22.008026+00:00",
+        "updated_at": "2026-03-31T19:10:22.008026+00:00",
+        "parent_proc": ""
+      }
+    ],
+    "process_history": [
+      {
+        "id": "71ae6b92-7e28-4b56-9b76-a87e68740723",
+        "process_id": "bf031894-a93e-4d33-84c1-af45920f59c5",
+        "history_date": "31/03/2026, 16:15:11",
+        "location_from": "CPD",
+        "location_to": "143 - GABINETE",
+        "message": "Movimentação automática por alteração de setor",
+        "created_at": "2026-03-31T19:14:57.067918+00:00"
+      },
+      {
+        "id": "1afc76f5-ef25-4fd6-9cb7-03a2682b592e",
+        "process_id": "bf031894-a93e-4d33-84c1-af45920f59c5",
+        "history_date": "01/04/2026, 00:22:14",
+        "location_from": "142 - FINANCEIRO",
+        "location_to": "CPD",
+        "message": "Movimentação automática por alteração de setor",
+        "created_at": "2026-04-01T03:22:15.742494+00:00"
+      }
+    ],
+    "suppliers": [
+      {
+        "id": 1,
+        "name": "ANA DAS NEVES CAMPANHÃO",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 2,
+        "name": "C TEIXEIRA 110 COMERCIO DE ALIMENTOS LTDA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 3,
+        "name": "COMERCIAL MILANO BRASIL LTDA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 4,
+        "name": "DANIEL CARDOSO DE OLIVEIRA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 5,
+        "name": "DISTRIBUIDORA BRAZLIMP LTDA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 6,
+        "name": "DISTRIBUIDORA LIMPOLI EIRELI - ME",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 7,
+        "name": "EMPRESA SAP COMÉRCIO SERVIÇOS E DISTRIBUIÇÃO",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 8,
+        "name": "ESKINA DO GÁS REVENDEDOR DE GÁS LTDA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 9,
+        "name": "GABRIEL QUEIROZ DA SILVA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 10,
+        "name": "GUARAILHA DISTRIBUIDORA DE ALIMENTOS LTDA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 11,
+        "name": "HERCÍLIA HARUMI IWANAGA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 12,
+        "name": "HERMAN DINALDO SOARES FERREIRA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 13,
+        "name": "INOVAR COMÉRCIO E SERVIÇO DE TERCEIRIZAÇÃO LTDA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 14,
+        "name": "ITAMED COMÉRCIO E ARQUITETURA LTDA (CLIMATIZADORES)",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 15,
+        "name": "ITAMED COMÉRCIO E ARQUITETURA LTDA (MANUTENÇÃO)",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 16,
+        "name": "JOSÉ EDUARDO DA SILVA MEDINA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 17,
+        "name": "LUMAR EMPREENDIMENTOS IMOBILIÁRIOS",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 18,
+        "name": "LUZIA FUGIKO YOSHY PACHECO",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 19,
+        "name": "MARCIO KOITY TAKENAKA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 20,
+        "name": "MARIA LAURENÇO MORITA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 21,
+        "name": "MÔNICA ASSIS DE ARAÚJO E SILVA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 22,
+        "name": "PAULO ROBERTO MONTEIRO DA SILVA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 23,
+        "name": "RG DISTRIBUIDORA, COMÉRCIO E SERVIÇOS LTDA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 24,
+        "name": "ROSA MARIA MENDES MARINS DO NASCIMENTO",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 25,
+        "name": "SIBELLY TRANSPORTE LTDA (ALUGUEL)",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 26,
+        "name": "SIBELLY TRANSPORTE LTDA (GESTÃO)",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 27,
+        "name": "SOLANGE CANDIDA SOARES FERREIRA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 28,
+        "name": "WILLIAM SHIOSE ALVES MOREIRA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 29,
+        "name": "WILSON MASSALINO DE FREITAS",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 31,
+        "name": "7Lan Comércio e Serviços Eireli",
+        "created_at": "2026-03-29T21:53:54.364653+00:00"
+      },
+      {
+        "id": 32,
+        "name": "Custom Informática Ltda.",
+        "created_at": "2026-03-31T17:45:05.376859+00:00"
+      }
+    ],
+    "locations": [
+      {
+        "id": 6,
+        "name": "142 - FINANCEIRO",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 5,
+        "name": "24 - TESOURARIA",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 8,
+        "name": "147 - NUTRIÇÃO",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 3,
+        "name": "131 - ALMOXARIFADO",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 2,
+        "name": "143 - GABINETE",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 9,
+        "name": "OUTROS",
+        "created_at": "2026-03-13T02:41:00.503576+00:00"
+      },
+      {
+        "id": 10,
+        "name": "CPD",
+        "created_at": "2026-03-31T19:09:35.659945+00:00"
+      },
+      {
+        "id": 11,
+        "name": "ISS/PMI",
+        "created_at": "2026-03-31T19:16:40.359139+00:00"
+      }
+    ],
+    "objects": [
+      {
+        "id": 1,
+        "name": "Aluguel",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 2,
+        "name": "Gás",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 3,
+        "name": "Ourtros",
+        "created_at": "2026-03-13T17:56:01.279213+00:00"
+      },
+      {
+        "id": 4,
+        "name": "Câmeras 7LAN",
+        "created_at": "2026-03-29T21:42:32.451529+00:00"
+      },
+      {
+        "id": 5,
+        "name": "Impressoras 7LAN",
+        "created_at": "2026-03-29T21:42:52.500776+00:00"
+      },
+      {
+        "id": 6,
+        "name": "Sistema Modernização",
+        "created_at": "2026-03-29T21:44:46.354418+00:00"
+      },
+      {
+        "id": 7,
+        "name": "Sistema SEI (Custom)",
+        "created_at": "2026-03-29T21:44:59.729667+00:00"
+      }
+    ],
+    "statuses": [
+      {
+        "id": 1,
+        "name": "Em Análise",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 2,
+        "name": "Aguardando Assinatura",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 3,
+        "name": "Concluído",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 4,
+        "name": "Pendente",
+        "created_at": "2026-03-12T17:04:42.507923+00:00"
+      },
+      {
+        "id": 5,
+        "name": "Despachado",
+        "created_at": "2026-03-13T13:08:42.945666+00:00"
+      },
+      {
+        "id": 6,
+        "name": "Tratando",
+        "created_at": "2026-03-13T14:24:53.817587+00:00"
+      },
+      {
+        "id": 7,
+        "name": "Liquidado",
+        "created_at": "2026-03-13T17:30:37.425518+00:00"
+      },
+      {
+        "id": 8,
+        "name": "Relatório/Mapa Pgto.",
+        "created_at": "2026-03-31T19:09:15.882234+00:00"
+      }
+    ],
+    "handlers": [
+      {
+        "id": 12,
+        "name": "Joe Amado",
+        "created_at": "2026-03-29T21:41:49.674028+00:00"
+      },
+      {
+        "id": 13,
+        "name": "Rodrigo Sleiman",
+        "created_at": "2026-03-29T21:41:58.852394+00:00"
+      },
+      {
+        "id": 14,
+        "name": "Luiz Gustavos",
+        "created_at": "2026-03-29T21:42:06.208247+00:00"
+      }
+    ],
+    "user_profiles": [
+      {
+        "id": "37f631ff-6310-4981-908d-f51e3bc67924",
+        "full_name": "Bruno Ferreira Balthazar",
+        "email": "bruno.balthazar@edu.itaguai.rj.gov.br",
+        "role": "usuario",
+        "active": true,
+        "created_at": "2026-03-27T17:32:06.299972+00:00",
+        "department": "Diretor de Transporte Escolar"
+      },
+      {
+        "id": "cbff20a6-adec-48f2-bb1d-8dc09a16e1b0",
+        "full_name": "Fabiano Moura Vieira de Campos Martins",
+        "email": "fabiano.martins@edu.itaguai.rj.gov.br",
+        "role": "usuario",
+        "active": true,
+        "created_at": "2026-03-14T02:36:56.942799+00:00",
+        "department": "Direção de Assistência a Rede Escolar"
+      },
+      {
+        "id": "5553bc5f-1413-407f-bc78-993058b6c049",
+        "full_name": "Luiz Gustavo Martins Braga",
+        "email": "luiz.gustavo@edu.itaguai.rj.gov.br",
+        "role": "administrador",
+        "active": true,
+        "created_at": "2026-03-27T14:50:27.846578+00:00",
+        "department": "Centro de Processamentos de Dados"
+      },
+      {
+        "id": "c1834740-ce36-4290-81be-1ef23eefb40f",
+        "full_name": "Mayara Oliveira Dias",
+        "email": "mayara.dia@edu.itaguai.rj.gov.br",
+        "role": "usuario",
+        "active": true,
+        "created_at": "2026-03-27T17:23:35.784819+00:00",
+        "department": "Diretora de Marketing Educacional"
+      },
+      {
+        "id": "77a7baa1-a16c-4252-9ed6-d80187754831",
+        "full_name": "Thalles Silva Aguar de Souza",
+        "email": "thalles.silva@edu.itaguai.rj.gov.br",
+        "role": "usuario",
+        "active": true,
+        "created_at": "2026-03-27T17:28:36.582194+00:00",
+        "department": "Departamento de Legislação e Normas"
+      },
+      {
+        "id": "c835c0e9-bae1-4299-b9bd-ad069f335f65",
+        "full_name": "Yasmin Ribeiro Machado",
+        "email": "yasmin.machado@edu.itaguai.rj.gov.br",
+        "role": "administrador",
+        "active": true,
+        "created_at": "2026-03-14T02:36:32.824717+00:00",
+        "department": "Direção de Desenvolvimentos.."
+      },
+      {
+        "id": "e02a4164-8e43-4739-9daf-01fc21e23c7a",
+        "full_name": "Joe Nai Amado de Souza",
+        "email": "joe.amado@edu.itaguai.rj.gov.br",
+        "role": "administrador",
+        "active": true,
+        "created_at": "2026-03-29T21:52:05.844596+00:00",
+        "department": "Centro de Processamentos de Dados"
+      },
+      {
+        "id": "44b2b19e-0bd9-4062-a54b-8e42a6308e95",
+        "full_name": "Fernanda Duarte Marques",
+        "email": "fernanda.marques@edu.itaguai.rj.gov.br",
+        "role": "usuario",
+        "active": true,
+        "created_at": "2026-03-14T02:15:01.143924+00:00",
+        "department": "Direção de Compras"
+      },
+      {
+        "id": "5842877f-992b-4435-80df-df9d8b750341",
+        "full_name": "Adriana Carla Nepomuceno Ferreira Bastos",
+        "email": null,
+        "role": "usuario",
+        "active": true,
+        "created_at": "2026-03-30T14:33:18.901766+00:00",
+        "department": "Departamento de Controle e Finanças Educacionais"
+      },
+      {
+        "id": "ea1968bc-77a1-4576-9984-8dbaec6b3c01",
+        "full_name": "Raphael Rozendo Silva",
+        "email": null,
+        "role": "usuario",
+        "active": true,
+        "created_at": "2026-03-30T14:37:59.666577+00:00",
+        "department": "Direção de Almoxarifado da Educação"
+      },
+      {
+        "id": "3c284469-a02b-499d-8d26-14c507ba4213",
+        "full_name": "Raphael Rozendo Silva",
+        "email": null,
+        "role": "usuario",
+        "active": true,
+        "created_at": "2026-03-30T14:40:30.399179+00:00",
+        "department": ""
+      },
+      {
+        "id": "39918a83-afc5-4c61-b6b7-d7fb25c1149d",
+        "full_name": "Rodrigo Sleiman",
+        "email": "rodrigo.sleiman@edu.itaguai.rj.gov.br",
+        "role": "administrador",
+        "active": true,
+        "created_at": "2026-03-27T13:25:13.034092+00:00",
+        "department": "Centro de Processamentos de Dados"
+      }
+    ]
+  }
+}

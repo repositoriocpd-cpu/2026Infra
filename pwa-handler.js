@@ -3,6 +3,7 @@
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
     const isAlreadyInstalled = localStorage.getItem('pwa_installed') === 'true';
+    const installOffered = localStorage.getItem('pwa_install_offered') === 'true';
 
     // Salvar estado quando o app for instalado
     window.addEventListener('appinstalled', () => {
@@ -11,8 +12,8 @@
         if (banner) banner.style.transform = 'translateY(150%)';
     });
 
-    // Criar o HTML do Banner se não for standalone e não estiver instalado
-    if (!isStandalone && !isAlreadyInstalled) {
+    // Criar o HTML do Banner se não for standalone, não estiver instalado e ainda não tiver sido oferecido
+    if (!isStandalone && !isAlreadyInstalled && !installOffered) {
         window.addEventListener('load', () => {
             const banner = document.createElement('div');
             banner.id = 'pwa-install-banner';
@@ -37,7 +38,7 @@
             `;
 
             banner.innerHTML = `
-                <img src="icons/icon-192.png" style="width: 48px; height: 48px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                <img src="icons/icon-192.png" alt="Ícone do PWA" style="width: 48px; height: 48px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
                 <div style="flex: 1;">
                     <h4 style="margin: 0; font-size: 16px; font-weight: 600;">Instalar INFRASMEDU</h4>
                     <p id="pwa-text" style="margin: 4px 0 0; font-size: 13px; opacity: 0.9;">${isIOS ? 'Toque em Compartilhar > Adicionar à Tela de Início' : 'Adicione à tela inicial para acesso rápido'}</p>
@@ -49,18 +50,24 @@
             document.body.appendChild(banner);
 
             const showBanner = () => banner.style.transform = 'translateY(0)';
-            const hideBanner = () => banner.style.transform = 'translateY(150%)';
+            const hideBanner = () => {
+                banner.style.transform = 'translateY(150%)';
+                localStorage.setItem('pwa_install_offered', 'true');
+            };
 
             document.getElementById('pwa-close-btn').onclick = hideBanner;
 
             if (isIOS) {
-                // Mostrar para iOS após 3 segundos se não for standalone
-                setTimeout(showBanner, 3000);
+                setTimeout(() => {
+                    localStorage.setItem('pwa_install_offered', 'true');
+                    showBanner();
+                }, 3000);
             }
 
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
+                localStorage.setItem('pwa_install_offered', 'true');
                 showBanner();
 
                 const installBtn = document.getElementById('pwa-install-btn');

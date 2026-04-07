@@ -1,14 +1,4 @@
-/**
- * Service Worker for SUB INFRA Panel
- * Handles caching and offline functionality
- * Auto-versioned cache with hash-based busting
- */
-
-// Version and assets list
-// Note: These should be generated at build time with file hashes
-// For now, using timestamp-based versioning for development
-const BUILD_VERSION = '1.0.9'; // Versão estável (2026-03-31)
-const CACHE_NAME = `infrasmedu-cache-v${BUILD_VERSION}`;
+const CACHE_NAME = 'infrasmedu-cache-v11';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
