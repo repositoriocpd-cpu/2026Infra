@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build:netlify"
+  command = "npm run build:netlify && node -e \"const fs=require('fs');const p=require('./.build-output.json');console.log(p.buildDir)\" > .publish-dir.txt"
   publish = "dist"
 
 [[redirects]]

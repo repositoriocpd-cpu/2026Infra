@@ -2,8 +2,8 @@
   "name": "sub-infra-panel",
   "version": "1.0.6",
   "scripts": {
-    "build": "npx -y rimraf dist && npx -y shx mkdir -p dist && npx -y shx cp index.html 2026_script.js pwa-handler.js manifest.json sw.js robots.txt _redirects icone_logo.png ui-kit.css dist/ && npx -y shx cp -r icons dist/ && npx -y shx cp -r public dist/",
-    "build:netlify": "npm run build && node build-env.js dist/index.html",
+    "build": "node build-script.js",
+    "build:netlify": "node build-script.js && node build-env.js",
     "dev": "npx -y http-server . -p 8080",
     "deploy": "npm run build && npx -y gh-pages -d dist -b 2026Infra -r https://github.com/repositoriocpd-cpu/2026Infra.git",
     "prebuild": ""
