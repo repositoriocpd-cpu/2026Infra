@@ -32,7 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <link rel="stylesheet" href="ui-kit.css?v=2">
+    <link rel="stylesheet" href="ui-kit.css?v=3">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
         /* Timeline Modal Styles */
@@ -421,7 +421,7 @@
         .govbr-header {
             background-color: #ffffff !important;
             border-top: 4px solid #005a9c !important;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
         }
 
         .header-top {
@@ -838,6 +838,7 @@
         }
 
         @media (max-width: 600px) {
+
             /* Ajustes gerais para mobile */
             .header-actions {
                 gap: 0.5rem;
@@ -1065,7 +1066,8 @@
 
         body.dark-mode .stat-card .tooltip {
             background-color: #1a3a6e;
-            color: #ffffff; background-color: #990000;
+            color: #ffffff;
+            background-color: #990000;
         }
 
         body.dark-mode .stat-card .tooltip::after {
@@ -1343,133 +1345,133 @@
             color: #e0e0e0;
         }
 
-         .cookie-category {
-             border-top: 1px solid var(--border-color);
-             padding: 1.25rem 0;
-         }
+        .cookie-category {
+            border-top: 1px solid var(--border-color);
+            padding: 1.25rem 0;
+        }
 
-         /* Checklist Styles */
-         .checklist-section {
-             background: #f8fafc;
-             border: 1px solid #e5e7eb;
-             border-radius: 12px;
-             padding: 1.5rem;
-             margin-bottom: 1rem;
-         }
+        /* Checklist Styles */
+        .checklist-section {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
 
-         .checklist-section-title {
-             font-size: 1.1rem;
-             font-weight: 700;
-             color: #1e293b;
-             margin-bottom: 1rem;
-             display: flex;
-             align-items: center;
-             gap: 0.5rem;
-         }
+        .checklist-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-         .checklist-section-icon {
-             color: var(--govbr-blue);
-             font-size: 1.3rem;
-         }
+        .checklist-section-icon {
+            color: var(--govbr-blue);
+            font-size: 1.3rem;
+        }
 
-         .checklist-item {
-             display: flex;
-             align-items: flex-start;
-             gap: 0.75rem;
-             margin-bottom: 0.875rem;
-             padding: 0.75rem;
-             background: #ffffff;
-             border-radius: 8px;
-             transition: all 0.2s ease;
-         }
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.875rem;
+            padding: 0.75rem;
+            background: #ffffff;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
 
-         .checklist-item:hover {
-             background: #f1f5f9;
-             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-         }
+        .checklist-item:hover {
+            background: #f1f5f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
 
-         .checklist-item input[type="checkbox"] {
-             width: 20px;
-             height: 20px;
-             margin-top: 2px;
-             cursor: pointer;
-             accent-color: var(--govbr-blue);
-             flex-shrink: 0;
-         }
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--govbr-blue);
+            flex-shrink: 0;
+        }
 
-         .checklist-item label {
-             flex: 1;
-             cursor: pointer;
-             font-size: 0.95rem;
-             color: #334155;
-             line-height: 1.4;
-             margin: 0;
-         }
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #334155;
+            line-height: 1.4;
+            margin: 0;
+        }
 
-         .checklist-item input[type="checkbox"]:checked + label {
-             color: #64748b;
-             text-decoration: line-through;
-         }
+        .checklist-item input[type="checkbox"]:checked+label {
+            color: #64748b;
+            text-decoration: line-through;
+        }
 
-         .checklist-item-description {
-             font-size: 0.85rem;
-             color: #94a3b8;
-             margin-left: 32px;
-             font-style: italic;
-             margin-top: -0.5rem;
-             margin-bottom: 0.5rem;
-         }
+        .checklist-item-description {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-left: 32px;
+            font-style: italic;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+        }
 
-         .checklist-tip {
-             background: #fef3c7;
-             border-left: 4px solid #f59e0b;
-             padding: 1rem;
-             border-radius: 8px;
-             margin-top: 1.5rem;
-             font-size: 0.95rem;
-             color: #78350f;
-         }
+        .checklist-tip {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: #78350f;
+        }
 
-         .checklist-tip strong {
-             display: block;
-             margin-bottom: 0.5rem;
-             color: #f59e0b;
-         }
+        .checklist-tip strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #f59e0b;
+        }
 
-         body.dark-mode .checklist-section {
-             background: #1e293b;
-             border-color: #334155;
-         }
+        body.dark-mode .checklist-section {
+            background: #1e293b;
+            border-color: #334155;
+        }
 
-         body.dark-mode .checklist-section-title {
-             color: #f1f5f9;
-         }
+        body.dark-mode .checklist-section-title {
+            color: #f1f5f9;
+        }
 
-         body.dark-mode .checklist-item {
-             background: #0f172a;
-         }
+        body.dark-mode .checklist-item {
+            background: #0f172a;
+        }
 
-         body.dark-mode .checklist-item:hover {
-             background: #1e293b;
-         }
+        body.dark-mode .checklist-item:hover {
+            background: #1e293b;
+        }
 
-         body.dark-mode .checklist-item label {
-             color: #cbd5e1;
-         }
+        body.dark-mode .checklist-item label {
+            color: #cbd5e1;
+        }
 
-         body.dark-mode .checklist-item-description {
-             color: #64748b;
-         }
+        body.dark-mode .checklist-item-description {
+            color: #64748b;
+        }
 
-         body.dark-mode .checklist-tip {
-             background: #92400e;
-             border-left-color: #f59e0b;
-             color: #fef3c7;
-         }
+        body.dark-mode .checklist-tip {
+            background: #92400e;
+            border-left-color: #f59e0b;
+            color: #fef3c7;
+        }
 
-         body.dark-mode .checklist-tip strong {
-             color: #fca5a5;
-         }
+        body.dark-mode .checklist-tip strong {
+            color: #fca5a5;
+        }
 
 
 
@@ -1834,7 +1836,7 @@
         }
 
         #infoModal .modal-header-info p {
-            color: rgba(255,255,255,0.85) !important;
+            color: rgba(255, 255, 255, 0.85) !important;
         }
 
         #infoModal .modal-close {
@@ -2113,70 +2115,70 @@
             font-weight: 700;
         }
 
-         .timeline-footer-date {
-             font-size: 0.75rem;
-             color: #94a3b8;
-             margin-top: 0.4rem;
-         }
+        .timeline-footer-date {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 0.4rem;
+        }
 
-         .timeline-actions {
-             display: flex;
-             gap: 0.5rem;
-             align-items: flex-start;
-             margin-top: 0.5rem;
-         }
+        .timeline-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-start;
+            margin-top: 0.5rem;
+        }
 
-         .timeline-action-btn {
-             background: none;
-             border: none;
-             cursor: pointer;
-             padding: 0.4rem;
-             border-radius: 4px;
-             font-size: 0.85rem;
-             color: #64748b;
-             transition: all 0.2s ease;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-         }
+        .timeline-action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #64748b;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-         .timeline-edit-btn {
-             color: #0f766e;
-         }
+        .timeline-edit-btn {
+            color: #0f766e;
+        }
 
-         .timeline-edit-btn:hover {
-             background-color: #ecf0f1;
-             color: #14b8a6;
-         }
+        .timeline-edit-btn:hover {
+            background-color: #ecf0f1;
+            color: #14b8a6;
+        }
 
-         .timeline-delete-btn {
-             color: #dc2626;
-         }
+        .timeline-delete-btn {
+            color: #dc2626;
+        }
 
-         .timeline-delete-btn:hover {
-             background-color: #fee2e2;
-             color: #ef4444;
-         }
+        .timeline-delete-btn:hover {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
 
-         body.dark-mode .timeline-edit-btn {
-             color: #14b8a6;
-         }
+        body.dark-mode .timeline-edit-btn {
+            color: #14b8a6;
+        }
 
-         body.dark-mode .timeline-edit-btn:hover {
-             background-color: rgba(20, 184, 166, 0.1);
-             color: #2dd4bf;
-         }
+        body.dark-mode .timeline-edit-btn:hover {
+            background-color: rgba(20, 184, 166, 0.1);
+            color: #2dd4bf;
+        }
 
-         body.dark-mode .timeline-delete-btn {
-             color: #ef4444;
-         }
+        body.dark-mode .timeline-delete-btn {
+            color: #ef4444;
+        }
 
-         body.dark-mode .timeline-delete-btn:hover {
-             background-color: rgba(239, 68, 68, 0.1);
-             color: #fca5a5;
-         }
+        body.dark-mode .timeline-delete-btn:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+        }
 
-         /* Registration Area */
+        /* Registration Area */
         .registration-input-grid {
             display: flex;
             gap: 1rem;
@@ -3098,7 +3100,8 @@
             line-height: 1.06;
             font-weight: 900;
             font-size: 2.05rem;
-            color: #ffffff; background-color: #990000;
+            color: #ffffff;
+            background-color: #990000;
             text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
@@ -3380,7 +3383,7 @@
             body header.govbr-header {
                 padding: 0 !important;
                 border-top: 3px solid #005a9c !important;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
                 height: auto !important;
                 min-height: unset !important;
             }
@@ -3395,7 +3398,10 @@
                 overflow-x: auto;
                 scrollbar-width: none;
             }
-            body .header-top::-webkit-scrollbar { display: none; }
+
+            body .header-top::-webkit-scrollbar {
+                display: none;
+            }
 
             body .header-logo-area {
                 gap: 4px !important;
@@ -3659,7 +3665,8 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background: #005a9c; /* Fundo azul solicitado */
+            background: #005a9c;
+            /* Fundo azul solicitado */
             border-top: none;
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
             z-index: 1000;
@@ -3672,7 +3679,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: rgba(255, 255, 255, 0.85); /* Palavras em branco (com leve opacidade) */
+            color: rgba(255, 255, 255, 0.85);
+            /* Palavras em branco (com leve opacidade) */
             text-decoration: none;
             font-size: 0.72rem;
             font-weight: 600;
@@ -3694,7 +3702,8 @@
         }
 
         .mobile-bottom-nav .nav-item.active {
-            color: #ffffff !important; /* Branco puro para o ativo */
+            color: #ffffff !important;
+            /* Branco puro para o ativo */
             font-weight: 800;
         }
 
@@ -3714,7 +3723,8 @@
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 16px;
-            padding-top: 50px; /* Espaço para o botão Limpar */
+            padding-top: 50px;
+            /* Espaço para o botão Limpar */
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
             position: relative;
@@ -3726,7 +3736,8 @@
 
         .btn-clear-filters-top {
             position: absolute;
-            top: 14px; /* Ajustado para alinhar no topo do card */
+            top: 14px;
+            /* Ajustado para alinhar no topo do card */
             right: 16px;
             background: #fff;
             border: 1px solid #e2e8f0;
@@ -3740,8 +3751,9 @@
             align-items: center;
             gap: 6px;
             transition: all 0.2s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            z-index: 100; /* Garante que o botão seja clicável */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            /* Garante que o botão seja clicável */
             pointer-events: auto;
         }
 
@@ -3753,8 +3765,10 @@
 
         .mobile-actions-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 colunas em mobile */
-            gap: 8px; /* Ajuste do gap para smartphones */
+            grid-template-columns: repeat(4, 1fr);
+            /* 4 colunas em mobile */
+            gap: 8px;
+            /* Ajuste do gap para smartphones */
             width: 100%;
         }
 
@@ -3777,7 +3791,8 @@
             .mobile-actions-grid {
                 display: flex;
                 gap: 1rem;
-                width: auto; /* Permite que os botões cresçam naturalmente */
+                width: auto;
+                /* Permite que os botões cresçam naturalmente */
             }
 
             .mobile-actions-grid .btn {
@@ -3785,7 +3800,8 @@
                 padding: 10px 24px !important;
                 font-size: 0.95rem !important;
                 gap: 8px !important;
-                min-width: 140px !important; /* Botões mais robustos no desktop */
+                min-width: 140px !important;
+                /* Botões mais robustos no desktop */
                 height: 48px !important;
             }
 
@@ -3796,11 +3812,13 @@
                 padding: 0;
                 padding-top: 0;
                 display: grid;
-                grid-template-columns: 1.5fr 1fr 1fr 1fr auto; /* 5 colunas para incluir o Limpar */
+                grid-template-columns: 1.5fr 1fr 1fr 1fr auto;
+                /* 5 colunas para incluir o Limpar */
                 gap: 1rem;
                 margin-bottom: 1rem;
                 position: static;
-                align-items: end; /* Alinha o botão com a base dos inputs */
+                align-items: end;
+                /* Alinha o botão com a base dos inputs */
             }
 
             .search-filters-card .form-group:first-of-type {
@@ -3812,7 +3830,8 @@
                 position: relative;
                 top: auto;
                 right: auto;
-                order: 10; /* Garante que fique no final da grid */
+                order: 10;
+                /* Garante que fique no final da grid */
                 height: 45px;
                 background: #fff;
                 white-space: nowrap;
@@ -3893,7 +3912,6 @@
             background: #dcfce7;
             color: #15803d;
         }
-
     </style>
 </head>
 
@@ -3946,8 +3964,7 @@
 
                         <header class="login-header">
                             <div class="login-header-logo">
-                                <img src="public/assets/images/logo.png"
-                                    alt=" Brasão da Prefeitura de Itaguaí">
+                                <img src="public/assets/images/logo.png" alt=" Brasão da Prefeitura de Itaguaí">
                             </div>
                             <h1><span class="accent">SUBINFRA</span>&nbsp;• PAINEL SMEDU</h1>
                             <p>Plataforma de gestão de infraestrutura da Secretaria<br>Municipal de Educação de Itaguaí.
@@ -3968,8 +3985,7 @@
                                     <div class="input-icon-wrapper">
                                         <i class="far fa-envelope"></i>
                                         <input type="email" id="login-email" required
-                                            placeholder="nome@edu.itaguai.rj.gov.br"
-                                            autocomplete="off">
+                                            placeholder="nome@edu.itaguai.rj.gov.br" autocomplete="off">
                                     </div>
                                 </div>
 
@@ -4002,8 +4018,7 @@
 
     <nav id="side-menu" class="side-menu">
         <div class="side-menu-header" style="display: flex; align-items: center; gap: 10px; padding: 1.5rem 1rem;">
-            <img src="public/assets/images/logo.png"
-                alt="Logo" style="height: 40px; border-radius: 4px;">
+            <img src="public/assets/images/logo.png" alt="Logo" style="height: 40px; border-radius: 4px;">
             <h3 style="font-weight: 800; letter-spacing: 0.05em; margin: 0; font-size: 1.2rem; color: #fff;">SUB INFRA
             </h3>
             <button class="close-sidebar" onclick="window.toggleMenu()" title="Recolher Menu">
@@ -4110,11 +4125,12 @@
                     <div class="logo-separator"></div>
                     <!-- <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span> -->
                 </div>
-                
+
                 <div class="header-top-links">
                     <span id="header-current-date">Carregando data...</span>
                     <span class="separator">|</span>
-                    <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank">Jornal Oficial</a>
+                    <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank">Jornal
+                        Oficial</a>
                     <span class="separator">|</span>
                     <a href="https://portal.transparencia.itaguai.rj.gov.br/" target="_blank">Transparência</a>
                     <span class="separator">|</span>
@@ -4126,37 +4142,43 @@
         <div class="header-bottom">
             <div class="header-container">
                 <div class="dept-title-group">
-                <i id="menu-toggle" class="fa-solid fa-bars menu-icon" style="color: #005a9c; cursor: pointer; font-size: 1.2rem;"></i>
-                <span class="mobile-title">SMEDU | CONTROLE DE PROC. PAG. |</span>
-                <strong class="desktop-only-title">Secretaria Municipal de Educação</strong>
-                <span class="v-sep desktop-only-title">|</span>
-                <span class="seg-label desktop-only-title">CONTROLE DE PROCESSOS DE PAGAMENTO</span>
-                <span class="v-sep desktop-only-title">|</span>
-                <span id="header-dept-name" class="dept-label desktop-only-title">Carregando departamento...</span>
-            </div>
+                    <i id="menu-toggle" class="fa-solid fa-bars menu-icon"
+                        style="color: #005a9c; cursor: pointer; font-size: 1.2rem;"></i>
+                    <span class="mobile-title">SMEDU | CONTROLE DE PROC. PAG. |</span>
+                    <strong class="desktop-only-title">Secretaria Municipal de Educação</strong>
+                    <span class="v-sep desktop-only-title">|</span>
+                    <span class="seg-label desktop-only-title">CONTROLE DE PROCESSOS DE PAGAMENTO</span>
+                    <span class="v-sep desktop-only-title">|</span>
+                    <span id="header-dept-name" class="dept-label desktop-only-title">Carregando departamento...</span>
+                </div>
 
-            <div class="user-header-info" id="user-info-trigger" onclick="e => e.stopPropagation()">
-                <i class="fa-solid fa-user-circle"></i>
-                <span id="header-user-name">Carregando usuário...</span>
-                
-                <!-- Menu Dropdown (dropdown original realinhado) -->
-                <div class="header-sign-in" id="header-dropdown-menu">
-                    <ul class="menu-section">
-                        <li class="menu-header">Sua Conta</li>
-                        <li><a href="#" onclick="window.startProcessTour(); return false;"><i class="fas fa-route"></i> Tour pelo Sistema</a></li>
-                    </ul>
-                    <ul class="menu-section">
-                        <li class="menu-header">Links Externo</li>
-                        <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas Frequentes</a></li>
-                        <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a></li>
-                        <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a></li>
-                    </ul>
-                    <ul class="menu-section">
-                        <li><a href="#" onclick="window.logout(event)" class="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-                    </ul>
+                <div class="user-header-info" id="user-info-trigger" onclick="e => e.stopPropagation()">
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span id="header-user-name">Carregando usuário...</span>
+
+                    <!-- Menu Dropdown (dropdown original realinhado) -->
+                    <div class="header-sign-in" id="header-dropdown-menu">
+                        <ul class="menu-section">
+                            <li class="menu-header">Sua Conta</li>
+                            <li><a href="#" onclick="window.startProcessTour(); return false;"><i
+                                        class="fas fa-route"></i> Tour pelo Sistema</a></li>
+                        </ul>
+                        <ul class="menu-section">
+                            <li class="menu-header">Links Externo</li>
+                            <li><a href="#" data-route="faq"><i class="fas fa-question-circle"></i> Perguntas
+                                    Frequentes</a></li>
+                            <li><a href="#" data-route="manual"><i class="fas fa-book-open"></i> Manual do Usuário</a>
+                            </li>
+                            <li><a href="#" data-route="termos"><i class="fas fa-file-contract"></i> Política de Uso</a>
+                            </li>
+                        </ul>
+                        <ul class="menu-section">
+                            <li><a href="#" onclick="window.logout(event)" class="logout-link"><i
+                                        class="fas fa-sign-out-alt"></i> Sair</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
     </header>
 
     <main class="container" style="margin-top: 2rem;">
@@ -4194,18 +4216,22 @@
                             <!-- Dynamic options -->
                         </select>
                     </div>
-                    
+
                     <div class="db-actions-row" style="margin-top: 0; align-items: center; width: auto;">
-                        <button class="btn-apply-filters" onclick="window.applyDashboardFilters()" style="height: 42px;">
+                        <button class="btn-apply-filters" onclick="window.applyDashboardFilters()"
+                            style="height: 42px;">
                             <i class="fas fa-filter"></i> Aplicar Filtros
                         </button>
-                        <button class="btn-db-action btn-db-new" onclick="window.openProcessModal()" style="height: 42px; font-size: 0.9rem;">
+                        <button class="btn-db-action btn-db-new" onclick="window.openProcessModal()"
+                            style="height: 42px; font-size: 0.9rem;">
                             <i class="fas fa-plus"></i> Novo
                         </button>
-                        <button class="btn-db-action btn-db-consult" onclick="window.showSection('processes')" style="height: 42px; font-size: 0.9rem;">
+                        <button class="btn-db-action btn-db-consult" onclick="window.showSection('processes')"
+                            style="height: 42px; font-size: 0.9rem;">
                             <i class="fas fa-search"></i> Consultar
                         </button>
-                        <button class="btn-db-action btn-db-export" onclick="window.exportDashboardToPDF()" style="height: 42px; font-size: 0.9rem;">
+                        <button class="btn-db-action btn-db-export" onclick="window.exportDashboardToPDF()"
+                            style="height: 42px; font-size: 0.9rem;">
                             <i class="fas fa-file-pdf"></i> PDF
                         </button>
                     </div>
@@ -4213,27 +4239,39 @@
 
                 <!-- Main KPIs First Row -->
                 <div class="db-kpi-row">
-                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Clique para visualizar todos os processos cadastrados no sistema" onclick="window.filterFromDashboard('all', '')">
+                    <div class="db-kpi-card blue tooltip-container"
+                        data-tooltip="Clique para visualizar todos os processos cadastrados no sistema"
+                        onclick="window.filterFromDashboard('all', '')">
                         <p class="stat-number" id="total-processes" data-target="0" style="color: #005a9c;">0</p>
                         <h3>Total de Processos</h3>
                     </div>
-                    <div class="db-kpi-card orange tooltip-container" data-tooltip="Processos que ainda não foram concluídos e estão em tramitação" onclick="window.filterFromDashboard('status', '!Concluído')">
+                    <div class="db-kpi-card orange tooltip-container"
+                        data-tooltip="Processos que ainda não foram concluídos e estão em tramitação"
+                        onclick="window.filterFromDashboard('status', '!Concluído')">
                         <p class="stat-number" id="treating-processes" data-target="0" style="color: #e67e22;">0</p>
                         <h3>Processos em Tramitação</h3>
                     </div>
-                    <div class="db-kpi-card green tooltip-container" data-tooltip="Processos finalizados e pagos com sucesso" onclick="window.filterFromDashboard('status', 'Concluído')">
+                    <div class="db-kpi-card green tooltip-container"
+                        data-tooltip="Processos finalizados e pagos com sucesso"
+                        onclick="window.filterFromDashboard('status', 'Concluído')">
                         <p class="stat-number" id="completed-processes" data-target="0" style="color: #2ecc71;">0</p>
                         <h3>Processos Liquidados</h3>
                     </div>
-                    <div class="db-kpi-card orange tooltip-container" data-tooltip="Percentual de processos pendentes em relação ao total" style="cursor: default;">
-                        <p class="stat-number" id="pending-percent" data-target="0" data-suffix="%" style="color: #e67e22;">0%</p>
+                    <div class="db-kpi-card orange tooltip-container"
+                        data-tooltip="Percentual de processos pendentes em relação ao total" style="cursor: default;">
+                        <p class="stat-number" id="pending-percent" data-target="0" data-suffix="%"
+                            style="color: #e67e22;">0%</p>
                         <h3>Percentual de Pendências</h3>
                     </div>
-                    <div class="db-kpi-card red tooltip-container" data-tooltip="Processos com prazo vencido que necessitam atenção imediata" onclick="window.filterFromDashboard('delayed', '')">
+                    <div class="db-kpi-card red tooltip-container"
+                        data-tooltip="Processos com prazo vencido que necessitam atenção imediata"
+                        onclick="window.filterFromDashboard('delayed', '')">
                         <p class="stat-number" id="delayed-processes" data-target="0" style="color: #e74c3c;">0</p>
                         <h3>Vencidos / Atrasados</h3>
                     </div>
-                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos aguardando análise ou providência" onclick="window.filterFromDashboard('status', 'Pendente')">
+                    <div class="db-kpi-card blue tooltip-container"
+                        data-tooltip="Processos aguardando análise ou providência"
+                        onclick="window.filterFromDashboard('status', 'Pendente')">
                         <p class="stat-number" id="finance-processes" data-target="0" style="color: #005a9c;">0</p>
                         <h3>Pendentes</h3>
                     </div>
@@ -4241,28 +4279,38 @@
 
                 <!-- Sector KPIs Second Row -->
                 <div class="db-kpi-row" style="margin-top: 1rem;">
-                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos localizados no Gabinete do Secretário">
+                    <div class="db-kpi-card blue tooltip-container"
+                        data-tooltip="Processos localizados no Gabinete do Secretário">
                         <p class="stat-number" id="cabinet-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>143 - Gabinete</h3>
                     </div>
-                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos no setor de Compras para cotação e aquisição">
+                    <div class="db-kpi-card blue tooltip-container"
+                        data-tooltip="Processos no setor de Compras para cotação e aquisição">
                         <p class="stat-number" id="compras-processes-card" data-target="0" style="color: #005a9c;">0</p>
                         <h3>Compras</h3>
                     </div>
-                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos no Almoxarifado para conferência de estoque">
-                        <p class="stat-number" id="almoxarifado-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                    <div class="db-kpi-card blue tooltip-container"
+                        data-tooltip="Processos no Almoxarifado para conferência de estoque">
+                        <p class="stat-number" id="almoxarifado-processes-card" data-target="0" style="color: #005a9c;">
+                            0</p>
                         <h3>131 - Almoxarifado</h3>
                     </div>
-                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos na Tesouraria para pagamento e conferência financeira">
-                        <p class="stat-number" id="tesouraria-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                    <div class="db-kpi-card blue tooltip-container"
+                        data-tooltip="Processos na Tesouraria para pagamento e conferência financeira">
+                        <p class="stat-number" id="tesouraria-processes-card" data-target="0" style="color: #005a9c;">0
+                        </p>
                         <h3>24 - Tesouraria</h3>
                     </div>
-                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos no setor de Nutrição Escolar">
-                        <p class="stat-number" id="nutricao-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                    <div class="db-kpi-card blue tooltip-container"
+                        data-tooltip="Processos no setor de Nutrição Escolar">
+                        <p class="stat-number" id="nutricao-processes-card" data-target="0" style="color: #005a9c;">0
+                        </p>
                         <h3>147 - Nutrição</h3>
                     </div>
-                    <div class="db-kpi-card blue tooltip-container" data-tooltip="Processos no setor Financeiro para análise e aprovação">
-                        <p class="stat-number" id="financeiro-processes-card" data-target="0" style="color: #005a9c;">0</p>
+                    <div class="db-kpi-card blue tooltip-container"
+                        data-tooltip="Processos no setor Financeiro para análise e aprovação">
+                        <p class="stat-number" id="financeiro-processes-card" data-target="0" style="color: #005a9c;">0
+                        </p>
                         <h3>142 - Financeiro</h3>
                     </div>
                 </div>
@@ -4600,8 +4648,7 @@
                 style="margin-bottom:1.5rem; background: linear-gradient(135deg, #005A9C, #005A9C); color: white;">
                 <div style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
                     <div style="display:flex; align-items:center; gap:1.5rem;">
-                        <img src="public/assets/images/logo.png"
-                            alt="SUB INFRA Logo"
+                        <img src="public/assets/images/logo.png" alt="SUB INFRA Logo"
                             style="height: 60px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                         <div>
                             <h2 style="font-size:1.8rem; margin:0; color: white;">SUB INFRA</h2>
@@ -4785,7 +4832,7 @@
                         </div>
                         <div class="form-grid-4">
                             <div class="form-group">
-                                <label>Nº PROC. MãƒE</label>
+                                <label>Nº PROC. Mãe</label>
                                 <input type="text" id="parentProc" class="form-control" placeholder="Ex: 1234/2025">
                             </div>
                             <div class="form-group">
@@ -4793,7 +4840,7 @@
                                 <input type="text" id="ppNumber" class="form-control" placeholder="Digite o N.º Proc">
                             </div>
                             <div class="form-group">
-                                <label>ANO EXERCãCIO OF</label>
+                                <label>ANO EXERCÍCIO OF</label>
                                 <input type="text" id="exerciseYear" class="form-control"
                                     placeholder="Digite Ano do Exercício">
                             </div>
@@ -4852,7 +4899,7 @@
                                 <input type="date" id="openingDate" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label>DATA DE CONCLUSãƒO</label>
+                                <label>DATA DE CONCLUSãO</label>
                                 <input type="date" id="deadline" class="form-control"
                                     onchange="updateModalRemainingDays()">
                             </div>
@@ -4865,9 +4912,11 @@
 
                     <!-- Section 4: CONTROLE DE FLUXO & TRAMITAÇÃO -->
                     <div class="form-section" id="transitSection">
-                        <div class="form-section-title" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="form-section-title"
+                            style="display: flex; justify-content: space-between; align-items: center;">
                             <div><i class="fas fa-exchange-alt"></i> NOVA ATUALIZAÇÃO / TRAMITAÇÃO</div>
-                            <a href="#" onclick="window.startTramitationTour(); return false;" style="font-size: 0.65rem; color: var(--govbr-blue); text-decoration: underline; font-weight: 700;">
+                            <a href="#" onclick="window.startTramitationTour(); return false;"
+                                style="font-size: 0.65rem; color: var(--govbr-blue); text-decoration: underline; font-weight: 700;">
                                 <i class="fas fa-play-circle"></i> Tour pelo sistema/ Como Tramitar
                             </a>
                         </div>
@@ -5049,9 +5098,11 @@
 
                 <!-- Histórico / Timeline -->
                 <div class="details-card" style="margin-bottom: 0;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;">
                         <h4 style="margin: 0;"><i class="fas fa-history"></i> Histórico de Tramitações</h4>
-                        <button class="btn btn-success" onclick="window.tramitarFromHistory()" style="padding: 6px 12px; font-size: 12px;">
+                        <button class="btn btn-success" onclick="window.tramitarFromHistory()"
+                            style="padding: 6px 12px; font-size: 12px;">
                             <i class="fas fa-exchange-alt"></i> Tramitar
                         </button>
                     </div>
@@ -5074,11 +5125,13 @@
     </div>
 
     <!-- CHECKLIST MODAL -->
-    <div id="checklistModal" class="process-modal" onclick="if(event.target===this) window.closeModal('checklistModal')">
+    <div id="checklistModal" class="process-modal"
+        onclick="if(event.target===this) window.closeModal('checklistModal')">
         <div class="process-modal-content" style="max-width: 800px;" onclick="event.stopPropagation()">
             <header class="modal-header">
                 <div class="modal-header-info">
-                    <h2 id="checklistModalTitle" style="color: var(--govbr-blue);"><i class="fas fa-list-check"></i> Checklist de Pagamento</h2>
+                    <h2 id="checklistModalTitle" style="color: var(--govbr-blue);"><i class="fas fa-list-check"></i>
+                        Checklist de Pagamento</h2>
                     <p>Processo <span id="checklistProcessNumber">-</span></p>
                     <input type="hidden" id="checklistProcessId">
                 </div>
@@ -5087,7 +5140,8 @@
             <div class="modal-body" id="checklistModalBody">
                 <!-- Checklist items will be injected here -->
             </div>
-            <footer class="modal-footer" style="padding: 1rem 2rem; display: flex; justify-content: flex-end; gap: 10px;">
+            <footer class="modal-footer"
+                style="padding: 1rem 2rem; display: flex; justify-content: flex-end; gap: 10px;">
                 <button class="btn btn-primary" onclick="window.downloadChecklistPDF()">
                     <i class="fas fa-file-pdf"></i> Baixar PDF
                 </button>
@@ -5182,7 +5236,8 @@
                         </div>
                         <div class="form-group" style="margin:0;">
                             <label
-                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Departamento / Setor *</label>
+                                style="display:block; font-size:0.75rem; font-weight:700; color:#475569; text-transform: uppercase; margin-bottom: 6px;">Departamento
+                                / Setor *</label>
                             <select id="userDepartment" class="form-control" style="border-radius: 8px;">
                                 <option value="">Selecionar Departamento...</option>
                             </select>
@@ -5246,10 +5301,14 @@
                 </div>
 
                 <!-- Filtros da Listagem -->
-                <div style="display:flex; gap:1rem; align-items:flex-end; margin-bottom:1.5rem; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0;">
+                <div
+                    style="display:flex; gap:1rem; align-items:flex-end; margin-bottom:1.5rem; background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0;">
                     <div style="flex-grow:1;">
-                        <label style="display:block; font-size:0.65rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.05em;">Filtrar por Departamento</label>
-                        <select id="userFilterDept" class="form-control" style="border-radius:8px; font-size:0.85rem;" onchange="window.applyUserFilters()">
+                        <label
+                            style="display:block; font-size:0.65rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px; letter-spacing:0.05em;">Filtrar
+                            por Departamento</label>
+                        <select id="userFilterDept" class="form-control" style="border-radius:8px; font-size:0.85rem;"
+                            onchange="window.applyUserFilters()">
                             <option value="">Todos os Departamentos</option>
                         </select>
                     </div>
@@ -5387,15 +5446,15 @@
             </header>
             <div class="history-container" id="historyTimeline">
                 <!-- Items will be rendered here -->
-             </div>
-             <footer class="modal-footer">
-                 <button type="button" class="btn-action btn-secondary"
-                     onclick="window.closeModal('processHistoryModal')">Fechar Histórico</button>
-                 <button type="button" class="btn-navy-save" id="historyTramitarBtn2" 
-                     onclick="window.tramitarFromProcessHistoryModal()" style="display:none;">
-                     <i class="fas fa-exchange-alt"></i> Tramitar
-                 </button>
-             </footer>
+            </div>
+            <footer class="modal-footer">
+                <button type="button" class="btn-action btn-secondary"
+                    onclick="window.closeModal('processHistoryModal')">Fechar Histórico</button>
+                <button type="button" class="btn-navy-save" id="historyTramitarBtn2"
+                    onclick="window.tramitarFromProcessHistoryModal()" style="display:none;">
+                    <i class="fas fa-exchange-alt"></i> Tramitar
+                </button>
+            </footer>
         </div>
     </div>
 
@@ -5430,7 +5489,7 @@
             </div>
             <h2 class="success-modal-title">Sucesso!</h2>
             <p id="successModalMessage" class="success-modal-text">Salvo com Sucesso</p>
-             <button class="success-modal-btn" onclick="window.closeSuccessModal()">Continuar</button>
+            <button class="success-modal-btn" onclick="window.closeSuccessModal()">Continuar</button>
         </div>
     </div>
 
@@ -5524,9 +5583,9 @@
                     <div
                         style="display: flex; gap: 1rem; justify-content: flex-end; flex-direction: column; align-items: flex-end;">
                         <div style="display: flex; gap: 1rem;">
-                            <a href="https://www.instagram.com/" aria-label="Instagram"  target="_blank"
+                            <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.facebook.com/?ref=tn_tnmn" aria-label="Facebook"  target="_blank"
+                            <a href="https://www.facebook.com/?ref=tn_tnmn" aria-label="Facebook" target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook-f"></i></a>
                         </div>
                         <!-- <img class="logo-govcidades" src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg" alt="Prefeitura de Itaguaí" style="max-height: 40px; margin-top: 1rem;"> -->
@@ -5554,27 +5613,27 @@
             }
         };
 
-         window.closeAllModals = function () {
-             const modalSelectors = ['.modal', '.process-modal', '.success-modal', '.modal-overlay'];
-             modalSelectors.forEach(selector => {
-                 document.querySelectorAll(selector).forEach(m => {
-                     m.classList.remove('visible');
-                     m.style.opacity = '';
-                     m.style.display = 'none';
-                 });
-             });
-             var ov = document.getElementById('overlay');
-             if (ov) {
-                 ov.classList.remove('visible');
-                 ov.style.display = 'none';
-                 ov.style.opacity = '';
-             }
-             var sideMenu = document.getElementById('side-menu');
-             if (sideMenu) sideMenu.classList.remove('open');
-             
-             // Garantir que o body volta ao normal
-             document.body.style.overflow = '';
-         };
+        window.closeAllModals = function () {
+            const modalSelectors = ['.modal', '.process-modal', '.success-modal', '.modal-overlay'];
+            modalSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(m => {
+                    m.classList.remove('visible');
+                    m.style.opacity = '';
+                    m.style.display = 'none';
+                });
+            });
+            var ov = document.getElementById('overlay');
+            if (ov) {
+                ov.classList.remove('visible');
+                ov.style.display = 'none';
+                ov.style.opacity = '';
+            }
+            var sideMenu = document.getElementById('side-menu');
+            if (sideMenu) sideMenu.classList.remove('open');
+
+            // Garantir que o body volta ao normal
+            document.body.style.overflow = '';
+        };
 
         window.openStatusMobileModal = function () {
             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('--- CHAMADA: openStatusMobileModal ---');
@@ -5663,13 +5722,13 @@
 
         window.closeModal = function (id) {
             if (!id) return;
-            
+
             var m = document.getElementById(id);
             if (!m) return;
-            
+
             // Remove classe visible (para animação)
             m.classList.remove('visible');
-            
+
             // Aguarda transição CSS (300ms) antes de esconder completamente
             setTimeout(() => {
                 if (!m.classList.contains('visible')) {
@@ -5677,7 +5736,7 @@
                     m.style.opacity = '0';
                 }
             }, 300);
-            
+
             // Verifica se há outro modal aberto
             var anyModalOpen = false;
             var modals = document.querySelectorAll('[id*="modal"]');
@@ -5687,7 +5746,7 @@
                     break;
                 }
             }
-            
+
             // Apenas esconde o overlay se não houver modal aberto
             if (!anyModalOpen) {
                 var overlay = document.getElementById('overlay');
@@ -5702,67 +5761,67 @@
             }
         };
 
-         // --- GLOBAL CONFIG & STATE ---
-         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+        // --- GLOBAL CONFIG & STATE ---
+        var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
+        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
-         var supabase;
-         
-           // Function to initialize Supabase with retry logic
-            async function initializeSupabase() {
-                console.log('>>> initializeSupabase called');
-                let attempts = 0;
-                const maxAttempts = 30;
-                while (attempts < maxAttempts) {
-                    try {
-                        const lib = window.supabase || (window.Supabase && window.Supabase.createClient ? window.Supabase : null);
-                        if (lib && lib.createClient) {
-                            if (!window.supabaseClient) {
-                                window.supabaseClient = lib.createClient(SUPABASE_URL, SUPABASE_KEY);
-                                supabase = window.supabaseClient; // Atribui à variável global usada no app
-                                console.log('Supabase client initialized successfully');
-                            }
-                            return;
+        var supabase;
+
+        // Function to initialize Supabase with retry logic
+        async function initializeSupabase() {
+            console.log('>>> initializeSupabase called');
+            let attempts = 0;
+            const maxAttempts = 30;
+            while (attempts < maxAttempts) {
+                try {
+                    const lib = window.supabase || (window.Supabase && window.Supabase.createClient ? window.Supabase : null);
+                    if (lib && lib.createClient) {
+                        if (!window.supabaseClient) {
+                            window.supabaseClient = lib.createClient(SUPABASE_URL, SUPABASE_KEY);
+                            supabase = window.supabaseClient; // Atribui à variável global usada no app
+                            console.log('Supabase client initialized successfully');
                         }
-                        await new Promise(r => setTimeout(r, 500));
-                        attempts++;
-                    } catch (e) {
-                        console.error('Supabase Init Error:', e);
-                        await new Promise(r => setTimeout(r, 1000));
-                        attempts++;
+                        return;
                     }
+                    await new Promise(r => setTimeout(r, 500));
+                    attempts++;
+                } catch (e) {
+                    console.error('Supabase Init Error:', e);
+                    await new Promise(r => setTimeout(r, 1000));
+                    attempts++;
                 }
             }
-          
-           // Initialize after DOM and external scripts are ready
-           function initOnLoad() {
-               console.log('>>> initOnLoad called, waiting for Supabase library...');
-               
-               // Wait for external scripts to load
-               const checkAndInit = () => {
-                   if (window.supabase && window.supabase.createClient) {
-                       console.log('>>> Supabase library detected, initializing...');
-                       initializeSupabase();
-                   } else {
-                       console.log('>>> Waiting for Supabase library...');
-                       setTimeout(checkAndInit, 200);
-                   }
-               };
-               
-               if (document.readyState === 'complete') {
-                   checkAndInit();
-               } else {
-                   window.addEventListener('load', checkAndInit);
-               }
-           }
-           
-           // Start initialization - run immediately
-           console.log('>>> About to call initOnLoad');
-           initOnLoad();
+        }
+
+        // Initialize after DOM and external scripts are ready
+        function initOnLoad() {
+            console.log('>>> initOnLoad called, waiting for Supabase library...');
+
+            // Wait for external scripts to load
+            const checkAndInit = () => {
+                if (window.supabase && window.supabase.createClient) {
+                    console.log('>>> Supabase library detected, initializing...');
+                    initializeSupabase();
+                } else {
+                    console.log('>>> Waiting for Supabase library...');
+                    setTimeout(checkAndInit, 200);
+                }
+            };
+
+            if (document.readyState === 'complete') {
+                checkAndInit();
+            } else {
+                window.addEventListener('load', checkAndInit);
+            }
+        }
+
+        // Start initialization - run immediately
+        console.log('>>> About to call initOnLoad');
+        initOnLoad();
 
 
         // --- DATE UTILITY ---
-        window.updateHeaderDate = function() {
+        window.updateHeaderDate = function () {
             var el = document.getElementById('header-current-date');
             if (el) {
                 var now = new Date();
@@ -5801,8 +5860,8 @@
 
             // Setup click handlers for data-route links (Help/FAQ/Manual)
             const routeLinks = document.querySelectorAll('[data-route]');
-            routeLinks.forEach(function(link) {
-                link.addEventListener('click', function(e) {
+            routeLinks.forEach(function (link) {
+                link.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                     const route = this.getAttribute('data-route');
@@ -6001,20 +6060,20 @@
 
         // --- 4. APP INITIALIZATION ---
         window._appLoaded = false;
-         window.initApp = async function () {
-             // Wait for supabase to be initialized
-             if (!window.supabaseClient || window._appLoaded) {
-                 if (!window.supabaseClient) {
-                     console.warn('Waiting for Supabase client to initialize...');
-                     setTimeout(window.initApp, 500);
-                 }
-                 return;
-             }
-             
-             supabase = window.supabaseClient; // Use the initialized client
-             window._appLoaded = true;
-             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
-             try {
+        window.initApp = async function () {
+            // Wait for supabase to be initialized
+            if (!window.supabaseClient || window._appLoaded) {
+                if (!window.supabaseClient) {
+                    console.warn('Waiting for Supabase client to initialize...');
+                    setTimeout(window.initApp, 500);
+                }
+                return;
+            }
+
+            supabase = window.supabaseClient; // Use the initialized client
+            window._appLoaded = true;
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
+            try {
                 const [suppliers, locations, objects, statuses, handlers, departments, processes] = await Promise.all([
                     supabase.from('suppliers').select('name').order('name'),
                     supabase.from('locations').select('name').order('name'),
@@ -6255,12 +6314,12 @@
             }
         };
 
-        window.openInfoModal = function(route) {
+        window.openInfoModal = function (route) {
             const modal = document.getElementById('infoModal');
             const titleEl = document.getElementById('infoModalTitle');
             const subtitleEl = document.getElementById('infoModalSubtitle');
             const contentEl = document.getElementById('infoModalContent');
-            
+
             if (!modal || !titleEl || !contentEl) return;
 
             const content = infoContent[route];
@@ -6268,11 +6327,11 @@
                 titleEl.innerHTML = content.title;
                 if (subtitleEl) subtitleEl.innerText = content.subtitle;
                 contentEl.innerHTML = content.content;
-                
+
                 modal.style.display = 'flex';
                 modal.style.opacity = '1';
                 modal.classList.add('visible');
-                
+
                 const overlay = document.getElementById('overlay');
                 if (overlay) {
                     overlay.style.display = 'block';
@@ -6307,7 +6366,7 @@
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 const current = start + progress * (target - start);
-                
+
                 const isFloat = target % 1 !== 0;
                 el.innerText = (isFloat ? current.toFixed(1) : Math.floor(current).toLocaleString('pt-BR')) + suffix;
 
@@ -6325,7 +6384,7 @@
             const doc = new jsPDF('p', 'mm', 'a4');
             const canvasStatus = document.getElementById('statusChart');
             const canvasLocation = document.getElementById('locationChart');
-            
+
             doc.setFillColor(0, 90, 156);
             doc.rect(0, 0, 210, 30, 'F');
             doc.setTextColor(255, 255, 255);
@@ -6466,16 +6525,16 @@
             if (latestContainer) {
                 // data já vem ordenado por created_at se for window.state.processes
                 // mas garantimos a ordenação para os últimos lançamentos
-                const sorted = [...data].sort((a,b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+                const sorted = [...data].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
                 const latest = sorted.slice(0, 5);
-                
+
                 if (latest.length === 0) {
                     latestContainer.innerHTML = '<p style="text-align:center; color:#64748b; padding:2rem;">Nenhuma atualização recente.</p>';
                 } else {
                     latestContainer.innerHTML = latest.map(p => {
                         const statusClass = (p.status || '').toLowerCase().includes('concluído') ? 'green' :
-                                          (p.status || '').toLowerCase().includes('pendente') ? 'blue' :
-                                          (p.status || '').toLowerCase().includes('atrasado') ? 'red' : 'orange';
+                            (p.status || '').toLowerCase().includes('pendente') ? 'blue' :
+                                (p.status || '').toLowerCase().includes('atrasado') ? 'red' : 'orange';
                         return `
                             <div class="db-latest-item" onclick="window.showProcessDetails(${JSON.stringify(p).replace(/"/g, '&quot;')})">
                                 <div class="db-latest-icon">
@@ -6503,13 +6562,13 @@
             window.renderCharts(data);
         };
 
-        window.applyDashboardFilters = function() {
+        window.applyDashboardFilters = function () {
             const periodo = document.getElementById('filter-periodo').value;
             const status = document.getElementById('filter-status').value;
             const setor = document.getElementById('filter-setor').value;
-            
+
             let filtered = [...window.state.processes];
-            
+
             // Período Filter
             if (periodo !== 'todos') {
                 const now = new Date();
@@ -6526,19 +6585,19 @@
                     return true;
                 });
             }
-            
+
             // Status Filter
             if (status) {
                 filtered = filtered.filter(p => p.status === status);
             }
-            
+
             // Setor Filter
             if (setor) {
                 filtered = filtered.filter(p => p.location === setor);
             }
-            
+
             window.updateDashboardCounters(filtered);
-            
+
             // Re-animate counters
             document.querySelectorAll('#dashboard-section .stat-number').forEach(el => window.animateCounter(el));
         };
@@ -6968,7 +7027,7 @@
 
         window.loadUsers = async function () {
             const container = document.getElementById('userListContainer');
-            if(!container) return;
+            if (!container) return;
             container.innerHTML = '<p style="text-align:center;color:#9CA3AF;padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Carregando...</p>';
             try {
                 const { data, error } = await supabase.from('user_profiles').select('*').order('full_name', { ascending: true });
@@ -7013,14 +7072,14 @@
                                     <button class="btn-icon-round btn-edit-user" onclick='window.editUser(${JSON.stringify(u)})' title="Editar Informações">
                                         <i class="fas fa-pen" style="font-size: 0.85rem;"></i>
                                     </button>
-                                    ${u.active !== false ? 
-                                        `<button class="btn-icon-round btn-deactivate-user" onclick="window.deactivateUser('${u.id}', '${u.full_name}')" title="Desativar Acesso">
+                                    ${u.active !== false ?
+                    `<button class="btn-icon-round btn-deactivate-user" onclick="window.deactivateUser('${u.id}', '${u.full_name}')" title="Desativar Acesso">
                                             <i class="fas fa-user-slash" style="font-size: 0.85rem;"></i>
-                                        </button>` : 
-                                        `<button class="btn-icon-round btn-reactivate-user" onclick="window.reactivateUser('${u.id}', '${u.full_name}')" title="Reativar Acesso">
+                                        </button>` :
+                    `<button class="btn-icon-round btn-reactivate-user" onclick="window.reactivateUser('${u.id}', '${u.full_name}')" title="Reativar Acesso">
                                             <i class="fas fa-user-check" style="font-size: 0.85rem;"></i>
                                         </button>`
-                                    }
+                }
                                     <button class="btn-icon-round" onclick="window.deleteUser('${u.id}', '${u.full_name}')" title="Excluir Usuário" style="background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3;">
                                         <i class="fas fa-trash-alt" style="font-size: 0.85rem;"></i>
                                     </button>
@@ -7358,14 +7417,14 @@
         window.editHistoryItem = async function (idx, currentMsg) {
             const newMsg = prompt('Editar movimentação:', currentMsg);
             if (!newMsg || newMsg.trim() === '' || newMsg.trim() === currentMsg) return;
-            
+
             const processId = document.getElementById('processId').value;
             const p = window.state.processes.find(x => x.id === processId);
             if (p && p.history && p.history[idx]) {
                 p.history[idx].msg = newMsg.trim();
                 p.history[idx].message = newMsg.trim();
                 window.renderModalHistory(p.history);
-                
+
                 if (supabase && p.history[idx].id) {
                     const { error } = await supabase.from('process_history').update({ message: newMsg.trim() }).eq('id', p.history[idx].id);
                     if (error) {
@@ -7380,12 +7439,12 @@
 
         window.deleteHistoryItem = async function (idx) {
             if (!confirm('Deseja excluir esta movimentação?')) return;
-            
+
             const processId = document.getElementById('processId').value;
             const p = window.state.processes.find(x => x.id === processId);
             if (p && p.history && p.history[idx]) {
                 const itemToDelete = p.history[idx];
-                
+
                 if (supabase && itemToDelete.id) {
                     const { error } = await supabase.from('process_history').delete().eq('id', itemToDelete.id);
                     if (error) {
@@ -7394,7 +7453,7 @@
                         return;
                     }
                 }
-                
+
                 p.history.splice(idx, 1);
                 window.renderModalHistory(p.history);
             }
@@ -7419,11 +7478,11 @@
                     message: msg,
                     user: userName
                 }).select().single();
-                
+
                 if (!error && inserted) {
                     item.id = inserted.id;
                 }
-                
+
                 const p = window.state.processes.find(x => x.id === processId);
                 if (p) { p.history.push(item); window.renderModalHistory(p.history); }
             } else {
@@ -8152,12 +8211,12 @@
         window.downloadChecklistPDF = function () {
             const processId = document.getElementById('checklistProcessId')?.value;
             const processNumber = document.getElementById('checklistProcessNumber')?.textContent || '-';
-            
+
             let process = null;
             if (processId) {
                 process = window.state.processes.find(p => p.id === processId);
             }
-            
+
             if (!process) {
                 process = window.state.processes.find(p => p.ppAno === processNumber);
             }
@@ -8512,20 +8571,20 @@
                 overlay.style.display = 'block';
                 overlay.classList.add('visible');
             }
-            
+
             // Debug sidebar item just in case it disappeared
             const deptLink = document.querySelector('a[onclick*="departments"]');
             if (!deptLink) {
                 console.warn('Department link missing from sidebar, re-injecting...');
                 const configList = document.querySelector('#menu-settings ul');
                 if (configList && !configList.querySelector('a[onclick*="departments"]')) {
-                   const li = document.createElement('li');
-                   li.innerHTML = '<a href="#" onclick="window.openConfigModal(\'departments\')"><i class="fas fa-building"></i> Cadastrar Departamento</a>';
-                   configList.insertBefore(li, configList.children[1]);
+                    const li = document.createElement('li');
+                    li.innerHTML = '<a href="#" onclick="window.openConfigModal(\'departments\')"><i class="fas fa-building"></i> Cadastrar Departamento</a>';
+                    configList.insertBefore(li, configList.children[1]);
                 }
             }
         };
-        
+
         window.saveConfigItem = async function () {
             const input = document.getElementById('configInput');
             const val = input.value.trim();
@@ -8538,8 +8597,8 @@
                 window.state[type].push(val);
                 input.value = '';
                 window.renderConfigList(); window.updateSelects();
-            } catch (err) { 
-                console.error('Error saving config item:', err); 
+            } catch (err) {
+                console.error('Error saving config item:', err);
                 alert('Erro ao salvar: ' + (err.message || 'Falha na comunicação'));
             }
         };
@@ -8575,7 +8634,7 @@
                 const safeKey = btoa(unescape(encodeURIComponent(it))).replace(/=/g, '');
                 li.setAttribute('data-id', safeKey);
                 li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 15px; border-bottom:1px solid #f3f4f6;';
-                
+
                 li.innerHTML = `
                     <span class="item-display-name" style="font-weight: 500; color: #374151;">${it}</span>
                     <div class="item-actions-row" style="display: flex; gap: 12px;">
@@ -8604,11 +8663,11 @@
                     <button type="button" class="btn btn-secondary btn-cancel-edit" style="padding:4px 8px; font-size:0.8rem;">X</button>
                 </div>
             `;
-            
+
             const input = li.querySelector('.edit-input');
             input.focus();
             input.select();
-            
+
             li.querySelector('.btn-save-edit').onclick = async (e) => {
                 e.stopPropagation();
                 const newName = input.value.trim();
@@ -8627,12 +8686,12 @@
                 window.renderConfigList();
                 window.updateSelects();
             };
-            
+
             li.querySelector('.btn-cancel-edit').onclick = (e) => {
                 e.stopPropagation();
                 window.renderConfigList();
             };
-            
+
             input.onkeyup = (e) => {
                 if (e.key === 'Enter') li.querySelector('.btn-save-edit').click();
                 if (e.key === 'Escape') window.renderConfigList();
@@ -8650,7 +8709,7 @@
                     </div>
                 </div>
             `;
-            
+
             li.querySelector('.btn-confirm-delete').onclick = async (e) => {
                 e.stopPropagation();
                 console.log('Final confirm delete for:', name);
@@ -8661,15 +8720,15 @@
                     const idx = window.state[type].indexOf(name);
                     if (idx !== -1) window.state[type].splice(idx, 1);
                     console.log('Delete success');
-                    window.renderConfigList(); 
+                    window.renderConfigList();
                     window.updateSelects();
-                } catch (err) { 
-                    console.error('Delete failed:', err); 
+                } catch (err) {
+                    console.error('Delete failed:', err);
                     alert('Erro ao excluir: ' + (err.message || 'Falha na comunicação'));
                     window.renderConfigList();
                 }
             };
-            
+
             li.querySelector('.btn-cancel-delete').onclick = (e) => {
                 e.stopPropagation();
                 window.renderConfigList();
@@ -8729,7 +8788,7 @@
             }
         };
 
-        window.applyUserFilters = function() {
+        window.applyUserFilters = function () {
             const dept = document.getElementById('userFilterDept').value;
             let filtered = window.state.allUsers || [];
             if (dept) {
@@ -8936,38 +8995,38 @@
             }
         }
 
-         // Esperar pela inicialização do Supabase antes de usar
-         function waitForSupabase(callback, maxAttempts = 30) {
-             let attempts = 0;
-             const checkInterval = setInterval(() => {
-                 attempts++;
-                 if (window.supabaseClient) {
-                     clearInterval(checkInterval);
-                     callback(window.supabaseClient);
-                 } else if (attempts >= maxAttempts) {
-                     clearInterval(checkInterval);
-                     console.error('Supabase client não foi inicializado após múltiplas tentativas');
-                 }
-             }, 200);
-         }
+        // Esperar pela inicialização do Supabase antes de usar
+        function waitForSupabase(callback, maxAttempts = 30) {
+            let attempts = 0;
+            const checkInterval = setInterval(() => {
+                attempts++;
+                if (window.supabaseClient) {
+                    clearInterval(checkInterval);
+                    callback(window.supabaseClient);
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(checkInterval);
+                    console.error('Supabase client não foi inicializado após múltiplas tentativas');
+                }
+            }, 200);
+        }
 
-         // Monitorar estado da sessão com segurança
-         waitForSupabase(function(supabaseClient) {
-             if (supabaseClient && supabaseClient.auth) {
-                 supabaseClient.auth.onAuthStateChange((event, session) => {
-                     if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth event:', event);
-                     const overlay = document.getElementById('login-overlay');
+        // Monitorar estado da sessão com segurança
+        waitForSupabase(function (supabaseClient) {
+            if (supabaseClient && supabaseClient.auth) {
+                supabaseClient.auth.onAuthStateChange((event, session) => {
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth event:', event);
+                    const overlay = document.getElementById('login-overlay');
 
-                      if (session?.user) {
-                          const overlay = document.getElementById('login-overlay');
-                          if (overlay) overlay.style.display = 'none';
-                         updateUserInfo(session.user);
-                         window.initializeAppEventListeners();
+                    if (session?.user) {
+                        const overlay = document.getElementById('login-overlay');
+                        if (overlay) overlay.style.display = 'none';
+                        updateUserInfo(session.user);
+                        window.initializeAppEventListeners();
 
-                         if (!window._appLoaded) {
-                             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Iniciando carregamento do app...');
-                             window.initApp();
-                         }
+                        if (!window._appLoaded) {
+                            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Iniciando carregamento do app...');
+                            window.initApp();
+                        }
 
                     }
                 });
@@ -9345,174 +9404,174 @@
             }
         };
 
-         // Checklist Data Structure
-         window.CHECKLIST_ITEMS = {
-             section1: {
-                 title: 'Documentação de Cobrança e Execução',
-                 icon: 'fa-file-contract',
-                 items: [
-                     { id: 'item1', text: 'Requerimento/Ofício de Cobrança', description: 'Formalização do pedido de pagamento pela empresa.' },
-                     { id: 'item2', text: 'Nota Fiscal / Fatura', description: 'Original, devidamente atestada no verso por dois servidores ou via assinatura digital.' },
-                     { id: 'item3', text: 'Relatório de Execução do Serviço', description: 'Descritivo detalhado do que foi realizado no período.' },
-                     { id: 'item4', text: 'Ordem de Serviço (OS)', description: 'Com as especificações e autorizações prévias.' },
-                     { id: 'item5', text: 'Mapa de Controle da Execução Contratual', description: 'Planilha de medição ou controle de saldos do contrato.' }
-                 ]
-             },
-              section2: {
-                  title: 'Regularidade Jurídica e Societária',
-                 icon: 'fa-file-signature',
-                 items: [
-                     { id: 'item6', text: 'Contrato Social / Consolidação', description: 'Cópia autenticada ou com selo de validade da JUCERJA.' },
-                     { id: 'item7', text: 'Documentos dos Sócios', description: 'RG, CPF e comprovante de residência conforme exigência do edital/contrato.' },
-                     { id: 'item8', text: 'Protocolo de Transmissão do CNPJ', description: 'Comprovante de inscrição e situação cadastral ativa.' }
-                 ]
-             },
-             section3: {
-                 title: 'Regularidade Fiscal e Trabalhista (DENTRO DA VALIDADE)',
-                 icon: 'fa-certificate',
-                 items: [
-                     { id: 'item9', text: 'Certidão de Regularidade do FGTS (CRF)', description: '' },
-                     { id: 'item10', text: 'Certidão Negativa de Débitos Trabalhistas (CNDT)', description: '' },
-                     { id: 'item11', text: 'Certidão Negativa de Tributos Federais e Dívida Ativa da União (PGFN)', description: '' },
-                     { id: 'item12', text: 'Certidão Negativa de Débitos Estaduais (Dívida Ativa)', description: '' },
-                     { id: 'item13', text: 'Certidão Negativa de IPTU e Tributos Mobiliários (ISS/Taxas Municipais)', description: '' },
-                     { id: 'item14', text: 'Recibo da DCTFWeb', description: 'Comprovação de obrigações previdenciárias.' }
-                 ]
-             },
-             section4: {
-                 title: 'Instrumentos Contratuais e Atos Oficiais',
-                 icon: 'fa-scroll',
-                 items: [
-                     { id: 'item15', text: 'Contrato Original', description: 'Cópia com todas as assinaturas colhidas.' },
-                     { id: 'item16', text: 'Termos Aditivos', description: 'Caso existam prorrogações ou reajustes.' },
-                     { id: 'item17', text: 'Portaria de Nomeação do Fiscal', description: 'Documento que designa quem atestou a nota.' },
-                     { id: 'item18', text: 'Extrato do Contrato/Aditivo', description: 'Cópia da publicação no Diário Oficial.' }
-                 ]
-             },
-             section5: {
-                 title: 'Documentação Contábil e Financeira',
-                 icon: 'fa-coins',
-                 items: [
-                     { id: 'item19', text: 'Nota de Empenho', description: 'Original ou cópia da nota vinculada à despesa.' },
-                     { id: 'item20', text: 'Folha de Informação (ISS)', description: 'Informando retenções ou isenções tributárias.' },
-                     { id: 'item21', text: 'Folha de Informação (Financeiro)', description: 'Parecer autorizando o fluxo para pagamento.' }
-                 ]
-             }
-         };
+        // Checklist Data Structure
+        window.CHECKLIST_ITEMS = {
+            section1: {
+                title: 'Documentação de Cobrança e Execução',
+                icon: 'fa-file-contract',
+                items: [
+                    { id: 'item1', text: 'Requerimento/Ofício de Cobrança', description: 'Formalização do pedido de pagamento pela empresa.' },
+                    { id: 'item2', text: 'Nota Fiscal / Fatura', description: 'Original, devidamente atestada no verso por dois servidores ou via assinatura digital.' },
+                    { id: 'item3', text: 'Relatório de Execução do Serviço', description: 'Descritivo detalhado do que foi realizado no período.' },
+                    { id: 'item4', text: 'Ordem de Serviço (OS)', description: 'Com as especificações e autorizações prévias.' },
+                    { id: 'item5', text: 'Mapa de Controle da Execução Contratual', description: 'Planilha de medição ou controle de saldos do contrato.' }
+                ]
+            },
+            section2: {
+                title: 'Regularidade Jurídica e Societária',
+                icon: 'fa-file-signature',
+                items: [
+                    { id: 'item6', text: 'Contrato Social / Consolidação', description: 'Cópia autenticada ou com selo de validade da JUCERJA.' },
+                    { id: 'item7', text: 'Documentos dos Sócios', description: 'RG, CPF e comprovante de residência conforme exigência do edital/contrato.' },
+                    { id: 'item8', text: 'Protocolo de Transmissão do CNPJ', description: 'Comprovante de inscrição e situação cadastral ativa.' }
+                ]
+            },
+            section3: {
+                title: 'Regularidade Fiscal e Trabalhista (DENTRO DA VALIDADE)',
+                icon: 'fa-certificate',
+                items: [
+                    { id: 'item9', text: 'Certidão de Regularidade do FGTS (CRF)', description: '' },
+                    { id: 'item10', text: 'Certidão Negativa de Débitos Trabalhistas (CNDT)', description: '' },
+                    { id: 'item11', text: 'Certidão Negativa de Tributos Federais e Dívida Ativa da União (PGFN)', description: '' },
+                    { id: 'item12', text: 'Certidão Negativa de Débitos Estaduais (Dívida Ativa)', description: '' },
+                    { id: 'item13', text: 'Certidão Negativa de IPTU e Tributos Mobiliários (ISS/Taxas Municipais)', description: '' },
+                    { id: 'item14', text: 'Recibo da DCTFWeb', description: 'Comprovação de obrigações previdenciárias.' }
+                ]
+            },
+            section4: {
+                title: 'Instrumentos Contratuais e Atos Oficiais',
+                icon: 'fa-scroll',
+                items: [
+                    { id: 'item15', text: 'Contrato Original', description: 'Cópia com todas as assinaturas colhidas.' },
+                    { id: 'item16', text: 'Termos Aditivos', description: 'Caso existam prorrogações ou reajustes.' },
+                    { id: 'item17', text: 'Portaria de Nomeação do Fiscal', description: 'Documento que designa quem atestou a nota.' },
+                    { id: 'item18', text: 'Extrato do Contrato/Aditivo', description: 'Cópia da publicação no Diário Oficial.' }
+                ]
+            },
+            section5: {
+                title: 'Documentação Contábil e Financeira',
+                icon: 'fa-coins',
+                items: [
+                    { id: 'item19', text: 'Nota de Empenho', description: 'Original ou cópia da nota vinculada à despesa.' },
+                    { id: 'item20', text: 'Folha de Informação (ISS)', description: 'Informando retenções ou isenções tributárias.' },
+                    { id: 'item21', text: 'Folha de Informação (Financeiro)', description: 'Parecer autorizando o fluxo para pagamento.' }
+                ]
+            }
+        };
 
-         window.openChecklistModal = function (process) {
-             if (!process) return;
+        window.openChecklistModal = function (process) {
+            if (!process) return;
 
-             const modal = document.getElementById('checklistModal');
-             if (!modal) return;
+            const modal = document.getElementById('checklistModal');
+            if (!modal) return;
 
-             // Update header with process info
-             document.getElementById('checklistProcessNumber').innerText = process.ppAno || '-';
-             document.getElementById('checklistSupplier').innerText = process.supplier || '-';
-             document.getElementById('checklistValue').innerText = window.formatCurrency ? window.formatCurrency(process.coverValue) : (process.coverValue || '-');
-             document.getElementById('checklistOpeningDate').innerText = window.formatDate ? window.formatDate(process.openingDate) : (process.openingDate || '-');
+            // Update header with process info
+            document.getElementById('checklistProcessNumber').innerText = process.ppAno || '-';
+            document.getElementById('checklistSupplier').innerText = process.supplier || '-';
+            document.getElementById('checklistValue').innerText = window.formatCurrency ? window.formatCurrency(process.coverValue) : (process.coverValue || '-');
+            document.getElementById('checklistOpeningDate').innerText = window.formatDate ? window.formatDate(process.openingDate) : (process.openingDate || '-');
 
-             // Render checklist items
-             window.renderChecklistItems(process.id);
+            // Render checklist items
+            window.renderChecklistItems(process.id);
 
-             // Show modal
-             modal.classList.add('visible');
-             modal.style.display = 'flex';
-         };
+            // Show modal
+            modal.classList.add('visible');
+            modal.style.display = 'flex';
+        };
 
-         window.renderChecklistItems = function (processId) {
-             const container = document.getElementById('checklistContainer');
-             if (!container) return;
+        window.renderChecklistItems = function (processId) {
+            const container = document.getElementById('checklistContainer');
+            if (!container) return;
 
-             container.innerHTML = '';
+            container.innerHTML = '';
 
-             // Load saved state from localStorage
-             const savedState = window.getChecklistState(processId);
+            // Load saved state from localStorage
+            const savedState = window.getChecklistState(processId);
 
-             // Render all sections
-             Object.entries(window.CHECKLIST_ITEMS).forEach(([sectionKey, section]) => {
-                 const sectionDiv = document.createElement('div');
-                 sectionDiv.className = 'checklist-section';
+            // Render all sections
+            Object.entries(window.CHECKLIST_ITEMS).forEach(([sectionKey, section]) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'checklist-section';
 
-                 const titleDiv = document.createElement('div');
-                 titleDiv.className = 'checklist-section-title';
-                 titleDiv.innerHTML = `<i class="fas ${section.icon} checklist-section-icon"></i> ${section.title}`;
-                 sectionDiv.appendChild(titleDiv);
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'checklist-section-title';
+                titleDiv.innerHTML = `<i class="fas ${section.icon} checklist-section-icon"></i> ${section.title}`;
+                sectionDiv.appendChild(titleDiv);
 
-                 // Render items
-                 section.items.forEach(item => {
-                     const itemDiv = document.createElement('div');
-                     const isChecked = savedState[item.id] || false;
-                     const itemId = `checklist-${processId}-${item.id}`;
+                // Render items
+                section.items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    const isChecked = savedState[item.id] || false;
+                    const itemId = `checklist-${processId}-${item.id}`;
 
-                     itemDiv.innerHTML = `
+                    itemDiv.innerHTML = `
                          <input type="checkbox" id="${itemId}" ${isChecked ? 'checked' : ''} data-item-id="${item.id}" data-process-id="${processId}">
                          <label for="${itemId}">${item.text}</label>
                          ${item.description ? `<div class="checklist-item-description">${item.description}</div>` : ''}
                      `;
-                     itemDiv.className = 'checklist-item';
+                    itemDiv.className = 'checklist-item';
 
-                     // Add event listener
-                     const checkbox = itemDiv.querySelector('input[type="checkbox"]');
-                     checkbox.addEventListener('change', (e) => {
-                         window.saveChecklistState(processId, item.id, e.target.checked);
-                         window.updateChecklistProgress(processId);
-                     });
+                    // Add event listener
+                    const checkbox = itemDiv.querySelector('input[type="checkbox"]');
+                    checkbox.addEventListener('change', (e) => {
+                        window.saveChecklistState(processId, item.id, e.target.checked);
+                        window.updateChecklistProgress(processId);
+                    });
 
-                     sectionDiv.appendChild(itemDiv);
-                 });
+                    sectionDiv.appendChild(itemDiv);
+                });
 
-                 container.appendChild(sectionDiv);
-             });
+                container.appendChild(sectionDiv);
+            });
 
-             // Add tips section
-             const tipsDiv = document.createElement('div');
-             tipsDiv.className = 'checklist-tip';
-              tipsDiv.innerHTML = `
+            // Add tips section
+            const tipsDiv = document.createElement('div');
+            tipsDiv.className = 'checklist-tip';
+            tipsDiv.innerHTML = `
                   <strong>💡 Dicas de Ouro para a Gestão Pública:</strong>
                   <div><strong>Validade das Certidões:</strong> Se uma certidão vencer durante a tramitação (ex: o processo ficou parado 15 dias no jurídico), o setor financeiro não deve pagar. É necessário anexar a certidão atualizada antes da liquidação.</div>
                   <div style="margin-top: 0.5rem;"><strong>Atesto de Nota:</strong> O atesto deve ser sempre datado. A data do atesto não pode ser anterior à data da emissão da Nota de Empenho.</div>
                   <div style="margin-top: 0.5rem;"><strong>Ordem Cronológica:</strong> Lembre-se que a Lei de Licitações exige o respeito à ordem cronológica de pagamentos, salvo exceções justificadas.</div>
                   <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.1);"><strong>Atenção:</strong> Este checklist atende bem às exigências de Tribunais de Contas (como o TCE-RJ).</div>
               `;
-             container.appendChild(tipsDiv);
+            container.appendChild(tipsDiv);
 
-             // Update progress
-             window.updateChecklistProgress(processId);
-         };
+            // Update progress
+            window.updateChecklistProgress(processId);
+        };
 
-         window.updateChecklistProgress = function (processId) {
-             const savedState = window.getChecklistState(processId);
-             const total = Object.keys(window.CHECKLIST_ITEMS).reduce((acc, sectionKey) => {
-                 return acc + window.CHECKLIST_ITEMS[sectionKey].items.length;
-             }, 0);
-             const completed = Object.values(savedState).filter(v => v).length;
+        window.updateChecklistProgress = function (processId) {
+            const savedState = window.getChecklistState(processId);
+            const total = Object.keys(window.CHECKLIST_ITEMS).reduce((acc, sectionKey) => {
+                return acc + window.CHECKLIST_ITEMS[sectionKey].items.length;
+            }, 0);
+            const completed = Object.values(savedState).filter(v => v).length;
 
-             const progressEl = document.getElementById('checklistProgress');
-             const progressBar = document.getElementById('checklistProgressBar');
+            const progressEl = document.getElementById('checklistProgress');
+            const progressBar = document.getElementById('checklistProgressBar');
 
-             if (progressEl) progressEl.innerText = `${completed}/${total} items`;
-             if (progressBar) progressBar.style.width = `${(completed / total) * 100}%`;
-         };
+            if (progressEl) progressEl.innerText = `${completed}/${total} items`;
+            if (progressBar) progressBar.style.width = `${(completed / total) * 100}%`;
+        };
 
-         window.getChecklistState = function (processId) {
-             const key = `checklist_${processId}`;
-             const saved = localStorage.getItem(key);
-             return saved ? JSON.parse(saved) : {};
-         };
+        window.getChecklistState = function (processId) {
+            const key = `checklist_${processId}`;
+            const saved = localStorage.getItem(key);
+            return saved ? JSON.parse(saved) : {};
+        };
 
-         window.saveChecklistState = function (processId, itemId, checked) {
-             const key = `checklist_${processId}`;
-             const state = window.getChecklistState(processId);
-             state[itemId] = checked;
-             localStorage.setItem(key, JSON.stringify(state));
-         };
+        window.saveChecklistState = function (processId, itemId, checked) {
+            const key = `checklist_${processId}`;
+            const state = window.getChecklistState(processId);
+            state[itemId] = checked;
+            localStorage.setItem(key, JSON.stringify(state));
+        };
 
-         window.downloadChecklistPDF = function () {
-             alert('Função de download de PDF será implementada em breve.');
-         };
+        window.downloadChecklistPDF = function () {
+            alert('Função de download de PDF será implementada em breve.');
+        };
 
-         window.launchManualUpdate = async function () {
+        window.launchManualUpdate = async function () {
             XLSX.utils.book_append_sheet(wb, ws, "Processos");
             XLSX.writeFile(wb, "processos.xlsx");
         };
@@ -9686,7 +9745,8 @@
             </div>
             <footer class="modal-footer">
                 <button class="btn-glass-cancel" onclick="window.closeModal('history-modal')">Fechar</button>
-                <button class="btn-navy-save" id="historyTramitarBtn" onclick="window.tramitarFromHistory()" style="display:none;">
+                <button class="btn-navy-save" id="historyTramitarBtn" onclick="window.tramitarFromHistory()"
+                    style="display:none;">
                     <i class="fas fa-exchange-alt"></i> Tramitar
                 </button>
             </footer>
@@ -9726,6 +9786,7 @@
             align-items: center;
             justify-content: center;
         }
+
         .tour-tooltip {
             background: white;
             border-radius: 12px;
@@ -9735,18 +9796,21 @@
             position: relative;
             animation: tourPopIn 0.3s ease;
         }
+
         .tour-tooltip h3 {
             margin: 0 0 0.5rem 0;
             color: #005A9C;
             font-size: 1.1rem;
             font-weight: 700;
         }
+
         .tour-tooltip p {
             margin: 0 0 1rem 0;
             color: #555;
             font-size: 0.9rem;
             line-height: 1.5;
         }
+
         .tour-tooltip .tour-field-name {
             background: #f0f7ff;
             padding: 0.5rem;
@@ -9755,11 +9819,13 @@
             color: #005A9C;
             margin-bottom: 0.75rem;
         }
+
         .tour-buttons {
             display: flex;
             gap: 0.5rem;
             justify-content: flex-end;
         }
+
         .tour-btn {
             padding: 0.5rem 1rem;
             border-radius: 6px;
@@ -9769,53 +9835,70 @@
             font-size: 0.85rem;
             transition: all 0.2s;
         }
+
         .tour-btn-skip {
             background: #e5e7eb;
             color: #555;
         }
+
         .tour-btn-skip:hover {
             background: #d1d5db;
         }
+
         .tour-btn-next {
             background: #005A9C;
             color: white;
         }
+
         .tour-btn-next:hover {
             background: #004a80;
         }
+
         .tour-highlight {
             position: relative;
             z-index: 10001;
             box-shadow: 0 0 0 4px #005A9C, 0 0 20px rgba(0, 90, 156, 0.5);
             border-radius: 8px;
         }
+
         .tour-progress {
             font-size: 0.75rem;
             color: #888;
             margin-bottom: 0.5rem;
         }
+
         @keyframes tourPopIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 
     <!-- Tour Container -->
-    <div id="tour-container" style="display: none;">    </div>
+    <div id="tour-container" style="display: none;"> </div>
 
     <!-- CHECKLIST MODAL -->
     <div id="checklistModal" class="modal-overlay">
         <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 1rem;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 1rem;">
                 <div>
-                    <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Checklist de Pagamento - Processo <span id="checklistProcessNumber" style="color: var(--govbr-blue);">-</span></h2>
+                    <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Checklist de Pagamento - Processo <span
+                            id="checklistProcessNumber" style="color: var(--govbr-blue);">-</span></h2>
                     <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #64748b;">
                         <strong>Fornecedor:</strong> <span id="checklistSupplier">-</span><br>
                         <strong>Valor:</strong> <span id="checklistValue">-</span><br>
                         <strong>Data de Abertura:</strong> <span id="checklistOpeningDate">-</span>
                     </div>
                 </div>
-                <button class="close-button" onclick="window.closeModal('checklistModal')" style="font-size: 1.5rem; color: #1e293b; border: none; background: none; cursor: pointer;">&times;</button>
+                <button class="close-button" onclick="window.closeModal('checklistModal')"
+                    style="font-size: 1.5rem; color: #1e293b; border: none; background: none; cursor: pointer;">&times;</button>
             </div>
 
             <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
@@ -9824,7 +9907,9 @@
                     <span id="checklistProgress" style="color: var(--govbr-blue); font-weight: 700;">0/0 items</span>
                 </div>
                 <div style="width: 100%; background: #e5e7eb; height: 8px; border-radius: 4px; overflow: hidden;">
-                    <div id="checklistProgressBar" style="width: 0%; height: 100%; background: var(--govbr-blue); transition: width 0.3s ease;"></div>
+                    <div id="checklistProgressBar"
+                        style="width: 0%; height: 100%; background: var(--govbr-blue); transition: width 0.3s ease;">
+                    </div>
                 </div>
             </div>
 
@@ -9832,11 +9917,14 @@
                 <!-- Checklist items will be injected here -->
             </div>
 
-            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-                <button onclick="window.downloadChecklistPDF()" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+            <div
+                style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                <button onclick="window.downloadChecklistPDF()" class="btn btn-primary"
+                    style="display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-download"></i> Baixar PDF
                 </button>
-                <button onclick="window.closeModal('checklistModal')" class="btn btn-secondary" style="display: flex; align-items: center; gap: 0.5rem;">
+                <button onclick="window.closeModal('checklistModal')" class="btn btn-secondary"
+                    style="display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-times"></i> Fechar
                 </button>
             </div>
@@ -9882,9 +9970,9 @@
         window.currentTourStep = 0;
         window.tourActive = false;
 
-        window.startProcessTour = function() {
+        window.startProcessTour = function () {
             if (window.DISABLE_TOUR) return;
-            
+
             const modal = document.getElementById('processControlModal');
             if (!modal || !modal.classList.contains('visible')) {
                 window.openProcessModal();
@@ -9894,26 +9982,26 @@
             }
         };
 
-        window.startTramitationTour = function() {
+        window.startTramitationTour = function () {
             if (window.DISABLE_TOUR) return;
             window.runTour(window.TRAMITATION_TOUR_STEPS);
         };
 
-        window.runTour = function(steps = window.TOUR_STEPS) {
+        window.runTour = function (steps = window.TOUR_STEPS) {
             if (window.DISABLE_TOUR) return;
-            
+
             window.tourActive = true;
             window.currentTourSteps = steps;
             window.currentTourStep = 0;
             window.showTourStep();
         };
 
-        window.showTourStep = function() {
+        window.showTourStep = function () {
             if (!window.tourActive) return;
-            
+
             const container = document.getElementById('tour-container');
             const step = window.currentTourSteps[window.currentTourStep];
-            
+
             if (!step) {
                 window.endTour();
                 return;
@@ -9928,13 +10016,13 @@
 
             // Remove highlight anterior
             document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
-            
+
             // Adiciona highlight ao elemento atual
             targetEl.classList.add('tour-highlight');
             targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             const progress = (window.currentTourStep + 1) + ' de ' + window.currentTourSteps.length;
-            
+
             container.innerHTML = `
                 <div class="tour-overlay" onclick="window.handleTourOverlayClick(event)">
                     <div class="tour-tooltip" onclick="event.stopPropagation()">
@@ -9953,19 +10041,19 @@
             container.style.display = 'block';
         };
 
-        window.nextTourStep = function() {
+        window.nextTourStep = function () {
             document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
             window.currentTourStep++;
             window.showTourStep();
         };
 
-        window.endTour = function() {
+        window.endTour = function () {
             window.tourActive = false;
             document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'));
             document.getElementById('tour-container').style.display = 'none';
         };
 
-        window.handleTourOverlayClick = function(event) {
+        window.handleTourOverlayClick = function (event) {
             if (event.target.classList.contains('tour-overlay')) {
                 window.endTour();
             }
@@ -9973,11 +10061,11 @@
 
         // Auto-start tour on new process (only if not disabled and not editing)
         const originalOpenProcessModal = window.openProcessModal;
-        window.openProcessModal = function(p = null) {
+        window.openProcessModal = function (p = null) {
             const isNewProcess = p === null || p === undefined;
-            
+
             originalOpenProcessModal.apply(this, arguments);
-            
+
             if (isNewProcess && !window.DISABLE_TOUR && !window._tourShownThisSession) {
                 window._tourShownThisSession = true;
                 setTimeout(() => {

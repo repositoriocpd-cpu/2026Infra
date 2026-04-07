@@ -1050,12 +1050,13 @@ body.dark-mode .ui-toast__desc { color: var(--ui-text-3); }
   }
 
   .btn-apply-filters {
-    width: 100% !important;
+    flex: 1 !important;
     justify-content: center !important;
     height: 48px !important;
     border-radius: 10px !important;
-    font-size: 1rem !important;
-    margin-top: 0.25rem !important;
+    font-size: 0.95rem !important;
+    margin-top: 0 !important;
+    padding: 0 0.5rem !important;
   }
 
   /* KPI Grid Optimization - Sophisticated 3-Column Layout */
@@ -1134,19 +1135,25 @@ body.dark-mode .ui-toast__desc { color: var(--ui-text-3); }
 
   /* Full Width Action Row */
   .db-actions-row {
-    flex-direction: column !important;
+    flex-direction: row !important;
     gap: 12px !important;
     width: 100% !important;
-    margin-top: 1.5rem !important;
+    margin-top: 1rem !important;
+  }
+
+  .db-actions-row .btn-db-new,
+  .db-actions-row .btn-db-consult {
+    display: none !important;
   }
 
   .btn-db-action {
-    width: 100% !important;
+    flex: 1 !important;
     justify-content: center !important;
-    height: 54px !important;
-    border-radius: 12px !important;
-    font-size: 1.05rem !important;
+    height: 48px !important;
+    border-radius: 10px !important;
+    font-size: 0.95rem !important;
     margin: 0 !important;
+    padding: 0 0.5rem !important;
   }
 
   /* Sector items optimization */
