@@ -425,20 +425,25 @@
         }
 
         .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 2rem;
             border-bottom: 1px solid #e2e8f0;
             background-color: #ffffff;
+            padding: 0.5rem 0;
         }
 
         .header-bottom {
+            background-color: #ffffff;
+            padding: 0.75rem 0;
+        }
+
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 2rem;
-            background-color: #ffffff;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 1rem;
+            box-sizing: border-box;
         }
 
         .header-top-links {
@@ -531,14 +536,6 @@
             font-size: 1.5rem;
         }
 
-
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 12px 24px;
-        }
 
         .inst-brand {
             display: flex;
@@ -4105,27 +4102,30 @@
     </div>
 
     <header class="govbr-header">
-        <div class="inst-top">
-            <div class="inst-brand">
-                <img class="inst-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
-                    alt="Prefeitura de Itaguaí">
-                <div class="logo-separator"></div>
-                <!-- <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span> -->
-            </div>
-            
-            <div class="header-top-links">
-                <span id="header-current-date">Carregando data...</span>
-                <span class="separator">|</span>
-                <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank">Jornal Oficial</a>
-                <span class="separator">|</span>
-                <a href="https://portal.transparencia.itaguai.rj.gov.br/" target="_blank">Transparência</a>
-                <span class="separator">|</span>
-                <a href="#" id="dark-mode-toggle" title="Alternar Modo Noturno"><i class="fa-solid fa-moon"></i></a>
+        <div class="header-top">
+            <div class="header-container">
+                <div class="inst-brand">
+                    <img class="inst-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
+                        alt="Prefeitura de Itaguaí">
+                    <div class="logo-separator"></div>
+                    <!-- <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span> -->
+                </div>
+                
+                <div class="header-top-links">
+                    <span id="header-current-date">Carregando data...</span>
+                    <span class="separator">|</span>
+                    <a href="https://novoportal.itaguai.rj.gov.br/paginas/jornal-oficial" target="_blank">Jornal Oficial</a>
+                    <span class="separator">|</span>
+                    <a href="https://portal.transparencia.itaguai.rj.gov.br/" target="_blank">Transparência</a>
+                    <span class="separator">|</span>
+                    <a href="#" id="dark-mode-toggle" title="Alternar Modo Noturno"><i class="fa-solid fa-moon"></i></a>
+                </div>
             </div>
         </div>
 
         <div class="header-bottom">
-            <div class="dept-title-group">
+            <div class="header-container">
+                <div class="dept-title-group">
                 <i id="menu-toggle" class="fa-solid fa-bars menu-icon" style="color: #005a9c; cursor: pointer; font-size: 1.2rem;"></i>
                 <span class="mobile-title">SMEDU | CONTROLE DE PROC. PAG. |</span>
                 <strong class="desktop-only-title">Secretaria Municipal de Educação</strong>
