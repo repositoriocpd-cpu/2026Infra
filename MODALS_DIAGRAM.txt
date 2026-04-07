@@ -1,0 +1,348 @@
+================================================================================
+DIAGRAMA DE ARQUITETURA - MODAIS E MENUS
+================================================================================
+
+HIERARQUIA DE ARQUIVOS:
+=======================
+
+index.html (8158 linhas)
+├─ HTML Structure
+│  ├─ Header (com menu-toggle)
+│  ├─ Side Menu (nav#side-menu)
+│  │  ├─ Dashboard
+│  │  ├─ Novo Processo
+│  │  ├─ Consultar Cadastrados
+│  │  └─ Configurações (submenu)
+│  │     ├─ Cadastro de Usuários
+│  │     ├─ Cadastro de Departamentos
+│  │     ├─ Cadastro de Fornecedores
+│  │     ├─ Cadastro de Objetos
+│  │     ├─ Cadastro de Localização
+│  │     ├─ Cadastro de Status
+│  │     └─ Cadastro de Tratadores
+│  ├─ Main Content Area
+│  └─ MODALS
+│     ├─ processControlModal (novo/editar processo)
+│     ├─ processDetailsModal (visualizar detalhes)
+│     ├─ processConfigModal (configurações)
+│     ├─ userManagementModal (gerência de usuários)
+│     ├─ processHistoryModal (histórico)
+│     ├─ accessibility-modal
+│     ├─ cookie-modal
+│     ├─ comments-modal
+│     ├─ remanejamento-modal
+│     ├─ infoModal
+│     ├─ history-modal
+│     └─ Overlay (div#overlay)
+│
+├─ CSS Inline (estilos localizados)
+│  ├─ Modal Styles
+│  ├─ Menu Styles
+│  └─ Form Styles
+│
+└─ Scripts (load order)
+   ├─ Font Awesome 6.5.1 (ícones)
+   ├─ Supabase JS (banco de dados)
+   ├─ Chart.js (gráficos)
+   ├─ config.js
+   ├─ confirm-modal.js
+   ├─ ui-kit.js
+   ├─ ui-kit.css
+   ├─ pwa-handler.js
+   └─ 2026_script.js (LÓGICA PRINCIPAL)
+
+
+FLUXO DE EVENTOS - ABRIR MODAL:
+===============================
+
+Usuario → Click Button
+     ↓
+onclick="window.openProcessModal(data)" ou similar
+     ↓
+event.stopPropagation()  [Previne propagação para overlay]
+     ↓
+window.closeAllModals()  [Fecha outras modais abertas]
+     ↓
+document.getElementById('id').classList.add('visible')
+     ↓
+document.getElementById('id').style.display = 'flex'
+     ↓
+overlay.classList.add('visible')
+     ↓
+Modal Appears + Overlay Fades In (CSS Transition: 0.2s)
+     ↓
+Focus → Primeiro elemento interativo
+     ↓
+Modal Pronta para Interação ✓
+
+
+FLUXO DE EVENTOS - FECHAR MODAL:
+================================
+
+Usuario → Click X Button / ESC Key / Clique Backdrop
+     ↓
+Event Listener Acionado
+     ↓
+event.stopPropagation()  [Previne propagação]
+     ↓
+window.closeModal('id') ou window.ConfirmModal.cancel()
+     ↓
+modal.classList.remove('visible')
+     ↓
+modal.style.display = 'none'
+     ↓
+overlay.classList.remove('visible')
+     ↓
+Modal Disappears (CSS Transition)
+     ↓
+Focus Volta / Menu Fecha
+     ↓
+Modal Fechada ✓
+
+
+FLUXO DE EVENTOS - ABRIR MENU:
+==============================
+
+Usuario → Click Menu Icon (#menu-toggle)
+     ↓
+addEventListener('click', function(e) { ... })
+     ↓
+e.stopPropagation()
+     ↓
+window.toggleMenu()
+     ↓
+sideMenu.classList.toggle('open')
+     ↓
+overlay.classList.toggle('visible')
+     ↓
+Menu Slides In / Overlay Appears
+     ↓
+Menu Pronto ✓
+
+
+FLUXO DE EVENTOS - FECHAR MENU:
+===============================
+
+Usuario → Click X / Click Item / Click Overlay / ESC
+     ↓
+Event Listener Acionado
+     ↓
+window.toggleMenu() ou window.closeAllModals()
+     ↓
+sideMenu.classList.remove('open')
+     ↓
+overlay.classList.remove('visible')
+     ↓
+submenu.forEach(sub => sub.classList.remove('open'))
+     ↓
+Menu Slides Out / Overlay Disappears
+     ↓
+Menu Fechado ✓
+
+
+ARQUITETURA DE ARQUIVOS:
+========================
+
+2026_script.js (1577 linhas)
+├─ INITIALIZATION
+│  ├─ Supabase Client Setup
+│  └─ Global State Definition
+│
+├─ MENU FUNCTIONS
+│  ├─ window.toggleMenu()
+│  └─ Submenu Event Listeners
+│
+├─ MODAL FUNCTIONS
+│  ├─ window.closeAllModals()
+│  ├─ window.closeModal(id)
+│  ├─ window.openProcessModal(p)
+│  ├─ window.renderModalHistory(history)
+│  ├─ window.openConfigModal(type)
+│  └─ window.openUserManagementModal()
+│
+├─ EVENT SETUP (setupListeners)
+│  ├─ Menu Button Click
+│  ├─ Overlay Click
+│  ├─ Submenu Click Logic
+│  ├─ Modal Trigger Setup
+│  └─ ESC Key Handler
+│
+├─ PROCESS FUNCTIONS
+│  ├─ window.initApp()
+│  ├─ window.showProcessDetails(p)
+│  ├─ window.deleteProcess(id)
+│  ├─ window.editConfigItem(idx)
+│  └─ window.deleteConfigItem(idx)
+│
+└─ UTILITY FUNCTIONS
+   ├─ Animation Functions
+   ├─ Chart Functions
+   └─ Data Manipulation
+
+
+ui-kit.js (432 linhas)
+├─ INITIALIZATION
+│  ├─ init()
+│  ├─ setupEventListeners()
+│  ├─ setupAccessibility()
+│  └─ setupResponsiveness()
+│
+├─ MODAL MANAGEMENT
+│  ├─ toggleMenu()
+│  ├─ closeAllModals()
+│  ├─ openModal(modalId)
+│  └─ closeModal(modalId)
+│
+├─ SUCCESS MODAL
+│  └─ showSuccessModal(title, message, callback)
+│
+├─ FORM UTILITIES
+│  └─ validateForm(form)
+│
+├─ FORMATTING UTILITIES
+│  ├─ formatCurrency(value)
+│  ├─ formatDate(date)
+│  ├─ showLoading(message)
+│  ├─ hideLoading()
+│  └─ showAlert(message, type, duration)
+│
+└─ GLOBAL EXPORTS
+   ├─ global.closeModal = UIKit.closeModal
+   └─ global.openModal = UIKit.openModal
+
+
+ui-kit.css (1044 linhas)
+├─ TOKENS & VARIABLES
+│  ├─ GOV.BR Colors
+│  ├─ Status Colors
+│  ├─ Typography
+│  ├─ Spacing
+│  ├─ Border Radius
+│  └─ Transitions
+│
+├─ GLOBAL STYLES
+│  └─ Dark Mode Support
+│
+├─ MODAL STYLES
+│  ├─ .modal-overlay
+│  ├─ .modal-overlay.visible
+│  ├─ .modal-content
+│  ├─ .modal-header
+│  ├─ .modal-title
+│  ├─ .close-button
+│  ├─ .modal-body
+│  └─ .modal-footer
+│
+├─ SUCCESS MODAL
+│  ├─ .success-modal
+│  ├─ .success-modal.visible
+│  ├─ .success-modal-content
+│  ├─ .success-modal-icon
+│  ├─ .success-modal-title
+│  ├─ .success-modal-text
+│  └─ .success-modal-btn
+│
+├─ MENU STYLES
+│  ├─ .menu-trigger
+│  ├─ .side-menu
+│  ├─ .side-menu.open
+│  ├─ .side-menu-header
+│  ├─ .side-menu li a
+│  ├─ .submenu
+│  ├─ .submenu.open
+│  ├─ .has-submenu
+│  ├─ .has-submenu.active
+│  ├─ .chevron-icon
+│  └─ Animations
+│
+└─ RESPONSIVE DESIGN
+   └─ @media (max-width: 768px)
+
+
+confirm-modal.js (171 linhas)
+├─ ConfirmModal Object
+│  ├─ init()
+│  │  └─ HTML Generation
+│  │     ├─ modal-header
+│  │     ├─ close-button (&times;)
+│  │     ├─ modal-body (mensagem)
+│  │     ├─ modal-footer
+│  │     │  ├─ btn-cancel-confirm
+│  │     │  └─ btn-confirm-confirm
+│  │     └─ Event Listeners
+│  │        ├─ ESC Key
+│  │        └─ Backdrop Click
+│  │
+│  ├─ show(message, options)
+│  │  ├─ Popula conteúdo
+│  │  ├─ Define estilos
+│  │  ├─ Set Focus
+│  │  └─ Retorna Promise<boolean>
+│  │
+│  ├─ confirm()
+│  │  └─ resolve(true)
+│  │
+│  └─ cancel()
+│     └─ resolve(false)
+│
+└─ Exports
+   └─ window.ConfirmModal
+
+
+pwa-handler.js (193 linhas)
+├─ BANNER CREATION
+│  ├─ Install Prompt Detection
+│  └─ Banner HTML Generation
+│
+├─ EVENT HANDLERS
+│  ├─ beforeinstallprompt
+│  ├─ appinstalled
+│  ├─ pwa-install-btn.onclick
+│  └─ pwa-close-btn.onclick
+│
+├─ PLATFORM DETECTION
+│  ├─ iOS Detection
+│  ├─ Standalone Check
+│  └─ Already Installed Check
+│
+└─ LOCAL STORAGE
+   └─ pwa_installed Flag
+
+
+ESTRUTURA DE Z-INDEX:
+====================
+
+Layer                    Z-Index  Descrição
+─────────────────────────────────────────────
+.success-modal            2000    Modal de sucesso (topo)
+#pwa-install-banner      9999    Banner PWA
+.modal-overlay           1050    Overlay de modais
+#side-menu               1000    Menu lateral
+.overlay                  950    Overlay geral
+.side-menu                950    Dentro de overlay
+Main Content             auto    Conteúdo principal
+
+
+PADRÃO DE NOMENCLATURA:
+=======================
+
+IDs (Entidades Principais):
+├─ processControlModal    → Modal de processo
+├─ processDetailsModal    → Modal de detalhes
+├─ processConfigModal     → Modal de configuração
+├─ userManagementModal    → Modal de usuários
+├─ processHistoryModal    → Modal de histórico
+├─ accessibility-modal    → Modal de acessibilidade
+├─ cookie-modal          → Modal de cookies
+├─ comments-modal        → Modal de comentários
+├─ remanejamento-modal   → Modal de remanejamento
+├─ infoModal             → Modal de info
+├─ history-modal         → Modal de histórico
+├─ side-menu             → Menu lateral
+├─ overlay               → Overlay geral
+└─ menu-toggle           → Botão de toggle
+
+Classes (Comportamentos):
+├─ modal-overlay         → Container de modal
+├─ modal-content         → Conteúdo dentro do modal
+├─ modal-header        

@@ -1,0 +1,309 @@
+================================================================================
+REFERÊNCIA RÁPIDA - MODAIS E MENUS
+================================================================================
+
+ENCONTRADO EM:
+==============
+
+✓ index.html (8158 linhas) - Estrutura HTML + 12 Modais + Menu
+✓ 2026_script.js (1577 linhas) - Lógica JavaScript + Handlers
+✓ ui-kit.js (432 linhas) - Componentes + Funções Utilitárias
+✓ ui-kit.css (1044 linhas) - Estilos + Animations
+✓ confirm-modal.js (171 linhas) - Modal de Confirmação Acessível
+✓ pwa-handler.js (193 linhas) - Banner de Instalação PWA
+
+
+MODAIS IMPLEMENTADAS (12):
+==========================
+
+1. processControlModal - Novo/editar processo
+   └─ Botão: onclick="window.closeModal('processControlModal')"
+
+2. processDetailsModal - Visualizar detalhes
+   └─ Botão: onclick="window.closeModal('processDetailsModal')"
+
+3. processConfigModal - Configurações (usuários, fornecedores, etc)
+   └─ Botão: onclick="window.closeModal('processConfigModal')"
+
+4. userManagementModal - Gerência de usuários
+   └─ Botão: onclick="window.closeModal('userManagementModal')"
+
+5. processHistoryModal - Histórico de alterações
+   └─ Botão: onclick="window.closeModal('processHistoryModal')"
+
+6. confirm-modal - Confirmação de ações (ACESSÍVEL)
+   └─ Botões: window.ConfirmModal.confirm() ou .cancel()
+
+7. accessibility-modal - Informações de acessibilidade
+   └─ Botão: onclick="window.closeModal('accessibility-modal')"
+
+8. cookie-modal - Aviso de cookies
+   └─ Botão: onclick="window.closeModal('cookie-modal')"
+
+9. comments-modal - Comentários de processos
+   └─ Botão: id="close-comments-modal-button"
+
+10. remanejamento-modal - Remanejamento
+    └─ Botão: id="close-remanejamento-modal-button"
+
+11. infoModal - Informações do sistema
+    └─ Botão: onclick="window.closeModal('infoModal')"
+
+12. history-modal - Histórico adicional
+    └─ Botão: onclick="window.closeModal('history-modal')"
+
+
+MENU IMPLEMENTADO:
+==================
+
+Side Menu (side-menu)
+├─ Dashboard
+├─ Novo Processo
+├─ Consultar Cadastrados
+├─ Backup e Restauração
+├─ Logs do Sistema
+├─ Sobre o Sistema
+├─ Configurações
+│  ├─ Cadastro de Usuários
+│  ├─ Cadastro de Departamentos
+│  ├─ Cadastro de Fornecedores
+│  ├─ Cadastro de Objetos
+│  ├─ Cadastro de Localização
+│  ├─ Cadastro de Status
+│  └─ Cadastro de Tratadores
+└─ Links Externos
+   ├─ GOVBR
+   └─ PMI
+
+
+FUNÇÕES GLOBAIS PRINCIPAIS:
+===========================
+
+window.toggleMenu()
+├─ O que faz: Alterna abertura/fechamento do menu
+├─ Uso: onclick="window.toggleMenu()"
+└─ Classes: .side-menu.open, .overlay.visible
+
+window.closeAllModals()
+├─ O que faz: Fecha TODAS as modais abertas
+├─ Uso: Automático ao abrir nova modal
+└─ Classes: Remove .visible de todas
+
+window.closeModal(id)
+├─ O que faz: Fecha uma modal específica
+├─ Uso: onclick="window.closeModal('id')"
+└─ Classes: Remove .visible, set display: none
+
+window.openProcessModal(p = null)
+├─ O que faz: Abre modal de processo
+├─ Uso: onclick="window.openProcessModal()"
+├─ Parâmetro: p = null (novo) ou p = objeto (editar)
+└─ Classes: Adiciona .visible, display: flex
+
+window.openConfigModal(type)
+├─ O que faz: Abre modal de configuração
+├─ Uso: onclick="window.openConfigModal('users')"
+├─ Tipos: users, departments, suppliers, objects, locations, statuses, handlers
+└─ Classes: Adiciona .visible, display: flex
+
+window.ConfirmModal.show(message, options)
+├─ O que faz: Mostra modal de confirmação
+├─ Uso: await window.ConfirmModal.show('Tem certeza?', {isDangerous: true})
+├─ Retorna: Promise<boolean> (true = confirm, false = cancel)
+└─ Eventos: ESC key, Backdrop click, Botões
+
+
+CLASSES CSS PRINCIPAIS:
+======================
+
+.modal-overlay
+├─ display: none → display: flex (quando .visible)
+├─ position: fixed (cobrindo toda tela)
+├─ background: rgba(0, 0, 0, 0.7)
+└─ z-index: 1050
+
+.modal-close
+├─ background: transparent
+├─ border: none
+├─ font-size: 1.5rem
+├─ color: #6c757d
+└─ Hover: color #dc3545; scale(1.1)
+
+.side-menu
+├─ position: fixed (left: 0)
+├─ width: 280px
+├─ z-index: 1000
+└─ Transição: 0.2s ease
+
+.side-menu.open
+├─ Visível na tela
+├─ Overlay ativa
+└─ Submenus podem estar abertos
+
+.submenu
+├─ display: none → display: block (quando .open)
+├─ background: #f5f6f7
+└─ Transição: suave
+
+.has-submenu.active
+├─ Chevron rotaciona
+├─ Submenu fica .open
+└─ Highlight aplicado
+
+
+PADRÕES DE IMPLEMENTAÇÃO:
+=========================
+
+PADRÃO 1: Fechar com Botão X
+───────────────────────────
+<button class="modal-close" 
+        onclick="window.closeModal('processControlModal')" 
+        title="Fechar">
+  <i class="fas fa-times"></i>
+</button>
+
+PADRÃO 2: Fechar por Backdrop Click
+──────────────────────────────────
+<div id="modal" class="process-modal"
+     onclick="if(event.target===this) window.closeModal('modal')">
+  <!-- Conteúdo -->
+</div>
+
+PADRÃO 3: Fechar com Confirmação
+────────────────────────────────
+if (await ConfirmModal.show('Tem certeza?', {isDangerous: true})) {
+    // Executar ação
+    window.closeModal('modal');
+}
+
+PADRÃO 4: Toggle Menu
+──────────────────
+<button id="menu-toggle" class="menu-trigger" aria-label="Abrir menu">
+  <i class="fas fa-bars"></i>
+</button>
+<!-- JS: addEventListener('click', function(e) { window.toggleMenu(); }) -->
+
+PADRÃO 5: Submenu
+──────────────
+<a href="#" class="has-submenu">
+  <span>Configurações</span>
+  <i class="fas fa-chevron-right chevron-icon"></i>
+</a>
+<div class="submenu">
+  <!-- Itens do submenu -->
+</div>
+
+
+EVENTOS ESPECIAIS:
+==================
+
+ESC Key (Qualquer Modal Aberta)
+├─ Comportamento: Fecha a modal
+├─ Implementação: document.addEventListener('keydown', (e) => { ... })
+└─ Classes: Remove .visible
+
+Backdrop Click (Modais)
+├─ Comportamento: Fecha a modal
+├─ Condição: if (event.target === modal)
+└─ Classes: Remove .visible
+
+Stop Propagation
+├─ Uso: event.stopPropagation() em todos os handlers
+├─ Propósito: Impedir que clique suba para overlay
+└─ Crítico: Sem isso, botão "fechar" fecharia a modal
+
+
+ACESSIBILIDADE:
+===============
+
+ARIA Attributes:
+├─ role="alertdialog" (confirm-modal)
+├─ aria-modal="true" (todas as modais)
+├─ aria-labelledby="..." (headers)
+├─ aria-label="Fechar" (botões de fechar)
+└─ aria-label="Abrir menu" (menu toggle)
+
+Keyboard Navigation:
+├─ TAB: Navega entre elementos
+├─ ESC: Fecha modais
+├─ ENTER: Confirma ações
+├─ SPACE: Alterna menus
+└─ Focus: Automático no primeiro elemento interativo
+
+Screen Readers:
+├─ Modal announces com role="alertdialog"
+├─ Buttons têm aria-label
+├─ Headings definem contexto
+└─ Form labels associadas a inputs
+
+
+DARK MODE:
+==========
+
+Ativação: <body class="dark-mode">
+
+Cores:
+├─ Background: #121212
+├─ Modal: #1e1e1e
+├─ Text: #e0e0e0
+├─ Links: #66b3ff
+├─ Borders: #333
+├─ Icons: #66b3ff
+└─ Overlay: rgba(0, 0, 0, 0.7) [mantém]
+
+CSS Aplicado:
+└─ body.dark-mode .selector { ... }
+
+
+RESPONSIVIDADE:
+===============
+
+Mobile (< 768px):
+├─ Menu hidden por padrão
+├─ Menu toggle visible
+├─ Modals ocupam 90% com scrolling
+├─ Form fields empilhadas
+└─ Botões full-width
+
+Desktop (>= 768px):
+├─ Menu sempre visible (ou toggle)
+├─ Modals centradas com max-width
+├─ Form fields em grid
+└─ Botões side-by-side
+
+
+FLUXO TÍPICO - CRIAR PROCESSO:
+==============================
+
+1. Usuário clica "Novo Processo" no menu
+2. onclick="window.openProcessModal(); window.toggleMenu();"
+3. window.toggleMenu() fecha menu
+4. window.openProcessModal(null) abre modal vazia
+5. Usuário preenche formulário
+6. Clica "Salvar"
+7. Função valida e envia dados
+8. window.closeAllModals() ou específica fecha tudo
+9. Modal desaparece com animação
+10. Sucesso: alert ou UIKit.showSuccessModal()
+
+
+FLUXO TÍPICO - EDITAR PROCESSO:
+==============================
+
+1. Usuário clica botão editar na tabela
+2. onclick="window.openProcessModal(processObject)"
+3. window.openProcessModal(p) abre modal com dados
+4. Título muda para "Editar Processo"
+5. Formulário popula com dados existentes
+6. Usuário modifica campos
+7. Clica "Atualizar"
+8. Função valida e envia dados
+9. window.closeModal('processControlModal') fecha
+10. Tabela atualiza (refresh)
+
+
+EXEMPLO DE USO - MODAL CUSTOMIZADA:
+===================================
+
+// HTML
+<div id="minha-modal" class="moda

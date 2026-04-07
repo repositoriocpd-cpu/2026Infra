@@ -1,0 +1,44 @@
+# Comprehensive UI Maintenance & Performance Plan
+
+This plan aims to resolve the reported modal unresponsiveness, the visual clipping in input fields, and to upgrade the aesthetics of the "Tour" icon to a premium standard.
+
+## User Review Required
+
+> [!IMPORTANT]
+> - The inputs will have their leading padding reduced to prevent text from being hidden behind non-existent icons.
+> - The "Tour" icon will be replaced with a premium Lighthouse design.
+> - Global modal functions will be strictly enforced to clear inline styles that prevent closing.
+
+## Proposed Changes
+
+### 1. Fix Input Field Clipping
+
+#### [MODIFY] [ui-kit.css](file:///e:/2026%20SISTEMAS/2025%20Infra%20Sistemas%20YASMIN/ui-kit.css)
+- Update `.form-group input`, `.form-group select`, and `.form-group textarea` (around line 507).
+- Change `padding: 0.75rem 0.75rem 0.75rem 2.75rem` to `padding: 0.75rem 1rem`.
+- Only add left padding if an icon is present (using a specific wrapper class if needed, or removing the global large padding).
+
+### 2. Fix Modal Closing Logic
+
+#### [MODIFY] [ui-kit.js](file:///e:/2026%20SISTEMAS/2025%20Infra%20Sistemas%20YASMIN/ui-kit.js)
+- Update `closeModal(modalId)` to explicitly clear inline styles:
+  ```javascript
+  modal.style.display = 'none';
+  modal.style.opacity = '0';
+  modal.classList.remove('visible');
+  ```
+- Update `closeAllModals()` to do the same for all active modals and the `#overlay`.
+
+### 3. Improve Tour Icon Aesthetics
+
+#### [MODIFY] [index.html](file:///e:/2026%20SISTEMAS/2025%20Infra%20Sistemas%20YASMIN/index.html)
+- Replace the SVG inside `button#global-tour-btn` (line 3717) with a premium Lighthouse SVG.
+- Add a subtle pulse animation or hover effect to the button to make it feel "active" and helpful.
+
+## Verification Plan
+
+### Manual Verification
+1. **Inputs**: Type into "Nº PROC. MÃE" and "PP ANO ATUAL". Verify the text starts from the left and is fully visible.
+2. **Modals**: Open the "Acessibilidade" modal and click 'X'. Verify it disappears instantly.
+3. **Logout**: Click 'Sair', then 'Confirmar' or 'X' in the logout modal. Verify it closes.
+4. **Tour Icon**: Verify the new Lighthouse icon is visible and looks premium in the header.

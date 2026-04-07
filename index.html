@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Painel de Controle de Processos de Pagamento - SUB Infra.">
     <title>Painel SUB INFRA</title>
-    <link rel="icon" type="image/jpeg"
-        href="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg">
+    <link rel="icon" type="image/png" href="public/assets/images/logo.png">
 
     <!-- PWA Settings -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#064e3b">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
-    <meta name="version" content="1.0.9">
+    <meta name="version" content="1.0.11">
     <script src="pwa-handler.js" defer></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -28,10 +28,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script src="2026_script.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <link rel="stylesheet" href="ui-kit.css?v=2">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
@@ -105,6 +104,18 @@
             --text-color: #333;
             --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             --border-color: #e0e0e0;
+
+            /* Paleta institucional solicitada */
+            --inst-primary: #1E5FAF;
+            --inst-secondary: #2F7ED8;
+            --inst-soft: #E8F1FB;
+            --inst-bg: #F5F6F7;
+            --inst-border: #D1D5DB;
+            --inst-muted: #6B7280;
+            --inst-text: #111827;
+            --inst-white: #FFFFFF;
+            --inst-success: #16A34A;
+            --inst-shadow: 0 8px 24px rgba(17, 24, 39, 0.06);
         }
 
         /* Custom Success Modal */
@@ -402,6 +413,10 @@
             }
         }
 
+        .mobile-title {
+            display: none;
+        }
+
         /* Cabeçalho SMEDU Realinhado */
         .govbr-header {
             background-color: #ffffff !important;
@@ -519,48 +534,28 @@
 
         .header-top {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border-color);
+            gap: 16px;
+            padding: 12px 24px;
         }
 
-        @media (min-width: 768px) {
-            .header-top {
-                padding: 0.75rem 2rem;
-            }
-        }
-
-        .header-logo-area {
+        .inst-brand {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 12px;
+            min-width: 240px;
         }
 
-        .header-logo {
-            height: 20px;
+        .inst-logo {
+            height: 32px;
+            width: auto;
         }
 
-        .logo-box {
-            display: none;
-            /* Hide old logo box */
-        }
-
-        .logo-separator {
-            width: 1px;
-            height: 24px;
-            background-color: var(--border-color);
-        }
-
-        .state-name {
-            font-size: 1.1rem;
-            color: #333333;
-        }
-
-        .header-actions {
+        .inst-brand-text {
             display: flex;
-            align-items: center;
-            gap: 1.25rem;
+            flex-direction: column;
+            line-height: 1.1;
         }
 
         .header-actions a {
@@ -702,24 +697,26 @@
 
         .user-info span[contenteditable="true"]:focus {
             outline: none;
-            background-color: #eef3fc;
-            box-shadow: 0 0 2px 1px var(--govbr-blue);
-            border-radius: 4px;
+            background-color: var(--inst-soft);
+            box-shadow: 0 0 0 2px var(--inst-secondary);
+            border-radius: 6px;
             padding: 0 4px;
         }
 
         .header-sign-in {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 8px);
             right: 0;
-            background: white;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            width: 180px;
+            background: var(--inst-white);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--inst-border);
+            width: 220px;
             opacity: 0;
             visibility: hidden;
             transition: all 0.2s ease;
-            z-index: 100;
+            z-index: 120;
+            padding: 6px 0;
         }
 
         .user-header-info:hover .header-sign-in {
@@ -737,28 +734,29 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            color: var(--text-color);
+            padding: 10px 14px;
+            color: var(--inst-text);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: background-color 0.2s ease;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: background-color 0.15s ease, color 0.15s ease;
         }
 
         .header-sign-in li a:hover {
-            background-color: var(--govbr-light-gray);
-            color: var(--govbr-blue);
+            background-color: var(--inst-soft);
+            color: var(--inst-primary);
         }
 
-        .header-sign-in li a .fas {
-            width: 16px;
-            text-align: center;
-            color: var(--govbr-blue);
+        .header-sign-in li a svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--inst-primary);
         }
 
         .header-sign-in .menu-section {
             border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 0.5rem;
-            margin-bottom: 0.5rem;
+            padding-bottom: 0.35rem;
+            margin-bottom: 0.35rem;
         }
 
         .header-sign-in .menu-section:last-child {
@@ -768,56 +766,52 @@
         }
 
         .header-sign-in .menu-header {
-            padding: 0.5rem 1rem 0.25rem;
+            padding: 0.4rem 1rem 0.2rem;
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: #6b7280;
-            font-weight: 600;
+            color: var(--inst-muted);
+            font-weight: 700;
         }
 
         .header-sign-in .logout-link {
             color: #dc2626;
         }
 
-        .header-sign-in .logout-link .fas {
-            color: #dc2626;
+        body.dark-mode .govbr-header {
+            background-color: #0f172a;
+            border-color: #1f2937;
         }
 
-        .header-sign-in .logout-link:hover {
-            background-color: #fef2f2;
-            color: #b91c1c;
+        body.dark-mode .inst-top,
+        body.dark-mode .inst-nav {
+            background-color: #0f172a;
+        }
+
+        body.dark-mode .inst-brand-text .inst-state,
+        body.dark-mode .inst-sub,
+        body.dark-mode .header-sign-in li a {
+            color: #e5e7eb;
+        }
+
+        body.dark-mode .menu-trigger,
+        body.dark-mode #header-right-actions button {
+            border-color: #1f2937;
+            background: #111827;
+        }
+
+        body.dark-mode .user-info {
+            color: #bfdbfe;
         }
 
         body.dark-mode .header-sign-in {
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-        }
-
-        body.dark-mode .header-sign-in li a {
-            color: #e0e0e0;
+            background-color: #111827;
+            border-color: #1f2937;
         }
 
         body.dark-mode .header-sign-in li a:hover {
-            background-color: #333;
-            color: #66b3ff;
-        }
-
-        body.dark-mode .header-sign-in .menu-header {
-            color: #9ca3af;
-        }
-
-        body.dark-mode .header-sign-in .logout-link {
-            color: #f87171;
-        }
-
-        body.dark-mode .header-sign-in .logout-link .fas {
-            color: #f87171;
-        }
-
-        body.dark-mode .header-sign-in .logout-link:hover {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: #fca5a5;
+            background-color: #1f2937;
+            color: #93c5fd;
         }
 
         .header-content h1 {
@@ -1074,7 +1068,7 @@
 
         body.dark-mode .stat-card .tooltip {
             background-color: #1a3a6e;
-            color: #ffffff;
+            color: #ffffff; background-color: #990000;
         }
 
         body.dark-mode .stat-card .tooltip::after {
@@ -1352,10 +1346,135 @@
             color: #e0e0e0;
         }
 
-        .cookie-category {
-            border-top: 1px solid var(--border-color);
-            padding: 1.25rem 0;
-        }
+         .cookie-category {
+             border-top: 1px solid var(--border-color);
+             padding: 1.25rem 0;
+         }
+
+         /* Checklist Styles */
+         .checklist-section {
+             background: #f8fafc;
+             border: 1px solid #e5e7eb;
+             border-radius: 12px;
+             padding: 1.5rem;
+             margin-bottom: 1rem;
+         }
+
+         .checklist-section-title {
+             font-size: 1.1rem;
+             font-weight: 700;
+             color: #1e293b;
+             margin-bottom: 1rem;
+             display: flex;
+             align-items: center;
+             gap: 0.5rem;
+         }
+
+         .checklist-section-icon {
+             color: var(--govbr-blue);
+             font-size: 1.3rem;
+         }
+
+         .checklist-item {
+             display: flex;
+             align-items: flex-start;
+             gap: 0.75rem;
+             margin-bottom: 0.875rem;
+             padding: 0.75rem;
+             background: #ffffff;
+             border-radius: 8px;
+             transition: all 0.2s ease;
+         }
+
+         .checklist-item:hover {
+             background: #f1f5f9;
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+         }
+
+         .checklist-item input[type="checkbox"] {
+             width: 20px;
+             height: 20px;
+             margin-top: 2px;
+             cursor: pointer;
+             accent-color: var(--govbr-blue);
+             flex-shrink: 0;
+         }
+
+         .checklist-item label {
+             flex: 1;
+             cursor: pointer;
+             font-size: 0.95rem;
+             color: #334155;
+             line-height: 1.4;
+             margin: 0;
+         }
+
+         .checklist-item input[type="checkbox"]:checked + label {
+             color: #64748b;
+             text-decoration: line-through;
+         }
+
+         .checklist-item-description {
+             font-size: 0.85rem;
+             color: #94a3b8;
+             margin-left: 32px;
+             font-style: italic;
+             margin-top: -0.5rem;
+             margin-bottom: 0.5rem;
+         }
+
+         .checklist-tip {
+             background: #fef3c7;
+             border-left: 4px solid #f59e0b;
+             padding: 1rem;
+             border-radius: 8px;
+             margin-top: 1.5rem;
+             font-size: 0.95rem;
+             color: #78350f;
+         }
+
+         .checklist-tip strong {
+             display: block;
+             margin-bottom: 0.5rem;
+             color: #f59e0b;
+         }
+
+         body.dark-mode .checklist-section {
+             background: #1e293b;
+             border-color: #334155;
+         }
+
+         body.dark-mode .checklist-section-title {
+             color: #f1f5f9;
+         }
+
+         body.dark-mode .checklist-item {
+             background: #0f172a;
+         }
+
+         body.dark-mode .checklist-item:hover {
+             background: #1e293b;
+         }
+
+         body.dark-mode .checklist-item label {
+             color: #cbd5e1;
+         }
+
+         body.dark-mode .checklist-item-description {
+             color: #64748b;
+         }
+
+         body.dark-mode .checklist-tip {
+             background: #92400e;
+             border-left-color: #f59e0b;
+             color: #fef3c7;
+         }
+
+         body.dark-mode .checklist-tip strong {
+             color: #fca5a5;
+         }
+
+
 
         body.dark-mode .cookie-category {
             border-top-color: #333;
@@ -1571,25 +1690,11 @@
         #process-table thead th {
             background: #f8f9fa;
             font-weight: 600;
-            color: #005A9C !important;
+            color: var(--govbr-blue) !important;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 10;
             box-shadow: 0 1px 0 var(--border-color);
-            white-space: nowrap;
-            font-size: 0.85rem;
-        }
-
-        #process-table thead th .pdf-col-check {
-            accent-color: #005A9C;
-            margin-right: 8px;
-            cursor: pointer;
-        }
-
-        #process-table thead th i.fa-sort {
-            margin-left: 5px;
-            color: #005A9C;
-            opacity: 0.7;
         }
 
         th,
@@ -1641,7 +1746,7 @@
             background: rgba(255, 255, 255, 0.72);
             border-radius: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 1200px;
             max-height: 90vh;
             /* Mantendo dentro da visão */
             overflow-y: auto;
@@ -1848,7 +1953,30 @@
             outline: none;
         }
 
-        /* REFORÇO GAIA - MÁXIMA PRIORIDADE */
+        /* Reduzir tamanho dos placeholders */
+        .form-control::placeholder {
+            font-size: 0.70rem;
+            opacity: 0.7;
+        }
+
+        /* Estilo placeholder para navegadores Webkit (Chrome, Safari) */
+        .form-control::-webkit-input-placeholder {
+            font-size: 0.70rem;
+            opacity: 0.7;
+        }
+
+        /* Estilo placeholder para Mozilla Firefox */
+        .form-control::-moz-placeholder {
+            font-size: 0.70rem;
+            opacity: 0.7;
+        }
+
+        .form-control:-ms-input-placeholder {
+            font-size: 0.70rem;
+            opacity: 0.7;
+        }
+
+        /* REFORã‡O GAIA - MãXIMA PRIORIDADE */
         div.process-modal div.form-section div.form-group label {
             color: #475569 !important;
             font-family: inherit !important;
@@ -1988,13 +2116,70 @@
             font-weight: 700;
         }
 
-        .timeline-footer-date {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            margin-top: 0.4rem;
-        }
+         .timeline-footer-date {
+             font-size: 0.75rem;
+             color: #94a3b8;
+             margin-top: 0.4rem;
+         }
 
-        /* Registration Area */
+         .timeline-actions {
+             display: flex;
+             gap: 0.5rem;
+             align-items: flex-start;
+             margin-top: 0.5rem;
+         }
+
+         .timeline-action-btn {
+             background: none;
+             border: none;
+             cursor: pointer;
+             padding: 0.4rem;
+             border-radius: 4px;
+             font-size: 0.85rem;
+             color: #64748b;
+             transition: all 0.2s ease;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .timeline-edit-btn {
+             color: #0f766e;
+         }
+
+         .timeline-edit-btn:hover {
+             background-color: #ecf0f1;
+             color: #14b8a6;
+         }
+
+         .timeline-delete-btn {
+             color: #dc2626;
+         }
+
+         .timeline-delete-btn:hover {
+             background-color: #fee2e2;
+             color: #ef4444;
+         }
+
+         body.dark-mode .timeline-edit-btn {
+             color: #14b8a6;
+         }
+
+         body.dark-mode .timeline-edit-btn:hover {
+             background-color: rgba(20, 184, 166, 0.1);
+             color: #2dd4bf;
+         }
+
+         body.dark-mode .timeline-delete-btn {
+             color: #ef4444;
+         }
+
+         body.dark-mode .timeline-delete-btn:hover {
+             background-color: rgba(239, 68, 68, 0.1);
+             color: #fca5a5;
+         }
+
+         /* Registration Area */
         .registration-input-grid {
             display: flex;
             gap: 1rem;
@@ -2735,10 +2920,10 @@
             background-color: #2a2a2a;
         }
 
-        /* ═══════════════════════════════════════════
-           TELA DE LOGIN — SUBINFRA PAINEL SMEDU
+        /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+           TELA DE LOGIN "” SUBINFRA PAINEL SMEDU
            Design polished v2 (ref-image match)
-        ═══════════════════════════════════════════ */
+        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
         #login-overlay {
             position: fixed;
             inset: 0;
@@ -2753,7 +2938,7 @@
             overflow: hidden;
         }
 
-        /* ── Animations ── */
+        /* â”€â”€ Animations â”€â”€ */
         @keyframes lgin-fade-up {
             from {
                 opacity: 0;
@@ -2790,7 +2975,7 @@
             }
         }
 
-        /* ── Shell ── */
+        /* â”€â”€ Shell â”€â”€ */
         .login-shell {
             width: min(1140px, 100% - 2rem);
             height: min(660px, 100svh - 2rem);
@@ -2812,7 +2997,7 @@
             overflow: hidden;
         }
 
-        /* ── LEFT HERO PANEL (refactor to match mock) ── */
+        /* â”€â”€ LEFT HERO PANEL (refactor to match mock) â”€â”€ */
         .login-hero {
             position: relative;
             display: flex;
@@ -2883,7 +3068,7 @@
             font-family: 'Sora', sans-serif;
         }
 
-        /* ─ top badge ─ */
+        /* â”€ top badge â”€ */
         .login-pill {
             display: inline-flex;
             align-items: center;
@@ -2905,7 +3090,7 @@
             padding-top: 1px;
         }
 
-        /* ─ title + copy ─ */
+        /* â”€ title + copy â”€ */
         .login-hero-main {
             margin-top: 1.9rem;
             max-width: 340px;
@@ -2916,7 +3101,7 @@
             line-height: 1.06;
             font-weight: 900;
             font-size: 2.05rem;
-            color: #ffffff;
+            color: #ffffff; background-color: #990000;
             text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
         }
 
@@ -2936,7 +3121,7 @@
             color: #bbf7d0;
         }
 
-        /* ─ footer ─ */
+        /* â”€ footer â”€ */
         .login-hero-footer {
             position: relative;
             z-index: 3;
@@ -2972,7 +3157,7 @@
             background: #f9fafb;
         }
 
-        /* ── RIGHT CARD ── */
+        /* â”€â”€ RIGHT CARD â”€â”€ */
         .login-card {
             position: relative;
             background:
@@ -2992,7 +3177,7 @@
             animation: lgin-fade-up 0.7s 0.15s both;
         }
 
-        /* ─ logo + heading ─ */
+        /* â”€ logo + heading â”€ */
         .login-header {
             margin-bottom: 1.6rem;
             text-align: center;
@@ -3040,7 +3225,7 @@
             line-height: 1.5;
         }
 
-        /* ─ welcome copy ─ */
+        /* â”€ welcome copy â”€ */
         .login-body h2 {
             font-size: 0.9rem;
             font-weight: 700;
@@ -3050,7 +3235,7 @@
             text-align: center;
         }
 
-        /* ─ form ─ */
+        /* â”€ form â”€ */
         .form-group {
             margin-bottom: 1rem;
             position: relative;
@@ -3125,7 +3310,7 @@
             color: #94a3b8;
         }
 
-        /* ─ CTA button ─ */
+        /* â”€ CTA button â”€ */
         .login-btn {
             width: 100%;
             padding: 0.88rem 1rem;
@@ -3155,7 +3340,7 @@
             transform: translateY(0);
         }
 
-        /* ─ footer text ─ */
+        /* â”€ footer text â”€ */
         .login-footer {
             padding-top: 1.5rem;
             font-size: 0.68rem;
@@ -3164,7 +3349,7 @@
             line-height: 1.5;
         }
 
-        /* ─ error banner ─ */
+        /* â”€ error banner â”€ */
         .login-error {
             display: none;
             background: rgba(239, 68, 68, 0.1);
@@ -3176,7 +3361,7 @@
             border: 1px solid rgba(248, 113, 113, 0.35);
         }
 
-        /* ── RESPONSIVE ── */
+        /* â”€â”€ RESPONSIVE â”€â”€ */
         @media (max-width: 900px) {
             .login-layout {
                 grid-template-columns: 1fr;
@@ -3194,29 +3379,146 @@
         /* --- ESTILOS MOBILE (SUBInfra) --- */
         @media screen and (max-width: 768px) {
 
-            /* Cabeçalho Limpo */
+            /* Cabeçalho Organizado para Smartphone (Modo ITAGUAÍ) */
             body header.govbr-header {
-                justify-content: space-between !important;
-                padding: 10px 15px !important;
+                padding: 0 !important;
+                border-top: 3px solid #005a9c !important;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+                height: auto !important;
+                min-height: unset !important;
             }
 
-            body header.govbr-header .department-info a,
-            body header.govbr-header .department-info span {
+            body .header-top {
+                padding: 6px 10px !important;
+                flex-wrap: nowrap !important;
+                justify-content: flex-start !important;
+                gap: 6px !important;
+                background-color: #ffffff !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+            body .header-top::-webkit-scrollbar { display: none; }
+
+            body .header-logo-area {
+                gap: 4px !important;
+                flex-shrink: 0 !important;
+            }
+
+            body .header-logo {
+                height: 14px !important;
+            }
+
+            body .logo-separator {
+                display: inline-block !important;
+                height: 10px !important;
+                margin: 0 4px !important;
+                background-color: #cbd5e1 !important;
+            }
+
+            body .header-top-links {
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                font-size: 0.6rem !important;
+                color: #005a9c !important;
+                white-space: nowrap !important;
+            }
+
+            body .header-top-links .separator {
+                display: inline !important;
+                color: #cbd5e1 !important;
+                margin: 0 1px !important;
+            }
+
+            body .header-top-links span#header-current-date {
+                font-size: 0.6rem !important;
+                color: #005a9c !important;
+            }
+
+            body .header-top-links a {
+                font-size: 0.6rem !important;
+                color: #005a9c !important;
+            }
+
+            body #dark-mode-toggle {
+                margin-left: 2px !important;
+                font-size: 0.75rem !important;
+            }
+
+            body .header-bottom {
+                padding: 8px 10px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                background-color: #ffffff !important;
+                min-height: unset !important;
+            }
+
+            body .dept-title-group {
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                flex: 1 !important;
+                min-width: 0 !important;
+            }
+
+            body .desktop-only-title {
                 display: none !important;
-                /* Esconde nomes extensos */
             }
 
-            body header.govbr-header .department-info::after {
-                content: 'SUBInfra';
-                font-size: 1.45rem !important;
-                font-weight: 800 !important;
-                color: var(--govbr-blue) !important;
-                margin-left: 10px !important;
+            body .mobile-title {
+                display: inline-block !important;
+                font-size: 0.72rem !important;
+                font-weight: 700 !important;
+                color: #005a9c !important;
+                white-space: nowrap !important;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
-            body header.govbr-header .header-bottom {
-                justify-content: space-between !important;
+
+            body .user-header-info {
+                display: flex !important;
+                align-items: center !important;
+                gap: 4px !important;
+                flex-shrink: 0 !important;
+                font-size: 0.68rem !important;
+                color: #005a9c !important;
             }
+
+            body .user-header-info::before {
+                content: 'Convidado';
+                font-weight: 600 !important;
+                margin-right: 2px !important;
+                font-size: 0.68rem !important;
+            }
+
+            body .user-header-info #header-user-name {
+                display: inline !important;
+                font-weight: 400 !important;
+                font-size: 0.68rem !important;
+                max-width: 60px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            body .user-header-info i {
+                font-size: 1rem !important;
+                order: 2;
+            }
+
+            body #header-user-name {
+                order: 3;
+            }
+
+            body .menu-icon {
+                font-size: 1rem !important;
+                margin-right: 1px !important;
+            }
+
+
 
             /* Dashboard Cards (3x2 Grid) */
             body #dashboard-section .stats-grid,
@@ -3360,25 +3662,25 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background: #ffffff;
-            border-top: 1px solid rgba(226, 232, 240, 1);
-            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
+            background: #005a9c; /* Fundo azul solicitado */
+            border-top: none;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
             z-index: 1000;
             justify-content: space-around;
-            padding: 8px 0;
-            padding-bottom: env(safe-area-inset-bottom, 10px);
+            padding: 10px 0;
+            padding-bottom: env(safe-area-inset-bottom, 12px);
         }
 
         .mobile-bottom-nav .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #64748b;
+            color: rgba(255, 255, 255, 0.85); /* Palavras em branco (com leve opacidade) */
             text-decoration: none;
-            font-size: 0.7rem;
-            font-weight: 700;
+            font-size: 0.72rem;
+            font-weight: 600;
             padding: 6px;
-            transition: color 0.2s, transform 0.1s;
+            transition: all 0.2s ease;
             cursor: pointer;
             border: none;
             background: transparent;
@@ -3386,17 +3688,19 @@
         }
 
         .mobile-bottom-nav .nav-item:active {
-            transform: scale(0.95);
+            transform: scale(0.92);
         }
 
         .mobile-bottom-nav .nav-item i {
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             margin-bottom: 4px;
         }
 
         .mobile-bottom-nav .nav-item.active {
-            color: var(--govbr-blue);
+            color: #ffffff !important; /* Branco puro para o ativo */
+            font-weight: 800;
         }
+
 
         /* Block: Listas Mobile no Dashboard */
         .list-section-mobile {
@@ -3413,22 +3717,79 @@
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             padding: 16px;
+            padding-top: 50px; /* Espaço para o botão Limpar */
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-filters-card .form-group:first-of-type {
+            margin-top: 10px;
+        }
+
+        .btn-clear-filters-top {
+            position: absolute;
+            top: 14px; /* Ajustado para alinhar no topo do card */
+            right: 16px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            z-index: 100; /* Garante que o botão seja clicável */
+            pointer-events: auto;
+        }
+
+        .btn-clear-filters-top:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #475569;
         }
 
         .mobile-actions-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: repeat(4, 1fr); /* 4 colunas em mobile */
+            gap: 8px; /* Ajuste do gap para smartphones */
             width: 100%;
+        }
+
+        .mobile-actions-grid .btn {
+            padding: 8px 4px !important;
+            font-size: 0.75rem !important;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            justify-content: center;
+            align-items: center;
+            min-width: 0 !important;
+        }
+
+        .mobile-actions-grid .btn i {
+            font-size: 1.1rem;
         }
 
         @media (min-width: 769px) {
             .mobile-actions-grid {
                 display: flex;
-                gap: 0.5rem;
-                grid-template-columns: none;
+                gap: 1rem;
+                width: auto; /* Permite que os botões cresçam naturalmente */
+            }
+
+            .mobile-actions-grid .btn {
+                flex-direction: row !important;
+                padding: 10px 24px !important;
+                font-size: 0.95rem !important;
+                gap: 8px !important;
+                min-width: 140px !important; /* Botões mais robustos no desktop */
+                height: 48px !important;
             }
 
             .search-filters-card {
@@ -3436,10 +3797,30 @@
                 border: none;
                 box-shadow: none;
                 padding: 0;
+                padding-top: 0;
                 display: grid;
-                grid-template-columns: 1.5fr 1fr 1fr 1fr;
+                grid-template-columns: 1.5fr 1fr 1fr 1fr auto; /* 5 colunas para incluir o Limpar */
                 gap: 1rem;
-                margin-bottom: 0;
+                margin-bottom: 1rem;
+                position: static;
+                align-items: end; /* Alinha o botão com a base dos inputs */
+            }
+
+            .search-filters-card .form-group:first-of-type {
+                margin-top: 0;
+            }
+
+            .btn-clear-filters-top {
+                display: flex !important;
+                position: relative;
+                top: auto;
+                right: auto;
+                order: 10; /* Garante que fique no final da grid */
+                height: 45px;
+                background: #fff;
+                white-space: nowrap;
+                border: 1px solid #e2e8f0;
+                box-shadow: none;
             }
 
             .search-filters-card .form-group {
@@ -3525,7 +3906,7 @@
         <div class="login-shell">
             <div class="login-layout">
 
-                <!-- ═══ PAINEL ESQUERDO: HERO VERDE ═══ -->
+                <!-- â•â•â• PAINEL ESQUERDO: HERO VERDE â•â•â• -->
                 <section class="login-hero" aria-label="Apresentação do sistema SMEDU SubInfraestrutura">
                     <!-- vídeo dos mascotes no fundo -->
                     <div class="login-hero-video-wrap" aria-hidden="true">
@@ -3562,14 +3943,14 @@
                     </div>
                 </section>
 
-                <!-- ═══ PAINEL DIREITO: FORMULÁRIO ═══ -->
+                <!-- â•â•â• PAINEL DIREITO: FORMULãRIO â•â•â• -->
                 <section class="login-card" aria-label="Autenticação no sistema SUBInfra">
                     <div class="login-card-inner">
 
                         <header class="login-header">
                             <div class="login-header-logo">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
-                                    alt="Brasão da Prefeitura de Itaguaí">
+                                <img src="public/assets/images/logo.png"
+                                    alt=" Brasão da Prefeitura de Itaguaí">
                             </div>
                             <h1><span class="accent">SUBINFRA</span>&nbsp;• PAINEL SMEDU</h1>
                             <p>Plataforma de gestão de infraestrutura da Secretaria<br>Municipal de Educação de Itaguaí.
@@ -3590,8 +3971,8 @@
                                     <div class="input-icon-wrapper">
                                         <i class="far fa-envelope"></i>
                                         <input type="email" id="login-email" required
-                                            placeholder="cpdinfra@edu.itaguai.rj.gov.br"
-                                            value="cpdinfra@edu.itaguai.rj.gov.br">
+                                            placeholder="nome@edu.itaguai.rj.gov.br"
+                                            autocomplete="off">
                                     </div>
                                 </div>
 
@@ -3600,7 +3981,7 @@
                                     <div class="input-icon-wrapper">
                                         <i class="fas fa-lock"></i>
                                         <input type="password" id="login-password" required placeholder="••••••••"
-                                            value="T3c4n3x0">
+                                            autocomplete="new-password">
                                         <button type="button" class="toggle-password"
                                             onclick="togglePasswordVisibility()" title="Mostrar/ocultar senha">
                                             <i class="far fa-eye" id="toggle-password-icon"></i>
@@ -3612,7 +3993,7 @@
                             </form>
 
                             <div class="login-footer">
-                                Prefeitura Municipal de Itaguaí — SMEDU / SUBInfra
+                                Prefeitura Municipal de Itaguaí "” SMEDU / SUBInfra
                             </div>
                         </div>
                     </div>
@@ -3624,7 +4005,7 @@
 
     <nav id="side-menu" class="side-menu">
         <div class="side-menu-header" style="display: flex; align-items: center; gap: 10px; padding: 1.5rem 1rem;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+            <img src="public/assets/images/logo.png"
                 alt="Logo" style="height: 40px; border-radius: 4px;">
             <h3 style="font-weight: 800; letter-spacing: 0.05em; margin: 0; font-size: 1.2rem; color: #fff;">SUB INFRA
             </h3>
@@ -3724,9 +4105,9 @@
     </div>
 
     <header class="govbr-header">
-        <div class="header-top">
-            <div class="header-logo-area">
-                <img class="header-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
+        <div class="inst-top">
+            <div class="inst-brand">
+                <img class="inst-logo" src="https://novoportal.itaguai.rj.gov.br/@@obter_logo_portal/logo252.png"
                     alt="Prefeitura de Itaguaí">
                 <div class="logo-separator"></div>
                 <!-- <span class="state-name hide-on-small hide-on-medium">Estado do Rio de Janeiro</span> -->
@@ -3746,11 +4127,12 @@
         <div class="header-bottom">
             <div class="dept-title-group">
                 <i id="menu-toggle" class="fa-solid fa-bars menu-icon" style="color: #005a9c; cursor: pointer; font-size: 1.2rem;"></i>
-                <strong>Secretaria Municipal de Educação</strong>
-                <span class="v-sep">|</span>
-                <span class="seg-label">CONTROLE DE PROCESSOS DE PAGAMENTO</span>
-                <span class="v-sep">|</span>
-                <span id="header-dept-name" class="dept-label">Carregando departamento...</span>
+                <span class="mobile-title">SMEDU | CONTROLE DE PROC. PAG. |</span>
+                <strong class="desktop-only-title">Secretaria Municipal de Educação</strong>
+                <span class="v-sep desktop-only-title">|</span>
+                <span class="seg-label desktop-only-title">CONTROLE DE PROCESSOS DE PAGAMENTO</span>
+                <span class="v-sep desktop-only-title">|</span>
+                <span id="header-dept-name" class="dept-label desktop-only-title">Carregando departamento...</span>
             </div>
 
             <div class="user-header-info" id="user-info-trigger" onclick="e => e.stopPropagation()">
@@ -3797,7 +4179,7 @@
                             <option value="mes">Este mês</option>
                             <option value="trimestre">Últimos 3 meses</option>
                             <option value="ano">Este ano</option>
-                            <option value="todos">Todo o período</option>
+                            <option value="todos" selected>Todo o período</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -3962,6 +4344,9 @@
                 <div class="table-header" style="flex-direction: column; align-items: stretch; gap: 1rem;">
                     <!-- Card de Filtros Mobile -->
                     <div class="search-filters-card">
+                        <button class="btn-clear-filters-top" onclick="window.clearFilters()">
+                            <i class="fas fa-trash-alt"></i> Limpar Filtros
+                        </button>
                         <div class="form-group">
                             <label
                                 style="font-size: 0.9rem; font-weight: 700; color: var(--govbr-blue); display: flex; align-items: center; gap: 8px;">
@@ -4012,19 +4397,14 @@
                             <i class="fas fa-plus"></i> Novo Processo
                         </button>
 
-                        <button class="btn btn-success" onclick="exportToExcel()"
-                            style="height: 48px; border-radius: 12px; background: #10b981; border: none;">
-                            <i class="fas fa-file-excel"></i> Excel
-                        </button>
-
                         <button class="btn btn-danger" onclick="exportToPDF()"
-                            style="height: 48px; border-radius: 12px; background: #ef4444; border: none;">
+                            style="height: 48px; border-radius: 12px; background: #990000; border: none;">
                             <i class="fas fa-file-pdf"></i> PDF
                         </button>
 
-                        <button class="btn btn-secondary" onclick="window.clearFilters()"
-                            style="height: 48px; border-radius: 12px; background: #fff; border: 1px solid #e2e8f0; color: #64748b; min-width: 140px;">
-                            <i class="fas fa-trash-alt"></i> Limpar Filtros
+                        <button class="btn btn-success" onclick="exportToExcel()"
+                            style="height: 48px; border-radius: 12px; background: #10b981; border: none;">
+                            <i class="fas fa-file-excel"></i> Excel
                         </button>
 
                         <button class="btn btn-navy-launch" onclick="window.showSection('dashboard')"
@@ -4134,7 +4514,7 @@
                     </div>
 
                     <button class="btn btn-danger" onclick="window.restoreFromBackup()"
-                        style="width:100%; justify-content: center; padding: 0.8rem; background: #ef4444;">
+                        style="width:100%; justify-content: center; padding: 0.8rem; background: #990000;">
                         <i class="fas fa-history"></i>&nbsp;Executar Restauração
                     </button>
                 </div>
@@ -4193,9 +4573,9 @@
                             style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Nível</label>
                         <select id="logsLevel" class="form-control">
                             <option value="">Todos os Eventos</option>
-                            <option value="info">ℹ️ Informação</option>
-                            <option value="warning">⚠️ Aviso</option>
-                            <option value="error">❌ Erro Crítico</option>
+                            <option value="info">â„¹ï¸ Informação</option>
+                            <option value="warning">âš ï¸ Aviso</option>
+                            <option value="error">âŒ Erro Crítico</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -4222,7 +4602,7 @@
                 style="margin-bottom:1.5rem; background: linear-gradient(135deg, #005A9C, #005A9C); color: white;">
                 <div style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
                     <div style="display:flex; align-items:center; gap:1.5rem;">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+                        <img src="public/assets/images/logo.png"
                             alt="SUB INFRA Logo"
                             style="height: 60px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                         <div>
@@ -4357,7 +4737,7 @@
                     <input type="hidden" id="processId">
 
                     <style>
-                        /* ESTILOS DE MÁXIMA PRIORIDADE - LAYOUT GAIA */
+                        /* ESTILOS DE MãXIMA PRIORIDADE - LAYOUT GAIA */
                         #processControlModal .modal-body .form-section .form-group label {
                             color: #475569 !important;
                             font-size: 0.62rem !important;
@@ -4407,7 +4787,7 @@
                         </div>
                         <div class="form-grid-4">
                             <div class="form-group">
-                                <label>Nº PROC. MÃE</label>
+                                <label>Nº PROC. MãƒE</label>
                                 <input type="text" id="parentProc" class="form-control" placeholder="Ex: 1234/2025">
                             </div>
                             <div class="form-group">
@@ -4415,7 +4795,7 @@
                                 <input type="text" id="ppNumber" class="form-control" placeholder="Digite o N.º Proc">
                             </div>
                             <div class="form-group">
-                                <label>ANO EXERCÍCIO OF</label>
+                                <label>ANO EXERCãCIO OF</label>
                                 <input type="text" id="exerciseYear" class="form-control"
                                     placeholder="Digite Ano do Exercício">
                             </div>
@@ -4474,7 +4854,7 @@
                                 <input type="date" id="openingDate" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label>DATA DE CONCLUSÃO</label>
+                                <label>DATA DE CONCLUSãƒO</label>
                                 <input type="date" id="deadline" class="form-control"
                                     onchange="updateModalRemainingDays()">
                             </div>
@@ -4537,10 +4917,10 @@
                         </div>
                     </div>
 
-                    <!-- Section 5: SITUAÇÃO ATUAL -->
+                    <!-- Section 5: SITUAÇãO ATUAL -->
                     <div class="form-section">
                         <div class="form-section-title">
-                            <i class="fas fa-chevron-circle-down"></i> SITUAÇÃO ATUAL
+                            <i class="fas fa-chevron-circle-down"></i> SITUAÇãO ATUAL
                         </div>
                         <div class="form-group">
                             <input type="text" id="situation" class="form-control"
@@ -4630,11 +5010,11 @@
                         <h4 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 0.75rem; margin-bottom: 1rem;"><i
                                 class="fas fa-map-marker-alt"></i> Localização Atual</h4>
                         <div class="details-item">
-                            <span class="details-label">Setor / Órgão</span>
+                            <span class="details-label">Setor / ã“rgão</span>
                             <span id="detailsLocation" class="details-value">-</span>
                         </div>
                         <div class="details-item">
-                            <span class="details-label">Última Movimentação</span>
+                            <span class="details-label">ãšltima Movimentação</span>
                             <span id="detailsLocationDate" class="details-value">-</span>
                         </div>
                         <div class="details-item">
@@ -5009,11 +5389,15 @@
             </header>
             <div class="history-container" id="historyTimeline">
                 <!-- Items will be rendered here -->
-            </div>
-            <footer class="modal-footer">
-                <button type="button" class="btn-action btn-secondary"
-                    onclick="window.closeModal('processHistoryModal')">Fechar Histórico</button>
-            </footer>
+             </div>
+             <footer class="modal-footer">
+                 <button type="button" class="btn-action btn-secondary"
+                     onclick="window.closeModal('processHistoryModal')">Fechar Histórico</button>
+                 <button type="button" class="btn-navy-save" id="historyTramitarBtn2" 
+                     onclick="window.tramitarFromProcessHistoryModal()" style="display:none;">
+                     <i class="fas fa-exchange-alt"></i> Tramitar
+                 </button>
+             </footer>
         </div>
     </div>
 
@@ -5048,7 +5432,7 @@
             </div>
             <h2 class="success-modal-title">Sucesso!</h2>
             <p id="successModalMessage" class="success-modal-text">Salvo com Sucesso</p>
-            <button class="success-modal-btn" onclick="window.closeAllModals()">Continuar</button>
+             <button class="success-modal-btn" onclick="window.closeSuccessModal()">Continuar</button>
         </div>
     </div>
 
@@ -5056,7 +5440,7 @@
         <div class="modal-content">
             <button class="close-button" onclick="window.closeModal('cookie-modal')">&times;</button>
             <h1>Respeitamos a sua privacidade</h1>
-            <p class="last-updated">Última atualização: 05/02/2024</p>
+            <p class="last-updated">ãšltima atualização: 05/02/2024</p>
             <p>Prezamos pela sua privacidade e proteção de seus dados pessoais! Utilizamos cookies para melhorar sua
                 experiência no site, conforme a nossa Política de Privacidade. Fique à vontade para customizar os
                 cookies que não são estritamente necessários.</p>
@@ -5142,9 +5526,9 @@
                     <div
                         style="display: flex; gap: 1rem; justify-content: flex-end; flex-direction: column; align-items: flex-end;">
                         <div style="display: flex; gap: 1rem;">
-                            <a href="https://www.instagram.com/" target="_blank"
+                            <a href="https://www.instagram.com/" aria-label="Instagram"  target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.facebook.com/?ref=tn_tnmn" target="_blank"
+                            <a href="https://www.facebook.com/?ref=tn_tnmn" aria-label="Facebook"  target="_blank"
                                 style="color: white; font-size: 1.5rem;"><i class="fab fa-facebook-f"></i></a>
                         </div>
                         <!-- <img class="logo-govcidades" src="https://novoportal.itaguai.rj.gov.br/++resource++gov.cidades/logo-cidades.jpeg" alt="Prefeitura de Itaguaí" style="max-height: 40px; margin-top: 1rem;"> -->
@@ -5156,11 +5540,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        console.log('=== SCRIPT INITIALIZING v2.0 ===');
+        console.log('>>> SCRIPT BLOCK STARTED');
+        if (window.AppConfig && !window.AppConfig.isProduction()) console.log('=== SCRIPT INITIALIZING v2.0 ===');
 
         // *** MENU TOGGLE ***
         window.toggleMenu = function () {
-            var sideMenu = document.getElementById('side-menu');
+            console.log('>>> toggleMenu called');
             var overlay = document.getElementById('overlay');
             if (!sideMenu || !overlay) return;
             sideMenu.classList.toggle('open');
@@ -5171,26 +5556,30 @@
             }
         };
 
-        window.closeAllModals = function () {
-            const modalSelectors = ['.modal', '.process-modal', '.success-modal', '.modal-overlay'];
-            modalSelectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach(m => {
-                    m.classList.remove('visible');
-                    m.style.opacity = '';
-                    m.style.display = 'none';
-                });
-            });
-            var ov = document.getElementById('overlay');
-            if (ov) {
-                ov.classList.remove('visible');
-                ov.style.display = 'none';
-            }
-            var sideMenu = document.getElementById('side-menu');
-            if (sideMenu) sideMenu.classList.remove('open');
-        };
+         window.closeAllModals = function () {
+             const modalSelectors = ['.modal', '.process-modal', '.success-modal', '.modal-overlay'];
+             modalSelectors.forEach(selector => {
+                 document.querySelectorAll(selector).forEach(m => {
+                     m.classList.remove('visible');
+                     m.style.opacity = '';
+                     m.style.display = 'none';
+                 });
+             });
+             var ov = document.getElementById('overlay');
+             if (ov) {
+                 ov.classList.remove('visible');
+                 ov.style.display = 'none';
+                 ov.style.opacity = '';
+             }
+             var sideMenu = document.getElementById('side-menu');
+             if (sideMenu) sideMenu.classList.remove('open');
+             
+             // Garantir que o body volta ao normal
+             document.body.style.overflow = '';
+         };
 
         window.openStatusMobileModal = function () {
-            console.log('--- CHAMADA: openStatusMobileModal ---');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('--- CHAMADA: openStatusMobileModal ---');
             const modal = document.getElementById('statusSummaryModal');
             if (!modal) return;
 
@@ -5200,7 +5589,7 @@
                 const processes = window.state.processes || [];
                 const statuses = window.state.statuses || [];
 
-                console.log('Populando modal com', processes.length, 'processos e', statuses.length, 'status.');
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Populando modal com', processes.length, 'processos e', statuses.length, 'status.');
 
                 statuses.forEach(status => {
                     const filtered = processes.filter(p => String(p.status).trim().toLowerCase() === String(status).trim().toLowerCase());
@@ -5253,7 +5642,7 @@
                 overlay.style.display = 'block';
                 setTimeout(() => overlay.classList.add('visible'), 10);
             }
-            console.log('Modal de status aberto com sucesso.');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Modal de status aberto com sucesso.');
         };
 
         window.closeStatusMobileModal = function () {
@@ -5275,33 +5664,104 @@
         };
 
         window.closeModal = function (id) {
+            if (!id) return;
+            
             var m = document.getElementById(id);
-            if (m) {
-                m.classList.remove('visible');
-                m.style.opacity = '';
-                m.style.display = 'none';
+            if (!m) return;
+            
+            // Remove classe visible (para animação)
+            m.classList.remove('visible');
+            
+            // Aguarda transição CSS (300ms) antes de esconder completamente
+            setTimeout(() => {
+                if (!m.classList.contains('visible')) {
+                    m.style.display = 'none';
+                    m.style.opacity = '0';
+                }
+            }, 300);
+            
+            // Verifica se há outro modal aberto
+            var anyModalOpen = false;
+            var modals = document.querySelectorAll('[id*="modal"]');
+            for (var i = 0; i < modals.length; i++) {
+                if (modals[i].classList.contains('visible') && modals[i].id !== id) {
+                    anyModalOpen = true;
+                    break;
+                }
             }
-            var overlay = document.getElementById('overlay');
-            if (overlay) {
-                overlay.classList.remove('visible');
-                overlay.style.display = 'none';
+            
+            // Apenas esconde o overlay se não houver modal aberto
+            if (!anyModalOpen) {
+                var overlay = document.getElementById('overlay');
+                if (overlay) {
+                    overlay.classList.remove('visible');
+                    setTimeout(() => {
+                        if (!overlay.classList.contains('visible')) {
+                            overlay.style.display = 'none';
+                        }
+                    }, 300);
+                }
             }
         };
 
-        // --- GLOBAL CONFIG & STATE ---
-        console.log("%c--- SUB INFRA v4.1 (DEEP OPTIMIZATION) ---", "color: #005a9c; font-weight: bold; font-size: 14px;");
-        var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+         // --- GLOBAL CONFIG & STATE ---
+         var SUPABASE_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
+         var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
 
-        var supabase;
-        try {
-            if (window.supabase) {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                console.log('Supabase client initialized');
-            } else {
-                console.error('ERRO CRÍTICO: Biblioteca Supabase não encontrada!');
+         var supabase;
+         
+           // Function to initialize Supabase with retry logic
+            async function initializeSupabase() {
+                console.log('>>> initializeSupabase called');
+                let attempts = 0;
+                const maxAttempts = 30;
+                while (attempts < maxAttempts) {
+                    try {
+                        const lib = window.supabase || (window.Supabase && window.Supabase.createClient ? window.Supabase : null);
+                        if (lib && lib.createClient) {
+                            if (!window.supabaseClient) {
+                                window.supabaseClient = lib.createClient(SUPABASE_URL, SUPABASE_KEY);
+                                supabase = window.supabaseClient; // Atribui à variável global usada no app
+                                console.log('Supabase client initialized successfully');
+                            }
+                            return;
+                        }
+                        await new Promise(r => setTimeout(r, 500));
+                        attempts++;
+                    } catch (e) {
+                        console.error('Supabase Init Error:', e);
+                        await new Promise(r => setTimeout(r, 1000));
+                        attempts++;
+                    }
+                }
             }
-        } catch (e) { console.error('Supabase Client Error:', e); }
+          
+           // Initialize after DOM and external scripts are ready
+           function initOnLoad() {
+               console.log('>>> initOnLoad called, waiting for Supabase library...');
+               
+               // Wait for external scripts to load
+               const checkAndInit = () => {
+                   if (window.supabase && window.supabase.createClient) {
+                       console.log('>>> Supabase library detected, initializing...');
+                       initializeSupabase();
+                   } else {
+                       console.log('>>> Waiting for Supabase library...');
+                       setTimeout(checkAndInit, 200);
+                   }
+               };
+               
+               if (document.readyState === 'complete') {
+                   checkAndInit();
+               } else {
+                   window.addEventListener('load', checkAndInit);
+               }
+           }
+           
+           // Start initialization - run immediately
+           console.log('>>> About to call initOnLoad');
+           initOnLoad();
+
 
         // --- DATE UTILITY ---
         window.updateHeaderDate = function() {
@@ -5325,7 +5785,7 @@
         window.initializeAppEventListeners = function () {
             if (window._listenersInitialized) return;
             window._listenersInitialized = true;
-            console.log('Inicializando listeners globais...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Inicializando listeners globais...');
 
             // Date Setup
             window.updateHeaderDate();
@@ -5336,7 +5796,7 @@
                 const target = btn.closest('a') || btn.closest('button') || btn;
                 target.addEventListener('click', (e) => {
                     e.preventDefault();
-                    console.log('Botão Novo Processo clicado');
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Botão Novo Processo clicado');
                     window.openProcessModal();
                 });
             });
@@ -5370,7 +5830,7 @@
                         const pid = row.dataset.processId;
                         if (pid) {
                             const process = window.state.processes.find(function (p) { return p.id === pid; });
-                            if (process) window.showProcessDetails(process);
+                            if (process) window.openProcessModalForTransit(process);
                         }
                     }
                 });
@@ -5427,7 +5887,7 @@
                     }
                 }
             });
-            console.log('Setting up listeners...');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Setting up listeners...');
 
             const menuBtn = document.getElementById('menu-toggle');
             if (menuBtn) menuBtn.addEventListener('click', function (e) { e.stopPropagation(); window.toggleMenu(); });
@@ -5440,7 +5900,7 @@
                 link.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Submenu clicked:', this.innerText.trim());
+                    if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Submenu clicked:', this.innerText.trim());
 
                     var submenu = this.nextElementSibling;
                     if (!submenu || !submenu.classList.contains('submenu')) {
@@ -5502,7 +5962,7 @@
                 }
 
                 el._animating = true;
-                // console.log('Animating', el.id, 'to', target);
+                // if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Animating', el.id, 'to', target);
                 var suffix = el.getAttribute('data-suffix') || '';
                 var isFloat = target % 1 !== 0;
                 var start = null;
@@ -5537,17 +5997,26 @@
                 };
             }
 
-            console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Listeners ready. Submenus found:', document.querySelectorAll('.has-submenu').length);
             window.initializeAppEventListeners(); // Fallback imediato
         })();
 
         // --- 4. APP INITIALIZATION ---
         window._appLoaded = false;
-        window.initApp = async function () {
-            if (!supabase || window._appLoaded) return;
-            window._appLoaded = true;
-            console.log('initApp starting data fetch...');
-            try {
+         window.initApp = async function () {
+             // Wait for supabase to be initialized
+             if (!window.supabaseClient || window._appLoaded) {
+                 if (!window.supabaseClient) {
+                     console.warn('Waiting for Supabase client to initialize...');
+                     setTimeout(window.initApp, 500);
+                 }
+                 return;
+             }
+             
+             supabase = window.supabaseClient; // Use the initialized client
+             window._appLoaded = true;
+             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
+             try {
                 const [suppliers, locations, objects, statuses, handlers, departments, processes] = await Promise.all([
                     supabase.from('suppliers').select('name').order('name'),
                     supabase.from('locations').select('name').order('name'),
@@ -5588,7 +6057,9 @@
                 window.initializeAppEventListeners();
                 window.updateDashboardCounters();
                 window.renderProcessTable();
-                console.log('initApp success');
+                const overlay = document.getElementById('login-overlay');
+                if (overlay) overlay.style.display = 'none';
+                if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp success');
             } catch (err) {
                 console.error('initApp Error:', err);
                 window._appLoaded = false; // Permite tentar novamente se falhar
@@ -6495,6 +6966,71 @@
                     </div>
                 `;
             }).join('');
+        };
+
+        window.loadUsers = async function () {
+            const container = document.getElementById('userListContainer');
+            if(!container) return;
+            container.innerHTML = '<p style="text-align:center;color:#9CA3AF;padding:2rem;"><i class="fas fa-spinner fa-spin"></i> Carregando...</p>';
+            try {
+                const { data, error } = await supabase.from('user_profiles').select('*').order('full_name', { ascending: true });
+                if (error) throw error;
+                window.renderUserList(data || []);
+            } catch (err) { container.innerHTML = `<p>Erro: ${err.message}</p>`; }
+        };
+
+        window.renderUserList = function (users) {
+            const container = document.getElementById('userListContainer');
+            if (!container) return;
+            if (!users.length) { container.innerHTML = '<p>Nenhum usuário cadastrado.</p>'; return; }
+            const roleBadge = (role) => role === 'administrador' ? '<span class="badge-role role-admin"><i class="fas fa-shield-alt"></i> ADM</span>' : '<span class="badge-role role-user"><i class="fas fa-user-circle"></i> USER</span>';
+            const statusIndicator = (active) => active !== false ? '<span class="status-active">Ativo</span>' : '<span class="status-inactive">Inativo</span>';
+            container.innerHTML = `
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead>
+                        <tr style="background:#f8fafc; text-align:left; border-bottom:1px solid #e2e8f0;">
+                            <th style="padding:1rem;">Colaborador</th>
+                            <th style="padding:1rem;">Setor</th>
+                            <th style="padding:1rem;">Acesso / Status</th>
+                            <th style="padding:1rem; text-align:right;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>${users.map(u => `
+                        <tr class="user-row">
+                            <td style="padding:1.25rem;">
+                                <div style="font-weight:600; color:#1e293b;">${u.full_name}</div>
+                                <div style="font-size:0.75rem; color:#64748b;">${u.email}</div>
+                            </td>
+                            <td style="padding:1.25rem;">
+                                <span style="font-size:0.85rem; color:#475569; font-weight:500;">${u.department || '<em style="color:#94a3b8;">Não vinculado</em>'}</span>
+                            </td>
+                            <td style="padding:1.25rem;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    ${roleBadge(u.role)}
+                                    ${statusIndicator(u.active)}
+                                </div>
+                            </td>
+                            <td style="padding:1.25rem; text-align:right;">
+                                <div style="display:flex; gap:8px; justify-content:flex-end;">
+                                    <button class="btn-icon-round btn-edit-user" onclick='window.editUser(${JSON.stringify(u)})' title="Editar Informações">
+                                        <i class="fas fa-pen" style="font-size: 0.85rem;"></i>
+                                    </button>
+                                    ${u.active !== false ? 
+                                        `<button class="btn-icon-round btn-deactivate-user" onclick="window.deactivateUser('${u.id}', '${u.full_name}')" title="Desativar Acesso">
+                                            <i class="fas fa-user-slash" style="font-size: 0.85rem;"></i>
+                                        </button>` : 
+                                        `<button class="btn-icon-round btn-reactivate-user" onclick="window.reactivateUser('${u.id}', '${u.full_name}')" title="Reativar Acesso">
+                                            <i class="fas fa-user-check" style="font-size: 0.85rem;"></i>
+                                        </button>`
+                                    }
+                                    <button class="btn-icon-round" onclick="window.deleteUser('${u.id}', '${u.full_name}')" title="Excluir Usuário" style="background: #fff1f2; color: #e11d48; border: 1px solid #fecdd3;">
+                                        <i class="fas fa-trash-alt" style="font-size: 0.85rem;"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>`;
         };
 
         window.clearLogsFilters = function () {
@@ -8144,8 +8680,8 @@
 
 
         // ===== GERENCIAMENTO DE USUÁRIOS (Supabase Auth + profiles table) =====
-        const SUPABASE_USERS_URL = 'https://sxsfqvcxikdsahhidrdx.supabase.co';
-        const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN4c2ZxdmN4aWtkc2FoaGlkcmR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjg3NTQsImV4cCI6MjA4ODkwNDc1NH0.5ftyFtzmIlvNX-Oj5p-0JwwJEBHajUn5XBAVjkLC82Y';
+        const SUPABASE_USERS_URL = '%%SUPABASE_URL%%';
+        const ANON_KEY = '%%SUPABASE_KEY%%';
 
         window.openUserManagementModal = function () {
             var editingUserId = document.getElementById('editingUserId');
@@ -8305,7 +8841,7 @@
 
             try {
                 if (editingId) {
-                    const updateData = { full_name: fullName, email: email, role: role, department: department };
+                    const updateData = { full_name: fullName, role: role, department: department };
                     // Hint: password updates via admin API would go here
                     const { error } = await supabase.from('user_profiles').update(updateData).eq('id', editingId);
                     if (error) throw error;
@@ -8321,7 +8857,7 @@
                     const userId = authData.user?.id;
                     if (userId) {
                         await supabase.from('user_profiles').upsert({
-                            id: userId, full_name: fullName, email: email, role: role, department: department, active: true
+                            id: userId, full_name: fullName, role: role, department: department
                         });
                     }
                     alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
@@ -8402,37 +8938,43 @@
             }
         }
 
-        // Monitorar estado da sessão com segurança
-        if (supabase && supabase.auth) {
-            supabase.auth.onAuthStateChange((event, session) => {
-                console.log('Auth event:', event);
-                const overlay = document.getElementById('login-overlay');
+         // Esperar pela inicialização do Supabase antes de usar
+         function waitForSupabase(callback, maxAttempts = 30) {
+             let attempts = 0;
+             const checkInterval = setInterval(() => {
+                 attempts++;
+                 if (window.supabaseClient) {
+                     clearInterval(checkInterval);
+                     callback(window.supabaseClient);
+                 } else if (attempts >= maxAttempts) {
+                     clearInterval(checkInterval);
+                     console.error('Supabase client não foi inicializado após múltiplas tentativas');
+                 }
+             }, 200);
+         }
 
-                if (session?.user) {
-                    updateUserInfo(session.user);
-                    window.initializeAppEventListeners();
+         // Monitorar estado da sessão com segurança
+         waitForSupabase(function(supabaseClient) {
+             if (supabaseClient && supabaseClient.auth) {
+                 supabaseClient.auth.onAuthStateChange((event, session) => {
+                     if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth event:', event);
+                     const overlay = document.getElementById('login-overlay');
 
-                    if (!window._appLoaded) {
-                        console.log('Iniciando carregamento do app...');
-                        window.initApp();
-                    }
+                      if (session?.user) {
+                          const overlay = document.getElementById('login-overlay');
+                          if (overlay) overlay.style.display = 'none';
+                         updateUserInfo(session.user);
+                         window.initializeAppEventListeners();
 
-                    if (overlay) {
-                        overlay.style.opacity = '0';
-                        setTimeout(() => {
-                            overlay.style.display = 'none';
-                        }, 500);
+                         if (!window._appLoaded) {
+                             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Iniciando carregamento do app...');
+                             window.initApp();
+                         }
+
                     }
-                } else {
-                    if (overlay) {
-                        overlay.style.display = 'flex';
-                        overlay.style.opacity = '1';
-                    }
-                }
-            });
-        } else {
-            console.error('supabase.auth não disponível para monitoramento.');
-        }
+                });
+            }
+        });
 
         window.logout = async function (e) {
             if (e) e.preventDefault();
@@ -8480,7 +9022,7 @@
             const doc = new jsPDF('l', 'mm', 'a4');
 
             try {
-                const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg/120px-Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg';
+                const logoUrl = 'public/assets/images/logo.png';
                 const img = new Image();
                 img.crossOrigin = 'Anonymous';
                 img.src = logoUrl;
@@ -8490,7 +9032,7 @@
                 });
 
                 if (img.naturalWidth > 0) {
-                    doc.addImage(img, 'JPEG', 14, 10, 16, 20);
+                    doc.addImage(img, 'PNG', 14, 10, 16, 20);
                 }
             } catch (e) { console.warn('Falha ao carregar logo no PDF:', e); }
 
@@ -8500,7 +9042,7 @@
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
             doc.setTextColor(20, 20, 20); // Preto mais escuro
-            doc.text("PREFEITURA MUNICIPAL DE ITAGUAÍ", startX, 14, { align: 'left' });
+            doc.text("PREFEITURA MUNICIPAL DE ITAGUAã", startX, 14, { align: 'left' });
             doc.text("Secretaria Municipal de Educação", startX, 19, { align: 'left' });
 
             // Título do Cabeçalho
@@ -8530,7 +9072,7 @@
             allChecks.forEach((check, index) => {
                 if (check.checked) {
                     selectedIndices.push(index);
-                    selectedHeaders.push(check.parentElement.textContent.replace('✓', '').trim());
+                    selectedHeaders.push(check.parentElement.textContent.replace('âœ“', '').trim());
                 }
             });
 
@@ -8705,84 +9247,274 @@
         };
 
         window.exportToExcel = function () {
-            const header = ['NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSÃO', 'TRATADO POR', 'STATUS', 'Localização'];
+            try {
+                const header = ['NÚMERO DO P.P.', 'ANO', 'PPANO', 'FORNECEDOR', 'VALOR DE CAPA', 'DATA DE CONCLUSãO', 'TRATADO POR', 'STATUS', 'Localização'];
+                const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
+                const dataToExportSource = window._lastFiltered || window.state.processes;
+                const dataToExport = dataToExportSource.map(p => {
+                    let cover = p.coverValue || '';
+                    if (cover && !cover.includes('R$')) cover = 'R$ ' + cover;
+                    const locDate = formatDate(p.locationDate);
+                    const locStr = (p.location && locDate) ? `${p.location} | ${locDate}` : (p.location || locDate);
+                    return [p.ppNumber || '', p.exerciseYear || '', p.ppAno || '', p.supplier || '', cover, formatDate(p.deadline), p.treatedBy || '', p.status || '', locStr];
+                });
 
-            const formatDate = (d) => d ? d.split('-').reverse().join('/') : '';
-            const dataToExportSource = window._lastFiltered || window.state.processes;
-            const dataToExport = dataToExportSource.map(p => {
-                let cover = p.coverValue || '';
-                if (cover && !cover.includes('R$')) cover = 'R$ ' + cover;
+                const ws_data = [header, ...dataToExport];
+                const ws = XLSX.utils.aoa_to_sheet(ws_data);
+                const headerStyle = { font: { bold: true, color: { rgb: "FFFFFF" } }, fill: { fgColor: { rgb: "000000" } }, alignment: { horizontal: "center", vertical: "center" } };
+                const dataStyleCenter = { alignment: { horizontal: "center", vertical: "center" } };
+                const dataStyleLeft = { alignment: { horizontal: "left", vertical: "center" } };
 
-                const locDate = formatDate(p.locationDate);
-                const locStr = (p.location && locDate) ? `${p.location} | ${locDate}` : (p.location || locDate);
-
-                return [
-                    p.ppNumber || '',
-                    p.exerciseYear || '',
-                    p.ppAno || '',
-                    p.supplier || '',
-                    cover,
-                    formatDate(p.deadline),
-                    p.treatedBy || '',
-                    p.status || '',
-                    locStr
-                ];
-            });
-
-            const ws_data = [header, ...dataToExport];
-            const ws = XLSX.utils.aoa_to_sheet(ws_data);
-
-            const headerStyle = {
-                font: { bold: true, color: { rgb: "FFFFFF" } },
-                fill: { fgColor: { rgb: "000000" } },
-                alignment: { horizontal: "center", vertical: "center" }
-            };
-
-            const dataStyleCenter = { alignment: { horizontal: "center", vertical: "center" } };
-            const dataStyleLeft = { alignment: { horizontal: "left", vertical: "center" } };
-
-            const range = XLSX.utils.decode_range(ws['!ref']);
-            for (let R = range.s.r; R <= range.e.r; ++R) {
-                for (let C = range.s.c; C <= range.e.c; ++C) {
-                    const cell_ref = XLSX.utils.encode_cell({ c: C, r: R });
-                    if (!ws[cell_ref]) continue;
-
-                    if (R === 0) {
-                        ws[cell_ref].s = headerStyle;
-                    } else {
-                        ws[cell_ref].s = dataStyleCenter;
-
-                        // Left align supplier string
-                        if (C === 3) {
-                            ws[cell_ref].s = dataStyleLeft;
-                        }
-
-                        // Add color to status cell
-                        if (C === 7) {
-                            const val = ws[cell_ref].v;
-                            let color = "C6E0B4"; // default light green
-                            if (val === 'Em Análise') color = "BDD7EE";
-                            else if (val === 'Pendente') color = "F8CBAD";
-                            else if (val === 'Concluído') color = "A9D08E";
-                            else if (val === 'Aguardando Assinatura') color = "D9D9D9";
-                            else if (val === 'Atrasado' || val === 'Vencido') color = "FFC7CE";
-
-                            ws[cell_ref].s = {
-                                fill: { fgColor: { rgb: color } },
-                                alignment: { horizontal: "center", vertical: "center" },
-                                font: { color: { rgb: "333333" } }
-                            };
+                const range = XLSX.utils.decode_range(ws['!ref']);
+                for (let R = range.s.r; R <= range.e.r; ++R) {
+                    for (let C = range.s.c; C <= range.e.c; ++C) {
+                        const cell_ref = XLSX.utils.encode_cell({ c: C, r: R });
+                        if (!ws[cell_ref]) continue;
+                        if (R === 0) {
+                            ws[cell_ref].s = headerStyle;
+                        } else {
+                            ws[cell_ref].s = dataStyleCenter;
+                            if (C === 3) ws[cell_ref].s = dataStyleLeft;
+                            if (C === 7) {
+                                const val = ws[cell_ref].v;
+                                let color = "C6E0B4";
+                                if (val === 'Em Análise') color = "BDD7EE";
+                                else if (val === 'Pendente') color = "F8CBAD";
+                                else if (val === 'Concluído') color = "A9D08E";
+                                else if (val === 'Aguardando Assinatura') color = "D9D9D9";
+                                else if (val === 'Atrasado' || val === 'Vencido') color = "FFC7CE";
+                                ws[cell_ref].s = { fill: { fgColor: { rgb: color } }, alignment: { horizontal: "center", vertical: "center" }, font: { color: { rgb: "333333" } } };
+                            }
                         }
                     }
                 }
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Processos");
+                XLSX.writeFile(wb, "processos.xlsx");
+            } catch (err) {
+                console.error("Erro ao exportar Excel:", err);
+                alert("Erro ao exportar: " + err.message);
             }
+        };
 
-            ws['!cols'] = [
-                { wch: 18 }, { wch: 10 }, { wch: 15 }, { wch: 55 }, { wch: 20 },
-                { wch: 22 }, { wch: 20 }, { wch: 25 }, { wch: 45 }
-            ];
+        window.editHistoryItem = async function (historyId, historyData) {
+            try {
+                const message = historyData.msg || historyData.message || '';
+                const newMessage = prompt('Editar movimento:\n\nMensagem atual:\n' + message, message);
+                if (newMessage === null || newMessage.trim() === '' || newMessage === message) return;
+                const processId = document.getElementById('processId').value;
+                if (!supabase) { alert('Erro: Banco de dados não inicializado'); return; }
+                const { data, error } = await supabase.rpc('edit_process_history', { p_history_id: historyId, p_new_message: newMessage.trim() });
+                if (error || (data && data.error)) throw new Error((error ? error.message : data.error));
+                alert('Registro atualizado com sucesso!');
+                if (processId) {
+                    const { data: refreshedHistory, error: fetchError } = await supabase.from('process_history').select('*').eq('process_id', processId).order('history_date', { ascending: true });
+                    if (!fetchError && refreshedHistory) {
+                        const currentProcess = window.state.processes.find(p => p.id === processId);
+                        if (currentProcess) {
+                            currentProcess.history = refreshedHistory.map(h => ({ id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user }));
+                            window.renderModalHistory(currentProcess.history);
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Erro ao editar:', err);
+                alert('Erro ao editar: ' + err.message);
+            }
+        };
 
-            const wb = XLSX.utils.book_new();
+        window.deleteHistoryItem = async function (historyId) {
+            try {
+                if (!await ConfirmModal.show('Tem certeza que deseja excluir este registro?', { isDangerous: true })) return;
+                const processId = document.getElementById('processId').value;
+                if (!supabase) { alert('Erro: Banco de dados não inicializado'); return; }
+                const { data, error } = await supabase.rpc('delete_process_history', { p_history_id: historyId });
+                if (error || (data && data.error)) throw new Error((error ? error.message : data.error));
+                alert('Registro excluído com sucesso!');
+                if (processId) {
+                    const { data: refreshedHistory, error: fetchError } = await supabase.from('process_history').select('*').eq('process_id', processId).order('history_date', { ascending: true });
+                    if (!fetchError && refreshedHistory) {
+                        const currentProcess = window.state.processes.find(p => p.id === processId);
+                        if (currentProcess) {
+                            currentProcess.history = refreshedHistory.map(h => ({ id: h.id, date: h.history_date, from: h.location_from, to: h.location_to, msg: h.message, user: h.user }));
+                            window.renderModalHistory(currentProcess.history);
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Erro ao deletar:', err);
+                alert('Erro ao deletar: ' + err.message);
+            }
+        };
+
+         // Checklist Data Structure
+         window.CHECKLIST_ITEMS = {
+             section1: {
+                 title: 'Documentação de Cobrança e Execução',
+                 icon: 'fa-file-contract',
+                 items: [
+                     { id: 'item1', text: 'Requerimento/Ofício de Cobrança', description: 'Formalização do pedido de pagamento pela empresa.' },
+                     { id: 'item2', text: 'Nota Fiscal / Fatura', description: 'Original, devidamente atestada no verso por dois servidores ou via assinatura digital.' },
+                     { id: 'item3', text: 'Relatório de Execução do Serviço', description: 'Descritivo detalhado do que foi realizado no período.' },
+                     { id: 'item4', text: 'Ordem de Serviço (OS)', description: 'Com as especificações e autorizações prévias.' },
+                     { id: 'item5', text: 'Mapa de Controle da Execução Contratual', description: 'Planilha de medição ou controle de saldos do contrato.' }
+                 ]
+             },
+              section2: {
+                  title: 'Regularidade Jurídica e Societária',
+                 icon: 'fa-file-signature',
+                 items: [
+                     { id: 'item6', text: 'Contrato Social / Consolidação', description: 'Cópia autenticada ou com selo de validade da JUCERJA.' },
+                     { id: 'item7', text: 'Documentos dos Sócios', description: 'RG, CPF e comprovante de residência conforme exigência do edital/contrato.' },
+                     { id: 'item8', text: 'Protocolo de Transmissão do CNPJ', description: 'Comprovante de inscrição e situação cadastral ativa.' }
+                 ]
+             },
+             section3: {
+                 title: 'Regularidade Fiscal e Trabalhista (DENTRO DA VALIDADE)',
+                 icon: 'fa-certificate',
+                 items: [
+                     { id: 'item9', text: 'Certidão de Regularidade do FGTS (CRF)', description: '' },
+                     { id: 'item10', text: 'Certidão Negativa de Débitos Trabalhistas (CNDT)', description: '' },
+                     { id: 'item11', text: 'Certidão Negativa de Tributos Federais e Dívida Ativa da União (PGFN)', description: '' },
+                     { id: 'item12', text: 'Certidão Negativa de Débitos Estaduais (Dívida Ativa)', description: '' },
+                     { id: 'item13', text: 'Certidão Negativa de IPTU e Tributos Mobiliários (ISS/Taxas Municipais)', description: '' },
+                     { id: 'item14', text: 'Recibo da DCTFWeb', description: 'Comprovação de obrigações previdenciárias.' }
+                 ]
+             },
+             section4: {
+                 title: 'Instrumentos Contratuais e Atos Oficiais',
+                 icon: 'fa-scroll',
+                 items: [
+                     { id: 'item15', text: 'Contrato Original', description: 'Cópia com todas as assinaturas colhidas.' },
+                     { id: 'item16', text: 'Termos Aditivos', description: 'Caso existam prorrogações ou reajustes.' },
+                     { id: 'item17', text: 'Portaria de Nomeação do Fiscal', description: 'Documento que designa quem atestou a nota.' },
+                     { id: 'item18', text: 'Extrato do Contrato/Aditivo', description: 'Cópia da publicação no Diário Oficial.' }
+                 ]
+             },
+             section5: {
+                 title: 'Documentação Contábil e Financeira',
+                 icon: 'fa-coins',
+                 items: [
+                     { id: 'item19', text: 'Nota de Empenho', description: 'Original ou cópia da nota vinculada à despesa.' },
+                     { id: 'item20', text: 'Folha de Informação (ISS)', description: 'Informando retenções ou isenções tributárias.' },
+                     { id: 'item21', text: 'Folha de Informação (Financeiro)', description: 'Parecer autorizando o fluxo para pagamento.' }
+                 ]
+             }
+         };
+
+         window.openChecklistModal = function (process) {
+             if (!process) return;
+
+             const modal = document.getElementById('checklistModal');
+             if (!modal) return;
+
+             // Update header with process info
+             document.getElementById('checklistProcessNumber').innerText = process.ppAno || '-';
+             document.getElementById('checklistSupplier').innerText = process.supplier || '-';
+             document.getElementById('checklistValue').innerText = window.formatCurrency ? window.formatCurrency(process.coverValue) : (process.coverValue || '-');
+             document.getElementById('checklistOpeningDate').innerText = window.formatDate ? window.formatDate(process.openingDate) : (process.openingDate || '-');
+
+             // Render checklist items
+             window.renderChecklistItems(process.id);
+
+             // Show modal
+             modal.classList.add('visible');
+             modal.style.display = 'flex';
+         };
+
+         window.renderChecklistItems = function (processId) {
+             const container = document.getElementById('checklistContainer');
+             if (!container) return;
+
+             container.innerHTML = '';
+
+             // Load saved state from localStorage
+             const savedState = window.getChecklistState(processId);
+
+             // Render all sections
+             Object.entries(window.CHECKLIST_ITEMS).forEach(([sectionKey, section]) => {
+                 const sectionDiv = document.createElement('div');
+                 sectionDiv.className = 'checklist-section';
+
+                 const titleDiv = document.createElement('div');
+                 titleDiv.className = 'checklist-section-title';
+                 titleDiv.innerHTML = `<i class="fas ${section.icon} checklist-section-icon"></i> ${section.title}`;
+                 sectionDiv.appendChild(titleDiv);
+
+                 // Render items
+                 section.items.forEach(item => {
+                     const itemDiv = document.createElement('div');
+                     const isChecked = savedState[item.id] || false;
+                     const itemId = `checklist-${processId}-${item.id}`;
+
+                     itemDiv.innerHTML = `
+                         <input type="checkbox" id="${itemId}" ${isChecked ? 'checked' : ''} data-item-id="${item.id}" data-process-id="${processId}">
+                         <label for="${itemId}">${item.text}</label>
+                         ${item.description ? `<div class="checklist-item-description">${item.description}</div>` : ''}
+                     `;
+                     itemDiv.className = 'checklist-item';
+
+                     // Add event listener
+                     const checkbox = itemDiv.querySelector('input[type="checkbox"]');
+                     checkbox.addEventListener('change', (e) => {
+                         window.saveChecklistState(processId, item.id, e.target.checked);
+                         window.updateChecklistProgress(processId);
+                     });
+
+                     sectionDiv.appendChild(itemDiv);
+                 });
+
+                 container.appendChild(sectionDiv);
+             });
+
+             // Add tips section
+             const tipsDiv = document.createElement('div');
+             tipsDiv.className = 'checklist-tip';
+              tipsDiv.innerHTML = `
+                  <strong>💡 Dicas de Ouro para a Gestão Pública:</strong>
+                  <div><strong>Validade das Certidões:</strong> Se uma certidão vencer durante a tramitação (ex: o processo ficou parado 15 dias no jurídico), o setor financeiro não deve pagar. É necessário anexar a certidão atualizada antes da liquidação.</div>
+                  <div style="margin-top: 0.5rem;"><strong>Atesto de Nota:</strong> O atesto deve ser sempre datado. A data do atesto não pode ser anterior à data da emissão da Nota de Empenho.</div>
+                  <div style="margin-top: 0.5rem;"><strong>Ordem Cronológica:</strong> Lembre-se que a Lei de Licitações exige o respeito à ordem cronológica de pagamentos, salvo exceções justificadas.</div>
+                  <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.1);"><strong>Atenção:</strong> Este checklist atende bem às exigências de Tribunais de Contas (como o TCE-RJ).</div>
+              `;
+             container.appendChild(tipsDiv);
+
+             // Update progress
+             window.updateChecklistProgress(processId);
+         };
+
+         window.updateChecklistProgress = function (processId) {
+             const savedState = window.getChecklistState(processId);
+             const total = Object.keys(window.CHECKLIST_ITEMS).reduce((acc, sectionKey) => {
+                 return acc + window.CHECKLIST_ITEMS[sectionKey].items.length;
+             }, 0);
+             const completed = Object.values(savedState).filter(v => v).length;
+
+             const progressEl = document.getElementById('checklistProgress');
+             const progressBar = document.getElementById('checklistProgressBar');
+
+             if (progressEl) progressEl.innerText = `${completed}/${total} items`;
+             if (progressBar) progressBar.style.width = `${(completed / total) * 100}%`;
+         };
+
+         window.getChecklistState = function (processId) {
+             const key = `checklist_${processId}`;
+             const saved = localStorage.getItem(key);
+             return saved ? JSON.parse(saved) : {};
+         };
+
+         window.saveChecklistState = function (processId, itemId, checked) {
+             const key = `checklist_${processId}`;
+             const state = window.getChecklistState(processId);
+             state[itemId] = checked;
+             localStorage.setItem(key, JSON.stringify(state));
+         };
+
+         window.downloadChecklistPDF = function () {
+             alert('Função de download de PDF será implementada em breve.');
+         };
+
+         window.launchManualUpdate = async function () {
             XLSX.utils.book_append_sheet(wb, ws, "Processos");
             XLSX.writeFile(wb, "processos.xlsx");
         };
@@ -8834,11 +9566,11 @@
     </div>
     <!-- <p
         style="border-radius: 8px; text-align: center; font-size: 11px; color: #fff; margin-top: 16px; position: fixed; left: 50%; transform: translateX(-50%); bottom: 75px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 12px; white-space: nowrap; width: auto; max-width: 90vw;">
-        SESME-C <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Bras%C3%A3o_de_Armas_de_Itagua%C3%AD.jpg"
+        SESME-C <img src="public/assets/images/logo.png"
             alt="DeepSite Logo"
             style="width: 14px; height: 14px; vertical-align: middle; display: inline-block; margin-right: 3px; filter: brightness(0) invert(1);"><a
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
-            style="color: #ffffff; text-decoration: underline;" target="_blank">INFRA</a> - <a
+            style="color: #ffffff; background-color: #990000; text-decoration: underline;" target="_blank">INFRA</a> - <a
             href="https://novoportal.itaguai.rj.gov.br/secretarias/educacao"
             style="color: #fff; text-decoration: underline;" target="_blank">PMI</a></p>-->
     <script>
@@ -8941,7 +9673,7 @@
             if (clickedEl) clickedEl.classList.add('active');
         }
     </script>
-    <!-- NOVO MODAL DE HISTÓRICO (PADRONIZADO) -->
+    <!-- NOVO MODAL DE HISTã“RICO (PADRONIZADO) -->
     <div id="history-modal" class="process-modal" onclick="if(event.target===this) window.closeModal('history-modal')">
         <div class="process-modal-content" style="max-width: 600px;">
             <header class="modal-header">
@@ -8956,6 +9688,9 @@
             </div>
             <footer class="modal-footer">
                 <button class="btn-glass-cancel" onclick="window.closeModal('history-modal')">Fechar</button>
+                <button class="btn-navy-save" id="historyTramitarBtn" onclick="window.tramitarFromHistory()" style="display:none;">
+                    <i class="fas fa-exchange-alt"></i> Tramitar
+                </button>
             </footer>
         </div>
     </div>
@@ -9068,13 +9803,54 @@
     </style>
 
     <!-- Tour Container -->
-    <div id="tour-container" style="display: none;"></div>
+    <div id="tour-container" style="display: none;">    </div>
+
+    <!-- CHECKLIST MODAL -->
+    <div id="checklistModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 1rem;">
+                <div>
+                    <h2 style="margin: 0; color: #1e293b; font-size: 1.5rem;">Checklist de Pagamento - Processo <span id="checklistProcessNumber" style="color: var(--govbr-blue);">-</span></h2>
+                    <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #64748b;">
+                        <strong>Fornecedor:</strong> <span id="checklistSupplier">-</span><br>
+                        <strong>Valor:</strong> <span id="checklistValue">-</span><br>
+                        <strong>Data de Abertura:</strong> <span id="checklistOpeningDate">-</span>
+                    </div>
+                </div>
+                <button class="close-button" onclick="window.closeModal('checklistModal')" style="font-size: 1.5rem; color: #1e293b; border: none; background: none; cursor: pointer;">&times;</button>
+            </div>
+
+            <div style="background: #f8fafc; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <strong style="color: #1e293b;">Progresso do Checklist:</strong>
+                    <span id="checklistProgress" style="color: var(--govbr-blue); font-weight: 700;">0/0 items</span>
+                </div>
+                <div style="width: 100%; background: #e5e7eb; height: 8px; border-radius: 4px; overflow: hidden;">
+                    <div id="checklistProgressBar" style="width: 0%; height: 100%; background: var(--govbr-blue); transition: width 0.3s ease;"></div>
+                </div>
+            </div>
+
+            <div id="checklistContainer" style="display: grid; gap: 1.5rem;">
+                <!-- Checklist items will be injected here -->
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
+                <button onclick="window.downloadChecklistPDF()" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-download"></i> Baixar PDF
+                </button>
+                <button onclick="window.closeModal('checklistModal')" class="btn btn-secondary" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-times"></i> Fechar
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
+
         // Detecção de ambiente de teste para desativar tours intrusivos
         if (window.location.search.includes('test=true') || (window.location.hostname === 'localhost' && window.location.search.includes('disable_tour=true'))) {
             window.DISABLE_TOUR = true;
-            console.log('%c SMEDU TEST MODE: ON ', 'background: #222; color: #bada55');
+            if (window.AppConfig && !window.AppConfig.isProduction()) console.log('%c SMEDU TEST MODE: ON ', 'background: #222; color: #bada55');
         }
 
         window.TOUR_STEPS = [
@@ -9166,6 +9942,7 @@
                     <div class="tour-tooltip" onclick="event.stopPropagation()">
                         <div class="tour-progress">${progress}</div>
                         ${step.title ? `<div class="tour-field-name">${step.title}</div>` : ''}
+                        <h3>${step.title}</h3>
                         <p>${step.description}</p>
                         <div class="tour-buttons">
                             <button class="tour-btn tour-btn-skip" onclick="window.endTour()">Pular Tour</button>
@@ -9214,6 +9991,7 @@
             }
         };
     </script>
+    <script src="2026_script.js"></script>
 </body>
 
 </html>

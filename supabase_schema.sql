@@ -155,6 +155,52 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+-- RPC Function para editar histórico (permite operador ou admin editar)
+CREATE OR REPLACE FUNCTION public.edit_process_history(
+  p_history_id UUID,
+  p_new_message TEXT
+)
+RETURNS JSON AS $$
+DECLARE
+  v_result JSON;
+BEGIN
+  -- Verifica se usuário é operador ou admin
+  IF NOT public.can_operate() THEN
+    RETURN json_build_object('error', 'Sem permissão para editar');
+  END IF;
+  
+  -- Atualiza o histórico
+  UPDATE public.process_history
+  SET message = p_new_message
+  WHERE id = p_history_id;
+  
+  -- Retorna sucesso
+  RETURN json_build_object('success', true, 'message', 'Registro atualizado com sucesso');
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- RPC Function para deletar histórico (permite admin deletar)
+CREATE OR REPLACE FUNCTION public.delete_process_history(
+  p_history_id UUID
+)
+RETURNS JSON AS $$
+DECLARE
+  v_result JSON;
+BEGIN
+  -- Verifica se usuário é admin
+  IF NOT public.is_admin() THEN
+    RETURN json_build_object('error', 'Sem permissão para deletar');
+  END IF;
+  
+  -- Deleta o histórico
+  DELETE FROM public.process_history
+  WHERE id = p_history_id;
+  
+  -- Retorna sucesso
+  RETURN json_build_object('success', true, 'message', 'Registro excluído com sucesso');
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- ==========================================
 -- POLÍTICAS PARA USER PROFILES
 -- ==========================================

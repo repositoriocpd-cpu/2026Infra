@@ -2,6 +2,7 @@ node_modules/
 dist/
 nul
 tools/
+!tools/testing/
 *.tmp
 .DS_Store
 .env*

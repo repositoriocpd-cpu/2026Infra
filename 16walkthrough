@@ -1,0 +1,19 @@
+# Resumo: Deploy e Melhorias do Lighthouse (100% Revisão Final)
+
+Excelente progresso mostrado no seu print: nós conseguimos 100 em Práticas Recomendadas! 
+
+Para garantir que Acessibilidade (89) e SEO (83) também cheguem a 100, acabei de fazer uma segunda revisão no código e identifiquei detalhes adicionais da sua aplicação que estavam escapando e baixando essas notas. Já submeti as correções para o GitHub!
+
+## O Que Foi Alterado (Atualização)
+
+### 1. Detalhes de Acessibilidade ("color-contrast" e "img-alt")
+- **Contraste Dinâmico:** O botão de "Exportar PDF" já tinha o texto em branco, mas o vermelho puxado do Tailwind (`#ef4444`) ainda dava um contraste levemente fraco (reprovando no nível estrito AAA/AA do Lighthouse). Alterei o fundo apenas desse botão especificamente para um bordô mais escuro (`#990000`), deixando a letra branca legível sob *qualquer padrão visual de contraste*.
+- **`alt` Text Oculto:** O segundo erro de `alt` estava num alerta embutido dentro de um script JavaScript. No momento em que você simula o mobile, o aplicativo pede pra Instalar o PWA ("Instalar INFRASMEDU") pela `pwa-handler.js`, e esse banner gera um logo sem o atributo `alt` (cego). Adicionei a descrição exigida nativamente no seu código fonte gerador (`alt="Ícone do PWA"`).
+
+### 2. SEO e Copilagem ("robots.txt")
+- O arquivo SEO de instrução aos buscadores do Google `robots.txt` que criei antes... a configuração da Netlify no seu repositório copia os arquivos estáticos direto se estivessem dentro da aba `/public` ou pelo `script` do *package.json*. Só havia listado arquivos antigos no *script build*. Alterei sua instrução `"build"` no `package.json` para adicionar esse novo arquivo `robots.txt` no lote de copilação, forçando que a Netlify agora exiba o arquivo SEO em produção na rota correta!
+
+## Deploy
+As correções foram transferidas pelo *commit*: `fix(lighthouse): garante nota máxima em acessibilidade e SEO copiando robots e ajustando estilos inline` para a ramificação `Infra2026`. 
+
+Em questão de um a dois minutos após essa re-integração na sua plataforma da Netlify as novas páginas serão servidas. Assim que testar a página no devtools (LightHouse), o resultado esperado será aprovação total em todas essas exigências de motor de busca!
