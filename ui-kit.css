@@ -40,6 +40,7 @@
   --db-orange: #f39c12;
   --db-red: #e74c3c;
   --db-gray: #7f8c8d;
+  --db-purple: #a349a4;
   --db-bg-light: #f8f9fb;
 }
 
@@ -622,6 +623,11 @@ body.dark-mode .ui-toast__desc { color: var(--ui-text-3); }
 .btn-db-export {
   background: var(--db-red);
   box-shadow: 0 8px 16px rgba(231, 76, 60, 0.25);
+}
+
+.btn-db-fisco {
+  background: var(--db-purple) !important;
+  box-shadow: 0 8px 16px rgba(163, 73, 164, 0.25);
 }
 
 .btn-db-action:hover {

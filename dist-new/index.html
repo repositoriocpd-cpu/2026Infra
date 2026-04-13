@@ -32,7 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <link rel="stylesheet" href="ui-kit.css?v=3">
+    <link rel="stylesheet" href="ui-kit.css?v=4">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
         /* Timeline Modal Styles */
@@ -3912,6 +3912,18 @@
             background: #dcfce7;
             color: #15803d;
         }
+
+        .btn-db-fisco {
+            background: #a349a4 !important;
+            color: white !important;
+            box-shadow: 0 8px 16px rgba(163, 73, 164, 0.25) !important;
+        }
+
+        .btn-db-fisco:hover {
+            background: #8e3e8f !important;
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
     </style>
 </head>
 
@@ -3979,7 +3991,7 @@
                                 E-mail ou senha incorretos.
                             </div>
 
-                            <h form id="login-form" onsubmit="handleLogin(event)">
+                            <form id="login-form" onsubmit="handleLogin(event)">
                                 <div class="form-group">
                                     <label for="login-email">E-mail corporativo</label>
                                     <div class="input-icon-wrapper">
@@ -4233,6 +4245,10 @@
                         <button class="btn-db-action btn-db-export" onclick="window.exportDashboardToPDF()"
                             style="height: 42px; font-size: 0.9rem;">
                             <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                        <button class="btn-db-action btn-db-fisco" onclick="window.openFiscoModal()"
+                            style="height: 42px; font-size: 0.9rem;">
+                            <i class="fas fa-file-invoice-dollar"></i> FISCO
                         </button>
                     </div>
                 </div>
@@ -5198,7 +5214,7 @@
     <div id="userManagementModal" class="process-modal" style="display:none;"
         onclick="if(event.target===this) window.closeModal('userManagementModal')">
         <div class="process-modal-content"
-            style="max-width: 850px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+            style="max-width: 1100px; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
             <header class="modal-header"
                 style="padding: 1.5rem 2rem; background: #fff; border-bottom: 1px solid #f1f5f9; border-radius: 16px 16px 0 0;">
                 <div class="modal-header-info">
@@ -5214,7 +5230,7 @@
                     style="font-size: 1.5rem; color: #94a3b8;">&times;</button>
             </header>
 
-            <div class="modal-body" style="padding: 2rem; background: #fff;">
+            <div class="modal-body" style="padding: 2rem; background: #fff; overflow-x: auto;">
                 <!-- Formulário de cadastro/edição -->
                 <div id="userFormSection"
                     style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:1.5rem; margin-bottom:2rem; position: relative;">
@@ -8911,7 +8927,15 @@
                     if (error) throw error;
                     alert('Dados atualizados com sucesso!');
                 } else {
-                    const { data: authData, error: authError } = await supabase.auth.signUp({
+                    // Criar um cliente temporário para o cadastro não afetar a sessão atual do administrador
+                    const lib = window.supabase || (window.Supabase && window.Supabase.createClient ? window.Supabase : null);
+                    if (!lib) throw new Error('Biblioteca Supabase não encontrada');
+                    
+                    const tempClient = lib.createClient(SUPABASE_URL, SUPABASE_KEY, {
+                        auth: { persistSession: false }
+                    });
+
+                    const { data: authData, error: authError } = await tempClient.auth.signUp({
                         email: email,
                         password: password,
                         options: { data: { full_name: fullName } }
@@ -8924,7 +8948,7 @@
                             id: userId, full_name: fullName, role: role, department: department
                         });
                     }
-                    alert('Usuário cadastrado! Peça para confirmar o e-mail de ativação.');
+                    alert('Usuário cadastrado com sucesso! Peça para o colaborador confirmar o e-mail de ativação (se aplicável).');
                 }
 
                 // Reset
@@ -9017,14 +9041,18 @@
             }, 200);
         }
 
-        // Monitorar estado da sessão com segurança
+        // Monitorar estado da sessão com segurança e evitar re-inicializações desnecessárias
+        window._currentAuthUserId = null;
         waitForSupabase(function (supabaseClient) {
             if (supabaseClient && supabaseClient.auth) {
                 supabaseClient.auth.onAuthStateChange((event, session) => {
                     if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth event:', event);
-                    const overlay = document.getElementById('login-overlay');
-
+                    
                     if (session?.user) {
+                        // Se o usuário já está carregado e é o mesmo, não faz nada
+                        if (window._currentAuthUserId === session.user.id) return;
+                        window._currentAuthUserId = session.user.id;
+
                         const overlay = document.getElementById('login-overlay');
                         if (overlay) overlay.style.display = 'none';
                         updateUserInfo(session.user);
@@ -9034,7 +9062,10 @@
                             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Iniciando carregamento do app...');
                             window.initApp();
                         }
-
+                    } else {
+                        window._currentAuthUserId = null;
+                        const overlay = document.getElementById('login-overlay');
+                        if (overlay) overlay.style.display = 'flex';
                     }
                 });
             }
@@ -10088,6 +10119,15 @@
 
         // Auto-start tour on new process (only if not disabled and not editing)
         const originalOpenProcessModal = window.openProcessModal;
+        window.openFiscoModal = function () {
+            // Placeholder para a funcionalidade FISCO
+            if (window.confirmModal) {
+                window.confirmModal('Funcionalidade em Desenvolvimento', 'O módulo FISCO está sendo preparado para integração com a Secretaria de Fazenda. Em breve você terá acesso a consultas tributárias e fiscais diretamente por aqui.', 'Entendido', '', () => {});
+            } else {
+                alert('Módulo FISCO: Funcionalidade em desenvolvimento e integração.');
+            }
+        };
+
         window.openProcessModal = function (p = null) {
             const isNewProcess = p === null || p === undefined;
 

@@ -39,6 +39,31 @@ window.formatCurrency = function (v) {
     return isNaN(n) ? (v || '') : new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
 };
 
+window.soNumeros = function(e) {
+    var charCode = (e.which) ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+};
+
+window.formatarCNPJ = function(cnpj) {
+    var val = cnpj.value.replace(/\D/g, '');
+    if (val.length === 14) {
+        val = val.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+    } else if (val.length === 11) {
+        val = val.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+    }
+    cnpj.value = val;
+};
+
+window.formatarMoeda = function(campo) {
+    var val = campo.value.replace(/\D/g, '');
+    val = (val / 100).toFixed(2).replace('.', ',');
+    val = val.replace(/(\d)(\d{3}(\d{3}(,\d{2})?)?)$/, '$1.$2');
+    campo.value = val;
+};
+
 // As funções de Info Modal e a variável infoContent agora são gerenciadas centralmente no index.html 
 // para evitar erros de declaração duplicada.
 

@@ -32,7 +32,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <link rel="stylesheet" href="ui-kit.css?v=3">
+    <link rel="stylesheet" href="ui-kit.css?v=4">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <style>
         /* Timeline Modal Styles */
@@ -3912,6 +3912,18 @@
             background: #dcfce7;
             color: #15803d;
         }
+
+        .btn-db-fisco {
+            background: #a349a4 !important;
+            color: white !important;
+            box-shadow: 0 8px 16px rgba(163, 73, 164, 0.25) !important;
+        }
+
+        .btn-db-fisco:hover {
+            background: #8e3e8f !important;
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
     </style>
 </head>
 
@@ -4233,6 +4245,10 @@
                         <button class="btn-db-action btn-db-export" onclick="window.exportDashboardToPDF()"
                             style="height: 42px; font-size: 0.9rem;">
                             <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                        <button class="btn-db-action btn-db-fisco" onclick="window.openFiscoModal()"
+                            style="height: 42px; font-size: 0.9rem;">
+                            <i class="fas fa-file-invoice-dollar"></i> FISCO
                         </button>
                     </div>
                 </div>
@@ -10103,6 +10119,15 @@
 
         // Auto-start tour on new process (only if not disabled and not editing)
         const originalOpenProcessModal = window.openProcessModal;
+        window.openFiscoModal = function () {
+            // Placeholder para a funcionalidade FISCO
+            if (window.confirmModal) {
+                window.confirmModal('Funcionalidade em Desenvolvimento', 'O módulo FISCO está sendo preparado para integração com a Secretaria de Fazenda. Em breve você terá acesso a consultas tributárias e fiscais diretamente por aqui.', 'Entendido', '', () => {});
+            } else {
+                alert('Módulo FISCO: Funcionalidade em desenvolvimento e integração.');
+            }
+        };
+
         window.openProcessModal = function (p = null) {
             const isNewProcess = p === null || p === undefined;
 
