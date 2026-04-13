@@ -11013,11 +11013,10 @@
         window.contratoEditando = null;
         window.fornecedorEditando = null;
 
+        // ======================== FORNECEDORES LOGIC ========================
         window.salvarFornecedor = async function () {
             const nome = document.getElementById('fornec-razao').value;
             const cnpj = document.getElementById('fornec-cnpj').value;
-            
-            // Collect all objetos from dynamic inputs
             var objetos = [];
             document.querySelectorAll('.fornec-objeto-row').forEach(function(row) {
                 var input = row.querySelector('.fornec-objeto-input');
@@ -11025,64 +11024,32 @@
                     objetos.push(input.value.trim());
                 }
             });
-            
-            if (!nome) {
-                alert('Preencha o nome da empresa');
-                return;
-            }
-            
+            if (!nome) { alert('Preencha o nome da empresa'); return; }
             var objetoTexto = objetos.join('; ');
-            
             try {
                 if (window.supabase) {
                     const data = { name: nome, cnpj: cnpj, objeto: objetoTexto };
                     const { error } = await window.supabase.from('suppliers').upsert(data, { onConflict: 'name' });
                     if (error) throw error;
                 }
-                
-                if (window.fornecedorEditando !== null && window.fornecedorEditando !== undefined) {
-                    // Update existing
-                    window.fiscalData.fornecedores[window.fornecedorEditando] = {
-                        name: nome,
-                        cnpj: cnpj,
-                        objeto: objetoTexto
-                    };
-                } else {
-                    // Add new
-                    window.fiscalData.fornecedores.push({
-                        name: nome,
-                        cnpj: cnpj,
-                        objeto: objetoTexto
-                    });
-                }
-                
-                window.atualizarTabelaFornecedores();
-                window.atualizarSelectsFornecedor();
-                await window.carregarSuppliers();
-                
                 alert('Fornecedor salvo com sucesso!');
+                window.loadFiscalData();
+                document.getElementById('fornec-razao').value = '';
+                document.getElementById('fornec-cnpj').value = '';
+                document.getElementById('fornec-objetos-container').innerHTML = `
+                    <div class="fornec-objeto-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)">
+                        <button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+                    </div>
+                `;
+                window.fornecedorEditando = null;
             } catch (err) {
                 console.error('Erro ao salvar fornecedor:', err);
                 alert('Erro ao salvar: ' + err.message);
             }
-            
-            document.getElementById('fornec-razao').value = '';
-            document.getElementById('fornec-cnpj').value = '';
-            document.getElementById('fornec-objetos-container').innerHTML = `
-                <div class="fornec-objeto-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                    <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)">
-                    <button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
-                </div>
-            `;
-            window.fornecedorEditando = null;
         };
 
         window.adicionarObjetoFornecedor = function () {
-            var rows = document.querySelectorAll('.fornec-objeto-row');
-            if (rows.length >= 10) {
-                alert('Máximo de 10 objetos permitidos');
-                return;
-            }
             var container = document.getElementById('fornec-objetos-container');
             var div = document.createElement('div');
             div.className = 'fornec-objeto-row';
@@ -11096,23 +11063,7 @@
 
         window.removerObjetoFornecedor = function (btn) {
             var container = document.getElementById('fornec-objetos-container');
-            if (container.children.length > 1) {
-                btn.closest('.fornec-objeto-row').remove();
-            }
-        };
-
-        window.carregarSuppliers = async function () {
-            if (!window.supabaseClient) return;
-            try {
-                const { data } = await window.supabaseClient.from('suppliers').select('name,cnpj,objeto').order('name');
-                if (data) {
-                    window.state.suppliers = data.map(s => ({ name: s.name, cnpj: s.cnpj || '', objeto: s.objeto || '' }));
-                    window.state.supplierNames = data.map(s => s.name);
-                    window.updateSelects();
-                }
-            } catch (err) {
-                console.error('Erro ao carregar fornecedores:', err);
-            }
+            if (container && container.children.length > 1) { btn.closest('.fornec-objeto-row').remove(); }
         };
 
         window.atualizarTabelaFornecedores = function () {
@@ -11132,29 +11083,17 @@
             const f = window.fiscalData.fornecedores[index];
             document.getElementById('fornec-razao').value = f.name || f.nome;
             document.getElementById('fornec-cnpj').value = f.cnpj || '';
-            
-            // Split objeto by semicolon for editing
-            var objetoTexto = f.objeto || '';
-            var objetos = objetoTexto.split(';').map(function(o) { return o.trim(); }).filter(function(o) { return o; });
-            
+            var objetos = (f.objeto || '').split(';').map(o => o.trim()).filter(o => o);
             var container = document.getElementById('fornec-objetos-container');
             container.innerHTML = '';
-            
-            if (objetos.length === 0) {
-                objetos = [''];
-            }
-            
-            objetos.forEach(function(ob) {
+            if (objetos.length === 0) objetos = [''];
+            objetos.forEach(ob => {
                 var div = document.createElement('div');
                 div.className = 'fornec-objeto-row';
                 div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem;';
-                div.innerHTML = `
-                    <input type="text" class="form-control fornec-objeto-input" value="${ob}" placeholder="digite o objeto (opcional)">
-                    <button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
-                `;
+                div.innerHTML = `<input type="text" class="form-control fornec-objeto-input" value="${ob}" placeholder="digite o objeto (opcional)"><button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>`;
                 container.appendChild(div);
             });
-            
             window.fornecedorEditando = index;
         };
 
@@ -11162,9 +11101,7 @@
             const f = window.fiscalData.fornecedores[index];
             const nomeStr = f.name || f.nome;
             if (confirm('Excluir fornecedor ' + nomeStr + '?')) {
-                if (window.supabaseClient) {
-                    await window.supabaseClient.from('suppliers').delete().eq('name', nomeStr);
-                }
+                if (window.supabaseClient) { await window.supabaseClient.from('suppliers').delete().eq('name', nomeStr); }
                 window.loadFiscalData();
             }
         };
@@ -11183,69 +11120,38 @@
             });
         };
 
+        // ======================== CONTRATOS LOGIC ========================
         window.atualizarContratosPorFornecedor = function () {
             const fornec = document.getElementById('emp-fornec').value;
             const contratoSel = document.getElementById('emp-contrato');
-            
-            if (!fornec) {
-                contratoSel.innerHTML = '<option value="">-- Selecione --</option>';
-                document.getElementById('emp-periodo').value = '';
-                return;
-            }
-            
-            const contratosFiltrados = window.fiscalData.contratos.filter(c => c.supplier_name === fornec || c.fornecedor === fornec);
-            
-            if (contratosFiltrados.length === 0) {
-                contratoSel.innerHTML = '<option value="">Nenhum contrato encontrado</option>';
-                return;
-            }
-            
-            const opts = contratosFiltrados.map(c => {
-                const num = c.contract_number || c.numero;
-                return '<option value="' + num + '">' + num + '</option>';
-            }).join('');
+            if (!fornec) { contratoSel.innerHTML = '<option value="">-- Selecione --</option>'; document.getElementById('emp-periodo').value = ''; return; }
+            const contratosFiltrados = window.fiscalData.contratos.filter(c => c.supplier_name === fornec);
+            if (contratosFiltrados.length === 0) { contratoSel.innerHTML = '<option value="">Nenhum contrato encontrado</option>'; return; }
+            const opts = contratosFiltrados.map(c => `<option value="${c.contract_number}">${c.contract_number}</option>`).join('');
             contratoSel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
         };
 
         window.salvarContrato = async function () {
             const fornec = document.getElementById('contrat-fornec').value;
-            const processo = document.getElementById('contrat-processo').value;
             const numero = document.getElementById('contrat-num').value;
-            const valor = parseFloat(document.getElementById('contrat-valor').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
-            const inicio = document.getElementById('contrat-inicio').value;
-            const termino = document.getElementById('contrat-termino').value;
-            const fiscal1 = document.getElementById('contrat-fiscal1').value;
-            const fiscal2 = document.getElementById('contrat-fiscal2').value;
-            const fiscal3 = document.getElementById('contrat-fiscal3').value;
-            if (!fornec || !numero) {
-                alert('Preencha Fornecedor e N.º do Contrato');
-                return;
-            }
-            const fiscais = [fiscal1, fiscal2, fiscal3].filter(f => f);
+            if (!fornec || !numero) { alert('Preencha Fornecedor e N.Âº do Contrato'); return; }
             const data = {
                 supplier_name: fornec,
-                process_number: processo,
+                process_number: document.getElementById('contrat-processo').value,
                 contract_number: numero,
-                value: valor,
-                start_date: inicio,
-                end_date: termino,
-                officers: fiscais
+                value: parseFloat(document.getElementById('contrat-valor').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0,
+                start_date: document.getElementById('contrat-inicio').value,
+                end_date: document.getElementById('contrat-termino').value,
+                officers: [document.getElementById('contrat-fiscal1').value, document.getElementById('contrat-fiscal2').value, document.getElementById('contrat-fiscal3').value].filter(f => f)
             };
             try {
                 if (window.supabaseClient) {
                     const { error } = await window.supabaseClient.from('fiscal_contracts').upsert(data, { onConflict: 'contract_number' });
                     if (error) throw error;
                 }
-                alert('Contrato salvo com sucesso!');
+                alert('Contrato salvo!');
                 window.loadFiscalData();
-                ['contrat-fornec', 'contrat-processo', 'contrat-num', 'contrat-valor', 'contrat-inicio', 'contrat-termino', 'contrat-fiscal1', 'contrat-fiscal2', 'contrat-fiscal3'].forEach(id => {
-                    document.getElementById(id).value = '';
-                });
-                window.contratoEditando = null;
-            } catch (err) {
-                console.error('Erro ao salvar contrato:', err);
-                alert('Erro ao salvar: ' + err.message);
-            }
+            } catch (err) { alert(err.message); }
         };
 
         window.atualizarTabelaContratos = function () {
@@ -11255,10 +11161,9 @@
                 tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #999;">Nenhum contrato cadastrado</td></tr>';
             } else {
                 tbody.innerHTML = window.fiscalData.contratos.map((c, i) =>
-                    '<tr><td>' + c.supplier_name + '</td><td>' + (c.process_number || '-') + '</td><td>' + c.contract_number + '</td><td>R$ ' + (parseFloat(c.value) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</td><td>' + (c.start_date || '-') + '</td><td>' + (c.end_date || '-') + '</td><td>' + (c.officers ? c.officers.join(', ') : '-') + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarContrato(' + i + ')"><i class="fas fa-edit"></i> Editar</button> <button class="btn-tiny btn-danger" onclick="window.excluirContrato(' + i + ')"><i class="fas fa-trash"></i> Excluir</button></td></tr>'
+                    '<tr><td>' + c.supplier_name + '</td><td>' + (c.process_number || '-') + '</td><td>' + c.contract_number + '</td><td>R$ ' + (parseFloat(c.value) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</td><td>' + (c.start_date || '-') + '</td><td>' + (c.end_date || '-') + '</td><td>' + (c.officers ? c.officers.join(', ') : '-') + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarContrato(' + i + ')"><i class="fas fa-edit"></i></button> <button class="btn-tiny btn-danger" onclick="window.excluirContrato(' + i + ')"><i class="fas fa-trash"></i></button></td></tr>'
                 ).join('');
             }
-            window.atualizarSelectsContrato();
         };
 
         window.editarContrato = function (index) {
@@ -11269,890 +11174,274 @@
             document.getElementById('contrat-valor').value = (parseFloat(c.value) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2});
             document.getElementById('contrat-inicio').value = c.start_date || '';
             document.getElementById('contrat-termino').value = c.end_date || '';
-            if (c.officers && c.officers.length > 0) {
-                document.getElementById('contrat-fiscal1').value = c.officers[0] || '';
-                document.getElementById('contrat-fiscal2').value = c.officers[1] || '';
-                document.getElementById('contrat-fiscal3').value = c.officers[2] || '';
+            if (c.officers) {
+                ['contrat-fiscal1', 'contrat-fiscal2', 'contrat-fiscal3'].forEach((id, i) => { document.getElementById(id).value = c.officers[i] || ''; });
             }
-            window.contratoEditando = index;
         };
 
         window.excluirContrato = async function (index) {
             const c = window.fiscalData.contratos[index];
-            if (confirm('Excluir contrato ' + c.contract_number + '?')) {
-                try {
-                    if (window.supabaseClient) {
-                        const { error } = await window.supabaseClient.from('fiscal_contracts').delete().eq('contract_number', c.contract_number);
-                        if (error) throw error;
-                    }
-                    window.loadFiscalData();
-                } catch (err) {
-                    console.error('Erro ao excluir contrato:', err);
-                }
-            }
-        };
-
-        window.atualizarSelectsContrato = function () {
-            const sel = document.getElementById('emp-contrato');
-            if (sel) {
-                const opts = window.fiscalData.contratos.map((c, i) => {
-                    const dataInicio = c.start_date || '';
-                    const dataTermino = c.end_date || '';
-                    const num = c.contract_number || '';
-                    return '<option value="' + num + '" data-inicio="' + dataInicio + '" data-termino="' + dataTermino + '">' + num + '</option>';
-                }).join('');
-                sel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
-            }
-        };
-
-        window.calcularPeriodoContrato = function (numeroContrato) {
-            const campoPeriodo = document.getElementById('emp-periodo');
-            if (!numeroContrato) {
-                campoPeriodo.value = '';
-                return;
-            }
-            const contrato = window.fiscalData.contratos.find(c => (c.contract_number || c.numero) === numeroContrato);
-            if (contrato && contrato.start_date && contrato.end_date) {
-                const inicio = new Date(contrato.start_date);
-                const termino = new Date(contrato.end_date);
-                const diffTime = termino - inicio;
-                const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
-                campoPeriodo.value = diffMonths + ' meses';
-            } else {
-                campoPeriodo.value = '';
-            }
-        };
-
-        window.salvarEmpenho = async function () {
-            const fornec = document.getElementById('emp-fornec').value;
-            const contrato = document.getElementById('emp-contrato').value;
-            const periodo = document.getElementById('emp-periodo').value;
-            const fiscalSelect = document.getElementById('emp-fiscal');
-            const fiscaisSelecionados = Array.from(fiscalSelect.selectedOptions).map(opt => opt.value).filter(v => v);
-            
-            // Collect all empenos from the dynamic inputs
-            const rows = document.querySelectorAll('.emp-empenho-row');
-            const empenos = [];
-            rows.forEach(row => {
-                const neInput = row.querySelector('.emp-ne-input');
-                const valorInput = row.querySelector('.emp-valor-input');
-                const ne = neInput.value.trim();
-                const valorStr = valorInput.value;
-                const valor = parseFloat(valorStr.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
-                if (ne) {
-                    empenos.push({ ne: ne, valor: valor });
-                }
-            });
-            
-            if (!fornec || empenos.length === 0) {
-                alert('Preencha Fornecedor e pelo menos um N.º do Empenho');
-                return;
-            }
-            
-            try {
-                if (window.supabase) {
-                    for (const emp of empenos) {
-                        const data = {
-                            supplier_name: fornec,
-                            contract_number: contrato,
-                            period: periodo,
-                            officer_name: fiscaisSelecionados.join(', '),
-                            ne_number: emp.ne,
-                            value: emp.valor
-                        };
-                        const { error } = await window.supabase.from('fiscal_empenhos').upsert(data, { onConflict: 'ne_number' });
-                        if (error) throw error;
-                    }
-                }
-                
-                for (const emp of empenos) {
-                    window.fiscalData.empenhos.push({
-                        supplier_name: fornec,
-                        contract_number: contrato,
-                        period: periodo,
-                        officer_name: fiscaisSelecionados.join(', '),
-                        return '<option value="' + n + '">' + n + '</option>';
-                    }).join('');
-                    sel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
-                }
-            });
-        };
-
-        window.atualizarContratosPorFornecedor = function () {
-            const fornec = document.getElementById('emp-fornec').value;
-            const contratoSel = document.getElementById('emp-contrato');
-            
-            if (!fornec) {
-                contratoSel.innerHTML = '<option value="">-- Selecione --</option>';
-                document.getElementById('emp-periodo').value = '';
-                return;
-            }
-            
-            const contratosFiltrados = window.fiscalData.contratos.filter(c => c.supplier_name === fornec || c.fornecedor === fornec);
-            
-            if (contratosFiltrados.length === 0) {
-                contratoSel.innerHTML = '<option value="">Nenhum contrato encontrado</option>';
-                return;
-            }
-            
-            const opts = contratosFiltrados.map(c => {
-                const num = c.contract_number || c.numero;
-                return '<option value="' + num + '">' + num + '</option>';
-            }).join('');
-            contratoSel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
-        };
-
-        window.salvarContrato = async function () {
-            const fornec = document.getElementById('contrat-fornec').value;
-            const processo = document.getElementById('contrat-processo').value;
-            const numero = document.getElementById('contrat-num').value;
-            const valor = parseFloat(document.getElementById('contrat-valor').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
-            const inicio = document.getElementById('contrat-inicio').value;
-            const termino = document.getElementById('contrat-termino').value;
-            const fiscal1 = document.getElementById('contrat-fiscal1').value;
-            const fiscal2 = document.getElementById('contrat-fiscal2').value;
-            const fiscal3 = document.getElementById('contrat-fiscal3').value;
-            if (!fornec || !numero) {
-                alert('Preencha Fornecedor e N.º do Contrato');
-                return;
-            }
-            const fiscais = [fiscal1, fiscal2, fiscal3].filter(f => f);
-            const data = {
-                supplier_name: fornec,
-                process_number: processo,
-                contract_number: numero,
-                value: valor,
-                start_date: inicio,
-                end_date: termino,
-                officers: fiscais
-            };
-            try {
-                if (window.supabaseClient) {
-                    const { error } = await window.supabaseClient.from('fiscal_contracts').upsert(data, { onConflict: 'contract_number' });
-                    if (error) throw error;
-                }
-                alert('Contrato salvo com sucesso!');
+            if (confirm('Excluir?')) {
+                if (window.supabaseClient) { await window.supabaseClient.from('fiscal_contracts').delete().eq('contract_number', c.contract_number); }
                 window.loadFiscalData();
-                ['contrat-fornec', 'contrat-processo', 'contrat-num', 'contrat-valor', 'contrat-inicio', 'contrat-termino', 'contrat-fiscal1', 'contrat-fiscal2', 'contrat-fiscal3'].forEach(id => {
-                    document.getElementById(id).value = '';
-                });
-                window.contratoEditando = null;
-            } catch (err) {
-                console.error('Erro ao salvar contrato:', err);
-                alert('Erro ao salvar: ' + err.message);
-            }
-        };
-
-        window.atualizarTabelaContratos = function () {
-            const tbody = document.getElementById('contratos-list');
-            if (!tbody) return;
-            if (window.fiscalData.contratos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #999;">Nenhum contrato cadastrado</td></tr>';
-            } else {
-                tbody.innerHTML = window.fiscalData.contratos.map((c, i) =>
-                    '<tr><td>' + c.supplier_name + '</td><td>' + (c.process_number || '-') + '</td><td>' + c.contract_number + '</td><td>R$ ' + (parseFloat(c.value) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</td><td>' + (c.start_date || '-') + '</td><td>' + (c.end_date || '-') + '</td><td>' + (c.officers ? c.officers.join(', ') : '-') + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarContrato(' + i + ')"><i class="fas fa-edit"></i> Editar</button> <button class="btn-tiny btn-danger" onclick="window.excluirContrato(' + i + ')"><i class="fas fa-trash"></i> Excluir</button></td></tr>'
-                ).join('');
-            }
-            window.atualizarSelectsContrato();
-        };
-
-        window.editarContrato = function (index) {
-            const c = window.fiscalData.contratos[index];
-            document.getElementById('contrat-fornec').value = c.supplier_name || '';
-            document.getElementById('contrat-processo').value = c.process_number || '';
-            document.getElementById('contrat-num').value = c.contract_number || '';
-            document.getElementById('contrat-valor').value = (parseFloat(c.value) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2});
-            document.getElementById('contrat-inicio').value = c.start_date || '';
-            document.getElementById('contrat-termino').value = c.end_date || '';
-            if (c.officers && c.officers.length > 0) {
-                document.getElementById('contrat-fiscal1').value = c.officers[0] || '';
-                document.getElementById('contrat-fiscal2').value = c.officers[1] || '';
-                document.getElementById('contrat-fiscal3').value = c.officers[2] || '';
-            }
-            window.contratoEditando = index;
-        };
-
-        window.excluirContrato = async function (index) {
-            const c = window.fiscalData.contratos[index];
-            if (confirm('Excluir contrato ' + c.contract_number + '?')) {
-                try {
-                    if (window.supabaseClient) {
-                        const { error } = await window.supabaseClient.from('fiscal_contracts').delete().eq('contract_number', c.contract_number);
-                        if (error) throw error;
-                    }
-                    window.loadFiscalData();
-                } catch (err) {
-                    console.error('Erro ao excluir contrato:', err);
-                }
-            }
-        };
-
-        window.atualizarSelectsContrato = function () {
-            const sel = document.getElementById('emp-contrato');
-            if (sel) {
-                const opts = window.fiscalData.contratos.map((c, i) => {
-                    const dataInicio = c.start_date || '';
-                    const dataTermino = c.end_date || '';
-                    const num = c.contract_number || '';
-                    return '<option value="' + num + '" data-inicio="' + dataInicio + '" data-termino="' + dataTermino + '">' + num + '</option>';
-                }).join('');
-                sel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
             }
         };
 
         window.calcularPeriodoContrato = function (numeroContrato) {
             const campoPeriodo = document.getElementById('emp-periodo');
-            if (!numeroContrato) {
-                campoPeriodo.value = '';
-                return;
-            }
-            const contrato = window.fiscalData.contratos.find(c => (c.contract_number || c.numero) === numeroContrato);
+            if (!numeroContrato) { campoPeriodo.value = ''; return; }
+            const contrato = window.fiscalData.contratos.find(c => c.contract_number === numeroContrato);
             if (contrato && contrato.start_date && contrato.end_date) {
-                const inicio = new Date(contrato.start_date);
-                const termino = new Date(contrato.end_date);
-                const diffTime = termino - inicio;
-                const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30));
-                campoPeriodo.value = diffMonths + ' meses';
-            } else {
-                campoPeriodo.value = '';
-            }
+                const diffTime = new Date(contrato.end_date) - new Date(contrato.start_date);
+                campoPeriodo.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30)) + ' meses';
+            } else { campoPeriodo.value = ''; }
         };
 
+        // ======================== EMPENHOS LOGIC ========================
         window.salvarEmpenho = async function () {
             const fornec = document.getElementById('emp-fornec').value;
             const contrato = document.getElementById('emp-contrato').value;
             const periodo = document.getElementById('emp-periodo').value;
-            const fiscalSelect = document.getElementById('emp-fiscal');
-            const fiscaisSelecionados = Array.from(fiscalSelect.selectedOptions).map(opt => opt.value).filter(v => v);
-            
-            // Collect all empenos from the dynamic inputs
+            const fiscaisArr = Array.from(document.getElementById('emp-fiscal').selectedOptions).map(o => o.value).filter(v => v);
             const rows = document.querySelectorAll('.emp-empenho-row');
             const empenos = [];
             rows.forEach(row => {
-                const neInput = row.querySelector('.emp-ne-input');
-                const valorInput = row.querySelector('.emp-valor-input');
-                const ne = neInput.value.trim();
-                const valorStr = valorInput.value;
-                const valor = parseFloat(valorStr.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
-                if (ne) {
-                    empenos.push({ ne: ne, valor: valor });
-                }
+                const ne = row.querySelector('.emp-ne-input').value.trim();
+                const valor = parseFloat(row.querySelector('.emp-valor-input').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
+                if (ne) empenos.push({ ne, valor });
             });
-            
-            if (!fornec || empenos.length === 0) {
-                alert('Preencha Fornecedor e pelo menos um N.º do Empenho');
-                return;
-            }
-            
+            if (!fornec || empenos.length === 0) { alert('Preencha os campos obrigatÃ³rios'); return; }
             try {
                 if (window.supabase) {
                     for (const emp of empenos) {
-                        const data = {
-                            supplier_name: fornec,
-                            contract_number: contrato,
-                            period: periodo,
-                            officer_name: fiscaisSelecionados.join(', '),
-                            ne_number: emp.ne,
-                            value: emp.valor
-                        };
-                        const { error } = await window.supabase.from('fiscal_empenhos').upsert(data, { onConflict: 'ne_number' });
-                        if (error) throw error;
+                        const data = { supplier_name: fornec, contract_number: contrato, period: periodo, officer_name: fiscaisArr.join(', '), ne_number: emp.ne, value: emp.valor };
+                        await window.supabase.from('fiscal_empenhos').upsert(data, { onConflict: 'ne_number' });
                     }
                 }
-                
-                for (const emp of empenos) {
-                    window.fiscalData.empenhos.push({
-                        supplier_name: fornec,
-                        contract_number: contrato,
-                        period: periodo,
-                        officer_name: fiscaisSelecionados.join(', '),
-                        ne_number: emp.ne,
-                        value: emp.valor
-                    });
-                }
-                
-                alert('Empenho(s) salvo(s) com sucesso!');
-                window.atualizarTabelaEmpenhos();
-                window.atualizarSelectsEmpenho();
-                
-                // Reset form
-                document.getElementById('emp-fornec').value = '';
-                document.getElementById('emp-contrato').value = '';
-                document.getElementById('emp-periodo').value = '';
-                fiscalSelect.selectedIndex = 0;
-                document.getElementById('emp-empenhos-container').innerHTML = `
-                    <div class="emp-empenho-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                        <input type="text" class="form-control emp-ne-input" placeholder="número do empenho" style="flex: 1;">
-                        <input type="text" class="form-control emp-valor-input" placeholder="R$ 0,00" onblur="formatarMoeda(this)" style="width: 120px;">
-                        <button type="button" class="btn-tiny btn-danger" onclick="window.removerEmpenhoInput(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
-                    </div>
-                `;
-            } catch (err) {
-                console.error('Erro ao salvar empenho:', err);
-                alert('Erro ao salvar: ' + err.message);
-            }
+                alert('Empenho(s) salvos!');
+                window.loadFiscalData();
+            } catch (err) { alert(err.message); }
         };
 
         window.adicionarEmpenhoInput = function () {
-            const container = document.getElementById('emp-empenhos-container');
-            const div = document.createElement('div');
-            div.className = 'emp-empenho-row';
-            div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem;';
-            div.innerHTML = `
-                <input type="text" class="form-control emp-ne-input" placeholder="número do empenho" style="flex: 1;">
-                <input type="text" class="form-control emp-valor-input" placeholder="R$ 0,00" onblur="formatarMoeda(this)" style="width: 120px;">
-                <button type="button" class="btn-tiny btn-danger" onclick="window.removerEmpenhoInput(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
-            `;
-            container.appendChild(div);
+            const div = document.createElement('div'); div.className = 'emp-empenho-row'; div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem;';
+            div.innerHTML = `<input type="text" class="form-control emp-ne-input" placeholder="nÃºmero do empenho" style="flex: 1;"><input type="text" class="form-control emp-valor-input" placeholder="R$ 0,00" onblur="formatarMoeda(this)" style="width: 120px;"><button type="button" class="btn-tiny btn-danger" onclick="window.removerEmpenhoInput(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>`;
+            document.getElementById('emp-empenhos-container').appendChild(div);
         };
 
         window.removerEmpenhoInput = function (btn) {
             const container = document.getElementById('emp-empenhos-container');
-            if (container.children.length > 1) {
-                btn.closest('.emp-empenho-row').remove();
-            }
+            if (container.children.length > 1) btn.closest('.emp-empenho-row').remove();
         };
 
         window.atualizarTabelaEmpenhos = function () {
             const tbody = document.getElementById('empenhos-list');
             if (!tbody) return;
-            if (window.fiscalData.empenhos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #999;">Nenhum empênho cadastrado</td></tr>';
-            } else {
-                tbody.innerHTML = window.fiscalData.empenhos.map((e, i) =>
-                    '<tr><td>' + e.supplier_name + '</td><td>' + (e.contract_number || '-') + '</td><td>' + (e.period || '-') + '</td><td>' + (e.officer_name || '-') + '</td><td>' + e.ne_number + '</td><td>R$ ' + (parseFloat(e.value) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarEmpenho(' + i + ')"><i class="fas fa-edit"></i></button></td></tr>'
-                ).join('');
+            tbody.innerHTML = window.fiscalData.empenhos.length === 0 ? '<tr><td colspan="7" style="text-align: center; color: #999;">Nenhum empÃªnho</td></tr>' : 
+                window.fiscalData.empenhos.map((e, i) => `<tr><td>${e.supplier_name}</td><td>${e.contract_number || '-'}</td><td>${e.period || '-'}</td><td>${e.officer_name || '-'}</td><td>${e.ne_number}</td><td>R$ ${parseFloat(e.value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td><td><button class="btn-tiny btn-danger" onclick="window.excluirEmpenho('${e.ne_number}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+        };
+
+        window.excluirEmpenho = async function (ne) {
+            if (confirm('Excluir?')) { 
+                if (window.supabaseClient) await window.supabaseClient.from('fiscal_empenhos').delete().eq('ne_number', ne);
+                window.loadFiscalData();
             }
         };
 
-        window.editarEmpenho = function (index) {
-            const e = window.fiscalData.empenhos[index];
-            if (confirm('Excluir empênho ' + e.ne + '?')) {
-                window.fiscalData.empenhos.splice(index, 1);
-                window.atualizarTabelaEmpenhos();
-            }
-        };
-
+        // ======================== FISCAIS (SYNC HANDLERS) ========================
         window.salvarFiscal = async function () {
             const matricula = document.getElementById('fiscal-matricula').value;
             const nome = document.getElementById('fiscal-nome').value;
-            if (!nome) {
-                alert('Preencha o nome do Fiscal');
-                return;
-            }
-            const data = { matricula: matricula, name: nome };
+            if (!nome) { alert('Preencha o nome'); return; }
             try {
-                if (window.supabase) {
-                    const { error } = await window.supabase.from('handlers').upsert(data, { onConflict: 'name' });
-                    if (error) throw error;
-                }
-                
+                if (window.supabase) { await window.supabase.from('handlers').upsert({ matricula, name: nome }, { onConflict: 'name' }); }
                 window.loadFiscalData();
-                
                 document.getElementById('fiscal-matricula').value = '';
                 document.getElementById('fiscal-nome').value = '';
-                window.fiscalEditando = null;
-                alert('Fiscal salvo com sucesso!');
-            } catch (err) {
-                console.error('Erro ao salvar fiscal:', err);
-                alert('Erro ao salvar: ' + err.message);
-            }
+                alert('Fiscal salvo!');
+            } catch (err) { alert(err.message); }
         };
-        window.fiscalEditando = null;
 
         window.atualizarTabelaFiscais = function () {
             const tbody = document.getElementById('fiscais-list');
             if (!tbody) return;
-            if (window.fiscalData.fiscais.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #999;">Nenhum fiscal cadastrado</td></tr>';
-            } else {
-                tbody.innerHTML = window.fiscalData.fiscais.map((f, i) =>
-                    '<tr><td>' + (f.matricula || '-') + '</td><td>' + (f.name || f.nome) + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarFiscal(' + i + ')"><i class="fas fa-edit"></i> Editar</button> <button class="btn-tiny btn-danger" onclick="window.excluirFiscal(' + i + ')"><i class="fas fa-trash"></i> Excluir</button></td></tr>'
-                ).join('');
-            }
+            tbody.innerHTML = window.fiscalData.fiscais.length === 0 ? '<tr><td colspan="3" style="text-align: center; color: #999;">Nenhum fiscal</td></tr>' :
+                window.fiscalData.fiscais.map((f, i) => `<tr><td>${f.matricula || '-'}</td><td>${f.name}</td><td><button class="btn-tiny btn-danger" onclick="window.excluirFiscal('${f.name}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
             window.atualizarSelectsFiscal();
         };
 
-        window.editarFiscal = function (index) {
-            const f = window.fiscalData.fiscais[index];
-            document.getElementById('fiscal-matricula').value = f.matricula || '';
-            document.getElementById('fiscal-nome').value = f.name || f.nome;
-            window.fiscalEditando = index;
-        };
-
-        window.excluirFiscal = async function (index) {
-            const f = window.fiscalData.fiscais[index];
-            if (confirm('Excluir fiscal ' + f.name + '?')) {
-                try {
-                    if (window.supabaseClient) {
-                        const { error } = await window.supabaseClient.from('handlers').delete().eq('name', f.name);
-                        if (error) throw error;
-                    }
-                    window.loadFiscalData();
-                } catch (err) {
-                    console.error('Erro ao excluir fiscal:', err);
-                }
+        window.excluirFiscal = async function (name) {
+            if (confirm('Excluir?')) {
+                if (window.supabaseClient) await window.supabaseClient.from('handlers').delete().eq('name', name);
+                window.loadFiscalData();
             }
         };
 
         window.atualizarSelectsFiscal = function () {
-            const sel1 = document.getElementById('emp-fiscal');
-            const sel2 = document.getElementById('contrat-fiscal1');
-            const sel3 = document.getElementById('contrat-fiscal2');
-            const sel4 = document.getElementById('contrat-fiscal3');
-            const opts = window.fiscalData.fiscais.map(f => {
-                var nome = f.name || f.nome;
-                return '<option value="' + nome + '">' + nome + '</option>';
-            }).join('');
-            const defaultOpt = '<option value="">-- Selecione --</option>';
-            if (sel1) sel1.innerHTML = defaultOpt + opts;
-            if (sel2) sel2.innerHTML = '<option value="">-- Fiscal 1 --</option>' + opts;
-            if (sel3) sel3.innerHTML = '<option value="">-- Fiscal 2 --</option>' + opts;
-            if (sel4) sel4.innerHTML = '<option value="">-- Fiscal 3 --</option>' + opts;
+            if (!window.fiscalData.fiscais) return;
+            const opts = window.fiscalData.fiscais.map(f => `<option value="${f.name}">${f.name}</option>`).join('');
+            ['emp-fiscal', 'contrat-fiscal1', 'contrat-fiscal2', 'contrat-fiscal3'].forEach(id => {
+                const el = document.getElementById(id); 
+                if (el) el.innerHTML = (id.includes('contrat') ? `<option value="">-- Fiscal ${id.slice(-1)} --</option>` : '<option value="">-- Selecione --</option>') + opts;
+            });
         };
 
+        // ======================== LOCALIZAÃ‡Ã•ES ========================
         window.salvarLocalizacao = async function () {
-            const deptoSelect = document.getElementById('local-departamento');
-            const novoInput = document.getElementById('local-novo');
-            let depto = deptoSelect.value.trim();
-            const novo = novoInput.value.trim();
-            
-            if (novo) {
-                depto = novo;
-            }
-            
-            if (!depto) {
-                alert('Selecione ou digite uma localização');
-                return;
-            }
-            try {
-                if (window.supabase) {
-                    const { error } = await window.supabase.from('locations').insert({ name: depto });
-                    if (error && error.code !== '23505') {
-                        console.warn('Erro ao salvar no banco:', error.message);
-                    }
-                }
-                const local = { id: Date.now(), departamento: depto };
-                window.fiscalData.localizacoes.push(local);
-                if (!window.state.locations) window.state.locations = [];
-                window.state.locations.push(depto);
-                window.atualizarTabelaLocalizacoes();
-                window.updateSelects();
-                deptoSelect.value = '';
-                novoInput.value = '';
-            } catch (err) {
-                console.error('Erro ao salvar localização:', err);
-            }
+            const depto = (document.getElementById('local-novo').value || document.getElementById('local-departamento').value).trim();
+            if (!depto) { alert('Selecione ou digite'); return; }
+            try { if (window.supabase) await window.supabase.from('locations').upsert({ name: depto }, { onConflict: 'name' }); window.loadFiscalData(); } catch (err) { console.error(err); }
         };
 
         window.atualizarTabelaLocalizacoes = function () {
             const tbody = document.getElementById('localizacao-list');
             if (!tbody) return;
-            if (window.fiscalData.localizacoes.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="2" style="text-align: center; color: #999;">Nenhuma localização cadastrada</td></tr>';
-            } else {
-                tbody.innerHTML = window.fiscalData.localizacoes.map((l, i) =>
-                    '<tr><td>' + l.departamento + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarLocalizacao(' + i + ')"><i class="fas fa-edit"></i></button></td></tr>'
-                ).join('');
+            tbody.innerHTML = window.fiscalData.localizacoes.length === 0 ? '<tr><td colspan="2" style="text-align: center; color: #999;">Nenhuma</td></tr>' :
+                window.fiscalData.localizacoes.map((l, i) => `<tr><td>${l.departamento}</td><td><button class="btn-tiny btn-danger" onclick="window.excluirLocalizacao('${l.departamento}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+        };
+
+        window.excluirLocalizacao = async function(name) {
+            if (confirm('Excluir?')) {
+                if (window.supabaseClient) await window.supabaseClient.from('locations').delete().eq('name', name);
+                window.loadFiscalData();
             }
         };
 
-        window.editarLocalizacao = function (index) {
-            const l = window.fiscalData.localizacoes[index];
-            if (confirm('Excluir localização ' + l.departamento + '?')) {
-                window.fiscalData.localizacoes.splice(index, 1);
-                window.atualizarTabelaLocalizacoes();
-            }
-        };
-
-        // ======================== LANÇAMENTOS LOGIC ========================
-        window.lancamentos = window.lancamentos || [];
-        window._lancValorEmpenho = 0;
-
+        // ======================== LANÃ‡AMENTOS (MEDIÃ‡Ã•ES) ========================
         window.lancOnEmpresaChange = function () {
-            var empresa = document.getElementById('lanc-empresa').value;
-            var selContrato = document.getElementById('lanc-contrato');
-            if (!empresa) { selContrato.innerHTML = '<option value="">-- Selecione a Empresa primeiro --</option>'; selContrato.disabled = true; return; }
-            var contratos = window.fiscalData.contratos.filter(function (c) { 
-                return (c.supplier_name || c.fornecedor) === empresa; 
-            });
-            if (contratos.length === 0) { selContrato.innerHTML = '<option value="">-- Nenhum contrato --</option>'; selContrato.disabled = true; }
-            else { 
-                selContrato.innerHTML = '<option value="">-- Selecione --</option>' + contratos.map(function (c) { 
-                    var num = c.contract_number || c.numero;
-                    return '<option value="' + num + '">' + num + '</option>'; 
-                }).join(''); 
-                selContrato.disabled = false; 
-            }
-            window.lancCarregarEmpenhos();
-        };
-        window.lancOnContratoChange = function () { window.lancAtualizarTodosEmpenhosSelects(); };
-        window.lancCarregarEmpenhos = function () {
-            var empresa = document.getElementById('lanc-empresa').value;
-            var contrato = document.getElementById('lanc-contrato').value;
-            
+            const empresa = document.getElementById('lanc-empresa').value;
+            const selContrato = document.getElementById('lanc-contrato');
+            if (!empresa) { selContrato.innerHTML = '<option value="">-- Selecione --</option>'; selContrato.disabled = true; return; }
+            const contratos = window.fiscalData.contratos.filter(c => c.supplier_name === empresa);
+            selContrato.innerHTML = '<option value="">-- Selecione --</option>' + contratos.map(c => `<option value="${c.contract_number}">${c.contract_number}</option>`).join('');
+            selContrato.disabled = false;
             window.lancAtualizarTodosEmpenhosSelects();
         };
-        
+
         window.lancAtualizarTodosEmpenhosSelects = function () {
-            var empresa = document.getElementById('lanc-empresa').value;
-            var contrato = document.getElementById('lanc-contrato').value;
-            
-            var selects = document.querySelectorAll('.lanc-empenho-select');
-            selects.forEach(function(sel) {
-                if (!empresa) {
-                    sel.innerHTML = '<option value="">-- Selecione --</option>';
-                    return;
-                }
-                var enempos = window.fiscalData.empenhos.filter(function (e) { 
-                    return (e.supplier_name || e.fornecedor) === empresa; 
-                });
-                if (contrato) enempos = enempos.filter(function (e) { 
-                    return (e.contract_number || e.contrato) === contrato; 
-                });
-                sel.innerHTML = '<option value="">-- Selecione --</option>' + enempos.map(function (e) { 
-                    var ne = e.ne_number || e.ne;
-                    var val = e.value || e.valor || '0';
-                    return '<option value="' + ne + '" data-valor="' + val + '">' + ne + ' \u2014 R$ ' + (parseFloat(val) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</option>'; 
-                }).join('');
+            const empresa = document.getElementById('lanc-empresa').value;
+            const contrato = document.getElementById('lanc-contrato').value;
+            const selects = document.querySelectorAll('.lanc-empenho-select');
+            selects.forEach(sel => {
+                if (!empresa) { sel.innerHTML = '<option value="">-- Selecione --</option>'; return; }
+                const enempos = window.fiscalData.empenhos.filter(e => e.supplier_name === empresa && (!contrato || e.contract_number === contrato));
+                sel.innerHTML = '<option value="">-- Selecione --</option>' + enempos.map(e => `<option value="${e.ne_number}" data-valor="${e.value}">${e.ne_number} \u2014 R$ ${parseFloat(e.value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</option>`).join('');
             });
             window.lancCalcSaldo();
         };
-        
+
         window.lancAdicionarEmpenho = function () {
-            var container = document.getElementById('lanc-empenhos-container');
-            var div = document.createElement('div');
-            div.className = 'lanc-empenho-row';
-            div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;';
-            div.innerHTML = `
-                <select class="lanc-empenho-select form-control" onchange="window.lancOnNovoEmpenhoChange(this)" style="flex: 1;">
-                    <option value="">-- Selecione --</option>
-                </select>
-                <div class="lanc-money-wrap" style="width: 140px;">
-                    <span>R$</span>
-                    <input type="text" class="lanc-valor-empenho" placeholder="0,00" readonly style="padding-left: 2.1rem;">
-                </div>
-                <button type="button" class="btn-tiny btn-danger" onclick="window.lancRemoverEmpenho(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
-            `;
-            container.appendChild(div);
+            const div = document.createElement('div'); div.className = 'lanc-empenho-row'; div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;';
+            div.innerHTML = `<select class="lanc-empenho-select form-control" onchange="window.lancOnNovoEmpenhoChange(this)" style="flex: 1;"><option value="">-- Selecione --</option></select><div class="lanc-money-wrap" style="width: 140px;"><span>R$</span><input type="text" class="lanc-valor-empenho" placeholder="0,00" readonly style="padding-left: 2.1rem;"></div><button type="button" class="btn-tiny btn-danger" onclick="window.lancRemoverEmpenho(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>`;
+            document.getElementById('lanc-empenhos-container').appendChild(div);
             window.lancAtualizarTodosEmpenhosSelects();
         };
-        
+
         window.lancRemoverEmpenho = function (btn) {
-            var container = document.getElementById('lanc-empenhos-container');
-            if (container.children.length > 1) {
-                btn.closest('.lanc-empenho-row').remove();
-                window.lancCalcSaldo();
-            }
+            if (document.getElementById('lanc-empenhos-container').children.length > 1) { btn.closest('.lanc-empenho-row').remove(); window.lancCalcSaldo(); }
         };
-        
+
         window.lancOnNovoEmpenhoChange = function (select) {
-            var opt = select.options[select.selectedIndex];
-            var row = select.closest('.lanc-empenho-row');
-            var valorInput = row.querySelector('.lanc-valor-empenho');
-            
-            if (opt && opt.value) {
-                var valor = parseFloat((opt.getAttribute('data-valor') || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-                valorInput.value = valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            } else {
-                valorInput.value = '';
-            }
+            const opt = select.options[select.selectedIndex];
+            const row = select.closest('.lanc-empenho-row');
+            row.querySelector('.lanc-valor-empenho').value = opt && opt.value ? parseFloat(opt.getAttribute('data-valor')).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '';
             window.lancCalcSaldo();
         };
-        
+
         window.lancCalcSaldo = function () {
-            var valorNfInput = document.getElementById('lanc-valor-nf');
-            var valorNf = parseFloat(valorNfInput.value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
-            
-            var totalEmpenhos = 0;
-            document.querySelectorAll('.lanc-empenho-row').forEach(function(row) {
-                var valorInput = row.querySelector('.lanc-valor-empenho');
-                if (valorInput && valorInput.value) {
-                    var val = parseFloat(valorInput.value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
-                    totalEmpenhos += val;
-                }
-            });
-            
-            var saldo = totalEmpenhos - valorNf;
-            
-            var infoBox = document.getElementById('lanc-empenho-info');
-            var infoTxt = document.getElementById('lanc-empenho-info-txt');
+            const valorNf = parseFloat(document.getElementById('lanc-valor-nf').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
+            let totalEmpenhos = 0;
+            document.querySelectorAll('.lanc-valor-empenho').forEach(el => { totalEmpenhos += parseFloat(el.value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0; });
+            const infoBox = document.getElementById('lanc-empenho-info');
             if (totalEmpenhos > 0) {
                 infoBox.style.display = 'flex';
-                infoTxt.innerHTML = '<strong>Total Empenhos:</strong> R$ ' + totalEmpenhos.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) + 
-                    ' | <strong>Valor NF:</strong> R$ ' + valorNf.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) +
-                    ' | <strong>Saldo:</strong> R$ ' + saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            } else {
-                infoBox.style.display = 'none';
-            }
+                document.getElementById('lanc-empenho-info-txt').innerHTML = `<strong>Total:</strong> R$ ${totalEmpenhos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} | <strong>NF:</strong> R$ ${valorNf.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} | <strong>Saldo:</strong> R$ ${(totalEmpenhos - valorNf).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+            } else infoBox.style.display = 'none';
         };
-        
-        window.lancOnEmpenhoChange = function () {
-            var sel = document.getElementById('lanc-empenho');
-            var opt = sel.options[sel.selectedIndex];
-            if (!opt || !opt.value) { document.getElementById('lanc-empenho-info').style.display = 'none'; document.getElementById('lanc-saldo').value = ''; return; }
-            var valorEmp = parseFloat((opt.getAttribute('data-valor') || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-            document.getElementById('lanc-empenho-info').style.display = 'flex';
-            document.getElementById('lanc-empenho-info-txt').textContent = 'Valor total do empenho selecionado: R$ ' + valorEmp.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-            window._lancValorEmpenho = valorEmp;
-            window.lancCalcSaldo();
-        };
-        window.lancCalcSaldo = function () {
-            var nfEl = document.getElementById('lanc-valor-nf');
-            var saldoEl = document.getElementById('lanc-saldo');
-            if (!nfEl || !saldoEl) return;
-            var valorNf = parseFloat((nfEl.value || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-            saldoEl.value = ((window._lancValorEmpenho || 0) - valorNf).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-        };
+
         window.salvarMapa = async function () {
-            var ano = document.getElementById('lanc-ano').value;
-            var mes = document.getElementById('lanc-mes').value;
-            var empresa = document.getElementById('lanc-empresa').value;
-            var contrato = document.getElementById('lanc-contrato').value;
-            var proc = document.getElementById('lanc-proc').value;
-            var nf = document.getElementById('lanc-nf').value;
-            var valorNfRaw = document.getElementById('lanc-valor-nf').value;
-            var valorNf = parseFloat(valorNfRaw.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
-            var obs = document.getElementById('lanc-obs').value;
-            
-            // Collect all selected-emituações from the dynamic rows
-            var enemposSelecionados = [];
-            document.querySelectorAll('.lanc-empenho-row').forEach(function(row) {
-                var sel = row.querySelector('.lanc-empenho-select');
-                var opt = sel.options[sel.selectedIndex];
-                if (opt && opt.value) {
-                    var valor = parseFloat((opt.getAttribute('data-valor') || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-                    enemposSelecionados.push({
-                        numero: opt.value,
-                        valor: valor
-                    });
-                }
-            });
-            
-            if (enemposSelecionados.length === 0 || !nf || !valorNf) { 
-                alert('Selecione pelo menos um Empenho, N.º NF e Valor da NF.'); 
-                return; 
-            }
-            
-            var meses = ['', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-            var competencia = (meses[parseInt(mes)] || mes) + '/' + ano;
-            
+            const data = {
+                year: document.getElementById('lanc-ano').value,
+                month: document.getElementById('lanc-mes').value,
+                supplier_name: document.getElementById('lanc-empresa').value,
+                contract_number: document.getElementById('lanc-contrato').value,
+                process_number: document.getElementById('lanc-proc').value,
+                invoice_number: document.getElementById('lanc-nf').value,
+                invoice_value: parseFloat(document.getElementById('lanc-valor-nf').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0,
+                notes: document.getElementById('lanc-obs').value,
+                status: 'Pendente'
+            };
+            const enempos = Array.from(document.querySelectorAll('.lanc-empenho-select')).map(s => s.value).filter(v => v);
+            if (!data.supplier_name || !data.invoice_number || enempos.length === 0) { alert('Preencha os campos obrigatÃ³rios'); return; }
             try {
                 if (window.supabase) {
-                    for (var i = 0; i < enemposSelecionados.length; i++) {
-                        var emp = enemposSelecionados[i];
-                        var data = {
-                            year: ano,
-                            month: mes,
-                            supplier_name: empresa,
-                            contract_number: contrato,
-                            enemho_number: emp.numero,
-                            process_number: proc,
-                            invoice_number: nf,
-                            invoice_value: valorNf / enemposSelecionados.length,
-                            projected_balance: emp.valor - (valorNf / enemposSelecionados.length),
-                            notes: obs,
-                            status: 'Pendente',
-                            competence: competencia
-                        };
-                        const { error } = await window.supabase.from('fiscal_measurements').insert(data);
-                        if (error) throw error;
+                    for (const ne of enempos) {
+                        const valEmp = parseFloat(document.querySelector(`.lanc-empenho-select option[value="${ne}"]`).getAttribute('data-valor')) || 0;
+                        await window.supabase.from('fiscal_measurements').insert({ ...data, empenho_number: ne, projected_balance: valEmp - (data.invoice_value / enempos.length) });
                     }
                 }
-                
-                for (var i = 0; i < enemposSelecionados.length; i++) {
-                    var emp = enemposSelecionados[i];
-                    window.lancamentos.push({
-                        ano: ano,
-                        mes: mes,
-                        empresa: empresa,
-                        contrato: contrato,
-                        empat_number: emp.numero,
-                        proc: proc,
-                        nf: nf,
-                        valorNf: valorNf / enemposSelecionados.length,
-                        saldo: emp.valor - (valorNf / enemposSelecionados.length),
-                        obs: obs,
-                        status: 'Pendente',
-                        competencia: competencia
-                    });
-                }
-                
-                alert('Medição(ões) salva(s) com sucesso!');
-                window.lancFiltrarMedicoes();
-                
-                // Reset form
-                document.getElementById('lanc-empresa').value = '';
-                document.getElementById('lanc-contrato').value = '';
-                document.getElementById('lanc-contrato').disabled = true;
-                document.getElementById('lanc-contrato').innerHTML = '<option value="">-- Selecione a Empresa primeiro --</option>';
-                document.getElementById('lanc-proc').value = '';
-                document.getElementById('lanc-nf').value = '';
-                document.getElementById('lanc-valor-nf').value = '';
-                document.getElementById('lanc-obs').value = '';
-                document.getElementById('lanc-empenho-info').style.display = 'none';
-                
-                // Reset-emituações container
-                document.getElementById('lanc-empenhos-container').innerHTML = `
-                    <div class="lanc-empenho-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                        <select class="lanc-empenho-select form-control" onchange="window.lancOnNovoEmpenhoChange(this)" style="flex: 1;">
-                            <option value="">-- Selecione --</option>
-                        </select>
-                        <div class="lanc-money-wrap" style="width: 140px;">
-                            <span>R$</span>
-                            <input type="text" class="lanc-valor-empenho" placeholder="0,00" readonly style="padding-left: 2.1rem;">
-                        </div>
-                        <button type="button" class="btn-tiny btn-danger" onclick="window.lancRemoverEmpenho(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
-                    </div>
-                `;
-                
-                window._lancValorEmpenho = 0;
-            } catch (err) {
-                console.error('Erro ao salvar medição:', err);
-                alert('Erro ao salvar medição: ' + err.message);
-            }
+                alert('MediÃ§Ã£o salva!');
+                window.loadFiscalData();
+            } catch (err) { alert(err.message); }
         };
-        
+
         window.lancFiltrarMedicoes = function () {
-        window.lancImprimirTabela = function () { window.print(); };
-        window.verMapaExecucao = function () { alert('Mapa de Execução: funcionalidade em desenvolvimento.'); };
-        window.lancPopularEmpresas = function () {
-            var sel = document.getElementById('lanc-empresa'); if (!sel) return;
-            sel.innerHTML = '<option value="">-- Selecione --</option>' + (window.fiscalData.fornecedores || []).map(function (f) { 
-                var n = f.name || f.nome;
-                return '<option value="' + n + '">' + n + '</option>'; 
-            }).join('');
+            const filtered = (window.lancamentos || []);
+            const tbody = document.getElementById('lanc-medicoes-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.length === 0 ? '<tr class="lanc-empty-row"><td colspan="9">Nenhuma</td></tr>' : 
+                filtered.map(r => `<tr><td>${r.month}/${r.year}</td><td>${new Date(r.created_at).toLocaleDateString('pt-BR')}</td><td>${r.invoice_number}</td><td>${r.empenho_number}</td><td>${r.process_number}</td><td><span class="lanc-badge ${r.status === 'Pago' ? 'lanc-badge-ok' : 'lanc-badge-pending'}">${r.status}</span></td><td>R$ ${parseFloat(r.invoice_value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td><td>R$ ${parseFloat(r.projected_balance).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td><td><button class="btn-tiny btn-danger" onclick="window.excluirMedicao('${r.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
         };
-        // ===================================================================
+
+        window.excluirMedicao = async function(id) {
+            if (confirm('Excluir?')) { if (window.supabaseClient) await window.supabaseClient.from('fiscal_measurements').delete().eq('id', id); window.loadFiscalData(); }
+        };
 
         window.loadFiscalData = async function () {
-            if (!window.supabaseClient) {
-                await window.initializeSupabase();
-            }
+            if (!window.supabaseClient) await window.initializeSupabase();
             if (!window.supabaseClient) return;
-
             try {
-                const [fornec, contr, emp, hand, meas] = await Promise.all([
+                const [fornec, contr, emp, hand, meas, locs] = await Promise.all([
                     supabase.from('suppliers').select('*').order('name'),
                     supabase.from('fiscal_contracts').select('*').order('contract_number'),
                     supabase.from('fiscal_empenhos').select('*').order('ne_number'),
                     supabase.from('handlers').select('*').order('name'),
-                    supabase.from('fiscal_measurements').select('*').order('created_at', { ascending: false })
+                    supabase.from('fiscal_measurements').select('*').order('created_at', { ascending: false }),
+                    supabase.from('locations').select('*').order('name')
                 ]);
-
                 window.fiscalData.fornecedores = fornec.data || [];
                 window.fiscalData.contratos = contr.data || [];
                 window.fiscalData.empenhos = emp.data || [];
-                window.fiscalData.fiscais = fisc.data || [];
+                window.fiscalData.fiscais = hand.data || [];
+                window.fiscalData.localizacoes = (locs.data || []).map(l => ({ departamento: l.name }));
                 window.lancamentos = meas.data || [];
-
+                
                 window.atualizarTabelaFornecedores();
                 window.atualizarTabelaContratos();
                 window.atualizarTabelaEmpenhos();
                 window.atualizarTabelaFiscais();
                 window.atualizarTabelaLocalizacoes();
                 window.lancFiltrarMedicoes();
-                window.atualizarSelectMapaEmpresa();
-                window.atualizarSelectRelatorioEmpresa();
-                window.atualizarDataRelatorio();
-                window.atualizarDataMapa();
-            } catch (err) {
-                console.error('Erro ao carregar dados fiscais:', err);
-            }
+            } catch (err) { console.error(err); }
         };
 
         window.gerarMapa = function () {
             const empresa = document.getElementById('mapa-empresa').value;
-            const ano = document.getElementById('mapa-ano').value;
-            const mes = document.getElementById('mapa-mes').value;
-            const resultado = document.getElementById('mapa-resultado');
-            const conteudo = document.getElementById('mapa-conteudo');
-            if (!empresa || !ano || !mes) {
-                alert('Selecione Empresa, Ano e Mês');
-                return;
-            }
-            const nomesMeses = ['', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-            resultado.style.display = 'block';
-            let html = '<h4 style="color: #16a34a; margin-bottom: 1rem;">Mapa: ' + empresa + ' - ' + nomesMeses[parseInt(mes)] + '/' + ano + '</h4>';
-            html += '<table class="fiscal-table"><thead><tr><th>Fornecedor</th><th>Processo</th><th>Contrato</th><th>Valor</th><th>Início</th><th>Término</th><th>Fiscais</th></tr></thead><tbody>';
-            const contratosFiltrados = window.fiscalData.contratos.filter(c => c.fornecedor === empresa);
-            if (contratosFiltrados.length === 0) {
-                html += '<tr><td colspan="7" style="text-align: center; color: #999;">Nenhum contrato encontrado para esta empresa</td></tr>';
-            } else {
-                contratosFiltrados.forEach(c => {
-                    html += '<tr><td>' + c.fornecedor + '</td><td>' + (c.processo || '-') + '</td><td>' + c.numero + '</td><td>' + (c.valor || '-') + '</td><td>' + (c.inicio || '-') + '</td><td>' + (c.termino || '-') + '</td><td>' + (c.fiscais ? c.fiscais.join(', ') : '-') + '</td></tr>';
-                });
-            }
-            html += '</tbody></table>';
-            conteudo.innerHTML = html;
-        };
-
-        window.atualizarSelectMapaEmpresa = function () {
-            const sel = document.getElementById('mapa-empresa');
-            if (sel) {
-                const opts = window.fiscalData.fornecedores.map(f => {
-                    const n = f.name || f.nome;
-                    return '<option value="' + n + '">' + n + '</option>';
-                }).join('');
-                sel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
-            }
+            const res = document.getElementById('mapa-resultado');
+            if (!empresa) return;
+            res.style.display = 'block';
+            const contr = window.fiscalData.contratos.filter(c => c.supplier_name === empresa);
+            document.getElementById('mapa-conteudo').innerHTML = `<table class="fiscal-table"><thead><tr><th>Contrato</th><th>Processo</th><th>Valor</th></tr></thead><tbody>${contr.map(c => `<tr><td>${c.contract_number}</td><td>${c.process_number || '-'}</td><td>R$ ${parseFloat(c.value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td></tr>`).join('')}</tbody></table>`;
         };
 
         window.gerarRelatorio = function () {
             const empresa = document.getElementById('relatorio-empresa').value;
-            const ano = document.getElementById('relatorio-ano').value;
-            const mes = document.getElementById('relatorio-mes').value;
-            const formato = document.getElementById('relatorio-formato').value;
-            const resultado = document.getElementById('relatorio-resultado');
-            const conteudo = document.getElementById('relatorio-conteudo');
-            if (!empresa || !ano || !mes) {
-                alert('Selecione Empresa, Ano e Mês');
-                return;
-            }
-            const nomesMeses = ['', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-            resultado.style.display = 'block';
-            let html = '<h4 style="color: #9333ea; margin-bottom: 1rem;">Relatório: ' + empresa + ' - ' + nomesMeses[parseInt(mes)] + '/' + ano + '</h4>';
-            html += '<p>Formato: ' + formato.toUpperCase() + '</p>';
-            html += '<table class="fiscal-table"><thead><tr><th>Fornecedor</th><th>Processo</th><th>Contrato</th><th>Valor</th><th>Início</th><th>Término</th><th>Fiscais</th></tr></thead><tbody>';
-            const contratosFiltrados = window.fiscalData.contratos.filter(c => c.fornecedor === empresa);
-            if (contratosFiltrados.length === 0) {
-                html += '<tr><td colspan="7" style="text-align: center; color: #999;">Nenhum contrato encontrado para esta empresa</td></tr>';
-            } else {
-                contratosFiltrados.forEach(c => {
-                    html += '<tr><td>' + c.fornecedor + '</td><td>' + (c.processo || '-') + '</td><td>' + c.numero + '</td><td>' + (c.valor || '-') + '</td><td>' + (c.inicio || '-') + '</td><td>' + (c.termino || '-') + '</td><td>' + (c.fiscais ? c.fiscais.join(', ') : '-') + '</td></tr>';
-                });
-            }
-            html += '</tbody></table>';
-            conteudo.innerHTML = html;
+            const res = document.getElementById('relatorio-resultado');
+            if (!empresa) return;
+            res.style.display = 'block';
+            const filtered = window.lancamentos.filter(r => r.supplier_name === empresa);
+            document.getElementById('relatorio-conteudo').innerHTML = `<table class="fiscal-table"><thead><tr><th>NF</th><th>Empenho</th><th>Valor</th></tr></thead><tbody>${filtered.map(r => `<tr><td>${r.invoice_number}</td><td>${r.empenho_number}</td><td>R$ ${parseFloat(r.invoice_value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td></tr>`).join('')}</tbody></table>`;
         };
-
-        window.atualizarSelectRelatorioEmpresa = function () {
-            const sel = document.getElementById('relatorio-empresa');
-            if (sel) {
-                const opts = window.fiscalData.fornecedores.map(f => {
-                    const n = f.name || f.nome;
-                    return '<option value="' + n + '">' + n + '</option>';
-                }).join('');
-                sel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
-            }
-        };
-
-        window.atualizarDataRelatorio = function () {
-            const hoje = new Date();
-            const ano = hoje.getFullYear();
-            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-            const dia = String(hoje.getDate()).padStart(2, '0');
-            document.getElementById('relatorio-data').value = ano + '-' + mes + '-' + dia;
-        };
-
-        window.atualizarDataMapa = function () {
-            const hoje = new Date();
-            const ano = hoje.getFullYear();
-            const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-            const dia = String(hoje.getDate()).padStart(2, '0');
-            document.getElementById('mapa-data').value = ano + '-' + mes + '-' + dia;
-        };
-
         window.openProcessModal = function (p = null) {
             const isNewProcess = p === null || p === undefined;
 
