@@ -10123,6 +10123,108 @@
         </div>
     </div>
 
+    <!-- Multi-Select Fiscais Styles -->
+    <style>
+        .fiscal-multi-select-trigger:hover {
+            border-color: #1E5FAF !important;
+            box-shadow: 0 2px 8px rgba(30, 95, 175, 0.15) !important;
+        }
+        .fiscal-multi-select-trigger:focus-within {
+            border-color: #1E5FAF !important;
+            box-shadow: 0 0 0 3px rgba(30, 95, 175, 0.15) !important;
+        }
+        .fiscal-multi-select-trigger.open {
+            border-color: #1E5FAF !important;
+            box-shadow: 0 0 0 3px rgba(30, 95, 175, 0.2) !important;
+        }
+        .fiscal-multi-select-trigger.open i.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        .fiscal-multi-select-dropdown {
+            animation: fiscalDropdownFade 0.2s ease;
+        }
+        @keyframes fiscalDropdownFade {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fiscal-option {
+            padding: 10px 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        .fiscal-option:hover {
+            background: #f3f4f6;
+        }
+        .fiscal-option.selected {
+            background: #eff6ff;
+            color: #1E5FAF;
+        }
+        .fiscal-option .check-icon {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+        .fiscal-option.selected .check-icon {
+            background: #1E5FAF;
+            border-color: #1E5FAF;
+        }
+        .fiscal-option.selected .check-icon::after {
+            content: '✓';
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .fiscal-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #1E5FAF 0%, #0d3485 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            animation: fiscalTagPop 0.2s ease;
+        }
+        @keyframes fiscalTagPop {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .fiscal-tag .remove-tag {
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.15s;
+            margin-left: 2px;
+        }
+        .fiscal-tag .remove-tag:hover {
+            opacity: 1;
+        }
+        .fiscal-search-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: none;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+            outline: none;
+            border-radius: 0;
+        }
+        .fiscal-search-input:focus {
+            border-bottom-color: #1E5FAF;
+        }
+    </style>
+
     <!-- Tour Styles -->
     <style>
         .tour-overlay {
@@ -10542,13 +10644,13 @@
                                         <div class="form-group" style="grid-column: span 2;">
                                             <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Fiscais (máximo 3)</label>
                                             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
-                                                <select id="contrat-fiscal1" class="form-control">
+                                                <select id="contrat-fiscal1" class="form-control" onchange="window.atualizarSelectsFiscal()">
                                                     <option value="">-- Fiscal 1 --</option>
                                                 </select>
-                                                <select id="contrat-fiscal2" class="form-control">
+                                                <select id="contrat-fiscal2" class="form-control" onchange="window.atualizarSelectsFiscal()">
                                                     <option value="">-- Fiscal 2 --</option>
                                                 </select>
-                                                <select id="contrat-fiscal3" class="form-control">
+                                                <select id="contrat-fiscal3" class="form-control" onchange="window.atualizarSelectsFiscal()">
                                                     <option value="">-- Fiscal 3 --</option>
                                                 </select>
                                             </div>
@@ -10604,10 +10706,18 @@
                                             <input type="text" id="emp-periodo" class="form-control" placeholder="ex: 12 meses" readonly>
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Fiscais <span style="font-weight: 400; font-size: 0.65rem; color: #9CA3AF;">(segure Ctrl/Cmd para múltiplos)</span></label>
-                                            <select id="emp-fiscal" class="form-control" multiple style="height: 70px;">
-                                                <option value="">-- Selecione --</option>
-                                            </select>
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Fiscais</label>
+                                            <div id="emp-fiscal-container" class="fiscal-multi-select-container" style="position: relative;">
+                                                <div id="emp-fiscal-trigger" class="fiscal-multi-select-trigger" onclick="window.toggleFiscalDropdown(event)" style="min-height: 44px; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; cursor: pointer; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; transition: all 0.2s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                                    <span id="emp-fiscal-placeholder" style="color: #9ca3af; font-size: 0.875rem;">Selecione os fiscais...</span>
+                                                    <span id="emp-fiscal-tags" style="display: flex; gap: 6px; flex-wrap: wrap;"></span>
+                                                    <i class="fas fa-chevron-down" style="margin-left: auto; color: #6b7280; font-size: 0.75rem; transition: transform 0.2s;"></i>
+                                                </div>
+                                                <div id="emp-fiscal-dropdown" class="fiscal-multi-select-dropdown" style="display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1px solid #d1d5db; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); max-height: 220px; overflow-y: auto; z-index: 1000; padding: 6px;">
+                                                    <div id="emp-fiscal-options" style="max-height: 180px; overflow-y: auto;"></div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="emp-fiscal" value="">
                                         </div>
                                     </div>
                                     <div style="margin-top: 1rem; padding: 1rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;">
@@ -11202,18 +11312,19 @@
             const fornec = document.getElementById('emp-fornec').value;
             const contrato = document.getElementById('emp-contrato').value;
             const periodo = document.getElementById('emp-periodo').value;
-            const fiscaisArr = Array.from(document.getElementById('emp-fiscal').selectedOptions).map(o => o.value).filter(v => v);
+            const hidden = document.getElementById('emp-fiscal');
+            const fiscaisArr = hidden && hidden.value ? hidden.value.split(',').filter(v => v.trim()) : [];
             const rows = document.querySelectorAll('.emp-empenho-row');
-            const empenos = [];
+            const emprenhos = [];
             rows.forEach(row => {
                 const ne = row.querySelector('.emp-ne-input').value.trim();
                 const valor = parseFloat(row.querySelector('.emp-valor-input').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
-                if (ne) empenos.push({ ne, valor });
+                if (ne) emprenhos.push({ ne, valor });
             });
-            if (!fornec || empenos.length === 0) { alert('Preencha os campos obrigatÃ³rios'); return; }
+            if (!fornec || emprenhos.length === 0) { alert('Preencha os campos obrigatórios'); return; }
             try {
                 if (window.supabase) {
-                    for (const emp of empenos) {
+                    for (const emp of emprenhos) {
                         const data = { supplier_name: fornec, contract_number: contrato, period: periodo, officer_name: fiscaisArr.join(', '), ne_number: emp.ne, value: emp.valor };
                         await window.supabase.from('fiscal_empenhos').upsert(data, { onConflict: 'ne_number' });
                     }
@@ -11279,12 +11390,114 @@
 
         window.atualizarSelectsFiscal = function () {
             if (!window.fiscalData.fiscais) return;
-            const opts = window.fiscalData.fiscais.map(f => `<option value="${f.name}">${f.name}</option>`).join('');
-            ['emp-fiscal', 'contrat-fiscal1', 'contrat-fiscal2', 'contrat-fiscal3'].forEach(id => {
-                const el = document.getElementById(id); 
-                if (el) el.innerHTML = (id.includes('contrat') ? `<option value="">-- Fiscal ${id.slice(-1)} --</option>` : '<option value="">-- Selecione --</option>') + opts;
+            
+            // Get already selected fiscais in contract dropdowns
+            const selectedFiscais = [
+                document.getElementById('contrat-fiscal1')?.value,
+                document.getElementById('contrat-fiscal2')?.value,
+                document.getElementById('contrat-fiscal3')?.value
+            ].filter(v => v);
+
+            // Update contract fiscal dropdowns (filter out already selected)
+            ['contrat-fiscal1', 'contrat-fiscal2', 'contrat-fiscal3'].forEach((id, idx) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const currentVal = el.value;
+                const availableFiscais = window.fiscalData.fiscais.filter(f => !selectedFiscais.includes(f.name) || f.name === currentVal);
+                el.innerHTML = `<option value="">-- Fiscal ${id.slice(-1)} --</option>` + 
+                    availableFiscais.map(f => `<option value="${f.name}"${f.name === currentVal ? ' selected' : ''}>${f.name}</option>`).join('');
+            });
+            
+            // Populate multi-select dropdown for Empenhos
+            const optionsContainer = document.getElementById('emp-fiscal-options');
+            if (optionsContainer && window.fiscalData.fiscais.length > 0) {
+                const currentSelected = window.getSelectedFiscais();
+                optionsContainer.innerHTML = window.fiscalData.fiscais.map(f => {
+                    const isSelected = currentSelected.includes(f.name);
+                    return `<div class="fiscal-option${isSelected ? ' selected' : ''}" data-value="${f.name}" onclick="window.toggleFiscalOption('${f.name}')">
+                        <span class="check-icon"></span>
+                        <span>${f.name}</span>
+                    </div>`;
+                }).join('');
+            }
+        };
+
+        window.getSelectedFiscais = function () {
+            const hidden = document.getElementById('emp-fiscal');
+            return hidden && hidden.value ? hidden.value.split(',').filter(v => v.trim()) : [];
+        };
+
+        window.toggleFiscalDropdown = function (e) {
+            e.stopPropagation();
+            const trigger = document.getElementById('emp-fiscal-trigger');
+            const dropdown = document.getElementById('emp-fiscal-dropdown');
+            const isOpen = dropdown.style.display === 'block';
+            
+            if (isOpen) {
+                dropdown.style.display = 'none';
+                trigger.classList.remove('open');
+            } else {
+                dropdown.style.display = 'block';
+                trigger.classList.add('open');
+                // Add search input if not exists
+                const optionsDiv = document.getElementById('emp-fiscal-options');
+                if (optionsDiv && !document.getElementById('fiscal-search-wrapper')) {
+                    optionsDiv.innerHTML = `<div id="fiscal-search-wrapper" style="padding: 8px 10px; border-bottom: 1px solid #e5e7eb;">
+                        <input type="text" id="fiscal-search" class="fiscal-search-input" placeholder="Buscar fiscal..." onkeyup="window.filterFiscalOptions(this.value)">
+                    </div>` + optionsDiv.innerHTML;
+                }
+            }
+        };
+
+        window.toggleFiscalOption = function (name) {
+            const hidden = document.getElementById('emp-fiscal');
+            let selected = window.getSelectedFiscais();
+            
+            if (selected.includes(name)) {
+                selected = selected.filter(s => s !== name);
+            } else {
+                selected.push(name);
+            }
+            
+            hidden.value = selected.join(',');
+            window.updateFiscalTags();
+            window.atualizarSelectsFiscal();
+        };
+
+        window.updateFiscalTags = function () {
+            const selected = window.getSelectedFiscais();
+            const tagsContainer = document.getElementById('emp-fiscal-tags');
+            const placeholder = document.getElementById('emp-fiscal-placeholder');
+            
+            if (selected.length > 0) {
+                placeholder.style.display = 'none';
+                tagsContainer.innerHTML = selected.map(name => 
+                    `<span class="fiscal-tag">${name}<span class="remove-tag" onclick="event.stopPropagation(); window.toggleFiscalOption('${name}')">×</span></span>`
+                ).join('');
+            } else {
+                placeholder.style.display = 'inline';
+                tagsContainer.innerHTML = '';
+            }
+        };
+
+        window.filterFiscalOptions = function (search) {
+            const options = document.querySelectorAll('.fiscal-option');
+            const searchLower = search.toLowerCase();
+            options.forEach(opt => {
+                const text = opt.querySelector('span:last-child').textContent.toLowerCase();
+                opt.style.display = text.includes(searchLower) ? 'flex' : 'none';
             });
         };
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const trigger = document.getElementById('emp-fiscal-trigger');
+            const dropdown = document.getElementById('emp-fiscal-dropdown');
+            if (trigger && dropdown && !trigger.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+                trigger.classList.remove('open');
+            }
+        });
 
         // ======================== LOCALIZAÃ‡Ã•ES ========================
         window.salvarLocalizacao = async function () {

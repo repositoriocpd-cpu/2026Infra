@@ -1952,6 +1952,104 @@
             outline: none;
         }
 
+        /* Fiscal Modal Tabs */
+        .fiscal-tabs {
+            display: flex;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            gap: 0.25rem;
+            flex-wrap: nowrap;
+            min-width: 100%;
+        }
+
+        .fiscal-tab {
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .fiscal-tab:hover {
+            color: #005A9C;
+        }
+
+        .fiscal-tab.active {
+            color: #005A9C;
+            border-bottom-color: #005A9C;
+        }
+
+        .fiscal-tab-content {
+            display: none;
+            padding: 1rem 0;
+        }
+
+        .fiscal-tab-content.active {
+            display: block;
+        }
+
+        .fiscal-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .fiscal-table th,
+        .fiscal-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .fiscal-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #005A9C;
+        }
+
+        .fiscal-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        body.dark-mode .fiscal-tab {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .fiscal-tab:hover,
+        body.dark-mode .fiscal-tab.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+
+        .badge-success {
+            background-color: #dcfce7;
+            color: #166534;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-secondary {
+            background-color: #f3f4f6;
+            color: #6b7280;
+            padding: 0.2rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
         /* Reduzir tamanho dos placeholders */
         .form-control::placeholder {
             font-size: 0.70rem;
@@ -5195,6 +5293,22 @@
                     </div>
                 </div>
 
+                <div class="form-group" id="cnpjInputGroup" style="margin-bottom: 1.5rem; display: none;">
+                    <label for="configCnpjInput">CNPJ (opcional)</label>
+                    <input type="text" id="configCnpjInput" class="form-control" placeholder="XX.XXX.XXX/XXXX-XX"
+                        onkeyup="window.formatCNPJ(this)" maxlength="18">
+                </div>
+
+                <div class="form-group" id="objetoInputGroup" style="margin-bottom: 1.5rem; display: none;">
+                    <label for="configObjetoInput">Objeto (opcional)</label>
+                    <input type="text" id="configObjetoInput" class="form-control" placeholder="Descreva o objeto...">
+                </div>
+
+                <div class="form-group" id="matriculaInputGroup" style="margin-bottom: 1.5rem; display: none;">
+                    <label for="configMatriculaInput">Matrícula (opcional)</label>
+                    <input type="text" id="configMatriculaInput" class="form-control" placeholder="Digite a matrícula...">
+                </div>
+
                 <div class="form-group" style="margin-bottom: 1rem;">
                     <input type="text" id="configSearchInput" class="form-control" placeholder="Pesquisar itens..."
                         onkeyup="window.renderConfigList()">
@@ -6098,7 +6212,7 @@
             if (window.AppConfig && !window.AppConfig.isProduction()) console.log('initApp starting data fetch...');
             try {
                 const [suppliers, locations, objects, statuses, handlers, departments, processes] = await Promise.all([
-                    supabase.from('suppliers').select('name').order('name'),
+                    supabase.from('suppliers').select('name,cnpj,objeto').order('name'),
                     supabase.from('locations').select('name').order('name'),
                     supabase.from('objects').select('name').order('name'),
                     supabase.from('statuses').select('name').order('name'),
@@ -6107,11 +6221,13 @@
                     supabase.from('processes').select('*').order('created_at', { ascending: false })
                 ]);
 
-                window.state.suppliers = (suppliers.data || []).map(s => s.name);
+                window.state.suppliers = (suppliers.data || []).map(s => ({ name: s.name, cnpj: s.cnpj || '', objeto: s.objeto || '' }));
+                window.state.supplierNames = window.state.suppliers.map(s => s.name);
                 window.state.locations = (locations.data || []).map(l => l.name);
                 window.state.objects = (objects.data || []).map(o => o.name);
                 window.state.statuses = (statuses.data || []).map(s => s.name);
-                window.state.handlers = (handlers.data || []).map(h => h.name);
+                window.state.handlers = (handlers.data || []).map(h => ({ name: h.name, matricula: h.matricula || '' }));
+                window.state.handlerNames = window.state.handlers.map(h => h.name);
                 window.state.departments = (departments.data || []).map(d => d.name);
                 window.state.processes = (processes.data || []).map(p => ({
                     id: p.id,
@@ -8482,16 +8598,16 @@
 
         window.updateSelects = function (modalOnly = false) {
             const sets = [
-                { id: 'supplierSelect', data: window.state.suppliers, searchable: true },
+                { id: 'supplierSelect', data: window.state.supplierNames || window.state.suppliers, searchable: true },
                 { id: 'objectSelect', data: window.state.objects, searchable: true },
-                { id: 'treatedBy', data: window.state.handlers, searchable: true },
+                { id: 'treatedBy', data: window.state.handlerNames || window.state.handlers.map(h => h.name), searchable: true },
                 { id: 'locationSelect', data: window.state.locations, searchable: true },
                 { id: 'statusSelect', data: window.state.statuses, searchable: true },
                 { id: 'userDepartment', data: window.state.departments, searchable: false },
                 { id: 'userFilterDept', data: window.state.departments, opt: true, placeholder: 'Todos os Departamentos', searchable: false, isFilter: true },
                 { id: 'statusFilter', data: window.state.statuses, opt: true, placeholder: 'Todos os Status', searchable: false, isFilter: true },
                 { id: 'locationFilter', data: window.state.locations, opt: true, placeholder: 'Todas Localizações', searchable: false, isFilter: true },
-                { id: 'handlerFilter', data: window.state.handlers, opt: true, placeholder: 'Todos os Tratadores', searchable: false, isFilter: true },
+                { id: 'handlerFilter', data: window.state.handlerNames || window.state.handlers.map(h => h.name), opt: true, placeholder: 'Todos os Tratadores', searchable: false, isFilter: true },
                 { id: 'filter-status', data: window.state.statuses, opt: true, placeholder: 'Todos os Status', searchable: false, isFilter: true },
                 { id: 'filter-setor', data: window.state.locations, opt: true, placeholder: 'Todos os Setores', searchable: false, isFilter: true }
             ];
@@ -8578,6 +8694,31 @@
             };
             var titleEl = document.getElementById('configModalTitle');
             if (titleEl) titleEl.innerText = titles[type] || type;
+            
+            // Show/hide CNPJ and Objeto fields for suppliers, Matrícula for handlers
+            var cnpjGroup = document.getElementById('cnpjInputGroup');
+            var objetoGroup = document.getElementById('objetoInputGroup');
+            var matriculaGroup = document.getElementById('matriculaInputGroup');
+            if (cnpjGroup) {
+                cnpjGroup.style.display = (type === 'suppliers') ? 'block' : 'none';
+            }
+            if (objetoGroup) {
+                objetoGroup.style.display = (type === 'suppliers') ? 'block' : 'none';
+            }
+            if (matriculaGroup) {
+                matriculaGroup.style.display = (type === 'handlers') ? 'block' : 'none';
+            }
+            if (type === 'suppliers') {
+                document.getElementById('configInput').placeholder = 'Digite o nome do fornecedor...';
+                document.getElementById('configInputLabel').innerText = 'Adicionar Novo Fornecedor';
+            } else if (type === 'handlers') {
+                document.getElementById('configInput').placeholder = 'Digite o nome do tratador...';
+                document.getElementById('configInputLabel').innerText = 'Adicionar Novo Tratador';
+            } else {
+                document.getElementById('configInput').placeholder = 'Digite o nome do item...';
+                document.getElementById('configInputLabel').innerText = 'Adicionar Novo Item';
+            }
+            
             window.renderConfigList();
 
             var searchInput = document.getElementById('configSearchInput');
@@ -8614,16 +8755,53 @@
             if (!val) return;
             try {
                 const type = window.state.currentConfigType;
-                const { error } = await supabase.from(type).insert({ name: val });
+                const cnpjInput = document.getElementById('configCnpjInput');
+                const objetoInput = document.getElementById('configObjetoInput');
+                const matriculaInput = document.getElementById('configMatriculaInput');
+                const cnpjVal = cnpjInput ? cnpjInput.value.trim() : '';
+                const objetoVal = objetoInput ? objetoInput.value.trim() : '';
+                const matriculaVal = matriculaInput ? matriculaInput.value.trim() : '';
+                
+                const insertData = { name: val };
+                if (type === 'suppliers') {
+                    if (cnpjVal) insertData.cnpj = cnpjVal;
+                    if (objetoVal) insertData.objeto = objetoVal;
+                }
+                if (type === 'handlers' && matriculaVal) {
+                    insertData.matricula = matriculaVal;
+                }
+                
+                const { error } = await supabase.from(type).insert(insertData);
                 if (error) throw error;
                 if (!window.state[type]) window.state[type] = [];
-                window.state[type].push(val);
+                
+                if (type === 'suppliers') {
+                    window.state[type].push({ name: val, cnpj: cnpjVal, objeto: objetoVal });
+                } else if (type === 'handlers') {
+                    window.state[type].push({ name: val, matricula: matriculaVal });
+                } else {
+                    window.state[type].push(val);
+                }
+                
                 input.value = '';
+                if (cnpjInput) cnpjInput.value = '';
+                if (objetoInput) objetoInput.value = '';
+                if (matriculaInput) matriculaInput.value = '';
                 window.renderConfigList(); window.updateSelects();
             } catch (err) {
                 console.error('Error saving config item:', err);
                 alert('Erro ao salvar: ' + (err.message || 'Falha na comunicação'));
             }
+        };
+
+        window.formatCNPJ = function(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 14) value = value.slice(0, 14);
+            value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+            value = value.replace(/^(\d{2})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3/$4');
+            value = value.replace(/^(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d)/, '$1.$2.$3/$4-$5');
+            input.value = value;
         };
 
         window.quickAddConfig = function (type) {
@@ -8642,7 +8820,13 @@
 
             if (searchInput && searchInput.value) {
                 const term = searchInput.value.toLowerCase();
-                arr = arr.filter(it => it.toLowerCase().includes(term));
+                if (type === 'suppliers') {
+                    arr = arr.filter(it => it.name.toLowerCase().includes(term) || (it.cnpj && it.cnpj.includes(term)));
+                } else if (type === 'handlers') {
+                    arr = arr.filter(it => it.name.toLowerCase().includes(term) || (it.matricula && it.matricula.includes(term)));
+                } else {
+                    arr = arr.filter(it => it.toLowerCase().includes(term));
+                }
             }
 
             if (arr.length === 0) {
@@ -8650,38 +8834,109 @@
                 return;
             }
 
-            [...arr].sort((a, b) => a.localeCompare(b)).forEach((it) => {
-                const li = document.createElement('li');
-                li.className = 'config-list-item';
-                // Safe unique ID for DOM selection
-                const safeKey = btoa(unescape(encodeURIComponent(it))).replace(/=/g, '');
-                li.setAttribute('data-id', safeKey);
-                li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 15px; border-bottom:1px solid #f3f4f6;';
+            if (type === 'suppliers') {
+                arr.sort((a, b) => a.name.localeCompare(b.name)).forEach((it) => {
+                    const li = document.createElement('li');
+                    li.className = 'config-list-item';
+                    const safeKey = btoa(unescape(encodeURIComponent(it.name))).replace(/=/g, '');
+                    li.setAttribute('data-id', safeKey);
+                    li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 15px; border-bottom:1px solid #f3f4f6;';
 
-                li.innerHTML = `
-                    <span class="item-display-name" style="font-weight: 500; color: #374151;">${it}</span>
-                    <div class="item-actions-row" style="display: flex; gap: 12px;">
-                        <button type="button" class="btn-edit-item" title="Editar" style="background:none; border:none; color:#f59e0b; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button type="button" class="btn-delete-item" title="Excluir" style="background:none; border:none; color:#ef4444; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
+                    li.innerHTML = `
+                        <div>
+                            <span class="item-display-name" style="font-weight: 500; color: #374151;">${it.name}</span>
+                            ${it.cnpj ? `<br><span style="font-size: 0.8rem; color: #9CA3AF;">CNPJ: ${it.cnpj}</span>` : ''}
+                            ${it.objeto ? `<br><span style="font-size: 0.8rem; color: #6B7280;">Objeto: ${it.objeto}</span>` : ''}
+                        </div>
+                        <div class="item-actions-row" style="display: flex; gap: 12px;">
+                            <button type="button" class="btn-edit-item" title="Editar" style="background:none; border:none; color:#f59e0b; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" class="btn-delete-item" title="Excluir" style="background:none; border:none; color:#ef4444; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
 
-                li.querySelector('.btn-edit-item').onclick = (e) => { e.stopPropagation(); window.editConfigItemByElement(li, it); };
-                li.querySelector('.btn-delete-item').onclick = (e) => { e.stopPropagation(); window.deleteConfigItemByElement(li, it); };
+                    li.querySelector('.btn-edit-item').onclick = (e) => { e.stopPropagation(); window.editConfigItemByElement(li, it); };
+                    li.querySelector('.btn-delete-item').onclick = (e) => { e.stopPropagation(); window.deleteConfigItemByElement(li, it); };
 
-                list.appendChild(li);
-            });
+                    list.appendChild(li);
+                });
+            } else if (type === 'handlers') {
+                arr.sort((a, b) => a.name.localeCompare(b.name)).forEach((it) => {
+                    const li = document.createElement('li');
+                    li.className = 'config-list-item';
+                    const safeKey = btoa(unescape(encodeURIComponent(it.name))).replace(/=/g, '');
+                    li.setAttribute('data-id', safeKey);
+                    li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 15px; border-bottom:1px solid #f3f4f6;';
+
+                    li.innerHTML = `
+                        <div>
+                            <span class="item-display-name" style="font-weight: 500; color: #374151;">${it.name}</span>
+                            ${it.matricula ? `<br><span style="font-size: 0.8rem; color: #9CA3AF;">Matrícula: ${it.matricula}</span>` : ''}
+                        </div>
+                        <div class="item-actions-row" style="display: flex; gap: 12px;">
+                            <button type="button" class="btn-edit-item" title="Editar" style="background:none; border:none; color:#f59e0b; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" class="btn-delete-item" title="Excluir" style="background:none; border:none; color:#ef4444; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    li.querySelector('.btn-edit-item').onclick = (e) => { e.stopPropagation(); window.editConfigItemByElement(li, it); };
+                    li.querySelector('.btn-delete-item').onclick = (e) => { e.stopPropagation(); window.deleteConfigItemByElement(li, it); };
+
+                    list.appendChild(li);
+                });
+            } else {
+                [...arr].sort((a, b) => a.localeCompare(b)).forEach((it) => {
+                    const li = document.createElement('li');
+                    li.className = 'config-list-item';
+                    const safeKey = btoa(unescape(encodeURIComponent(it))).replace(/=/g, '');
+                    li.setAttribute('data-id', safeKey);
+                    li.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:10px 15px; border-bottom:1px solid #f3f4f6;';
+
+                    li.innerHTML = `
+                        <span class="item-display-name" style="font-weight: 500; color: #374151;">${it}</span>
+                        <div class="item-actions-row" style="display: flex; gap: 12px;">
+                            <button type="button" class="btn-edit-item" title="Editar" style="background:none; border:none; color:#f59e0b; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" class="btn-delete-item" title="Excluir" style="background:none; border:none; color:#ef4444; cursor:pointer; padding:8px; font-size: 1.2rem; display: flex; align-items:center; justify-content:center;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    li.querySelector('.btn-edit-item').onclick = (e) => { e.stopPropagation(); window.editConfigItemByElement(li, it); };
+                    li.querySelector('.btn-delete-item').onclick = (e) => { e.stopPropagation(); window.deleteConfigItemByElement(li, it); };
+
+                    list.appendChild(li);
+                });
+            }
         };
 
-        window.editConfigItemByElement = function (li, oldName) {
-            console.log('Edit initiated for:', oldName);
+        window.editConfigItemByElement = function (li, oldItem) {
+            console.log('Edit initiated for:', oldItem);
+            const type = window.state.currentConfigType;
+            const isSupplier = type === 'suppliers';
+            const isHandler = type === 'handlers';
+            const oldName = (isSupplier || isHandler) ? oldItem.name : oldItem;
+            const oldCnpj = isSupplier ? (oldItem.cnpj || '') : '';
+            const oldObjeto = isSupplier ? (oldItem.objeto || '') : '';
+            const oldMatricula = isHandler ? (oldItem.matricula || '') : '';
+            
             li.innerHTML = `
                 <div class="edit-ui" style="display:flex; gap:8px; width:100%; align-items:center;" onclick="event.stopPropagation()">
-                    <input type="text" class="form-control edit-input" value="${oldName}" style="flex-grow:1; padding:4px 8px; font-size:0.9rem;">
+                    <div style="flex-grow:1; display:flex; flex-direction:column; gap:4px;">
+                        <input type="text" class="form-control edit-input" value="${oldName}" style="padding:4px 8px; font-size:0.9rem;">
+                        ${isSupplier ? `<input type="text" class="form-control edit-cnpj-input" value="${oldCnpj}" placeholder="CNPJ (opcional)" style="padding:4px 8px; font-size:0.8rem;" onkeyup="window.formatCNPJ(this)" maxlength="18">` : ''}
+                        ${isSupplier ? `<input type="text" class="form-control edit-objeto-input" value="${oldObjeto}" placeholder="Objeto (opcional)" style="padding:4px 8px; font-size:0.8rem;">` : ''}
+                        ${isHandler ? `<input type="text" class="form-control edit-matricula-input" value="${oldMatricula}" placeholder="Matrícula (opcional)" style="padding:4px 8px; font-size:0.8rem;">` : ''}
+                    </div>
                     <button type="button" class="btn btn-primary btn-save-edit" style="padding:4px 8px; font-size:0.8rem;">OK</button>
                     <button type="button" class="btn btn-secondary btn-cancel-edit" style="padding:4px 8px; font-size:0.8rem;">X</button>
                 </div>
@@ -8694,13 +8949,37 @@
             li.querySelector('.btn-save-edit').onclick = async (e) => {
                 e.stopPropagation();
                 const newName = input.value.trim();
+                const newCnpjInput = li.querySelector('.edit-cnpj-input');
+                const newObjetoInput = li.querySelector('.edit-objeto-input');
+                const newMatriculaInput = li.querySelector('.edit-matricula-input');
+                const newCnpj = newCnpjInput ? newCnpjInput.value.trim() : '';
+                const newObjeto = newObjetoInput ? newObjetoInput.value.trim() : '';
+                const newMatricula = newMatriculaInput ? newMatriculaInput.value.trim() : '';
+                
                 if (newName && newName !== oldName) {
                     try {
                         const type = window.state.currentConfigType;
-                        const { error } = await supabase.from(type).update({ name: newName }).eq('name', oldName);
+                        const updateData = { name: newName };
+                        if (type === 'suppliers') {
+                            updateData.cnpj = newCnpj;
+                            updateData.objeto = newObjeto;
+                        }
+                        if (type === 'handlers') {
+                            updateData.matricula = newMatricula;
+                        }
+                        const { error } = await supabase.from(type).update(updateData).eq('name', oldName);
                         if (error) throw error;
-                        const idx = window.state[type].indexOf(oldName);
-                        if (idx !== -1) window.state[type][idx] = newName;
+                        
+                        if (type === 'suppliers') {
+                            const idx = window.state.suppliers.findIndex(s => s.name === oldName);
+                            if (idx !== -1) window.state.suppliers[idx] = { name: newName, cnpj: newCnpj, objeto: newObjeto };
+                        } else if (type === 'handlers') {
+                            const idx = window.state.handlers.findIndex(h => h.name === oldName);
+                            if (idx !== -1) window.state.handlers[idx] = { name: newName, matricula: newMatricula };
+                        } else {
+                            const idx = window.state[type].indexOf(oldName);
+                            if (idx !== -1) window.state[type][idx] = newName;
+                        }
                     } catch (err) {
                         console.error('Save error:', err);
                         alert('Erro ao salvar: ' + err.message);
@@ -8721,8 +9000,13 @@
             };
         };
 
-        window.deleteConfigItemByElement = function (li, name) {
-            console.log('Delete initiated for:', name);
+        window.deleteConfigItemByElement = function (li, item) {
+            console.log('Delete initiated for:', item);
+            const type = window.state.currentConfigType;
+            const isSupplier = type === 'suppliers';
+            const isHandler = type === 'handlers';
+            const name = (isSupplier || isHandler) ? item.name : item;
+            
             li.innerHTML = `
                 <div class="delete-ui" style="display:flex; justify-content:space-between; align-items:center; width:100%; background:#fee2e2; padding:5px 10px; border-radius:4px;" onclick="event.stopPropagation()">
                     <span style="font-size:0.85rem; color:#b91c1c; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:60%;">Excluir?</span>
@@ -8740,8 +9024,17 @@
                     const type = window.state.currentConfigType;
                     const { error } = await supabase.from(type).delete().eq('name', name);
                     if (error) throw error;
-                    const idx = window.state[type].indexOf(name);
-                    if (idx !== -1) window.state[type].splice(idx, 1);
+                    
+                    if (type === 'suppliers') {
+                        const idx = window.state.suppliers.findIndex(s => s.name === name);
+                        if (idx !== -1) window.state.suppliers.splice(idx, 1);
+                    } else if (type === 'handlers') {
+                        const idx = window.state.handlers.findIndex(h => h.name === name);
+                        if (idx !== -1) window.state.handlers.splice(idx, 1);
+                    } else {
+                        const idx = window.state[type].indexOf(name);
+                        if (idx !== -1) window.state[type].splice(idx, 1);
+                    }
                     console.log('Delete success');
                     window.renderConfigList();
                     window.updateSelects();
@@ -8930,7 +9223,7 @@
                     // Criar um cliente temporário para o cadastro não afetar a sessão atual do administrador
                     const lib = window.supabase || (window.Supabase && window.Supabase.createClient ? window.Supabase : null);
                     if (!lib) throw new Error('Biblioteca Supabase não encontrada');
-                    
+
                     const tempClient = lib.createClient(SUPABASE_URL, SUPABASE_KEY, {
                         auth: { persistSession: false }
                     });
@@ -9047,7 +9340,7 @@
             if (supabaseClient && supabaseClient.auth) {
                 supabaseClient.auth.onAuthStateChange((event, session) => {
                     if (window.AppConfig && !window.AppConfig.isProduction()) console.log('Auth event:', event);
-                    
+
                     if (session?.user) {
                         // Se o usuário já está carregado e é o mesmo, não faz nada
                         if (window._currentAuthUserId === session.user.id) return;
@@ -10120,14 +10413,1035 @@
         // Auto-start tour on new process (only if not disabled and not editing)
         const originalOpenProcessModal = window.openProcessModal;
         window.openFiscoModal = function () {
-            // Placeholder para a funcionalidade FISCO
-            if (window.confirmModal) {
-                window.confirmModal('Funcionalidade em Desenvolvimento', 'O módulo FISCO está sendo preparado para integração com a Secretaria de Fazenda. Em breve você terá acesso a consultas tributárias e fiscais diretamente por aqui.', 'Entendido', '', () => {});
+            const modal = document.getElementById('fiscalModal');
+            if (modal) {
+                modal.classList.add('visible');
+                modal.style.display = 'flex';
+                window.loadFiscalData(); // Garante que os dados do Supabase sejam carregados ao abrir
             } else {
-                alert('Módulo FISCO: Funcionalidade em desenvolvimento e integração.');
+                const fiscalModalHTML = `
+                <div id="fiscalModal" class="process-modal" onclick="if(event.target===this) window.closeModal('fiscalModal')">
+<div class="process-modal-content" style="max-width: 1200px; width: 95vw;">
+                        <div class="modal-header" style="background: linear-gradient(135deg, #1E5FAF 0%, #0d3485 100%); color: white; border-radius: 20px 20px 0 0; padding: 1.25rem 2rem;">
+                            <div class="modal-header-info">
+                                <h2 style="color: white !important; margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                                    <i class="fas fa-landmark"></i> Módulo Fiscal
+                                </h2>
+                                <p style="color: rgba(255,255,255,0.85) !important; margin: 0.3rem 0 0 0; font-size: 0.9rem;">Gestão de Fornecedores, Fiscais, Localização, Contratos, Empenhos, Mapas e Relatórios</p>
+                            </div>
+                            <button type="button" class="modal-close" onclick="window.closeModal('fiscalModal')" style="color: white !important; font-size: 1.5rem;">&times;</button>
+                        </div>
+                        <div class="modal-body" style="padding: 1.5rem 2rem;">
+                            <div class="fiscal-tabs">
+                                <button class="fiscal-tab active" onclick="window.switchFiscalTab('fornecedores', this)">
+                                    <i class="fas fa-truck"></i> Fornecedores
+                                </button>
+                                <button class="fiscal-tab" onclick="window.switchFiscalTab('fiscais', this)">
+                                    <i class="fas fa-user-tie"></i> Fiscais
+                                </button>
+                                <button class="fiscal-tab" onclick="window.switchFiscalTab('localizacao', this)">
+                                    <i class="fas fa-map-marker-alt"></i> Localização
+                                </button>
+                                <button class="fiscal-tab" onclick="window.switchFiscalTab('contratos', this)">
+                                    <i class="fas fa-file-contract"></i> Contratos
+                                </button>
+                                <button class="fiscal-tab" onclick="window.switchFiscalTab('empenhos', this)">
+                                    <i class="fas fa-file-invoice-dollar"></i> Empenhos
+                                </button>
+                                <button class="fiscal-tab" onclick="window.switchFiscalTab('lancamentos', this); window.lancPopularEmpresas();" style="color: #dc2626; border-bottom: 2px solid #dc2626; font-weight: 700;">
+                                    <i class="fas fa-receipt"></i> Lançamentos
+                                </button>
+                                <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarmapas', this)" style="color: #16a34a;">
+                                    <i class="fas fa-map"></i> Gerar Mapas
+                                </button>
+                                <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarrelatorio', this)" style="color: #9333ea;">
+                                    <i class="fas fa-file-alt"></i> Gerar Relatório
+                                </button>
+                            </div>
+                            
+                            <div id="fiscal-tab-fornecedores" class="fiscal-tab-content active">
+                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                    <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Novo Fornecedor</h3>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Nome da Empresa</label>
+                                            <input type="text" id="fornec-razao" class="form-control" placeholder="nome da empresa">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">CNPJ</label>
+                                            <input type="text" id="fornec-cnpj" class="form-control" placeholder="CNPJ (opcional)">
+                                        </div>
+                                        <div class="form-group" style="grid-column: span 2;">
+                                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                                <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Objeto(s) <span style="font-weight: 400; font-size: 0.65rem; color: #9CA3AF;">(até 10)</span></label>
+                                                <button type="button" class="btn-tiny btn-warning" onclick="window.adicionarObjetoFornecedor()" style="font-size: 0.7rem; padding: 4px 8px;"><i class="fas fa-plus"></i> Adicionar Objeto</button>
+                                            </div>
+                                            <div id="fornec-objetos-container">
+                                                <div class="fornec-objeto-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                                    <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)">
+                                                    <button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="window.salvarFornecedor()"><i class="fas fa-save"></i> Salvar Fornecedor</button>
+                                </div>
+                                <div style="position: relative; margin-bottom: 1rem;">
+                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 0.9rem;"></i>
+                                    <input type="text" id="search-fornecedores" class="form-control" placeholder="Pesquisar fornecedores..." 
+                                        style="padding-left: 2.5rem; border-radius: 20px; transition: all 0.2s;"
+                                        onkeyup="window.filtrarTabela('fornecedores-list', 'search-fornecedores')">
+                                </div>
+                                <div class="table-responsive" style="max-height: 35vh; overflow-y: auto;">
+                                    <table class="fiscal-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Empresa</th>
+                                                <th>CNPJ</th>
+                                                <th>Objeto</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="fornecedores-list">
+                                            <tr><td colspan="4" style="text-align: center; color: #999;">Nenhum fornecedor cadastrado</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div id="fiscal-tab-contratos" class="fiscal-tab-content">
+                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                    <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Novo Contrato</h3>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Selecione (Fornecedor)</label>
+                                            <select id="contrat-fornec" class="form-control">
+                                                <option value="">-- Selecione --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">N.º Processo Admin</label>
+                                            <input type="text" id="contrat-processo" class="form-control" placeholder="número do processo">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">N.º Contrato</label>
+                                            <input type="text" id="contrat-num" class="form-control" placeholder="número do contrato">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Valor Contratual</label>
+                                            <input type="text" id="contrat-valor" class="form-control" placeholder="R$ 0,00" onkeypress="return soNumeros(event)" onblur="formatarMoeda(this)">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Data Início</label>
+                                            <input type="date" id="contrat-inicio" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Data Término</label>
+                                            <input type="date" id="contrat-termino" class="form-control">
+                                        </div>
+                                        <div class="form-group" style="grid-column: span 2;">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Fiscais (máximo 3)</label>
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem;">
+                                                <select id="contrat-fiscal1" class="form-control">
+                                                    <option value="">-- Fiscal 1 --</option>
+                                                </select>
+                                                <select id="contrat-fiscal2" class="form-control">
+                                                    <option value="">-- Fiscal 2 --</option>
+                                                </select>
+                                                <select id="contrat-fiscal3" class="form-control">
+                                                    <option value="">-- Fiscal 3 --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="window.salvarContrato()"><i class="fas fa-save"></i> Salvar Contrato</button>
+                                </div>
+                                <div style="position: relative; margin-bottom: 1rem;">
+                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 0.9rem;"></i>
+                                    <input type="text" id="search-contratos" class="form-control" placeholder="Pesquisar contratos..." 
+                                        style="padding-left: 2.5rem; border-radius: 20px; transition: all 0.2s;"
+                                        onkeyup="window.filtrarTabela('contratos-list', 'search-contratos')">
+                                </div>
+                                <div class="table-responsive" style="max-height: 35vh; overflow-y: auto;">
+                                    <table class="fiscal-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fornecedor</th>
+                                                <th>Processo Admin</th>
+                                                <th>N.º Contrato</th>
+                                                <th>Valor</th>
+                                                <th>Início</th>
+                                                <th>Término</th>
+                                                <th>Fiscais</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="contratos-list">
+                                            <tr><td colspan="7" style="text-align: center; color: #999;">Nenhum contrato cadastrado</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div id="fiscal-tab-empenhos" class="fiscal-tab-content">
+                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                    <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Novo Empenho</h3>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Selecione (Fornecedor)</label>
+                                            <select id="emp-fornec" class="form-control" onchange="window.atualizarContratosPorFornecedor()">
+                                                <option value="">-- Selecione --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">N.º Contrato</label>
+                                            <select id="emp-contrato" class="form-control" onchange="window.calcularPeriodoContrato(this.value)">
+                                                <option value="">-- Selecione --</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Período/Meses</label>
+                                            <input type="text" id="emp-periodo" class="form-control" placeholder="ex: 12 meses" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Fiscais <span style="font-weight: 400; font-size: 0.65rem; color: #9CA3AF;">(segure Ctrl/Cmd para múltiplos)</span></label>
+                                            <select id="emp-fiscal" class="form-control" multiple style="height: 70px;">
+                                                <option value="">-- Selecione --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 1rem; padding: 1rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">N.º Empenho(s)</label>
+                                            <button type="button" class="btn-tiny btn-warning" onclick="window.adicionarEmpenhoInput()" style="font-size: 0.7rem; padding: 4px 8px;"><i class="fas fa-plus"></i> Adicionar</button>
+                                        </div>
+                                        <div id="emp-empenhos-container">
+                                            <div class="emp-empenho-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                                <input type="text" class="form-control emp-ne-input" placeholder="número do empenho" style="flex: 1;">
+                                                <input type="text" class="form-control emp-valor-input" placeholder="R$ 0,00" onblur="formatarMoeda(this)" style="width: 120px;">
+                                                <button type="button" class="btn-tiny btn-danger" onclick="window.removerEmpenhoInput(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="window.salvarEmpenho()"><i class="fas fa-save"></i> Salvar Empenho(s)</button>
+                                </div>
+                                <div style="position: relative; margin-bottom: 1rem;">
+                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 0.9rem;"></i>
+                                    <input type="text" id="search-empenhos" class="form-control" placeholder="Pesquisar emissões..." 
+                                        style="padding-left: 2.5rem; border-radius: 20px; transition: all 0.2s;"
+                                        onkeyup="window.filtrarTabela('empenhos-list', 'search-empenhos')">
+                                </div>
+                                <div class="table-responsive" style="max-height: 35vh; overflow-y: auto;">
+                                    <table class="fiscal-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fornecedor</th>
+                                                <th>N.º Contrato</th>
+                                                <th>Período</th>
+                                                <th>Fiscal</th>
+                                                <th>N.º Empenho</th>
+                                                <th>Valor</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="empenhos-list">
+                                            <tr><td colspan="7" style="text-align: center; color: #999;">Nenhum empênho cadastrado</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div id="fiscal-tab-fiscais" class="fiscal-tab-content">
+                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                    <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Novo Fiscal ( Tratador)</h3>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Matrícula</label>
+                                            <input type="text" id="fiscal-matricula" class="form-control" placeholder="número da matrícula">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Nome Completo do Fiscal</label>
+                                            <input type="text" id="fiscal-nome" class="form-control" placeholder="nome completo">
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="window.salvarFiscal()"><i class="fas fa-save"></i> Salvar Fiscal</button>
+                                </div>
+                                <div style="position: relative; margin-bottom: 1rem;">
+                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 0.9rem;"></i>
+                                    <input type="text" id="search-fiscais" class="form-control" placeholder="Pesquisar fiscais..." 
+                                        style="padding-left: 2.5rem; border-radius: 20px; transition: all 0.2s;"
+                                        onkeyup="window.filtrarTabela('fiscais-list', 'search-fiscais')">
+                                </div>
+                                <div class="table-responsive" style="max-height: 35vh; overflow-y: auto;">
+                                    <table class="fiscal-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Matrícula</th>
+                                                <th>Nome Completo</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="fiscais-list">
+                                            <tr><td colspan="3" style="text-align: center; color: #999;">Nenhum fiscal cadastrado</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div id="fiscal-tab-localizacao" class="fiscal-tab-content">
+                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                    <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Nova Localização</h3>
+                                    <div style="display: grid; grid-template-columns: 1fr; gap: 1rem;">
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Nome do Departamento</label>
+                                            <select id="local-departamento" class="form-control">
+                                                <option value="">-- Selecione --</option>
+                                                <option value="131 - ALMOXARIFADO">131 - ALMOXARIFADO</option>
+                                                <option value="142 - FINANCEIRO">142 - FINANCEIRO</option>
+                                                <option value="143 - GABINETE">143 - GABINETE</option>
+                                                <option value="147 - NUTRIÇÃO">147 - NUTRIÇÃO</option>
+                                                <option value="24 - TESOURARIA">24 - TESOURARIA</option>
+                                                <option value="CPD">CPD</option>
+                                                <option value="ISS/PMI">ISS/PMI</option>
+                                                <option value="OUTROS">OUTROS</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Ou digite uma nova localização</label>
+                                            <input type="text" id="local-novo" class="form-control" placeholder="Digite o nome da nova localização...">
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="window.salvarLocalizacao()"><i class="fas fa-save"></i> Salvar Localização</button>
+                                </div>
+                                <div style="position: relative; margin-bottom: 1rem;">
+                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 0.9rem;"></i>
+                                    <input type="text" id="search-localizacoes" class="form-control" placeholder="Pesquisar localizações..." 
+                                        style="padding-left: 2.5rem; border-radius: 20px; transition: all 0.2s;"
+                                        onkeyup="window.filtrarTabela('localizacao-list', 'search-localizacoes')">
+                                </div>
+                                <div class="table-responsive" style="max-height: 35vh; overflow-y: auto;">
+                                    <table class="fiscal-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Departamento</th>
+                                                <th>Ações</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="localizacao-list">
+                                            <tr><td colspan="2" style="text-align: center; color: #999;">Nenhuma localização cadastrada</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div id="fiscal-tab-gerarmapas" class="fiscal-tab-content">
+                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                    <h3 style="margin: 0 0 1rem 0; color: #16a34a; font-size: 1rem;"><i class="fas fa-map"></i> Gerar Mapas</h3>
+                                    <p style="color: #6b7280; font-size: 0.85rem; margin-bottom: 1rem;">Selecione os parâmetros abaixo para gerar o mapa.</p>
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;">
+                                        <div class="form-group">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Empresa</label>
+                                            <select id="mapa-empresa" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                                <option value="">Selecione</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Ano</label>
+                                            <select id="mapa-ano" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                                <option value="">Selecione</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026">2026</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Mês</label>
+                                            <select id="mapa-mes" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                                <option value="">Selecione</option>
+                                                <option value="1">Janeiro</option>
+                                                <option value="2">Fevereiro</option>
+                                                <option value="3">Março</option>
+                                                <option value="4">Abril</option>
+                                                <option value="5">Maio</option>
+                                                <option value="6">Junho</option>
+                                                <option value="7">Julho</option>
+                                                <option value="8">Agosto</option>
+                                                <option value="9">Setembro</option>
+                                                <option value="10">Outubro</option>
+                                                <option value="11">Novembro</option>
+                                                <option value="12">Dezembro</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Data</label>
+                                            <input type="date" id="mapa-data" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" style="margin-top: 0.5rem; background: #16a34a; padding: 0.5rem 1.5rem; font-size: 0.85rem;" onclick="window.gerarMapa()">
+                                        <i class="fas fa-download"></i> Gerar
+                                    </button>
+                                </div>
+                                <div id="mapa-resultado" style="display: none; padding: 1rem; background: white; border-radius: 8px; margin-top: 1rem;">
+                                    <div id="mapa-conteudo"></div>
+                                </div>
+                            </div>
+                            
+                            <div id="fiscal-tab-gerarrelatorio" class="fiscal-tab-content">
+                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                    <h3 style="margin: 0 0 1rem 0; color: #9333ea; font-size: 1rem;"><i class="fas fa-file-alt"></i> Gerar Relatório</h3>
+                                    <p style="color: #6b7280; font-size: 0.85rem; margin-bottom: 1rem;">Selecione os parâmetros abaixo para gerar o relatório.</p>
+                                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;">
+                                        <div class="form-group">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Empresa</label>
+                                            <select id="relatorio-empresa" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                                <option value="">Selecione</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Ano</label>
+                                            <select id="relatorio-ano" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                                <option value="">Selecione</option>
+                                                <option value="2025">2025</option>
+                                                <option value="2026">2026</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Mês</label>
+                                            <select id="relatorio-mes" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                                <option value="">Selecione</option>
+                                                <option value="1">Janeiro</option>
+                                                <option value="2">Fevereiro</option>
+                                                <option value="3">Março</option>
+                                                <option value="4">Abril</option>
+                                                <option value="5">Maio</option>
+                                                <option value="6">Junho</option>
+                                                <option value="7">Julho</option>
+                                                <option value="8">Agosto</option>
+                                                <option value="9">Setembro</option>
+                                                <option value="10">Outubro</option>
+                                                <option value="11">Novembro</option>
+                                                <option value="12">Dezembro</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Data</label>
+                                            <input type="date" id="relatorio-data" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; align-items: flex-end; gap: 0.75rem; margin-top: 0.5rem;">
+                                        <div class="form-group" style="flex: 1;">
+                                            <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Formato</label>
+                                            <select id="relatorio-formato" class="form-control" style="font-size: 0.85rem; padding: 0.5rem;">
+                                                <option value="pdf">PDF</option>
+                                                <option value="excel">Excel</option>
+                                            </select>
+                                        </div>
+                                        <button class="btn btn-primary" style="background: #9333ea; padding: 0.5rem 1.5rem; font-size: 0.85rem; white-space: nowrap;" onclick="window.gerarRelatorio()">
+                                            <i class="fas fa-download"></i> Gerar
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="relatorio-resultado" style="display: none; padding: 1rem; background: white; border-radius: 8px; margin-top: 1rem;">
+                                    <div id="relatorio-conteudo"></div>
+                                </div>
+                            </div>
+
+                            <!-- ===== TAB: LANCAMENTOS ===== -->
+                            <div id="fiscal-tab-lancamentos" class="fiscal-tab-content">
+                              <style>.fiscal-tab-content{display:none;}.fiscal-tab-content.active{display:block;}.lanc-page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;}
+                                .lanc-page-title{font-size:1.5rem;font-weight:800;color:#0f172a;margin:0 0 0.2rem 0;letter-spacing:-0.02em;}
+                                .lanc-page-subtitle{font-size:0.82rem;color:#64748b;margin:0;}
+                                .lanc-btn-secondary{display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;background:#fff;border:1.5px solid #cbd5e1;border-radius:8px;color:#334155;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap;}
+                                .lanc-btn-secondary:hover{background:#f1f5f9;border-color:#94a3b8;}
+                                .lanc-btn-primary{display:inline-flex;align-items:center;gap:0.45rem;padding:0.55rem 1.4rem;background:#1d4ed8;border:none;border-radius:8px;color:#fff;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all .18s;}
+                                .lanc-btn-primary:hover{background:#1e40af;transform:translateY(-1px);box-shadow:0 4px 12px rgba(29,78,216,.25);}
+                                .lanc-main-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:1.75rem 2rem;margin-bottom:1.5rem;box-shadow:0 1px 4px rgba(15,23,42,.04);}
+                                .lanc-section{margin-bottom:1.6rem;padding-bottom:1.4rem;border-bottom:1px solid #f1f5f9;}
+                                .lanc-section:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+                                .lanc-section-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;}
+                                .lanc-section-icon{width:26px;height:26px;border-radius:7px;background:#eff6ff;display:flex;align-items:center;justify-content:center;color:#3b82f6;font-size:0.72rem;flex-shrink:0;}
+                                .lanc-section-title{font-size:0.93rem;font-weight:700;color:#1e293b;margin:0;}
+                                .lanc-section-divider{height:1px;background:#e2e8f0;margin-bottom:1rem;}
+                                .lanc-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+                                .lanc-grid-5{display:grid;grid-template-columns:2fr 1.4fr 1.4fr 1.6fr 1.4fr;gap:0.8rem;}
+                                .lanc-field label{display:block;font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.3rem;}
+                                .lanc-field select,.lanc-field input[type=text],.lanc-field textarea{width:100%;box-sizing:border-box;padding:0.5rem 0.75rem;border:1.5px solid #e2e8f0;border-radius:8px;font-size:0.85rem;color:#1e293b;background:#fff;transition:border-color .18s,box-shadow .18s;outline:none;font-family:inherit;}
+                                .lanc-field select:focus,.lanc-field input:focus,.lanc-field textarea:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.12);}
+                                .lanc-field input:disabled,.lanc-field select:disabled{background:#f8fafc;color:#94a3b8;cursor:not-allowed;}
+                                .lanc-money-wrap{position:relative;}
+                                .lanc-money-wrap span{position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);font-size:0.8rem;color:#64748b;font-weight:600;pointer-events:none;}
+                                .lanc-money-wrap input{padding-left:2.1rem !important;}
+                                .lanc-readonly{background:#f0f9ff !important;border-color:#bae6fd !important;color:#0369a1 !important;font-weight:700;}
+                                .lanc-obs-row{display:flex;align-items:flex-end;gap:1rem;}
+                                .lanc-obs-row textarea{flex:1;min-height:80px;resize:vertical;}
+                                .lanc-info-box{display:flex;align-items:center;gap:0.5rem;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:0.55rem 0.9rem;font-size:0.79rem;color:#1d4ed8;margin-top:0.65rem;}
+                                .lanc-table-area{margin-top:0.5rem;}
+                                .lanc-table-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.6rem;margin-bottom:0.9rem;}
+                                .lanc-table-title{font-size:1rem;font-weight:800;color:#dc2626;margin:0;}
+                                .lanc-table-controls{display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap;}
+                                .lanc-filter-select{padding:0.4rem 0.7rem;border:1.5px solid #e2e8f0;border-radius:7px;font-size:0.79rem;color:#334155;background:#fff;outline:none;cursor:pointer;}
+                                .lanc-table-wrap{overflow-x:auto;border-radius:10px;border:1px solid #e2e8f0;}
+                                .lanc-table{width:100%;border-collapse:collapse;font-size:0.81rem;}
+                                .lanc-table thead tr{background:#f8fafc;}
+                                .lanc-table th{padding:0.65rem 0.8rem;text-align:left;font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid #e2e8f0;white-space:nowrap;}
+                                .lanc-table td{padding:0.6rem 0.8rem;color:#374151;border-bottom:1px solid #f1f5f9;vertical-align:middle;}
+                                .lanc-table tbody tr:last-child td{border-bottom:none;}
+                                .lanc-table tbody tr:hover td{background:#fafafa;}
+                                .lanc-empty-row td{text-align:center;color:#94a3b8;padding:2.5rem 1rem;font-size:0.85rem;}
+                                .lanc-badge{display:inline-block;padding:0.18rem 0.55rem;border-radius:50px;font-size:0.68rem;font-weight:700;}
+                                .lanc-badge-pending{background:#fef9c3;color:#854d0e;}
+                                .lanc-badge-ok{background:#dcfce7;color:#166534;}
+                                .lanc-badge-proc{background:#eff6ff;color:#1d4ed8;}
+                              </style>
+                              <div class="lanc-page-header">
+                                <div>
+                                  <h2 class="lanc-page-title">Lançamentos</h2>
+                                  <p class="lanc-page-subtitle">Registre um novo pagamento (medição) e associe-o a um empenho existente.</p>
+                                </div>
+                                <button class="lanc-btn-secondary" onclick="window.verMapaExecucao()">
+                                  <i class="fas fa-map-marked-alt"></i> Ver Mapa de Execução
+                                </button>
+                              </div>
+                              <div class="lanc-main-card">
+                                <div class="lanc-section">
+                                  <div class="lanc-section-header"><div class="lanc-section-icon"><i class="fas fa-calendar-alt"></i></div><span class="lanc-section-title">Período de Competência</span></div>
+                                  <div class="lanc-section-divider"></div>
+                                  <div class="lanc-grid-2">
+                                    <div class="lanc-field"><label>Ano de Competência</label><select id="lanc-ano" onchange="window.lancFiltrarMedicoes()"><option value="">-- Selecione --</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select></div>
+                                    <div class="lanc-field"><label>Mês de Competência</label><select id="lanc-mes"><option value="">-- Selecione --</option><option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option><option value="4" selected>Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select></div>
+                                  </div>
+                                </div>
+                                <div class="lanc-section">
+                                  <div class="lanc-section-header"><div class="lanc-section-icon"><i class="fas fa-file-contract"></i></div><span class="lanc-section-title">Dados do Contrato</span></div>
+                                  <div class="lanc-section-divider"></div>
+                                  <div class="lanc-grid-2">
+                                    <div class="lanc-field"><label>Empresa</label><select id="lanc-empresa" onchange="window.lancOnEmpresaChange()"><option value="">-- Selecione --</option></select></div>
+                                    <div class="lanc-field"><label>N.o Contrato</label><select id="lanc-contrato" disabled onchange="window.lancOnContratoChange()"><option value="">-- Selecione a Empresa primeiro --</option></select></div>
+                                  </div>
+                                </div>
+                                <div class="lanc-section">
+                                  <div class="lanc-section-header"><div class="lanc-section-icon"><i class="fas fa-money-check-alt"></i></div><span class="lanc-section-title">Dados do Pagamento</span></div>
+                                  <div class="lanc-section-divider"></div>
+                                  <div class="lanc-grid-2">
+                                    <div class="lanc-field"><label>Empresa</label><select id="lanc-empresa" onchange="window.lancOnEmpresaChange()"><option value="">-- Selecione --</option></select></div>
+                                    <div class="lanc-field"><label>N.o Contrato</label><select id="lanc-contrato" disabled onchange="window.lancOnContratoChange()"><option value="">-- Selecione a Empresa primeiro --</option></select></div>
+                                  </div>
+                                  <div style="margin-top: 1rem; padding: 1rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                      <label style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">N.º Empenho(s)</label>
+                                      <button type="button" class="lanc-btn-secondary" onclick="window.lancAdicionarEmpenho()" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-plus"></i> Adicionar Empenho</button>
+                                    </div>
+                                    <div id="lanc-empenhos-container">
+                                      <div class="lanc-empenho-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
+                                        <select class="lanc-empenho-select form-control" onchange="window.lancOnEmpenhoChange()" style="flex: 1;">
+                                          <option value="">-- Selecione --</option>
+                                        </select>
+                                        <div class="lanc-money-wrap" style="width: 140px;">
+                                          <span>R$</span>
+                                          <input type="text" class="lanc-valor-empenho" placeholder="0,00" readonly style="padding-left: 2.1rem;">
+                                        </div>
+                                        <button type="button" class="btn-tiny btn-danger" onclick="window.lancRemoverEmpenho(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem; margin-top: 1rem;">
+                                    <div class="lanc-field"><label>N.o Proc. Pagamento</label><input type="text" id="lanc-proc" placeholder="ex: 0125/2026"></div>
+                                    <div class="lanc-field"><label>N.o da Nota Fiscal</label><input type="text" id="lanc-nf" placeholder="ex: NF-000123"></div>
+                                    <div class="lanc-field"><label>Valor Total das NF</label><div class="lanc-money-wrap"><span>R$</span><input type="text" id="lanc-valor-nf" placeholder="0,00" oninput="window.lancCalcSaldo()"></div></div>
+                                  </div>
+                                  <div class="lanc-info-box" id="lanc-empenho-info" style="display:none; margin-top: 0.75rem;"><i class="fas fa-info-circle"></i><span id="lanc-empenho-info-txt"></span></div>
+                                </div>
+                                <div class="lanc-section">
+                                  <div class="lanc-section-header"><div class="lanc-section-icon"><i class="fas fa-sticky-note"></i></div><span class="lanc-section-title">Observações</span></div>
+                                  <div class="lanc-section-divider"></div>
+                                  <div class="lanc-obs-row"><div class="lanc-field" style="flex:1;"><textarea id="lanc-obs" placeholder="Adicione observações importantes sobre este lançamento..."></textarea></div><button class="lanc-btn-primary" onclick="window.salvarMapa()" style="flex-shrink:0;"><i class="fas fa-save"></i> Salvar Mapa</button></div>
+                                </div>
+                              </div>
+                              <div class="lanc-table-area">
+                                <div class="lanc-table-header"><h3 class="lanc-table-title" id="lanc-table-heading">Medicoes Salvas em 2026</h3><div class="lanc-table-controls"><button class="lanc-btn-secondary" onclick="window.lancImprimirTabela()"><i class="fas fa-print"></i> Imprimir Tabela</button><select class="lanc-filter-select" id="lanc-filtro-ano" onchange="window.lancFiltrarMedicoes()"><option value="2026" selected>2026</option><option value="2025">2025</option><option value="2024">2024</option></select><select class="lanc-filter-select" id="lanc-filtro-mes" onchange="window.lancFiltrarMedicoes()"><option value="">Todos os Meses</option><option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Marco</option><option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select><select class="lanc-filter-select" id="lanc-filtro-status" onchange="window.lancFiltrarMedicoes()"><option value="">Todos os Status</option><option value="Pendente">Pendente</option><option value="Em Processo">Em Processo</option><option value="Pago">Pago</option></select></div></div>
+                                <div class="lanc-table-wrap"><table class="lanc-table"><thead><tr><th>Competencia</th><th>Emissao</th><th>N.o NF</th><th>N.o Empenho</th><th>N.o Proc. Pagamento</th><th>Status</th><th>Valor</th><th>Saldo</th><th>Acoes</th></tr></thead><tbody id="lanc-medicoes-tbody"><tr class="lanc-empty-row"><td colspan="9">Nenhuma medicao encontrada para os filtros aplicados.</td></tr></tbody></table></div>
+                              </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', fiscalModalHTML);
+                document.getElementById('fiscalModal').classList.add('visible');
+                document.getElementById('fiscalModal').style.display = 'flex';
+            }
+            window.loadFiscalData();
+            // Carrega fornecedores, localizações e fiscais do cadastro principal para o módulo fiscal
+            if (window.state.suppliers && window.state.suppliers.length > 0) {
+                window.fiscalData.fornecedores = window.state.suppliers.map(s => ({
+                    nome: s.name,
+                    cnpj: s.cnpj || '',
+                    objeto: s.objeto || ''
+                }));
+                window.atualizarTabelaFornecedores();
+            }
+            if (window.state.locations && window.state.locations.length > 0) {
+                window.fiscalData.localizacoes = window.state.locations.map(l => ({
+                    id: Date.now() + Math.random(),
+                    departamento: l
+                }));
+                window.atualizarTabelaLocalizacoes();
+            }
+            if (window.state.handlers && window.state.handlers.length > 0) {
+                window.fiscalData.fiscais = window.state.handlers.map(h => ({
+                    matricula: h.matricula || '',
+                    name: h.name
+                }));
+                window.atualizarTabelaFiscais();
             }
         };
 
+        window.switchFiscalTab = function (tabName, btn) {
+            document.querySelectorAll('.fiscal-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.fiscal-tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('fiscal-tab-' + tabName).classList.add('active');
+        };
+
+        window.fiscalData = {
+            fornecedores: [],
+            contratos: [],
+            empenhos: [],
+            fiscais: [],
+            localizacoes: []
+        };
+        window.contratoEditando = null;
+        window.fornecedorEditando = null;
+
+        // ======================== FORNECEDORES LOGIC ========================
+        window.salvarFornecedor = async function () {
+            const nome = document.getElementById('fornec-razao').value;
+            const cnpj = document.getElementById('fornec-cnpj').value;
+            var objetos = [];
+            document.querySelectorAll('.fornec-objeto-row').forEach(function(row) {
+                var input = row.querySelector('.fornec-objeto-input');
+                if (input && input.value.trim()) {
+                    objetos.push(input.value.trim());
+                }
+            });
+            if (!nome) { alert('Preencha o nome da empresa'); return; }
+            var objetoTexto = objetos.join('; ');
+            try {
+                if (window.supabase) {
+                    const data = { name: nome, cnpj: cnpj, objeto: objetoTexto };
+                    const { error } = await window.supabase.from('suppliers').upsert(data, { onConflict: 'name' });
+                    if (error) throw error;
+                }
+                alert('Fornecedor salvo com sucesso!');
+                window.loadFiscalData();
+                document.getElementById('fornec-razao').value = '';
+                document.getElementById('fornec-cnpj').value = '';
+                document.getElementById('fornec-objetos-container').innerHTML = `
+                    <div class="fornec-objeto-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)">
+                        <button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+                    </div>
+                `;
+                window.fornecedorEditando = null;
+            } catch (err) {
+                console.error('Erro ao salvar fornecedor:', err);
+                alert('Erro ao salvar: ' + err.message);
+            }
+        };
+
+        window.adicionarObjetoFornecedor = function () {
+            var container = document.getElementById('fornec-objetos-container');
+            var div = document.createElement('div');
+            div.className = 'fornec-objeto-row';
+            div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem;';
+            div.innerHTML = `
+                <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)">
+                <button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+            `;
+            container.appendChild(div);
+        };
+
+        window.removerObjetoFornecedor = function (btn) {
+            var container = document.getElementById('fornec-objetos-container');
+            if (container && container.children.length > 1) { btn.closest('.fornec-objeto-row').remove(); }
+        };
+
+        window.atualizarTabelaFornecedores = function () {
+            const tbody = document.getElementById('fornecedores-list');
+            if (!tbody) return;
+            if (window.fiscalData.fornecedores.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999;">Nenhum fornecedor cadastrado</td></tr>';
+            } else {
+                tbody.innerHTML = window.fiscalData.fornecedores.map((f, i) =>
+                    '<tr><td>' + (f.name || f.nome) + '</td><td>' + (f.cnpj || '-') + '</td><td>' + (f.objeto || '-') + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarFornecedor(' + i + ')"><i class="fas fa-edit"></i> Editar</button> <button class="btn-tiny btn-danger" onclick="window.excluirFornecedor(' + i + ')"><i class="fas fa-trash"></i> Excluir</button></td></tr>'
+                ).join('');
+            }
+            window.atualizarSelectsFornecedor();
+        };
+
+        window.editarFornecedor = function (index) {
+            const f = window.fiscalData.fornecedores[index];
+            document.getElementById('fornec-razao').value = f.name || f.nome;
+            document.getElementById('fornec-cnpj').value = f.cnpj || '';
+            var objetos = (f.objeto || '').split(';').map(o => o.trim()).filter(o => o);
+            var container = document.getElementById('fornec-objetos-container');
+            container.innerHTML = '';
+            if (objetos.length === 0) objetos = [''];
+            objetos.forEach(ob => {
+                var div = document.createElement('div');
+                div.className = 'fornec-objeto-row';
+                div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem;';
+                div.innerHTML = `<input type="text" class="form-control fornec-objeto-input" value="${ob}" placeholder="digite o objeto (opcional)"><button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>`;
+                container.appendChild(div);
+            });
+            window.fornecedorEditando = index;
+        };
+
+        window.excluirFornecedor = async function (index) {
+            const f = window.fiscalData.fornecedores[index];
+            const nomeStr = f.name || f.nome;
+            if (confirm('Excluir fornecedor ' + nomeStr + '?')) {
+                if (window.supabaseClient) { await window.supabaseClient.from('suppliers').delete().eq('name', nomeStr); }
+                window.loadFiscalData();
+            }
+        };
+
+        window.atualizarSelectsFornecedor = function () {
+            const selects = ['contrat-fornec', 'emp-fornec'];
+            selects.forEach(selId => {
+                const sel = document.getElementById(selId);
+                if (sel) {
+                    const opts = window.fiscalData.fornecedores.map(f => {
+                        const n = f.name || f.nome;
+                        return '<option value="' + n + '">' + n + '</option>';
+                    }).join('');
+                    sel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
+                }
+            });
+        };
+
+        // ======================== CONTRATOS LOGIC ========================
+        window.atualizarContratosPorFornecedor = function () {
+            const fornec = document.getElementById('emp-fornec').value;
+            const contratoSel = document.getElementById('emp-contrato');
+            if (!fornec) { contratoSel.innerHTML = '<option value="">-- Selecione --</option>'; document.getElementById('emp-periodo').value = ''; return; }
+            const contratosFiltrados = window.fiscalData.contratos.filter(c => c.supplier_name === fornec);
+            if (contratosFiltrados.length === 0) { contratoSel.innerHTML = '<option value="">Nenhum contrato encontrado</option>'; return; }
+            const opts = contratosFiltrados.map(c => `<option value="${c.contract_number}">${c.contract_number}</option>`).join('');
+            contratoSel.innerHTML = '<option value="">-- Selecione --</option>' + opts;
+        };
+
+        window.salvarContrato = async function () {
+            const fornec = document.getElementById('contrat-fornec').value;
+            const numero = document.getElementById('contrat-num').value;
+            if (!fornec || !numero) { alert('Preencha Fornecedor e N.Âº do Contrato'); return; }
+            const data = {
+                supplier_name: fornec,
+                process_number: document.getElementById('contrat-processo').value,
+                contract_number: numero,
+                value: parseFloat(document.getElementById('contrat-valor').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0,
+                start_date: document.getElementById('contrat-inicio').value,
+                end_date: document.getElementById('contrat-termino').value,
+                officers: [document.getElementById('contrat-fiscal1').value, document.getElementById('contrat-fiscal2').value, document.getElementById('contrat-fiscal3').value].filter(f => f)
+            };
+            try {
+                if (window.supabaseClient) {
+                    const { error } = await window.supabaseClient.from('fiscal_contracts').upsert(data, { onConflict: 'contract_number' });
+                    if (error) throw error;
+                }
+                alert('Contrato salvo!');
+                window.loadFiscalData();
+            } catch (err) { alert(err.message); }
+        };
+
+        window.atualizarTabelaContratos = function () {
+            const tbody = document.getElementById('contratos-list');
+            if (!tbody) return;
+            if (window.fiscalData.contratos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: #999;">Nenhum contrato cadastrado</td></tr>';
+            } else {
+                tbody.innerHTML = window.fiscalData.contratos.map((c, i) =>
+                    '<tr><td>' + c.supplier_name + '</td><td>' + (c.process_number || '-') + '</td><td>' + c.contract_number + '</td><td>R$ ' + (parseFloat(c.value) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</td><td>' + (c.start_date || '-') + '</td><td>' + (c.end_date || '-') + '</td><td>' + (c.officers ? c.officers.join(', ') : '-') + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarContrato(' + i + ')"><i class="fas fa-edit"></i></button> <button class="btn-tiny btn-danger" onclick="window.excluirContrato(' + i + ')"><i class="fas fa-trash"></i></button></td></tr>'
+                ).join('');
+            }
+        };
+
+        window.editarContrato = function (index) {
+            const c = window.fiscalData.contratos[index];
+            document.getElementById('contrat-fornec').value = c.supplier_name || '';
+            document.getElementById('contrat-processo').value = c.process_number || '';
+            document.getElementById('contrat-num').value = c.contract_number || '';
+            document.getElementById('contrat-valor').value = (parseFloat(c.value) || 0).toLocaleString('pt-BR', {minimumFractionDigits:2});
+            document.getElementById('contrat-inicio').value = c.start_date || '';
+            document.getElementById('contrat-termino').value = c.end_date || '';
+            if (c.officers) {
+                ['contrat-fiscal1', 'contrat-fiscal2', 'contrat-fiscal3'].forEach((id, i) => { document.getElementById(id).value = c.officers[i] || ''; });
+            }
+        };
+
+        window.excluirContrato = async function (index) {
+            const c = window.fiscalData.contratos[index];
+            if (confirm('Excluir?')) {
+                if (window.supabaseClient) { await window.supabaseClient.from('fiscal_contracts').delete().eq('contract_number', c.contract_number); }
+                window.loadFiscalData();
+            }
+        };
+
+        window.calcularPeriodoContrato = function (numeroContrato) {
+            const campoPeriodo = document.getElementById('emp-periodo');
+            if (!numeroContrato) { campoPeriodo.value = ''; return; }
+            const contrato = window.fiscalData.contratos.find(c => c.contract_number === numeroContrato);
+            if (contrato && contrato.start_date && contrato.end_date) {
+                const diffTime = new Date(contrato.end_date) - new Date(contrato.start_date);
+                campoPeriodo.value = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30)) + ' meses';
+            } else { campoPeriodo.value = ''; }
+        };
+
+        // ======================== EMPENHOS LOGIC ========================
+        window.salvarEmpenho = async function () {
+            const fornec = document.getElementById('emp-fornec').value;
+            const contrato = document.getElementById('emp-contrato').value;
+            const periodo = document.getElementById('emp-periodo').value;
+            const fiscaisArr = Array.from(document.getElementById('emp-fiscal').selectedOptions).map(o => o.value).filter(v => v);
+            const rows = document.querySelectorAll('.emp-empenho-row');
+            const empenos = [];
+            rows.forEach(row => {
+                const ne = row.querySelector('.emp-ne-input').value.trim();
+                const valor = parseFloat(row.querySelector('.emp-valor-input').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
+                if (ne) empenos.push({ ne, valor });
+            });
+            if (!fornec || empenos.length === 0) { alert('Preencha os campos obrigatÃ³rios'); return; }
+            try {
+                if (window.supabase) {
+                    for (const emp of empenos) {
+                        const data = { supplier_name: fornec, contract_number: contrato, period: periodo, officer_name: fiscaisArr.join(', '), ne_number: emp.ne, value: emp.valor };
+                        await window.supabase.from('fiscal_empenhos').upsert(data, { onConflict: 'ne_number' });
+                    }
+                }
+                alert('Empenho(s) salvos!');
+                window.loadFiscalData();
+            } catch (err) { alert(err.message); }
+        };
+
+        window.adicionarEmpenhoInput = function () {
+            const div = document.createElement('div'); div.className = 'emp-empenho-row'; div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem;';
+            div.innerHTML = `<input type="text" class="form-control emp-ne-input" placeholder="nÃºmero do empenho" style="flex: 1;"><input type="text" class="form-control emp-valor-input" placeholder="R$ 0,00" onblur="formatarMoeda(this)" style="width: 120px;"><button type="button" class="btn-tiny btn-danger" onclick="window.removerEmpenhoInput(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>`;
+            document.getElementById('emp-empenhos-container').appendChild(div);
+        };
+
+        window.removerEmpenhoInput = function (btn) {
+            const container = document.getElementById('emp-empenhos-container');
+            if (container.children.length > 1) btn.closest('.emp-empenho-row').remove();
+        };
+
+        window.atualizarTabelaEmpenhos = function () {
+            const tbody = document.getElementById('empenhos-list');
+            if (!tbody) return;
+            tbody.innerHTML = window.fiscalData.empenhos.length === 0 ? '<tr><td colspan="7" style="text-align: center; color: #999;">Nenhum empÃªnho</td></tr>' : 
+                window.fiscalData.empenhos.map((e, i) => `<tr><td>${e.supplier_name}</td><td>${e.contract_number || '-'}</td><td>${e.period || '-'}</td><td>${e.officer_name || '-'}</td><td>${e.ne_number}</td><td>R$ ${parseFloat(e.value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td><td><button class="btn-tiny btn-danger" onclick="window.excluirEmpenho('${e.ne_number}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+        };
+
+        window.excluirEmpenho = async function (ne) {
+            if (confirm('Excluir?')) { 
+                if (window.supabaseClient) await window.supabaseClient.from('fiscal_empenhos').delete().eq('ne_number', ne);
+                window.loadFiscalData();
+            }
+        };
+
+        // ======================== FISCAIS (SYNC HANDLERS) ========================
+        window.salvarFiscal = async function () {
+            const matricula = document.getElementById('fiscal-matricula').value;
+            const nome = document.getElementById('fiscal-nome').value;
+            if (!nome) { alert('Preencha o nome'); return; }
+            try {
+                if (window.supabase) { await window.supabase.from('handlers').upsert({ matricula, name: nome }, { onConflict: 'name' }); }
+                window.loadFiscalData();
+                document.getElementById('fiscal-matricula').value = '';
+                document.getElementById('fiscal-nome').value = '';
+                alert('Fiscal salvo!');
+            } catch (err) { alert(err.message); }
+        };
+
+        window.atualizarTabelaFiscais = function () {
+            const tbody = document.getElementById('fiscais-list');
+            if (!tbody) return;
+            tbody.innerHTML = window.fiscalData.fiscais.length === 0 ? '<tr><td colspan="3" style="text-align: center; color: #999;">Nenhum fiscal</td></tr>' :
+                window.fiscalData.fiscais.map((f, i) => `<tr><td>${f.matricula || '-'}</td><td>${f.name}</td><td><button class="btn-tiny btn-danger" onclick="window.excluirFiscal('${f.name}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+            window.atualizarSelectsFiscal();
+        };
+
+        window.excluirFiscal = async function (name) {
+            if (confirm('Excluir?')) {
+                if (window.supabaseClient) await window.supabaseClient.from('handlers').delete().eq('name', name);
+                window.loadFiscalData();
+            }
+        };
+
+        window.atualizarSelectsFiscal = function () {
+            if (!window.fiscalData.fiscais) return;
+            const opts = window.fiscalData.fiscais.map(f => `<option value="${f.name}">${f.name}</option>`).join('');
+            ['emp-fiscal', 'contrat-fiscal1', 'contrat-fiscal2', 'contrat-fiscal3'].forEach(id => {
+                const el = document.getElementById(id); 
+                if (el) el.innerHTML = (id.includes('contrat') ? `<option value="">-- Fiscal ${id.slice(-1)} --</option>` : '<option value="">-- Selecione --</option>') + opts;
+            });
+        };
+
+        // ======================== LOCALIZAÃ‡Ã•ES ========================
+        window.salvarLocalizacao = async function () {
+            const depto = (document.getElementById('local-novo').value || document.getElementById('local-departamento').value).trim();
+            if (!depto) { alert('Selecione ou digite'); return; }
+            try { if (window.supabase) await window.supabase.from('locations').upsert({ name: depto }, { onConflict: 'name' }); window.loadFiscalData(); } catch (err) { console.error(err); }
+        };
+
+        window.atualizarTabelaLocalizacoes = function () {
+            const tbody = document.getElementById('localizacao-list');
+            if (!tbody) return;
+            tbody.innerHTML = window.fiscalData.localizacoes.length === 0 ? '<tr><td colspan="2" style="text-align: center; color: #999;">Nenhuma</td></tr>' :
+                window.fiscalData.localizacoes.map((l, i) => `<tr><td>${l.departamento}</td><td><button class="btn-tiny btn-danger" onclick="window.excluirLocalizacao('${l.departamento}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+        };
+
+        window.excluirLocalizacao = async function(name) {
+            if (confirm('Excluir?')) {
+                if (window.supabaseClient) await window.supabaseClient.from('locations').delete().eq('name', name);
+                window.loadFiscalData();
+            }
+        };
+
+        // ======================== LANÃ‡AMENTOS (MEDIÃ‡Ã•ES) ========================
+        window.lancOnEmpresaChange = function () {
+            const empresa = document.getElementById('lanc-empresa').value;
+            const selContrato = document.getElementById('lanc-contrato');
+            if (!empresa) { selContrato.innerHTML = '<option value="">-- Selecione --</option>'; selContrato.disabled = true; return; }
+            const contratos = window.fiscalData.contratos.filter(c => c.supplier_name === empresa);
+            selContrato.innerHTML = '<option value="">-- Selecione --</option>' + contratos.map(c => `<option value="${c.contract_number}">${c.contract_number}</option>`).join('');
+            selContrato.disabled = false;
+            window.lancAtualizarTodosEmpenhosSelects();
+        };
+
+        window.lancAtualizarTodosEmpenhosSelects = function () {
+            const empresa = document.getElementById('lanc-empresa').value;
+            const contrato = document.getElementById('lanc-contrato').value;
+            const selects = document.querySelectorAll('.lanc-empenho-select');
+            selects.forEach(sel => {
+                if (!empresa) { sel.innerHTML = '<option value="">-- Selecione --</option>'; return; }
+                const enempos = window.fiscalData.empenhos.filter(e => e.supplier_name === empresa && (!contrato || e.contract_number === contrato));
+                sel.innerHTML = '<option value="">-- Selecione --</option>' + enempos.map(e => `<option value="${e.ne_number}" data-valor="${e.value}">${e.ne_number} \u2014 R$ ${parseFloat(e.value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</option>`).join('');
+            });
+            window.lancCalcSaldo();
+        };
+
+        window.lancAdicionarEmpenho = function () {
+            const div = document.createElement('div'); div.className = 'lanc-empenho-row'; div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;';
+            div.innerHTML = `<select class="lanc-empenho-select form-control" onchange="window.lancOnNovoEmpenhoChange(this)" style="flex: 1;"><option value="">-- Selecione --</option></select><div class="lanc-money-wrap" style="width: 140px;"><span>R$</span><input type="text" class="lanc-valor-empenho" placeholder="0,00" readonly style="padding-left: 2.1rem;"></div><button type="button" class="btn-tiny btn-danger" onclick="window.lancRemoverEmpenho(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>`;
+            document.getElementById('lanc-empenhos-container').appendChild(div);
+            window.lancAtualizarTodosEmpenhosSelects();
+        };
+
+        window.lancRemoverEmpenho = function (btn) {
+            if (document.getElementById('lanc-empenhos-container').children.length > 1) { btn.closest('.lanc-empenho-row').remove(); window.lancCalcSaldo(); }
+        };
+
+        window.lancOnNovoEmpenhoChange = function (select) {
+            const opt = select.options[select.selectedIndex];
+            const row = select.closest('.lanc-empenho-row');
+            row.querySelector('.lanc-valor-empenho').value = opt && opt.value ? parseFloat(opt.getAttribute('data-valor')).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '';
+            window.lancCalcSaldo();
+        };
+
+        window.lancCalcSaldo = function () {
+            const valorNf = parseFloat(document.getElementById('lanc-valor-nf').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
+            let totalEmpenhos = 0;
+            document.querySelectorAll('.lanc-valor-empenho').forEach(el => { totalEmpenhos += parseFloat(el.value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0; });
+            const infoBox = document.getElementById('lanc-empenho-info');
+            if (totalEmpenhos > 0) {
+                infoBox.style.display = 'flex';
+                document.getElementById('lanc-empenho-info-txt').innerHTML = `<strong>Total:</strong> R$ ${totalEmpenhos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} | <strong>NF:</strong> R$ ${valorNf.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} | <strong>Saldo:</strong> R$ ${(totalEmpenhos - valorNf).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+            } else infoBox.style.display = 'none';
+        };
+
+        window.salvarMapa = async function () {
+            const data = {
+                year: document.getElementById('lanc-ano').value,
+                month: document.getElementById('lanc-mes').value,
+                supplier_name: document.getElementById('lanc-empresa').value,
+                contract_number: document.getElementById('lanc-contrato').value,
+                process_number: document.getElementById('lanc-proc').value,
+                invoice_number: document.getElementById('lanc-nf').value,
+                invoice_value: parseFloat(document.getElementById('lanc-valor-nf').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0,
+                notes: document.getElementById('lanc-obs').value,
+                status: 'Pendente'
+            };
+            const enempos = Array.from(document.querySelectorAll('.lanc-empenho-select')).map(s => s.value).filter(v => v);
+            if (!data.supplier_name || !data.invoice_number || enempos.length === 0) { alert('Preencha os campos obrigatÃ³rios'); return; }
+            try {
+                if (window.supabase) {
+                    for (const ne of enempos) {
+                        const valEmp = parseFloat(document.querySelector(`.lanc-empenho-select option[value="${ne}"]`).getAttribute('data-valor')) || 0;
+                        await window.supabase.from('fiscal_measurements').insert({ ...data, empenho_number: ne, projected_balance: valEmp - (data.invoice_value / enempos.length) });
+                    }
+                }
+                alert('MediÃ§Ã£o salva!');
+                window.loadFiscalData();
+            } catch (err) { alert(err.message); }
+        };
+
+        window.lancFiltrarMedicoes = function () {
+            const filtered = (window.lancamentos || []);
+            const tbody = document.getElementById('lanc-medicoes-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.length === 0 ? '<tr class="lanc-empty-row"><td colspan="9">Nenhuma</td></tr>' : 
+                filtered.map(r => `<tr><td>${r.month}/${r.year}</td><td>${new Date(r.created_at).toLocaleDateString('pt-BR')}</td><td>${r.invoice_number}</td><td>${r.empenho_number}</td><td>${r.process_number}</td><td><span class="lanc-badge ${r.status === 'Pago' ? 'lanc-badge-ok' : 'lanc-badge-pending'}">${r.status}</span></td><td>R$ ${parseFloat(r.invoice_value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td><td>R$ ${parseFloat(r.projected_balance).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td><td><button class="btn-tiny btn-danger" onclick="window.excluirMedicao('${r.id}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+        };
+
+        window.excluirMedicao = async function(id) {
+            if (confirm('Excluir?')) { if (window.supabaseClient) await window.supabaseClient.from('fiscal_measurements').delete().eq('id', id); window.loadFiscalData(); }
+        };
+
+        window.loadFiscalData = async function () {
+            if (!window.supabaseClient) await window.initializeSupabase();
+            if (!window.supabaseClient) return;
+            try {
+                const [fornec, contr, emp, hand, meas, locs] = await Promise.all([
+                    supabase.from('suppliers').select('*').order('name'),
+                    supabase.from('fiscal_contracts').select('*').order('contract_number'),
+                    supabase.from('fiscal_empenhos').select('*').order('ne_number'),
+                    supabase.from('handlers').select('*').order('name'),
+                    supabase.from('fiscal_measurements').select('*').order('created_at', { ascending: false }),
+                    supabase.from('locations').select('*').order('name')
+                ]);
+                window.fiscalData.fornecedores = fornec.data || [];
+                window.fiscalData.contratos = contr.data || [];
+                window.fiscalData.empenhos = emp.data || [];
+                window.fiscalData.fiscais = hand.data || [];
+                window.fiscalData.localizacoes = (locs.data || []).map(l => ({ departamento: l.name }));
+                window.lancamentos = meas.data || [];
+                
+                window.atualizarTabelaFornecedores();
+                window.atualizarTabelaContratos();
+                window.atualizarTabelaEmpenhos();
+                window.atualizarTabelaFiscais();
+                window.atualizarTabelaLocalizacoes();
+                window.lancFiltrarMedicoes();
+            } catch (err) { console.error(err); }
+        };
+
+        window.gerarMapa = function () {
+            const empresa = document.getElementById('mapa-empresa').value;
+            const res = document.getElementById('mapa-resultado');
+            if (!empresa) return;
+            res.style.display = 'block';
+            const contr = window.fiscalData.contratos.filter(c => c.supplier_name === empresa);
+            document.getElementById('mapa-conteudo').innerHTML = `<table class="fiscal-table"><thead><tr><th>Contrato</th><th>Processo</th><th>Valor</th></tr></thead><tbody>${contr.map(c => `<tr><td>${c.contract_number}</td><td>${c.process_number || '-'}</td><td>R$ ${parseFloat(c.value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td></tr>`).join('')}</tbody></table>`;
+        };
+
+        window.gerarRelatorio = function () {
+            const empresa = document.getElementById('relatorio-empresa').value;
+            const res = document.getElementById('relatorio-resultado');
+            if (!empresa) return;
+            res.style.display = 'block';
+            const filtered = window.lancamentos.filter(r => r.supplier_name === empresa);
+            document.getElementById('relatorio-conteudo').innerHTML = `<table class="fiscal-table"><thead><tr><th>NF</th><th>Empenho</th><th>Valor</th></tr></thead><tbody>${filtered.map(r => `<tr><td>${r.invoice_number}</td><td>${r.empenho_number}</td><td>R$ ${parseFloat(r.invoice_value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td></tr>`).join('')}</tbody></table>`;
+        };
         window.openProcessModal = function (p = null) {
             const isNewProcess = p === null || p === undefined;
 
@@ -10140,6 +11454,23 @@
                         window.runTour();
                     }
                 }, 1200);
+            }
+        };
+
+        window.filtrarTabela = function (tbodyId, inputId) {
+            const input = document.getElementById(inputId);
+            const filter = input.value.toLowerCase();
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) return;
+            const rows = tbody.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const text = row.textContent || row.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
             }
         };
     </script>
