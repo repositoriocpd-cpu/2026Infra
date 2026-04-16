@@ -1,0 +1,15 @@
+# Task Checklist
+
+- [ ] Access http://localhost:8081
+- [ ] Bypass or login (look for 'Entrar')
+- [ ] Navigate to 'Módulo Fiscal'
+- [ ] Go to 'Fornecedores' tab
+- [ ] Add new supplier: 'Empresa Teste Antigravity', '12.345.678/0001-90', 2 objects ('Objeto 1', 'Objeto 2')
+- [ ] Verify success alert and presence in table
+- [ ] Go to 'Fiscais' tab
+- [ ] Verify names from 'handlers' table appear
+- [ ] Add 'Fiscal Teste', Matricula '001' and verify
+- [ ] Go to 'Medições' or 'Lançamentos' tab
+- [ ] Check 'Empresa Teste Antigravity' in dropdown
+- [ ] Check 'Fiscal Teste' in selection
+- [ ] Check 'Mapa de Execução' and 'Relatório' tabs

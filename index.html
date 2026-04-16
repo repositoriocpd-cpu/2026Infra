@@ -10533,79 +10533,154 @@
                             </div>
                             <button type="button" class="modal-close" onclick="window.closeModal('fiscalModal')" style="color: white !important; font-size: 1.5rem;">&times;</button>
                         </div>
-                        <div class="modal-body" style="padding: 1.5rem 2rem;">
-                            <div class="fiscal-tabs">
-                                <button class="fiscal-tab active" onclick="window.switchFiscalTab('fornecedores', this)">
-                                    <i class="fas fa-truck"></i> Fornecedores
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('fiscais', this)">
-                                    <i class="fas fa-user-tie"></i> Fiscais
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('localizacao', this)">
-                                    <i class="fas fa-map-marker-alt"></i> Localização
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('contratos', this)">
-                                    <i class="fas fa-file-contract"></i> Contratos
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('empenhos', this)">
-                                    <i class="fas fa-file-invoice-dollar"></i> Empenhos
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('lancamentos', this); window.lancPopularEmpresas();" style="color: #dc2626; border-bottom: 2px solid #dc2626; font-weight: 700;">
-                                    <i class="fas fa-receipt"></i> Lançamentos
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarmapas', this)" style="color: #16a34a;">
-                                    <i class="fas fa-map"></i> Gerar Mapas
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarrelatorio', this)" style="color: #9333ea;">
-                                    <i class="fas fa-file-alt"></i> Gerar Relatório
-                                </button>
+                                                <style>
+                            .fiscal-layout { display: flex; align-items: stretch; background: #f8fafc; border-radius: 0 0 20px 20px; overflow: hidden; min-height: 70vh; }
+                            .fiscal-sidebar { width: 240px; background: #f1f5f9; border-right: 1px solid #e2e8f0; padding: 1.5rem 0; flex-shrink: 0; display: flex; flex-direction: column; }
+                            .fiscal-sidebar-group { margin-bottom: 1.5rem; }
+                            .fiscal-sidebar-title { padding: 0 1.5rem; font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+                            .fiscal-sidebar-title i { color: #64748b; font-size: 0.85rem; }
+                            .fiscal-sidebar .fiscal-tab { display: flex; align-items: center; gap: 0.75rem; width: calc(100% - 1.5rem); margin: 0.1rem 0.75rem; padding: 0.6rem 1rem; border: none; background: transparent; border-radius: 8px; text-align: left; font-size: 0.9rem; font-weight: 600; color: #334155; cursor: pointer; transition: all 0.2s; position: relative; }
+                            .fiscal-sidebar .fiscal-tab:hover { background: #e2e8f0; color: #0f172a; }
+                            .fiscal-sidebar .fiscal-tab.active { background: #dbeafe; color: #0284c7; }
+                            .fiscal-main-content { flex: 1; padding: 2rem; background: #ffffff; overflow-y: auto; max-height: 80vh; }
+                            
+                            /* Tab Fornecedores */
+                            .fiscal-page-header { margin-bottom: 1.5rem; }
+                            .fiscal-page-title { font-size: 1.7rem; font-weight: 800; color: #0f172a; margin: 0; font-family: 'Inter', sans-serif; }
+                            
+                            .fiscal-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+                            .fiscal-card-header { display: flex; justify-content: flex-start; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+                            .fiscal-card-title { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0; }
+                            .btn-fiscal-new { background: #1e5faf; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: background 0.2s; }
+                            .btn-fiscal-new:hover { background: #154582; }
+                            .btn-fiscal-save { background: #1e5faf; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
+                            .btn-fiscal-save:hover { background: #154582; }
+                            
+                            .fiscal-search-bar { position: relative; margin-bottom: 1rem; }
+                            .fiscal-search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem; }
+                            .fiscal-search-bar input { width: 100%; border: 1px solid #cbd5e1; border-radius: 20px; padding: 0.6rem 1rem 0.6rem 2.5rem; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+                            .fiscal-search-bar input:focus { border-color: #3b82f6; }
+                            
+                            /* Tab content hiding */
+                            #fiscalModal .fiscal-tab-content { display: none; }
+                            #fiscalModal .fiscal-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+                            
+                            /* Table actions */
+                            .btn-edit-action { background: #eff6ff; color: #3b82f6; border: none; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; transition: all 0.2s; }
+                            .btn-edit-action:hover { background: #dbeafe; }
+                            .btn-delete-action { background: #fef2f2; color: #ef4444; border: none; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; transition: all 0.2s; margin-left: 0.5rem; }
+                            .btn-delete-action:hover { background: #fee2e2; }
+                        </style>
+                        <div class="modal-body fiscal-layout" style="padding: 0;">
+                            <div class="fiscal-sidebar">
+                                <div class="fiscal-sidebar-group">
+                                    <div class="fiscal-sidebar-title"><i class="far fa-folder-open"></i> Cadastros</div>
+                                    <button class="fiscal-tab active" onclick="window.switchFiscalTab('fornecedores', this)">
+                                        <i class="fas fa-university"></i> Fornecedores
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('natureza', this); window.carregarNaturezaFromSupabase();">
+                                        <i class="fas fa-file-invoice-dollar"></i> Natureza/Retenções
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('fiscais', this)">
+                                        <i class="far fa-user"></i> Fiscais
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('localizacao', this)">
+                                        <i class="fas fa-map-marker-alt"></i> Localiza��o
+                                    </button>
+                                </div>
+                                <div class="fiscal-sidebar-group">
+                                    <div class="fiscal-sidebar-title"><i class="fas fa-sack-dollar"></i> Pagamentos</div>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('contratos', this)">
+                                        <i class="far fa-file-alt"></i> Contratos
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('empenhos', this)">
+                                        <i class="fas fa-tag"></i> Empenhos
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('lancamentos', this); window.lancPopularEmpresas();">
+                                        <i class="fas fa-check-circle"></i> Lan�amentos
+                                    </button>
+                                </div>
+<div class="fiscal-sidebar-group">
+                                    <div class="fiscal-sidebar-title"><i class="fas fa-money-check-alt"></i> Financeiro</div>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('financeiro', this)">
+                                        <i class="fas fa-file-invoice-dollar"></i> Relat�rios Financeiros
+                                    </button>
+                                </div>
+                                <div class="fiscal-sidebar-group">
+                                    <div class="fiscal-sidebar-title"><i class="fas fa-print"></i> Impress�es</div>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarmapas', this)">
+                                        <i class="far fa-map"></i> Gerar Mapas
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarrelatorio', this)">
+                                        <i class="fas fa-chart-bar"></i> Gerar Relat�rios
+                                    </button>
+                                </div>
                             </div>
                             
+                            <div class="fiscal-main-content">
+                            
                             <div id="fiscal-tab-fornecedores" class="fiscal-tab-content active">
-                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-                                    <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Novo Fornecedor</h3>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                                        <div class="form-group">
-                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Nome da Empresa</label>
-                                            <input type="text" id="fornec-razao" class="form-control" placeholder="nome da empresa">
+                                <div class="fiscal-page-header">
+                                    <h2 class="fiscal-page-title">Cadastro de Fornecedores</h2>
+                                </div>
+                                <div class="fiscal-card">
+                                    <div class="fiscal-card-header">
+                                        <h3 class="fiscal-card-title">Criar Novo Fornecedor</h3>
+                                        <button class="btn-fiscal-new" type="button"><i class="fas fa-plus"></i> New</button>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem;">
+                                        <div class="form-group" style="grid-column: span 2; display: flex; gap: 1.5rem;">
+                                            <div style="flex: 2;">
+                                                <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block;">Natureza do Serviço</label>
+                                                <select id="fornec-natureza" class="form-control" onchange="window.fornecNaturezaChange()" style="border: 1px solid #cbd5e1; box-shadow: none; height: 42px;">
+                                                    <option value="">-- Natureza (Classificação) --</option>
+                                                </select>
+                                            </div>
+                                            <div style="flex: 1;">
+                                                <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block;">% IRRF Base</label>
+                                                <input type="number" id="fornec-irrf" class="form-control" placeholder="% IRRF" style="border: 1px solid #cbd5e1; background: #f1f5f9; box-shadow: none; height: 42px;" readonly>
+                                            </div>
+                                        </div>
+                                        
+<div class="form-group">
+                                            <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block;">Nome da Empresa</label>
+                                            <input type="text" id="fornec-razao" class="form-control" placeholder="nome da empresa" style="border: 1px solid #cbd5e1; box-shadow: none; height: 42px;">
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">CNPJ</label>
-                                            <input type="text" id="fornec-cnpj" class="form-control" placeholder="CNPJ (opcional)">
+                                            <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block;">CNPJ</label>
+                                            <input type="text" id="fornec-cnpj" class="form-control" placeholder="CNPJ (opcional)" style="border: 1px solid #cbd5e1; box-shadow: none; height: 42px;">
                                         </div>
                                         <div class="form-group" style="grid-column: span 2;">
                                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                                <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Objeto(s) <span style="font-weight: 400; font-size: 0.65rem; color: #9CA3AF;">(até 10)</span></label>
-                                                <button type="button" class="btn-tiny btn-warning" onclick="window.adicionarObjetoFornecedor()" style="font-size: 0.7rem; padding: 4px 8px;"><i class="fas fa-plus"></i> Adicionar Objeto</button>
+                                                <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Objeto(s) <span style="font-weight: 400; font-size: 0.65rem; color: #94a3b8;">(at� 10)</span></label>
+                                                <button type="button" class="btn-tiny" onclick="window.adicionarObjetoFornecedor()" style="font-size: 0.7rem; padding: 4px 10px; background: #fef3c7; color: #d97706; border: none; font-weight: 600; border-radius: 4px; cursor: pointer;"><i class="fas fa-plus"></i> Adicionar Objeto</button>
                                             </div>
                                             <div id="fornec-objetos-container">
-                                                <div class="fornec-objeto-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                                    <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)">
-                                                    <button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+                                                <div class="fornec-objeto-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                                    <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)" style="border: 1px solid #cbd5e1; box-shadow: none; height: 42px;">
+                                                    <button type="button" class="btn-tiny" onclick="window.removerObjetoFornecedor(this)" style="padding: 0 14px; background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; cursor: pointer;"><i class="fas fa-times"></i></button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="window.salvarFornecedor()"><i class="fas fa-save"></i> Salvar Fornecedor</button>
+                                    <button class="btn-fiscal-save" style="margin-top: 1rem;" onclick="window.salvarFornecedor()"><i class="fas fa-save"></i> Salvar Fornecedor</button>
                                 </div>
-                                <div style="position: relative; margin-bottom: 1rem;">
-                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 0.9rem;"></i>
-                                    <input type="text" id="search-fornecedores" class="form-control" placeholder="Pesquisar fornecedores..." 
-                                        style="padding-left: 2.5rem; border-radius: 20px; transition: all 0.2s;"
-                                        onkeyup="window.filtrarTabela('fornecedores-list', 'search-fornecedores')">
+                                <div class="fiscal-search-bar">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="search-fornecedores" placeholder="Pesquisar Fornecedores..." onkeyup="window.filtrarTabela('fornecedores-list', 'search-fornecedores')">
                                 </div>
-                                <div class="table-responsive" style="max-height: 35vh; overflow-y: auto;">
-                                    <table class="fiscal-table">
+                                <div class="table-responsive" style="max-height: 40vh; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 1.5rem;">
+                                    <table class="fiscal-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
                                         <thead>
-                                            <tr>
-                                                <th>Empresa</th>
-                                                <th>CNPJ</th>
-                                                <th>Objeto</th>
-                                                <th>Ações</th>
+                                            <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">Empresa</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">CNPJ</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">Objeto</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">A��es</th>
                                             </tr>
                                         </thead>
                                         <tbody id="fornecedores-list">
-                                            <tr><td colspan="4" style="text-align: center; color: #999;">Nenhum fornecedor cadastrado</td></tr>
+                                            <tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 2rem;">Nenhum fornecedor cadastrado</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -10755,7 +10830,41 @@
                                 </div>
                             </div>
                             
-                            <div id="fiscal-tab-fiscais" class="fiscal-tab-content">
+                            
+                            <div id="fiscal-tab-natureza" class="fiscal-tab-content">
+                                <div class="fiscal-page-header">
+                                    <h2 class="fiscal-page-title">Natureza e Retenções</h2>
+                                </div>
+                                <div class="fiscal-card">
+                                    <h3 class="fiscal-card-title" style="margin-bottom: 1rem;">Nova Natureza e Retenções</h3>
+                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                        <input class="form-control" type="text" id="nat-desc" placeholder="Descrição (Ex: Serv. Limpeza)" style="flex: 1; min-width: 250px;">
+                                        <input class="form-control" type="number" id="nat-ir" placeholder="% IR" style="width: 90px;" oninput="window.calcTotalNat()">
+                                        <input class="form-control" type="number" id="nat-csll" placeholder="% CSLL" style="width: 90px;" oninput="window.calcTotalNat()">
+                                        <input class="form-control" type="number" id="nat-cofins" placeholder="% COFINS" style="width: 90px;" oninput="window.calcTotalNat()">
+                                        <input class="form-control" type="number" id="nat-pis" placeholder="% PIS" style="width: 90px;" oninput="window.calcTotalNat()">
+                                        <input class="form-control" type="number" id="nat-total" placeholder="Total %" style="width: 90px; background:#e2e8f0;" readonly>
+                                        <button onclick="window.salvarNatureza()" class="btn-fiscal-save"><i class="fas fa-save"></i> Salvar</button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive" style="max-height: 40vh; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 1.5rem;">
+                                    <table class="fiscal-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                                        <thead>
+                                            <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">NATUREZA</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">IR</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">CSLL</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">COFINS</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">PIS</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">TOTAL RETENÇÃO</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">AÇÕES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="natureza-list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+<div id="fiscal-tab-fiscais" class="fiscal-tab-content">
                                 <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
                                     <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Novo Fiscal ( Tratador)</h3>
                                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -10835,6 +10944,140 @@
                                             <tr><td colspan="2" style="text-align: center; color: #999;">Nenhuma localização cadastrada</td></tr>
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                            
+                            <div id="fiscal-tab-financeiro" class="fiscal-tab-content">
+                                <style>
+                                    .fin-sub-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; }
+                                    .fin-sub-tab { padding: 0.6rem 1.2rem; background: transparent; border: none; border-radius: 6px 6px 0 0; font-size: 0.85rem; font-weight: 600; color: #64748b; cursor: pointer; transition: all 0.2s; }
+                                    .fin-sub-tab:hover { background: #f1f5f9; color: #334155; }
+                                    .fin-sub-tab.active { background: #059669; color: white; }
+                                    .fin-sub-content { display: none; }
+                                    .fin-sub-content.active { display: block; }
+                                </style>
+                                <div class="fin-sub-tabs">
+                                    <button class="fin-sub-tab active" onclick="window.switchFinSubTab('administrativo', this)"><i class="fas fa-building"></i> Administrativo</button>
+                                    <button class="fin-sub-tab" onclick="window.switchFinSubTab('notas', this)"><i class="fas fa-file-invoice"></i> Notas Fiscais</button>
+                                    <button class="fin-sub-tab" onclick="window.switchFinSubTab('natureza', this)"><i class="fas fa-list-alt"></i> Tabela Natureza</button>
+                                    <button class="fin-sub-tab" onclick="window.switchFinSubTab('aliquotas', this)"><i class="fas fa-percent"></i> Alíquotas</button>
+                                </div>
+                                
+                                <div id="fin-sub-administrativo" class="fin-sub-content active">
+                                    <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                        <h3 style="margin: 0 0 1rem 0; color: #059669; font-size: 1rem;"><i class="fas fa-building"></i> Dados Administrativos</h3>
+                                        <p style="color: #6b7280; font-size: 0.85rem; margin-bottom: 1rem;">Gerencie informações administrativas dos fornecedores.</p>
+                                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Fornecedor</label>
+                                                <select id="finadm-fornecedor" class="form-control" onchange="window.carregarDadosAdmFornec()">
+                                                    <option value="">Selecione</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Banco</label>
+                                                <input type="text" id="finadm-banco" class="form-control" placeholder="Banco">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Agência</label>
+                                                <input type="text" id="finadm-agencia" class="form-control" placeholder="Agência">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Conta Corrente</label>
+                                                <input type="text" id="finadm-conta" class="form-control" placeholder="Conta">
+                                            </div>
+                                        </div>
+                                        <button onclick="window.salvarDadosAdm()" class="btn" style="background: #059669; color: white; margin-top: 1rem;"><i class="fas fa-save"></i> Salvar Dados</button>
+                                    </div>
+                                </div>
+                                
+                                <div id="fin-sub-notas" class="fin-sub-content">
+                                    <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                        <h3 style="margin: 0 0 1rem 0; color: #7c3aed; font-size: 1rem;"><i class="fas fa-file-invoice"></i> Registro de Notas Fiscais</h3>
+                                        <p style="color: #6b7280; font-size: 0.85rem; margin-bottom: 1rem;">Cadastre e acompanhe as notas fiscais emitidas.</p>
+                                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;">
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">NF Número</label>
+                                                <input type="text" id="finnf-numero" class="form-control" placeholder="Nº NF">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Fornecedor</label>
+                                                <select id="finnf-fornecedor" class="form-control">
+                                                    <option value="">Selecione</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Data Emissão</label>
+                                                <input type="date" id="finnf-data" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">Valor</label>
+                                                <input type="text" id="finnf-valor" class="form-control" placeholder="R$ 0,00">
+                                            </div>
+                                        </div>
+                                        <button onclick="window.salvarNotaFiscal()" class="btn" style="background: #7c3aed; color: white; margin-top: 1rem;"><i class="fas fa-save"></i> Registrar NF</button>
+                                    </div>
+                                    <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+                                        <table class="fiscal-table">
+                                            <thead><tr><th>NF</th><th>Fornecedor</th><th>Data</th><th>Valor</th><th>Ação</th></tr></thead>
+                                            <tbody id="finnf-tabela"><tr><td colspan="5" style="text-align:center;color:#999;">Nenhuma NF registrada.</td></tr></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div id="fin-sub-natureza" class="fin-sub-content">
+                                    <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                        <h3 style="margin: 0 0 1rem 0; color: #dc2626; font-size: 1rem;"><i class="fas fa-list-alt"></i> Tabela de Natureza</h3>
+                                        <p style="color: #6b7280; font-size: 0.85rem; margin-bottom: 1rem;">Consulta de naturezas de retenção cadastradas.</p>
+                                    </div>
+                                    <div class="table-container" style="max-height: 350px; overflow-y: auto;">
+                                        <table class="fiscal-table">
+                                            <thead><tr><th>Natureza</th><th>IR</th><th>CSLL</th><th>COFINS</th><th>PIS</th><th>Total</th></tr></thead>
+                                            <tbody id="fin-natureza-tabela"><tr><td colspan="6" style="text-align:center;color:#999;">Carregando...</td></tr></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div id="fin-sub-aliquotas" class="fin-sub-content">
+                                    <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                                        <h3 style="margin: 0 0 1rem 0; color: #ea580c; font-size: 1rem;"><i class="fas fa-percent"></i> Tabela de Alíquotas</h3>
+                                        <p style="color: #6b7280; font-size: 0.85rem; margin-bottom: 1rem;">Alíquotas padrão de retenção de impostos.</p>
+                                        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.75rem;">
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">IR %</label>
+                                                <input type="number" id="aliq-ir" class="form-control" value="1.5" step="0.1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">CSLL %</label>
+                                                <input type="number" id="aliq-csll" class="form-control" value="1.0" step="0.1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">COFINS %</label>
+                                                <input type="number" id="aliq-cofins" class="form-control" value="3.0" step="0.1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">PIS %</label>
+                                                <input type="number" id="aliq-pis" class="form-control" value="0.65" step="0.01">
+                                            </div>
+                                            <div class="form-group">
+                                                <label style="font-size: 0.7rem; font-weight: 700; color: #475569; text-transform: uppercase;">ISS %</label>
+                                                <input type="number" id="aliq-iss" class="form-control" value="5.0" step="0.1">
+                                            </div>
+                                        </div>
+                                        <button onclick="window.salvarAliquotas()" class="btn" style="background: #ea580c; color: white; margin-top: 1rem;"><i class="fas fa-save"></i> Atualizar Alíquotas</button>
+                                    </div>
+                                    <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+                                        <table class="fiscal-table">
+                                            <thead><tr><th>Imposto</th><th>Alíquota Padrão</th><th>Descrição</th></tr></thead>
+                                            <tbody>
+                                                <tr><td>IR</td><td>1,5%</td><td>Imposto de Renda Retido na Fonte</td></tr>
+                                                <tr><td>CSLL</td><td>1,0%</td><td>Contribuição Social sobre Lucro Líquido</td></tr>
+                                                <tr><td>COFINS</td><td>3,0%</td><td>Contribuição para Financiamento da Seguridade Social</td></tr>
+                                                <tr><td>PIS</td><td>0,65%</td><td>Programa de Integração Social</td></tr>
+                                                <tr><td>ISS</td><td>5,0%</td><td>Imposto Sobre Serviços</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -11001,9 +11244,15 @@
                                   <h2 class="lanc-page-title">Lançamentos</h2>
                                   <p class="lanc-page-subtitle">Registre um novo pagamento (medição) e associe-o a um empenho existente.</p>
                                 </div>
-                                <button class="lanc-btn-secondary" onclick="window.verMapaExecucao()">
-                                  <i class="fas fa-map-marked-alt"></i> Ver Mapa de Execução
-                                </button>
+                                <div style="display: flex; gap: 10px;">
+                                  <input type="file" id="lanc-import-excel" accept=".xlsx, .xls" style="display:none;" onchange="window.importarLancamentosExcel(event)">
+                                  <button class="lanc-btn-secondary" style="background-color: #10b981; color: white; border-color: #059669;" onclick="document.getElementById('lanc-import-excel').click()">
+                                    <i class="fas fa-file-excel"></i> Importar Planilha
+                                  </button>
+                                  <button class="lanc-btn-secondary" onclick="window.verMapaExecucao()">
+                                    <i class="fas fa-map-marked-alt"></i> Ver Mapa de Execução
+                                  </button>
+                                </div>
                               </div>
                               <div class="lanc-main-card">
 
@@ -11131,7 +11380,7 @@
                                 <div class="lanc-table-wrap"><table class="lanc-table"><thead><tr><th>Competencia</th><th>Emissao</th><th>N.o NF</th><th>N.o Empenho</th><th>N.o Proc. Pagamento</th><th>Status</th><th>Valor</th><th>Saldo</th><th>Acoes</th></tr></thead><tbody id="lanc-medicoes-tbody"><tr class="lanc-empty-row"><td colspan="9">Nenhuma medicao encontrada para os filtros aplicados.</td></tr></tbody></table></div>
                               </div>
                             </div>
-                            
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -11243,7 +11492,7 @@
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999;">Nenhum fornecedor cadastrado</td></tr>';
             } else {
                 tbody.innerHTML = window.fiscalData.fornecedores.map((f, i) =>
-                    '<tr><td>' + (f.name || f.nome) + '</td><td>' + (f.cnpj || '-') + '</td><td>' + (f.objeto || '-') + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarFornecedor(' + i + ')"><i class="fas fa-edit"></i> Editar</button> <button class="btn-tiny btn-danger" onclick="window.excluirFornecedor(' + i + ')"><i class="fas fa-trash"></i> Excluir</button></td></tr>'
+                    '<tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 1rem; color: #334155;">' + (f.name || f.nome) + '</td><td style="padding: 1rem; color: #334155;">' + (f.cnpj || '-') + '</td><td style="padding: 1rem; color: #334155;">' + (f.objeto || '-') + '</td><td style="padding: 1rem; color: #334155;"><button class="btn-edit-action" onclick="window.editarFornecedor(' + i + ')"><i class="fas fa-pen"></i> Editar</button> <button class="btn-delete-action" onclick="window.excluirFornecedor(' + i + ')"><i class="fas fa-trash"></i> Excluir</button></td></tr>'
                 ).join('');
             }
             window.atualizarSelectsFornecedor();
@@ -11707,6 +11956,109 @@
             window.lancAtualizarTodosEmpenhosSelects();
         };
 
+        window.importarLancamentosExcel = async function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                    if (jsonData.length < 2) { alert('Planilha vazia ou sem dados.'); return; }
+                    const headers = jsonData[0].map(h => String(h).trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+                    const mapColuna = {
+                        ano: headers.findIndex(h => h.includes('ano')),
+                        mes: headers.findIndex(h => h.includes('mes')),
+                        empresa: headers.findIndex(h => h.includes('empresa') || h.includes('fornecedor') || h.includes('razão')) || headers.findIndex(h => h.includes('fornec')),
+                        contrato: headers.findIndex(h => h.includes('contrato')),
+                        processo: headers.findIndex(h => h.includes('processo')),
+                        nf: headers.findIndex(h => h.includes('nota') || h.includes('nf') || h.includes('fiscal')) || headers.findIndex(h => h.includes('n.º da nota')),
+                        valor: headers.findIndex(h => h.includes('valor')),
+                        empelho: headers.findIndex(h => h.includes('empenho'))
+                    };
+                    const linhas = jsonData.slice(1).filter(row => row.some(cell => cell !== null && cell !== '' && cell !== undefined));
+                    let importados = 0;
+                    let erros = 0;
+
+                    for (let i = 0; i < linhas.length; i++) {
+                        const linha = linhas[i];
+                        const ano = String(linha[mapColuna.ano] || '').trim();
+                        const mes = String(linha[mapColuna.mes] || '').trim();
+                        const empresa = String(linha[mapColuna.empresa] || '').trim();
+                        const contrato = String(linha[mapColuna.contrato] || '').trim();
+                        const empNum = String(linha[mapColuna.empelho] || '').trim();
+                        const nf = String(linha[mapColuna.nf] || '').trim();
+                        const valorStr = String(linha[mapColuna.valor] || '').trim();
+
+                        if (!empresa || !contrato || !nf) { erros++; continue; }
+
+                        document.getElementById('lanc-ano').value = ano || '2026';
+                        const mesNum = parseInt(mes) || new Date().getMonth() + 1;
+                        document.getElementById('lanc-mes').value = mesNum;
+                        document.getElementById('lanc-empresa').value = empresa;
+                        document.getElementById('lanc-empresa-search').value = empresa;
+                        window.lancOnEmpresaChange();
+                        await new Promise(r => setTimeout(r, 350));
+
+                        const contratoSel = document.getElementById('lanc-contrato');
+                        if (contratoSel) {
+                            const hasOpt = Array.from(contratoSel.options).some(o => o.value === contrato);
+                            if (!hasOpt) {
+                                const newOpt = document.createElement('option');
+                                newOpt.value = contrato;
+                                newOpt.textContent = contrato;
+                                contratoSel.appendChild(newOpt);
+                            }
+                            contratoSel.value = contrato;
+                            window.lancAtualizarTodosEmpenhosSelects();
+                        }
+                        await new Promise(r => setTimeout(r, 250));
+
+                        const container = document.getElementById('lanc-blocos-container');
+                        if (container) container.innerHTML = '';
+                        window.lancBlocoContador = 0;
+                        window.lancNovoBlocoEmpenho();
+                        await new Promise(r => setTimeout(r, 250));
+
+                        const empSelect = document.querySelector('.lanc-empenho-select');
+                        if (empSelect && empNum) {
+                            const hasEmpOpt = Array.from(empSelect.options).some(o => o.value === empNum);
+                            if (!hasEmpOpt) {
+                                const newEmpOpt = document.createElement('option');
+                                newEmpOpt.value = empNum;
+                                newEmpOpt.textContent = empNum + ' (importado)';
+                                empSelect.appendChild(newEmpOpt);
+                            }
+                            empSelect.value = empNum;
+                            window.lancMudouEmpenho(empSelect.closest('.lanc-bloco-empenho').dataset.blocoId);
+                        }
+                        await new Promise(r => setTimeout(r, 150));
+
+                        const blocos = document.querySelectorAll('.lanc-bloco-empenho');
+                        const bloco = blocos[blocos.length - 1];
+                        if (bloco) {
+                            const inpNum = bloco.querySelector('[id^="nfinp-num-"]');
+                            const inpVal = bloco.querySelector('[id^="nfinp-val-"]');
+                            if (inpNum) inpNum.value = nf;
+                            if (inpVal) inpVal.value = valorStr.replace(/[^0-9,]/g, '').replace(',', '.');
+                        }
+                        importados++;
+                    }
+                    if (importados > 0) {
+                        alert('✓ ' + importados + ' linha(s) importada(s)!\nRevise os dados e clique em "Salvar Mapa".');
+                    } else {
+                        alert('Nenhum registro foi importado. Verifique os dados da planilha.');
+                    }
+                    if (erros > 0) { console.warn('Linhas ignoradas: ' + erros); }
+                } catch(err) { console.error(err); alert('Erro ao processar planilha: ' + err.message); }
+            };
+            reader.readAsArrayBuffer(file);
+            event.target.value = '';
+        };
+
 
         window.lancAdicionarNF = function () {
             const nf = (document.getElementById('lanc-nf') || {value:''}).value.trim();
@@ -11842,6 +12194,129 @@
             res.style.display = 'block';
             const contr = window.fiscalData.contratos.filter(c => c.supplier_name === empresa);
             document.getElementById('mapa-conteudo').innerHTML = `<table class="fiscal-table"><thead><tr><th>Contrato</th><th>Processo</th><th>Valor</th></tr></thead><tbody>${contr.map(c => `<tr><td>${c.contract_number}</td><td>${c.process_number || '-'}</td><td>R$ ${parseFloat(c.value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td></tr>`).join('')}</tbody></table>`;
+        };
+
+        window.verMapaExecucao = function() {
+            if(!window.fiscalData || !window.fiscalData.contratos || window.fiscalData.contratos.length === 0) {
+                alert('Nenhum contrato encontrado.');
+                return;
+            }
+            let html = '<h3 style="color:#0f172a;margin:0 0 1rem 0;">Mapa Geral de Execução</h3>';
+            html += '<table class="fiscal-table" style="width:100%;font-size:0.85rem;"><thead><tr><th>Fornecedor</th><th>Contrato</th><th>Valor</th><th>Status</th></tr></thead><tbody>';
+            window.fiscalData.contratos.forEach(c => {
+                html += `<tr><td>${c.supplier_name || '-'}</td><td>${c.contract_number || '-'}</td><td>R$ ${parseFloat(c.value || 0).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td><td style="color:#059669;font-weight:600;">Ativo</td></tr>`;
+            });
+            html += '</tbody></table>';
+            const res = document.getElementById('financeiro-resultado');
+            if(res) {
+                res.style.display = 'block';
+                document.getElementById('financeiro-conteudo').innerHTML = html;
+            }
+        };
+
+        window.alterarTipoRelatorio = function() {
+            const tipo = document.getElementById('fin-tipo-relatorio').value;
+            const fornSelect = document.getElementById('fin-fornecedor');
+            if(tipo && window.fiscalData && window.fiscalData.fornecedores) {
+                const opts = '<option value="">Todos</option>' + window.fiscalData.fornecedores.map(f => `<option value="${f.name || f.nome}">${f.name || f.nome}</option>`).join('');
+                fornSelect.innerHTML = opts;
+            }
+        };
+
+        window.switchFinSubTab = function(tabName, btn) {
+            document.querySelectorAll('.fin-sub-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.fin-sub-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('fin-sub-' + tabName).classList.add('active');
+            if(tabName === 'natureza' && window.carregarNaturezaFromSupabase) {
+                setTimeout(() => window.carregarNaturezaFromSupabase(), 100);
+            }
+        };
+
+        window.carregarDadosAdmFornec = function() {
+            const forn = document.getElementById('finadm-fornecedor').value;
+            if(!forn || !window.fiscalData || !window.fiscalData.fornecedores) return;
+            const f = window.fiscalData.fornecedores.find(f => (f.name || f.nome) === forn);
+            if(f) {
+                document.getElementById('finadm-banco').value = f.banco || '';
+                document.getElementById('finadm-agencia').value = f.agencia || '';
+                document.getElementById('finadm-conta').value = f.conta || '';
+            }
+        };
+
+        window.salvarDadosAdm = async function() {
+            const forn = document.getElementById('finadm-fornecedor').value;
+            if(!forn) return alert('Selecione o fornecedor.');
+            const data = {
+                banco: document.getElementById('finadm-banco').value,
+                agencia: document.getElementById('finadm-agencia').value,
+                conta: document.getElementById('finadm-conta').value
+            };
+            if(window.supabaseClient) {
+                await window.supabaseClient.from('suppliers').update(data).eq('name', forn);
+                alert('Dados salvos!');
+            } else {
+                alert('Banco offline.');
+            }
+        };
+
+        window.salvarNotaFiscal = async function() {
+            const numero = document.getElementById('finnf-numero').value;
+            const forn = document.getElementById('finnf-fornecedor').value;
+            const data = document.getElementById('finnf-data').value;
+            const valor = document.getElementById('finnf-valor').value;
+            if(!numero || !forn) return alert('Preencha NF e Fornecedor.');
+            if(window.supabaseClient) {
+                await window.supabaseClient.from('notas_fiscais').insert({ numero, fornecedor: forn, data_emissao: data, valor: parseFloat(valor.replace(',','.')) || 0 });
+                alert('NF registrada!');
+                document.getElementById('finnf-numero').value = '';
+                document.getElementById('finnf-data').value = '';
+                document.getElementById('finnf-valor').value = '';
+            } else {
+                alert('Banco offline.');
+            }
+        };
+
+        window.salvarAliquotas = function() {
+            const aliqs = { ir: document.getElementById('aliq-ir').value, csll: document.getElementById('aliq-csll').value, cofins: document.getElementById('aliq-cofins').value, pis: document.getElementById('aliq-pis').value, iss: document.getElementById('aliq-iss').value };
+            localStorage.setItem('aliquotas_padrao', JSON.stringify(aliqs));
+            alert('Alíquotas atualizadas!');
+        };
+
+        window.gerarRelatorioFinanceiro = function() {
+            const tipo = document.getElementById('fin-tipo-relatorio').value;
+            const fornec = document.getElementById('fin-fornecedor').value;
+            const ano = document.getElementById('fin-ano').value;
+            const res = document.getElementById('financeiro-resultado');
+            if(!tipo) return alert('Selecione o tipo de relatório.');
+            res.style.display = 'block';
+            let html = '<table class="fiscal-table"><thead><tr>';
+            if(tipo === 'resumo') {
+                html += '<th>Fornecedor</th><th>Contratos</th><th>Total Executado</th><th>Total Pago</th><th>Saldo</th>';
+            } else if(tipo === 'retencoes') {
+                html += '<th>Fornecedor</th><th>NF</th><th>IR</th><th>CSLL</th><th>COFINS</th><th>PIS</th><th>Total Retido</th>';
+            } else if(tipo === 'pagamentos') {
+                html += '<th>Data Pagamento</th><th>Fornecedor</th><th>NF</th><th>Empenho</th><th>Valor</th><th>Status</th>';
+            } else {
+                html += '<th>Fornecedor</th><th>Contrato</th><th>Valor Contrato</th><th>Valor Executor</th><th>% Exec</th><th>Status</th>';
+            }
+            html += '</tr></thead><tbody><tr><td colspan="7" style="text-align:center;color:#999;padding:2rem;">Relatório gerar em breve com dados do banco.</td></tr></tbody></table>';
+            document.getElementById('financeiro-conteudo').innerHTML = html;
+        };
+
+        window.exportarRelatorioFinanceiroExcel = function() {
+            const tipo = document.getElementById('fin-tipo-relatorio').value;
+            if(!tipo) return alert('Selecione o tipo de relatório primeiro.');
+            const header = ['Fornecedor', 'Valor'];
+            const data = [[tipo, 'Dados de示例']];
+            if(typeof XLSX !== 'undefined') {
+                const ws = XLSX.utils.aoa_to_sheet([header, ...data]);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Financeiro');
+                XLSX.writeFile(wb, 'relatorio_financeiro.xlsx');
+            } else {
+                alert('Biblioteca Excel não disponível.');
+            }
         };
 
         window.gerarRelatorio = function () {
@@ -12067,6 +12542,125 @@
             document.querySelectorAll('.lanc-bloco-empenho').forEach(b => {
                 window.lancMudouEmpenho(b.dataset.blocoId);
             });
+        };
+
+        window.importarLancamentosExcel = function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function (e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const jsondata = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+                    if (jsondata.length === 0) {
+                        alert('A planilha está vazia.');
+                        return;
+                    }
+
+                    // Identificar colunas (insensitive)
+                    const header = Object.keys(jsondata[0]);
+                    const keyMap = {
+                        mes: header.find(k => k.toLowerCase().match(/^m.s|^mês/)),
+                        ano: header.find(k => k.toLowerCase().match(/^ano/)),
+                        empresa: header.find(k => k.toLowerCase().match(/^empresa|^fornecedor|^raz.o/)),
+                        contrato: header.find(k => k.toLowerCase().match(/^contrato/)),
+                        processo: header.find(k => k.toLowerCase().match(/^processo/)),
+                        empenho: header.find(k => k.toLowerCase().match(/^empenho|^ne/)),
+                        nf: header.find(k => k.toLowerCase().match(/^nf|^nota\s*fiscal/)),
+                        valor: header.find(k => k.toLowerCase().match(/^val|^vlr|valor/))
+                    };
+
+                    const row0 = jsondata[0];
+                    if (keyMap.mes && row0[keyMap.mes]) {
+                        const mesStr = row0[keyMap.mes].toString().padStart(2, '0');
+                        document.getElementById('lanc-mes').value = mesStr;
+                    }
+                    if (keyMap.ano && row0[keyMap.ano]) document.getElementById('lanc-ano').value = row0[keyMap.ano].toString();
+                    
+                    if (keyMap.empresa && row0[keyMap.empresa]) {
+                        const empVal = row0[keyMap.empresa].toString().trim().toUpperCase();
+                        const empSelect = document.getElementById('lanc-empresa');
+                        let matchedOption = Array.from(empSelect.options).find(o => o.text.toUpperCase().includes(empVal) || o.value.toUpperCase().includes(empVal));
+                        if(matchedOption) {
+                            empSelect.value = matchedOption.value;
+                            window.lancAtualizarContratosEEmpenhos();
+                        } else {
+                            alert('Atenção: Empresa "' + empVal + '" não localizada no banco. Cadastre-a primeiro ou selecione manualmente.');
+                        }
+                    }
+
+                    setTimeout(() => {
+                        if (keyMap.contrato && row0[keyMap.contrato]) {
+                            const ctSelect = document.getElementById('lanc-contrato');
+                            const ctVal = row0[keyMap.contrato].toString().trim();
+                            let matchedCt = Array.from(ctSelect.options).find(o => o.value && o.value.includes(ctVal));
+                            if(matchedCt) {
+                                ctSelect.value = matchedCt.value;
+                                window.lancAtualizarTodosEmpenhosSelects();
+                            }
+                        }
+
+                        document.getElementById('lanc-blocos-container').innerHTML = '';
+
+                        setTimeout(() => {
+                            const groupedByEmpenho = {};
+                            jsondata.forEach(r => {
+                                const ne = keyMap.empenho && r[keyMap.empenho] ? r[keyMap.empenho].toString().trim() : 'PADRÃO';
+                                if(!groupedByEmpenho[ne]) groupedByEmpenho[ne] = [];
+                                groupedByEmpenho[ne].push(r);
+                            });
+
+                            Object.keys(groupedByEmpenho).forEach(empenhoNum => {
+                                const blocoId = window.lancNovoBlocoEmpenho(); 
+                                const bloco = document.querySelector(`.lanc-bloco-empenho[data-bloco-id="${blocoId}"]`);
+                                if (bloco) {
+                                    const neSelect = bloco.querySelector('.lanc-empenho-select');
+                                    let matchedNe = Array.from(neSelect.options).find(o => o.value && o.value.includes(empenhoNum));
+                                    if(matchedNe) neSelect.value = matchedNe.value;
+                                    window.lancMudouEmpenho(blocoId);
+
+                                    groupedByEmpenho[empenhoNum].forEach((item, index) => {
+                                        if (index === 0 && keyMap.processo && item[keyMap.processo]) {
+                                            bloco.querySelector('.lanc-proc-input').value = item[keyMap.processo].toString();
+                                        }
+
+                                        const numNf = keyMap.nf && item[keyMap.nf] ? item[keyMap.nf].toString().trim() : '';
+                                        let vlrNf = 0;
+                                        if (keyMap.valor && item[keyMap.valor]) {
+                                            let vRaw = item[keyMap.valor].toString().replace('R$', '').trim();
+                                            // Handle both American format 1000.50 and Brazilian 1.000,50
+                                            if(vRaw.includes(',') && vRaw.includes('.')) {
+                                                vRaw = vRaw.replace(/\./g, '').replace(',', '.');
+                                            } else if(vRaw.includes(',')) {
+                                                vRaw = vRaw.replace(',', '.');
+                                            }
+                                            vlrNf = parseFloat(vRaw) || 0;
+                                        }
+                                        
+                                        if (numNf) {
+                                            bloco.querySelector(`#bloco-${blocoId}-nf`).value = numNf;
+                                            bloco.querySelector(`#bloco-${blocoId}-vlr`).value = vlrNf.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+                                            window.lancAdicionarNFLinha(blocoId);
+                                        }
+                                    });
+                                }
+                            });
+                            alert('Importação do Excel (' + jsondata.length + ' linhas) concluída com sucesso!');
+                        }, 500); 
+
+                    }, 500); 
+
+                } catch (err) {
+                    console.error(err);
+                    alert('Erro ao processar planilha: ' + err.message);
+                }
+                event.target.value = '';
+            };
+            reader.readAsArrayBuffer(file);
         };
 
         window.salvarMapa = async function () {

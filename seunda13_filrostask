@@ -1,0 +1,11 @@
+- [ ] Implementar lógica do Mapa de Execução
+    - [ ] Cálculo de saldo total (Contratado vs Medido)
+    - [ ] Visualização tabular com barras de progresso
+- [ ] Implementar lógica de Relatórios
+    - [ ] Filtros por empresa e período
+    - [ ] Geração de tabela para impressão
+- [ ] Melhorar aba de Lançamentos
+    - [ ] Ajustar lógica de múltiplos empenhos
+    - [ ] Verificação de saldo residual
+- [ ] UI Polish & Estilos de Impressão
+- [ ] Teste Final e Validação

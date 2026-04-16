@@ -1,0 +1,39 @@
+# Refatoração do Fluxo de Pagamentos (Múltiplas NFs e Empenhos)
+
+A aba "Lançamentos" atualmente possui uma estrutura estática, permitindo atrelar um único conjunto de Nota Fiscal/Valor a vários empenhos de forma dividida (rateio falho). O objetivo desta refatoração é reconstruir essa experiência baseada nas diretrizes de UX em anexo.
+
+## Proposed Changes
+
+### Componente: Dados do Pagamento (HTML)
+
+#### [MODIFY] `index.html`
+- Remover o formato atual estático (Linha 1: Empenhos/Proc, Linha 2: NF/Valor)
+- Implementar um sistema de **Cards Dinâmicos** (Blocos de Empenho). Um novo contêiner chamado `lanc-blocos-container` guardará as instâncias.
+- Adicionar o botão mestre `+ Adicionar Novo Empenho` no final da seção.
+- Cada "Card de Empenho" conterá:
+  - Select do Empenho (com *quick link*)
+  - Input: N.º Proc. Pagamento.
+  - Seção de inserção de NFs: Input NF, Input Valor e botão `+ Adicionar Nota Fiscal`.
+  - Uma tabela/lista visual das NFs já adicionadas para aquele empenho específico.
+  - A barra horizontal de informações (Azul): Empenho: R$ X | NF (Soma): R$ Y | Saldo: R$ Z.
+  - Botão para remover o bloco inteiro (caso o usuário desista de lançar o empenho).
+
+### Lógica de Interface e Banco de Dados (JavaScript)
+
+#### [MODIFY] Lógica JS (injetada no `index.html`)
+- **`lancNovoBlocoEmpenho()`**: Função que injeta o HTML do novo Card. Cada card terá um ID único (ex: `bloco-emp-1`).
+- **`lancAdicionarNFAoBloco(blocoId)`**: Lê a NF e Valor digitados no card especificado e cria uma linha na listagem (exibindo também os botões de exclusão).
+- **`lancRecalcularSaldoBloco(blocoId)`**: Pega o valor base do empenho selecionado e subtrai a soma de todos os valores na lista de NFs. Atualiza a barra azul visualmente.
+- **`salvarMapa()`**: Será totalmente reescrita. Em vez de pegar dados de `id` fixos (`lanc-nf`), ela irá iterar (com `querySelectorAll`) sobre todos os "Cards de Empenho". Para cada NF listada em cada card, executará um comando `supabase.from('fiscal_measurements').insert(...)`. Isso criará um registro 1:1 perfeito no banco de dados para cada nota fiscal!
+
+## Open Questions
+> [!IMPORTANT]
+> - O "Total NF" será matematicamente **somado de forma automática** pelo sistema a cada vez que você clicar em `+ Adicionar Nota Fiscal`, travando a necessidade do usuário digitar o total manualmente para evitar falhas de cálculo humano. Você concorda com essa automação?
+> - Todos esses blocos irão herdar a Empresa e Mês/Ano preenchidos no topo da página. Correto?
+
+## Verification Plan
+1. Recarregar e abrir o formulário.
+2. Adicionar 2 Empenhos diferentes.
+3. No Empenho A, adicionar 2 Notas Fiscais diferentes. Validar se o Saldo cai corretamente a cada adição de NF.
+4. No Empenho B, adicionar 1 Nota Fiscal.
+5. Clicar em "Salvar Mapa" e verificar na tabela embaixo (e no Supabase) se 3 registros perfeitos foram criados isoladamente.

@@ -1,0 +1,52 @@
+# Implementation Plan - Fiscal Module Reports & Execution Maps
+
+This plan outlines the completion of the **Mapa de Execução** and **Relatórios** features in the Fiscal module. Since the core code corruption has been repaired and the tables are synchronized, we will now build the business logic to provide meaningful insights into contract execution.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The reports depend on the SQL migration previously provided (adding `cnpj` and `objeto` columns). Please ensure that script has been executed in the Supabase SQL Editor.
+
+## Proposed Changes
+
+### [Módulo Fiscal] Execution & Reporting Logic
+
+#### [MODIFY] [index.html](file:///e:/2026%20SISTEMAS/2025%20Infra%20Sistemas%20YASMIN/index.html)
+
+**1. Implement `window.gerarMapa`**
+- Create a comprehensive logic to calculate the financial status of each contract:
+    - **Total Value**: From `fiscal_contracts`.
+    - **Total Measured**: Calculated by summing `invoice_value` from `fiscal_measurements` for the specific contract.
+    - **Balance**: `Total Value - Total Measured`.
+- Display a professional table with:
+    - Progress bars showing percentage of execution.
+    - Fiscal officers assigned.
+    - Warning colors if the balance is low.
+
+**2. Implement `window.gerarRelatorio`**
+- Enable filtering by:
+    - Company (Supplier).
+    - Date Range (Month/Year).
+- Generate a clean, structured view of all measurements (`fiscal_measurements`) found.
+- Include a "Print Report" button that formats the view for A4 printing.
+
+**3. Enhancing "Lançamentos" (Medições)**
+- Fix the `totalEmpenhos` calculation to handle multiple empenhos selected simultaneously.
+- Improve the insertion logic to ensure balance tracking is consistent across different users.
+
+**4. CSS Styling**
+- Add specific print styles to ensure reports look professional when printed.
+- Enhance the report table designs with hover effects and clearer typography.
+
+## Open Questions
+
+- Should the **Mapa de Execução** include a breakdown by month, or just the global contract balance?
+- Do you need a "PDF Export" button (using jsPDF) or is standard "Print to PDF" sufficient?
+
+## Verification Plan
+
+### Automated/Manual Testing
+- **Data Integrity**: Save 3 measurements for one contract and verify the "Mapa de Execução" correctly sums them and updates the balance.
+- **Filtering**: Verify that selecting a specific month in "Relatórios" only shows measurements from that period.
+- **UI Responsiveness**: Test the reports on a simulated print view.
+- **Supabase Sync**: Verify that all changes are correctly reflected in the database.

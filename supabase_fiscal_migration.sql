@@ -63,17 +63,25 @@ ALTER TABLE public.fiscal_measurements ENABLE ROW LEVEL SECURITY;
 -- 4. Set RLS Policies (Using existing helpers: is_admin, can_operate)
 
 -- Officers
+DROP POLICY IF EXISTS "Select Officers" ON public.fiscal_officers;
 CREATE POLICY "Select Officers" ON public.fiscal_officers FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Insert/Update Officers" ON public.fiscal_officers;
 CREATE POLICY "Insert/Update Officers" ON public.fiscal_officers FOR ALL TO authenticated USING (public.can_operate());
 
 -- Contracts
+DROP POLICY IF EXISTS "Select Contracts" ON public.fiscal_contracts;
 CREATE POLICY "Select Contracts" ON public.fiscal_contracts FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Insert/Update Contracts" ON public.fiscal_contracts;
 CREATE POLICY "Insert/Update Contracts" ON public.fiscal_contracts FOR ALL TO authenticated USING (public.can_operate());
 
 -- Empenhos
+DROP POLICY IF EXISTS "Select Empenhos" ON public.fiscal_empenhos;
 CREATE POLICY "Select Empenhos" ON public.fiscal_empenhos FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Insert/Update Empenhos" ON public.fiscal_empenhos;
 CREATE POLICY "Insert/Update Empenhos" ON public.fiscal_empenhos FOR ALL TO authenticated USING (public.can_operate());
 
 -- Measurements
+DROP POLICY IF EXISTS "Select Measurements" ON public.fiscal_measurements;
 CREATE POLICY "Select Measurements" ON public.fiscal_measurements FOR SELECT TO authenticated USING (true);
+DROP POLICY IF EXISTS "Insert/Update Measurements" ON public.fiscal_measurements;
 CREATE POLICY "Insert/Update Measurements" ON public.fiscal_measurements FOR ALL TO authenticated USING (public.can_operate());

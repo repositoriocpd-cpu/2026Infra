@@ -10527,85 +10527,154 @@
                         <div class="modal-header" style="background: linear-gradient(135deg, #1E5FAF 0%, #0d3485 100%); color: white; border-radius: 20px 20px 0 0; padding: 1.25rem 2rem;">
                             <div class="modal-header-info">
                                 <h2 style="color: white !important; margin: 0; display: flex; align-items: center; gap: 0.75rem;">
-                                    <i class="fas fa-landmark"></i> Módulo Fiscal
+                                    <i class="fas fa-landmark"></i> Módulo Fiscal - TESTE SYNC
                                 </h2>
                                 <p style="color: rgba(255,255,255,0.85) !important; margin: 0.3rem 0 0 0; font-size: 0.9rem;">Gestão de Fornecedores, Fiscais, Localização, Contratos, Empenhos, Mapas e Relatórios</p>
                             </div>
                             <button type="button" class="modal-close" onclick="window.closeModal('fiscalModal')" style="color: white !important; font-size: 1.5rem;">&times;</button>
                         </div>
-                        <div class="modal-body" style="padding: 1.5rem 2rem;">
-                            <div class="fiscal-tabs">
-                                <button class="fiscal-tab active" onclick="window.switchFiscalTab('fornecedores', this)">
-                                    <i class="fas fa-truck"></i> Fornecedores
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('fiscais', this)">
-                                    <i class="fas fa-user-tie"></i> Fiscais
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('localizacao', this)">
-                                    <i class="fas fa-map-marker-alt"></i> Localização
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('contratos', this)">
-                                    <i class="fas fa-file-contract"></i> Contratos
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('empenhos', this)">
-                                    <i class="fas fa-file-invoice-dollar"></i> Empenhos
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('lancamentos', this); window.lancPopularEmpresas();" style="color: #dc2626; border-bottom: 2px solid #dc2626; font-weight: 700;">
-                                    <i class="fas fa-receipt"></i> Lançamentos
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarmapas', this)" style="color: #16a34a;">
-                                    <i class="fas fa-map"></i> Gerar Mapas
-                                </button>
-                                <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarrelatorio', this)" style="color: #9333ea;">
-                                    <i class="fas fa-file-alt"></i> Gerar Relatório
-                                </button>
+                                                <style>
+                            .fiscal-layout { display: flex; align-items: stretch; background: #f8fafc; border-radius: 0 0 20px 20px; overflow: hidden; min-height: 70vh; }
+                            .fiscal-sidebar { width: 240px; background: #f1f5f9; border-right: 1px solid #e2e8f0; padding: 1.5rem 0; flex-shrink: 0; display: flex; flex-direction: column; }
+                            .fiscal-sidebar-group { margin-bottom: 1.5rem; }
+                            .fiscal-sidebar-title { padding: 0 1.5rem; font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+                            .fiscal-sidebar-title i { color: #64748b; font-size: 0.85rem; }
+                            .fiscal-sidebar .fiscal-tab { display: flex; align-items: center; gap: 0.75rem; width: calc(100% - 1.5rem); margin: 0.1rem 0.75rem; padding: 0.6rem 1rem; border: none; background: transparent; border-radius: 8px; text-align: left; font-size: 0.9rem; font-weight: 600; color: #334155; cursor: pointer; transition: all 0.2s; position: relative; }
+                            .fiscal-sidebar .fiscal-tab:hover { background: #e2e8f0; color: #0f172a; }
+                            .fiscal-sidebar .fiscal-tab.active { background: #dbeafe; color: #0284c7; }
+                            .fiscal-main-content { flex: 1; padding: 2rem; background: #ffffff; overflow-y: auto; max-height: 80vh; }
+                            
+                            /* Tab Fornecedores */
+                            .fiscal-page-header { margin-bottom: 1.5rem; }
+                            .fiscal-page-title { font-size: 1.7rem; font-weight: 800; color: #0f172a; margin: 0; font-family: 'Inter', sans-serif; }
+                            
+                            .fiscal-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+                            .fiscal-card-header { display: flex; justify-content: flex-start; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+                            .fiscal-card-title { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0; }
+                            .btn-fiscal-new { background: #1e5faf; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: background 0.2s; }
+                            .btn-fiscal-new:hover { background: #154582; }
+                            .btn-fiscal-save { background: #1e5faf; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: background 0.2s; }
+                            .btn-fiscal-save:hover { background: #154582; }
+                            
+                            .fiscal-search-bar { position: relative; margin-bottom: 1rem; }
+                            .fiscal-search-bar i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem; }
+                            .fiscal-search-bar input { width: 100%; border: 1px solid #cbd5e1; border-radius: 20px; padding: 0.6rem 1rem 0.6rem 2.5rem; font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
+                            .fiscal-search-bar input:focus { border-color: #3b82f6; }
+                            
+                            /* Tab content hiding */
+                            #fiscalModal .fiscal-tab-content { display: none; }
+                            #fiscalModal .fiscal-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+                            
+                            /* Table actions */
+                            .btn-edit-action { background: #eff6ff; color: #3b82f6; border: none; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; transition: all 0.2s; }
+                            .btn-edit-action:hover { background: #dbeafe; }
+                            .btn-delete-action { background: #fef2f2; color: #ef4444; border: none; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; transition: all 0.2s; margin-left: 0.5rem; }
+                            .btn-delete-action:hover { background: #fee2e2; }
+                        </style>
+                        <div class="modal-body fiscal-layout" style="padding: 0;">
+                            <div class="fiscal-sidebar">
+                                <div class="fiscal-sidebar-group">
+                                    <div class="fiscal-sidebar-title"><i class="far fa-folder-open"></i> Cadastros</div>
+                                    <button class="fiscal-tab active" onclick="window.switchFiscalTab('fornecedores', this)">
+                                        <i class="fas fa-university"></i> Fornecedores
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('natureza', this); window.carregarNaturezaFromSupabase();">
+                                        <i class="fas fa-file-invoice-dollar"></i> Natureza/Retenções
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('fiscais', this)">
+                                        <i class="far fa-user"></i> Fiscais
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('localizacao', this)">
+                                        <i class="fas fa-map-marker-alt"></i> Localiza��o
+                                    </button>
+                                </div>
+                                <div class="fiscal-sidebar-group">
+                                    <div class="fiscal-sidebar-title"><i class="fas fa-sack-dollar"></i> Pagamentos</div>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('contratos', this)">
+                                        <i class="far fa-file-alt"></i> Contratos
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('empenhos', this)">
+                                        <i class="fas fa-tag"></i> Empenhos
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('lancamentos', this); window.lancPopularEmpresas();">
+                                        <i class="fas fa-check-circle"></i> Lan�amentos
+                                    </button>
+                                </div>
+                                <div class="fiscal-sidebar-group">
+                                    <div class="fiscal-sidebar-title"><i class="fas fa-print"></i> Impress�es</div>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarmapas', this)">
+                                        <i class="far fa-map"></i> Gerar Mapas
+                                    </button>
+                                    <button class="fiscal-tab" onclick="window.switchFiscalTab('gerarrelatorio', this)">
+                                        <i class="fas fa-chart-bar"></i> Gerar Relat�rios
+                                    </button>
+                                </div>
                             </div>
                             
-                            <div id="fiscal-tab-fornecedores" class="fiscal-tab-content active">
-                                <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
-                                    <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Novo Fornecedor</h3>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                                        <div class="form-group">
-                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Nome da Empresa</label>
-                                            <input type="text" id="fornec-razao" class="form-control" placeholder="nome da empresa">
+                            <div class="fiscal-main-content">
+                            
+                            <div id="fiscal-tab-fornecedores"<div id="fiscal-tab-fornecedores" class="fiscal-tab-content active">
+                                <div class="fiscal-page-header">
+                                    <h2 class="fiscal-page-title">Cadastro de Fornecedores</h2>
+                                </div>
+                                <div class="fiscal-card">
+                                    <div class="fiscal-card-header">
+                                        <h3 class="fiscal-card-title">Criar Novo Fornecedor</h3>
+                                        <button class="btn-fiscal-new" type="button"><i class="fas fa-plus"></i> New</button>
+                                    </div>
+                                    <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem;">
+                                        <div class="form-group" style="grid-column: span 2; display: flex; gap: 1.5rem;">
+                                            <div style="flex: 2;">
+                                                <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block;">Natureza do Serviço</label>
+                                                <select id="fornec-natureza" class="form-control" onchange="window.fornecNaturezaChange()" style="border: 1px solid #cbd5e1; box-shadow: none; height: 42px;">
+                                                    <option value="">-- Natureza (Classificação) --</option>
+                                                </select>
+                                            </div>
+                                            <div style="flex: 1;">
+                                                <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block;">% IRRF Base</label>
+                                                <input type="number" id="fornec-irrf" class="form-control" placeholder="% IRRF" style="border: 1px solid #cbd5e1; background: #f1f5f9; box-shadow: none; height: 42px;" readonly>
+                                            </div>
+                                        </div>
+                                        
+<div class="form-group">
+                                            <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block;">Nome da Empresa</label>
+                                            <input type="text" id="fornec-razao" class="form-control" placeholder="nome da empresa" style="border: 1px solid #cbd5e1; box-shadow: none; height: 42px;">
                                         </div>
                                         <div class="form-group">
-                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">CNPJ</label>
-                                            <input type="text" id="fornec-cnpj" class="form-control" placeholder="CNPJ (opcional)">
+                                            <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; display: block;">CNPJ</label>
+                                            <input type="text" id="fornec-cnpj" class="form-control" placeholder="CNPJ (opcional)" style="border: 1px solid #cbd5e1; box-shadow: none; height: 42px;">
                                         </div>
                                         <div class="form-group" style="grid-column: span 2;">
                                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                                                <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Objeto(s) <span style="font-weight: 400; font-size: 0.65rem; color: #9CA3AF;">(até 10)</span></label>
-                                                <button type="button" class="btn-tiny btn-warning" onclick="window.adicionarObjetoFornecedor()" style="font-size: 0.7rem; padding: 4px 8px;"><i class="fas fa-plus"></i> Adicionar Objeto</button>
+                                                <label style="font-size: 0.70rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Objeto(s) <span style="font-weight: 400; font-size: 0.65rem; color: #94a3b8;">(at� 10)</span></label>
+                                                <button type="button" class="btn-tiny" onclick="window.adicionarObjetoFornecedor()" style="font-size: 0.7rem; padding: 4px 10px; background: #fef3c7; color: #d97706; border: none; font-weight: 600; border-radius: 4px; cursor: pointer;"><i class="fas fa-plus"></i> Adicionar Objeto</button>
                                             </div>
                                             <div id="fornec-objetos-container">
-                                                <div class="fornec-objeto-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                                    <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)">
-                                                    <button type="button" class="btn-tiny btn-danger" onclick="window.removerObjetoFornecedor(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+                                                <div class="fornec-objeto-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+                                                    <input type="text" class="form-control fornec-objeto-input" placeholder="digite o objeto (opcional)" style="border: 1px solid #cbd5e1; box-shadow: none; height: 42px;">
+                                                    <button type="button" class="btn-tiny" onclick="window.removerObjetoFornecedor(this)" style="padding: 0 14px; background: #fee2e2; color: #ef4444; border: none; border-radius: 6px; cursor: pointer;"><i class="fas fa-times"></i></button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="window.salvarFornecedor()"><i class="fas fa-save"></i> Salvar Fornecedor</button>
+                                    <button class="btn-fiscal-save" style="margin-top: 1rem;" onclick="window.salvarFornecedor()"><i class="fas fa-save"></i> Salvar Fornecedor</button>
                                 </div>
-                                <div style="position: relative; margin-bottom: 1rem;">
-                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9CA3AF; font-size: 0.9rem;"></i>
-                                    <input type="text" id="search-fornecedores" class="form-control" placeholder="Pesquisar fornecedores..." 
-                                        style="padding-left: 2.5rem; border-radius: 20px; transition: all 0.2s;"
-                                        onkeyup="window.filtrarTabela('fornecedores-list', 'search-fornecedores')">
+                                <div class="fiscal-search-bar">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="search-fornecedores" placeholder="Pesquisar Fornecedores..." onkeyup="window.filtrarTabela('fornecedores-list', 'search-fornecedores')">
                                 </div>
-                                <div class="table-responsive" style="max-height: 35vh; overflow-y: auto;">
-                                    <table class="fiscal-table">
+                                <div class="table-responsive" style="max-height: 40vh; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 1.5rem;">
+                                    <table class="fiscal-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
                                         <thead>
-                                            <tr>
-                                                <th>Empresa</th>
-                                                <th>CNPJ</th>
-                                                <th>Objeto</th>
-                                                <th>Ações</th>
+                                            <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">Empresa</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">CNPJ</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">Objeto</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">A��es</th>
                                             </tr>
                                         </thead>
                                         <tbody id="fornecedores-list">
-                                            <tr><td colspan="4" style="text-align: center; color: #999;">Nenhum fornecedor cadastrado</td></tr>
+                                            <tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 2rem;">Nenhum fornecedor cadastrado</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -10705,6 +10774,10 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
+                                            <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Recurso</label>
+                                            <input type="text" id="emp-recurso" class="form-control" placeholder="ex: 1500.0000.0000">
+                                        </div>
+                                        <div class="form-group">
                                             <label style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Período/Meses</label>
                                             <input type="text" id="emp-periodo" class="form-control" placeholder="ex: 12 meses" readonly>
                                         </div>
@@ -10736,6 +10809,7 @@
                                             <tr>
                                                 <th>Fornecedor</th>
                                                 <th>N.º Contrato</th>
+                                                <th>Recurso</th>
                                                 <th>Período</th>
                                                 <th>Fiscal</th>
                                                 <th>N.º Empenho</th>
@@ -10744,13 +10818,47 @@
                                             </tr>
                                         </thead>
                                         <tbody id="empenhos-list">
-                                            <tr><td colspan="7" style="text-align: center; color: #999;">Nenhum empênho cadastrado</td></tr>
+                                            <tr><td colspan="8" style="text-align: center; color: #999;">Nenhum empênho cadastrado</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                             
-                            <div id="fiscal-tab-fiscais" class="fiscal-tab-content">
+                            
+                            <div id="fiscal-tab-natureza" class="fiscal-tab-content">
+                                <div class="fiscal-page-header">
+                                    <h2 class="fiscal-page-title">Natureza e Retenções</h2>
+                                </div>
+                                <div class="fiscal-card">
+                                    <h3 class="fiscal-card-title" style="margin-bottom: 1rem;">Nova Natureza e Retenções</h3>
+                                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                        <input class="form-control" type="text" id="nat-desc" placeholder="Descrição (Ex: Serv. Limpeza)" style="flex: 1; min-width: 250px;">
+                                        <input class="form-control" type="number" id="nat-ir" placeholder="% IR" style="width: 90px;" oninput="window.calcTotalNat()">
+                                        <input class="form-control" type="number" id="nat-csll" placeholder="% CSLL" style="width: 90px;" oninput="window.calcTotalNat()">
+                                        <input class="form-control" type="number" id="nat-cofins" placeholder="% COFINS" style="width: 90px;" oninput="window.calcTotalNat()">
+                                        <input class="form-control" type="number" id="nat-pis" placeholder="% PIS" style="width: 90px;" oninput="window.calcTotalNat()">
+                                        <input class="form-control" type="number" id="nat-total" placeholder="Total %" style="width: 90px; background:#e2e8f0;" readonly>
+                                        <button onclick="window.salvarNatureza()" class="btn-fiscal-save"><i class="fas fa-save"></i> Salvar</button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive" style="max-height: 40vh; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 1.5rem;">
+                                    <table class="fiscal-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                                        <thead>
+                                            <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">NATUREZA</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">IR</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">CSLL</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">COFINS</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">PIS</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">TOTAL RETENÇÃO</th>
+                                                <th style="padding: 1rem; text-align: left; font-weight: 700; color: #64748b;">AÇÕES</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="natureza-list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+<div id="fiscal-tab-fiscais" class="fiscal-tab-content">
                                 <div class="form-section" style="background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
                                     <h3 style="margin: 0 0 1rem 0; color: var(--govbr-blue); font-size: 1rem;"><i class="fas fa-plus-circle"></i> Novo Fiscal ( Tratador)</h3>
                                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -10996,71 +11104,143 @@
                                   <h2 class="lanc-page-title">Lançamentos</h2>
                                   <p class="lanc-page-subtitle">Registre um novo pagamento (medição) e associe-o a um empenho existente.</p>
                                 </div>
-                                <button class="lanc-btn-secondary" onclick="window.verMapaExecucao()">
-                                  <i class="fas fa-map-marked-alt"></i> Ver Mapa de Execução
-                                </button>
+                                <div style="display: flex; gap: 10px;">
+                                  <input type="file" id="lanc-import-excel" accept=".xlsx, .xls" style="display:none;" onchange="window.importarLancamentosExcel(event)">
+                                  <button class="lanc-btn-secondary" style="background-color: #10b981; color: white; border-color: #059669;" onclick="document.getElementById('lanc-import-excel').click()">
+                                    <i class="fas fa-file-excel"></i> Importar Planilha
+                                  </button>
+                                  <button class="lanc-btn-secondary" onclick="window.verMapaExecucao()">
+                                    <i class="fas fa-map-marked-alt"></i> Ver Mapa de Execução
+                                  </button>
+                                </div>
                               </div>
                               <div class="lanc-main-card">
-                                <div class="lanc-section">
-                                  <div class="lanc-section-header"><div class="lanc-section-icon"><i class="fas fa-calendar-alt"></i></div><span class="lanc-section-title">Período de Competência</span></div>
-                                  <div class="lanc-section-divider"></div>
-                                  <div class="lanc-grid-2">
-                                    <div class="lanc-field"><label>Ano de Competência</label><select id="lanc-ano" onchange="window.lancFiltrarMedicoes()"><option value="">-- Selecione --</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026" selected>2026</option><option value="2027">2027</option></select></div>
-                                    <div class="lanc-field"><label>Mês de Competência</label><select id="lanc-mes"><option value="">-- Selecione --</option><option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option><option value="4" selected>Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select></div>
-                                  </div>
-                                </div>
-                                <div class="lanc-section">
-                                  <div class="lanc-section-header"><div class="lanc-section-icon"><i class="fas fa-file-contract"></i></div><span class="lanc-section-title">Dados do Contrato</span></div>
-                                  <div class="lanc-section-divider"></div>
-                                  <div class="lanc-grid-2">
-                                    <div class="lanc-field"><label>Empresa</label><select id="lanc-empresa" onchange="window.lancOnEmpresaChange()"><option value="">-- Selecione --</option></select></div>
-                                    <div class="lanc-field"><label>N.o Contrato</label><select id="lanc-contrato" disabled onchange="window.lancOnContratoChange()"><option value="">-- Selecione a Empresa primeiro --</option></select></div>
-                                  </div>
-                                </div>
-                                <div class="lanc-section">
-                                  <div class="lanc-section-header"><div class="lanc-section-icon"><i class="fas fa-money-check-alt"></i></div><span class="lanc-section-title">Dados do Pagamento</span></div>
-                                  <div class="lanc-section-divider"></div>
-                                  <div class="lanc-grid-2">
-                                    <div class="lanc-field"><label>Empresa</label><select id="lanc-empresa" onchange="window.lancOnEmpresaChange()"><option value="">-- Selecione --</option></select></div>
-                                    <div class="lanc-field"><label>N.o Contrato</label><select id="lanc-contrato" disabled onchange="window.lancOnContratoChange()"><option value="">-- Selecione a Empresa primeiro --</option></select></div>
-                                  </div>
-                                  <div style="margin-top: 1rem; padding: 1rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                                      <label style="font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">N.º Empenho(s)</label>
-                                      <button type="button" class="lanc-btn-secondary" onclick="window.lancAdicionarEmpenho()" style="padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-plus"></i> Adicionar Empenho</button>
+
+                                <!-- ═══ LINHA SUPERIOR: 3 colunas ═══ -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+
+                                  <!-- Col 1: Período de Competência -->
+                                  <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:1.1rem 1.25rem;">
+                                    <div class="lanc-section-header" style="margin-bottom:0.6rem;">
+                                      <div class="lanc-section-icon"><i class="fas fa-calendar-alt"></i></div>
+                                      <span class="lanc-section-title">Período de Competência</span>
                                     </div>
-                                    <div id="lanc-empenhos-container">
-                                      <div class="lanc-empenho-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
-                                        <select class="lanc-empenho-select form-control" onchange="window.lancOnEmpenhoChange()" style="flex: 1;">
+                                    <div class="lanc-section-divider"></div>
+                                    <div class="lanc-grid-2">
+                                      <div class="lanc-field">
+                                        <label>Ano de Competência</label>
+                                        <select id="lanc-ano" onchange="window.lancFiltrarMedicoes()">
                                           <option value="">-- Selecione --</option>
+                                          <option value="2024">2024</option>
+                                          <option value="2025">2025</option>
+                                          <option value="2026" selected>2026</option>
+                                          <option value="2027">2027</option>
                                         </select>
-                                        <div class="lanc-money-wrap" style="width: 140px;">
-                                          <span>R$</span>
-                                          <input type="text" class="lanc-valor-empenho" placeholder="0,00" readonly style="padding-left: 2.1rem;">
-                                        </div>
-                                        <button type="button" class="btn-tiny btn-danger" onclick="window.lancRemoverEmpenho(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>
+                                      </div>
+                                      <div class="lanc-field">
+                                        <label>Mês de Competência</label>
+                                        <select id="lanc-mes">
+                                          <option value="">-- Selecione --</option>
+                                          <option value="1">Janeiro</option>
+                                          <option value="2">Fevereiro</option>
+                                          <option value="3">Março</option>
+                                          <option value="4" selected>Abril</option>
+                                          <option value="5">Maio</option>
+                                          <option value="6">Junho</option>
+                                          <option value="7">Julho</option>
+                                          <option value="8">Agosto</option>
+                                          <option value="9">Setembro</option>
+                                          <option value="10">Outubro</option>
+                                          <option value="11">Novembro</option>
+                                          <option value="12">Dezembro</option>
+                                        </select>
                                       </div>
                                     </div>
                                   </div>
-                                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.8rem; margin-top: 1rem;">
-                                    <div class="lanc-field"><label>N.o Proc. Pagamento</label><input type="text" id="lanc-proc" placeholder="ex: 0125/2026"></div>
-                                    <div class="lanc-field"><label>N.o da Nota Fiscal</label><input type="text" id="lanc-nf" placeholder="ex: NF-000123"></div>
-                                    <div class="lanc-field"><label>Valor Total das NF</label><div class="lanc-money-wrap"><span>R$</span><input type="text" id="lanc-valor-nf" placeholder="0,00" oninput="window.lancCalcSaldo()"></div></div>
+
+                                  <!-- Col 2: Empresa (Fornecedor) — standalone, sem card -->
+                                  <div style="display:flex; flex-direction:column; justify-content:center; padding: 0 0.25rem;">
+                                    <div class="lanc-field" style="margin:0;">
+                                      <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                                        <label style="font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0;">Empresa (Fornecedor)</label>
+                                        <a href="#" onclick="const bs = Array.from(document.querySelectorAll('.fiscal-tab')); const b = bs.find(e => e.textContent.includes('Fornecedores')); if(b) b.click(); return false;" style="font-size:0.75rem; font-weight:600; color:#0f172a; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#0f172a'">Adicionar Fornecedor</a>
+                                      </div>
+                                      <div id="lanc-empresa-wrapper" style="position:relative; margin-top:0.3rem;">
+                                        <input type="text" id="lanc-empresa-search" placeholder="Digite para buscar..." autocomplete="off"
+                                          onfocus="window.lancAbrirDropdownEmpresa()"
+                                          oninput="window.lancFiltrarDropdownEmpresa(this.value)"
+                                          style="width:100%;box-sizing:border-box;padding:0.5rem 2.2rem 0.5rem 0.75rem;border:1.5px solid #e2e8f0;border-radius:8px;font-size:0.85rem;color:#1e293b;background:#fff;transition:border-color .18s,box-shadow .18s;outline:none;font-family:inherit;">
+                                        <i class="fas fa-search" style="position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:0.8rem;pointer-events:none;"></i>
+                                        <input type="hidden" id="lanc-empresa" value="">
+                                        <div id="lanc-empresa-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,0.13);max-height:220px;overflow-y:auto;z-index:2000;padding:4px;">
+                                          <div id="lanc-empresa-options"></div>
+                                        </div>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div class="lanc-info-box" id="lanc-empenho-info" style="display:none; margin-top: 0.75rem;"><i class="fas fa-info-circle"></i><span id="lanc-empenho-info-txt"></span></div>
-                                </div>
+
+                                  <!-- Col 3: Dados do Contrato -->
+                                  <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:1.1rem 1.25rem;">
+                                    <div class="lanc-section-header" style="margin-bottom:0.6rem;">
+                                      <div class="lanc-section-icon"><i class="fas fa-file-contract"></i></div>
+                                      <span class="lanc-section-title">Dados do Contrato</span>
+                                    </div>
+                                    <div class="lanc-section-divider"></div>
+                                    <div class="lanc-field" style="margin:0;">
+                                      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:0.3rem;">
+                                        <label style="margin-bottom:0;">N.&#186; Contrato</label>
+                                        <a href="#" onclick="const bs = Array.from(document.querySelectorAll('.fiscal-tab')); const b = bs.find(e => e.textContent.includes('Contratos')); if(b) b.click(); return false;" style="font-size:0.75rem; font-weight:600; color:#0f172a; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#0f172a'">Adicionar Contrato</a>
+                                      </div>
+                                      <select id="lanc-contrato" disabled onchange="window.lancOnContratoChange()">
+                                        <option value="">-- Selecione a Empresa primeiro --</option>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                </div><!-- /linha superior -->
+
+                                <!-- ═══ DADOS DO PAGAMENTO ═══ -->
+                                <!-- ═══ DADOS DO PAGAMENTO (MULTI-EMPENHO / MULTI-NF) ═══ -->
                                 <div class="lanc-section">
-                                  <div class="lanc-section-header"><div class="lanc-section-icon"><i class="fas fa-sticky-note"></i></div><span class="lanc-section-title">Observações</span></div>
+                                  <div class="lanc-section-header">
+                                    <div class="lanc-section-icon"><i class="fas fa-money-check-alt"></i></div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <span class="lanc-section-title">Dados do Pagamento</span>
+                                        <button type="button" class="lanc-btn-secondary" onclick="window.lancNovoBlocoEmpenho()" style="padding:0.4rem 0.8rem; border-color:#3b82f6; color:#1d4ed8; background:#eff6ff;"><i class="fas fa-folder-plus"></i> Adicionar Bloco de Empenho</button>
+                                    </div>
+                                  </div>
                                   <div class="lanc-section-divider"></div>
-                                  <div class="lanc-obs-row"><div class="lanc-field" style="flex:1;"><textarea id="lanc-obs" placeholder="Adicione observações importantes sobre este lançamento..."></textarea></div><button class="lanc-btn-primary" onclick="window.salvarMapa()" style="flex-shrink:0;"><i class="fas fa-save"></i> Salvar Mapa</button></div>
+
+                                  <!-- Contêiner Reativo -->
+                                  <div id="lanc-blocos-container">
+                                      <!-- Blocos injetados via JS -->
+                                  </div>
+                                </div><!-- /Dados do Pagamento -->
+
+                                <!-- ═══ OBSERVAÇÕES ═══ -->
+                                <div class="lanc-section">
+                                  <div class="lanc-section-header">
+                                    <div class="lanc-section-icon"><i class="fas fa-sticky-note"></i></div>
+                                    <span class="lanc-section-title">Observações</span>
+                                  </div>
+                                  <div class="lanc-section-divider"></div>
+                                  <div class="lanc-obs-row">
+                                    <div class="lanc-field" style="flex:1;">
+                                      <textarea id="lanc-obs" placeholder="Adicione observações importantes sobre este lançamento..."></textarea>
+                                    </div>
+                                    <button class="lanc-btn-primary" onclick="window.salvarMapa()" style="flex-shrink:0;">
+                                      <i class="fas fa-save"></i> Salvar Mapa
+                                    </button>
+                                  </div>
                                 </div>
-                              </div>
+
+                              </div><!-- /lanc-main-card -->
                               <div class="lanc-table-area">
                                 <div class="lanc-table-header"><h3 class="lanc-table-title" id="lanc-table-heading">Medicoes Salvas em 2026</h3><div class="lanc-table-controls"><button class="lanc-btn-secondary" onclick="window.lancImprimirTabela()"><i class="fas fa-print"></i> Imprimir Tabela</button><select class="lanc-filter-select" id="lanc-filtro-ano" onchange="window.lancFiltrarMedicoes()"><option value="2026" selected>2026</option><option value="2025">2025</option><option value="2024">2024</option></select><select class="lanc-filter-select" id="lanc-filtro-mes" onchange="window.lancFiltrarMedicoes()"><option value="">Todos os Meses</option><option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Marco</option><option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option><option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option><option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option></select><select class="lanc-filter-select" id="lanc-filtro-status" onchange="window.lancFiltrarMedicoes()"><option value="">Todos os Status</option><option value="Pendente">Pendente</option><option value="Em Processo">Em Processo</option><option value="Pago">Pago</option></select></div></div>
                                 <div class="lanc-table-wrap"><table class="lanc-table"><thead><tr><th>Competencia</th><th>Emissao</th><th>N.o NF</th><th>N.o Empenho</th><th>N.o Proc. Pagamento</th><th>Status</th><th>Valor</th><th>Saldo</th><th>Acoes</th></tr></thead><tbody id="lanc-medicoes-tbody"><tr class="lanc-empty-row"><td colspan="9">Nenhuma medicao encontrada para os filtros aplicados.</td></tr></tbody></table></div>
                               </div>
                             </div>
-                            
+                          </div>
                         </div>
                     </div>
                 </div>
@@ -11172,7 +11352,7 @@
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999;">Nenhum fornecedor cadastrado</td></tr>';
             } else {
                 tbody.innerHTML = window.fiscalData.fornecedores.map((f, i) =>
-                    '<tr><td>' + (f.name || f.nome) + '</td><td>' + (f.cnpj || '-') + '</td><td>' + (f.objeto || '-') + '</td><td><button class="btn-tiny btn-warning" onclick="window.editarFornecedor(' + i + ')"><i class="fas fa-edit"></i> Editar</button> <button class="btn-tiny btn-danger" onclick="window.excluirFornecedor(' + i + ')"><i class="fas fa-trash"></i> Excluir</button></td></tr>'
+                    '<tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 1rem; color: #334155;">' + (f.name || f.nome) + '</td><td style="padding: 1rem; color: #334155;">' + (f.cnpj || '-') + '</td><td style="padding: 1rem; color: #334155;">' + (f.objeto || '-') + '</td><td style="padding: 1rem; color: #334155;"><button class="btn-edit-action" onclick="window.editarFornecedor(' + i + ')"><i class="fas fa-pen"></i> Editar</button> <button class="btn-delete-action" onclick="window.excluirFornecedor(' + i + ')"><i class="fas fa-trash"></i> Excluir</button></td></tr>'
                 ).join('');
             }
             window.atualizarSelectsFornecedor();
@@ -11316,8 +11496,9 @@
                     await window.initializeSupabase();
                 }
                 if (window.supabaseClient) {
+                    const recurso = document.getElementById('emp-recurso') ? document.getElementById('emp-recurso').value.trim() : '';
                     for (const emp of emprenhos) {
-                        const data = { supplier_name: fornec, contract_number: contrato, period: periodo, ne_number: emp.ne, value: emp.valor };
+                        const data = { supplier_name: fornec, contract_number: contrato, resource: recurso, period: periodo, ne_number: emp.ne, value: emp.valor };
                         await window.supabaseClient.from('fiscal_empenhos').upsert(data, { onConflict: 'ne_number' });
                     }
                 }
@@ -11340,7 +11521,7 @@
         window.atualizarTabelaEmpenhos = function () {
             const tbody = document.getElementById('empenhos-list');
             if (!tbody) return;
-            tbody.innerHTML = window.fiscalData.empenhos.length === 0 ? '<tr><td colspan="8" style="text-align: center; color: #999;">Nenhum empÃªnho</td></tr>' : 
+            tbody.innerHTML = window.fiscalData.empenhos.length === 0 ? '<tr><td colspan="8" style="text-align: center; color: #999;">Nenhum empenho cadastrado</td></tr>' : 
                 window.fiscalData.empenhos.map((e, i) => `<tr><td>${e.supplier_name}</td><td>${e.contract_number || '-'}</td><td>${e.resource || '-'}</td><td>${e.period || '-'}</td><td>${e.officer_name || '-'}</td><td>${e.ne_number}</td><td>R$ ${parseFloat(e.value).toLocaleString('pt-BR', {minimumFractionDigits:2})}</td><td><button class="btn-tiny btn-warning" onclick="window.editarEmpenho(${i})"><i class="fas fa-edit"></i></button> <button class="btn-tiny btn-danger" onclick="window.excluirEmpenho('${e.ne_number}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
         };
 
@@ -11561,19 +11742,94 @@
         };
 
         // ======================== LANÃ‡AMENTOS (MEDIÃ‡Ã•ES) ========================
+        /* ---- Campo de Busca: Empresa (Fornecedor) em Lancamentos ---- */
+        window.lancPopularEmpresas = function () {
+            const fornecedores = (window.fiscalData && window.fiscalData.fornecedores) || [];
+            const optionsDiv = document.getElementById('lanc-empresa-options');
+            if (!optionsDiv) return;
+            optionsDiv.innerHTML = fornecedores.length === 0
+                ? '<div style="padding:0.75rem 1rem;color:#94a3b8;font-size:0.83rem;">Nenhum fornecedor cadastrado</div>'
+                : fornecedores.map(function(f) {
+                    const nome = f.name || f.nome || '';
+                    return '<div class="lanc-empresa-option" data-value="' + nome + '" onclick="window.lancSelecionarEmpresa(\'' + nome.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')" '
+                         + 'style="padding:0.55rem 0.9rem;cursor:pointer;border-radius:7px;font-size:0.85rem;color:#1e293b;" '
+                         + 'onmouseover="this.style.background=\'#f1f5f9\'" onmouseout="this.style.background=\'\'">'
+                         + nome + '</div>';
+                }).join('');
+        };
+
+        window.lancAbrirDropdownEmpresa = function () {
+            window.lancPopularEmpresas();
+            const dd = document.getElementById('lanc-empresa-dropdown');
+            if (dd) { dd.style.display = 'block'; }
+        };
+
+        window.lancFiltrarDropdownEmpresa = function (busca) {
+            const fornecedores = (window.fiscalData && window.fiscalData.fornecedores) || [];
+            const optionsDiv = document.getElementById('lanc-empresa-options');
+            if (!optionsDiv) return;
+            const q = busca.toLowerCase();
+            const filtrados = fornecedores.filter(function(f) { return (f.name || f.nome || '').toLowerCase().includes(q); });
+            optionsDiv.innerHTML = filtrados.length === 0
+                ? '<div style="padding:0.75rem 1rem;color:#94a3b8;font-size:0.83rem;">Nenhum resultado encontrado</div>'
+                : filtrados.map(function(f) {
+                    const nome = f.name || f.nome || '';
+                    return '<div class="lanc-empresa-option" data-value="' + nome + '" onclick="window.lancSelecionarEmpresa(\'' + nome.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')" '
+                         + 'style="padding:0.55rem 0.9rem;cursor:pointer;border-radius:7px;font-size:0.85rem;color:#1e293b;" '
+                         + 'onmouseover="this.style.background=\'#f1f5f9\'" onmouseout="this.style.background=\'\'">'
+                         + nome + '</div>';
+                }).join('');
+            const dd = document.getElementById('lanc-empresa-dropdown');
+            if (dd) dd.style.display = 'block';
+        };
+
+        window.lancSelecionarEmpresa = function (nome) {
+            const hidden = document.getElementById('lanc-empresa');
+            const searchInput = document.getElementById('lanc-empresa-search');
+            const dd = document.getElementById('lanc-empresa-dropdown');
+            if (hidden) hidden.value = nome;
+            if (searchInput) {
+                searchInput.value = nome;
+                searchInput.style.borderColor = '#3b82f6';
+                searchInput.style.boxShadow = '0 0 0 3px rgba(59,130,246,.12)';
+            }
+            if (dd) dd.style.display = 'none';
+            window.lancOnEmpresaChange();
+        };
+
+        // Fechar dropdown de empresa ao clicar fora
+        document.addEventListener('click', function (e) {
+            const wrapper = document.getElementById('lanc-empresa-wrapper');
+            const dd = document.getElementById('lanc-empresa-dropdown');
+            if (wrapper && dd && !wrapper.contains(e.target)) dd.style.display = 'none';
+        });
         window.lancOnEmpresaChange = function () {
             const empresa = document.getElementById('lanc-empresa').value;
             const selContrato = document.getElementById('lanc-contrato');
-            if (!empresa) { selContrato.innerHTML = '<option value="">-- Selecione --</option>'; selContrato.disabled = true; return; }
+            if (!empresa) {
+                if (selContrato) { selContrato.innerHTML = '<option value="">-- Selecione a Empresa primeiro --</option>'; selContrato.disabled = true; }
+                return;
+            }
             const contratos = window.fiscalData.contratos.filter(c => c.supplier_name === empresa);
-            selContrato.innerHTML = '<option value="">-- Selecione --</option>' + contratos.map(c => `<option value="${c.contract_number}">${c.contract_number}</option>`).join('');
-            selContrato.disabled = false;
+            const opts = '<option value="">-- Selecione --</option>' + contratos.map(c => `<option value="${c.contract_number}">${c.contract_number}</option>`).join('');
+            if (selContrato) { selContrato.innerHTML = opts; selContrato.disabled = false; }
             window.lancAtualizarTodosEmpenhosSelects();
+        };
+
+
+        window.lancAdicionarNF = function () {
+            const nf = (document.getElementById('lanc-nf') || {value:''}).value.trim();
+            const valor = (document.getElementById('lanc-valor-nf') || {value:''}).value.trim();
+            if (!nf) { alert('Preencha o N.º da Nota Fiscal antes de adicionar.'); return; }
+            // Feedback visual: flash verde no campo
+            const nfEl = document.getElementById('lanc-nf');
+            if (nfEl) { nfEl.style.borderColor = '#22c55e'; setTimeout(() => { nfEl.style.borderColor = ''; }, 1200); }
+            window.lancCalcSaldo();
         };
 
         window.lancAtualizarTodosEmpenhosSelects = function () {
             const empresa = document.getElementById('lanc-empresa').value;
-            const contrato = document.getElementById('lanc-contrato').value;
+            const contrato = (document.getElementById('lanc-contrato') || {value:''}).value;
             const selects = document.querySelectorAll('.lanc-empenho-select');
             selects.forEach(sel => {
                 if (!empresa) { sel.innerHTML = '<option value="">-- Selecione --</option>'; return; }
@@ -11585,7 +11841,7 @@
 
         window.lancAdicionarEmpenho = function () {
             const div = document.createElement('div'); div.className = 'lanc-empenho-row'; div.style.cssText = 'display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;';
-            div.innerHTML = `<select class="lanc-empenho-select form-control" onchange="window.lancOnNovoEmpenhoChange(this)" style="flex: 1;"><option value="">-- Selecione --</option></select><div class="lanc-money-wrap" style="width: 140px;"><span>R$</span><input type="text" class="lanc-valor-empenho" placeholder="0,00" readonly style="padding-left: 2.1rem;"></div><button type="button" class="btn-tiny btn-danger" onclick="window.lancRemoverEmpenho(this)" style="padding: 6px 10px;"><i class="fas fa-times"></i></button>`;
+            div.innerHTML = `<select class="lanc-empenho-select form-control" onchange="window.lancOnNovoEmpenhoChange(this)" style="flex: 1;"><option value="">-- Selecione --</option></select>`;
             document.getElementById('lanc-empenhos-container').appendChild(div);
             window.lancAtualizarTodosEmpenhosSelects();
         };
@@ -11595,21 +11851,31 @@
         };
 
         window.lancOnNovoEmpenhoChange = function (select) {
-            const opt = select.options[select.selectedIndex];
-            const row = select.closest('.lanc-empenho-row');
-            row.querySelector('.lanc-valor-empenho').value = opt && opt.value ? parseFloat(opt.getAttribute('data-valor')).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '';
             window.lancCalcSaldo();
         };
 
         window.lancCalcSaldo = function () {
-            const valorNf = parseFloat(document.getElementById('lanc-valor-nf').value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0;
+            const elNf = document.getElementById('lanc-valor-nf');
+            const valorNf = elNf ? (parseFloat(elNf.value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0) : 0;
             let totalEmpenhos = 0;
-            document.querySelectorAll('.lanc-valor-empenho').forEach(el => { totalEmpenhos += parseFloat(el.value.replace(/[^0-9,]/g, '').replace(',', '.')) || 0; });
+            document.querySelectorAll('.lanc-empenho-select').forEach(function(sel) {
+                const opt = sel.options[sel.selectedIndex];
+                if (opt && opt.value) {
+                    totalEmpenhos += parseFloat(opt.getAttribute('data-valor') || '0') || 0;
+                }
+            });
+            const saldo = totalEmpenhos - valorNf;
             const infoBox = document.getElementById('lanc-empenho-info');
-            if (totalEmpenhos > 0) {
-                infoBox.style.display = 'flex';
-                document.getElementById('lanc-empenho-info-txt').innerHTML = `<strong>Total:</strong> R$ ${totalEmpenhos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} | <strong>NF:</strong> R$ ${valorNf.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} | <strong>Saldo:</strong> R$ ${(totalEmpenhos - valorNf).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-            } else infoBox.style.display = 'none';
+            const infoTxt = document.getElementById('lanc-empenho-info-txt');
+            if (totalEmpenhos > 0 || valorNf > 0) {
+                if (infoBox) infoBox.style.display = 'flex';
+                if (infoTxt) infoTxt.innerHTML =
+                    '<strong>Empenho:</strong> R$ ' + totalEmpenhos.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) +
+                    ' │ <strong>NF:</strong> R$ ' + valorNf.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) +
+                    ' │ <strong>Saldo:</strong> R$ ' + saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            } else {
+                if (infoBox) infoBox.style.display = 'none';
+            }
         };
 
         window.salvarMapa = async function () {
@@ -11627,13 +11893,13 @@
             const enempos = Array.from(document.querySelectorAll('.lanc-empenho-select')).map(s => s.value).filter(v => v);
             if (!data.supplier_name || !data.invoice_number || enempos.length === 0) { alert('Preencha os campos obrigatÃ³rios'); return; }
             try {
-                if (window.supabase) {
+                if (window.supabaseClient) {
                     for (const ne of enempos) {
                         const valEmp = parseFloat(document.querySelector(`.lanc-empenho-select option[value="${ne}"]`).getAttribute('data-valor')) || 0;
-                        await window.supabase.from('fiscal_measurements').insert({ ...data, empenho_number: ne, projected_balance: valEmp - (data.invoice_value / enempos.length) });
+                        await window.supabaseClient.from('fiscal_measurements').insert({ ...data, empenho_number: ne, projected_balance: valEmp - (data.invoice_value / enempos.length) });
                     }
                 }
-                alert('MediÃ§Ã£o salva!');
+                alert('Medição salva!');
                 window.loadFiscalData();
             } catch (err) { alert(err.message); }
         };
@@ -11728,6 +11994,392 @@
         };
     </script>
     <script src="2026_script.js"></script>
+    <script>
+        window.lancIrParaAba = function(abaId) {
+            let btnIndex = -1;
+            if (abaId === 'fornecedores') btnIndex = 0;
+            else if (abaId === 'contratos') btnIndex = 3;
+            else if (abaId === 'empenhos') btnIndex = 4;
+            
+            if (btnIndex >= 0) {
+                const btns = document.querySelectorAll('.fiscal-tab');
+                if (btns.length > btnIndex) {
+                    window.switchFiscalTab(abaId, btns[btnIndex]);
+                }
+            }
+        };
+
+        window.lancBlocoContador = 0;
+
+        window.lancNovoBlocoEmpenho = function() {
+            window.lancBlocoContador++;
+            const id = window.lancBlocoContador;
+            
+            const div = document.createElement('div');
+            div.className = 'lanc-bloco-empenho';
+            div.id = 'bloco-emp-' + id;
+            div.dataset.blocoId = id;
+            div.style.cssText = 'padding:1.2rem; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; margin-bottom:1.5rem; position:relative; box-shadow:0 2px 4px rgba(0,0,0,0.02);';
+            
+            const empresa = document.getElementById('lanc-empresa').value;
+            const contrato = (document.getElementById('lanc-contrato') || {value:''}).value;
+            
+            let empenhosSelectHTML = '<option value="">-- Selecione --</option>';
+            if (empresa && window.fiscalData && window.fiscalData.empenhos) {
+                const enempos = window.fiscalData.empenhos.filter(e => e.supplier_name === empresa && (!contrato || e.contract_number === contrato));
+                empenhosSelectHTML += enempos.map(e => '<option value="' + e.ne_number + '" data-valor="' + e.value + '">' + e.ne_number + ' \u2014 R$ ' + parseFloat(e.value).toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</option>').join('');
+            }
+
+            div.innerHTML = `
+                <button type="button" onclick="this.closest('.lanc-bloco-empenho').remove(); window.lancAtualizarTodosEmpenhosSelects();" style="position:absolute; top:1rem; right:1rem; background:none; border:none; color:#dc2626; cursor:pointer;" title="Remover este Empenho"><i class="fas fa-trash-alt"></i> Excluir Bloco</button>
+                <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1.2rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.5rem;">
+                    <div style="background:#cbd5e1; color:#334155; font-size:0.7rem; font-weight:800; padding:0.2rem 0.5rem; border-radius:4px;">#${id}</div>
+                    <h4 style="margin:0; font-size:0.95rem; color:#0f172a;">Configuração de Novo Empenho e Atribuição de NFs</h4>
+                </div>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-bottom:1.2rem;">
+                    <div class="lanc-field" style="margin:0;">
+                         <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:0.3rem;">
+                            <label style="margin-bottom:0;">N.º Empenho Selecionado</label>
+                            <a href="#" onclick="const bs = Array.from(document.querySelectorAll('.fiscal-tab')); const b = bs.find(e => e.textContent.includes('Empenhos')); if(b) b.click(); return false;" style="font-size:0.75rem; font-weight:600; color:#0f172a; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#2563eb'" onmouseout="this.style.color='#0f172a'">Adicionar Empenho</a>
+                         </div>
+                         <select class="lanc-empenho-select form-control" onchange="window.lancMudouEmpenho('${id}')">
+                            ${empenhosSelectHTML}
+                         </select>
+                    </div>
+                    <div class="lanc-field" style="margin:0;">
+                         <label>N.º Processo de Pagamento</label>
+                         <input type="text" class="lanc-proc-input form-control" placeholder="ex: 0125/2026">
+                    </div>
+                </div>
+
+                <div style="background:#fff; border:1px solid #cbd5e1; border-radius:8px; padding:1.2rem; margin-bottom:1.2rem;">
+                     <h5 style="margin:0 0 1rem 0; font-size:0.85rem; color:#475569; text-transform:uppercase; letter-spacing:0.05em;"><i class="fas fa-file-invoice" style="margin-right:0.4rem;"></i> Composição de Notas Fiscais</h5>
+                     
+                     <!-- Tabela visual de NFs no Bloco -->
+                     <div class="lanc-nfs-container" id="nfs-container-${id}" style="margin-bottom:1rem;"></div>
+
+                     <!-- Formulário de inserção de NF -->
+                     <div style="display:grid; grid-template-columns:1fr 1fr auto; gap:0.8rem; align-items:flex-end; padding-top:0.8rem; border-top:1px dashed #e2e8f0;">
+                        <div class="lanc-field" style="margin:0;">
+                             <label>N.º da Nota Fiscal</label>
+                             <input type="text" id="nfinp-num-${id}" class="form-control" placeholder="ex: 123456">
+                        </div>
+                        <div class="lanc-field" style="margin:0;">
+                             <label>Valor da Nota</label>
+                             <div class="lanc-money-wrap">
+                                <span>R$</span>
+                                <input type="text" id="nfinp-val-${id}" class="form-control" placeholder="0,00" onkeydown="if(event.key==='Enter'){window.lancAdicionarNFNaLista('${id}');event.preventDefault();}">
+                             </div>
+                        </div>
+                        <button type="button" class="lanc-btn-secondary" onclick="window.lancAdicionarNFNaLista('${id}')" style="padding:0.5rem 1rem;"><i class="fas fa-plus"></i> Inserir na Lista</button>
+                     </div>
+                </div>
+
+                <div class="lanc-info-box" id="info-bloco-${id}" style="margin:0;">
+                     <i class="fas fa-info-circle"></i>
+                     <span class="bloco-info-text">Selecione o Empenho acima</span>
+                </div>
+            `;
+
+            document.getElementById('lanc-blocos-container').appendChild(div);
+        };
+
+        window.lancAdicionarNFNaLista = function(id) {
+            const iptNum = document.getElementById('nfinp-num-' + id);
+            const iptVal = document.getElementById('nfinp-val-' + id);
+            
+            if(!iptNum.value || !iptVal.value) { alert('Preencha Número e Valor da NF'); return; }
+            
+            const valNumerico = parseFloat(iptVal.value.replace(/[^0-9,]/g,'').replace(',','.')) || 0;
+            if(valNumerico <= 0) { alert('O valor da NF deve ser maior que zero'); return; }
+            
+            const div = document.createElement('div');
+            div.className = 'lanc-nf-item';
+            div.dataset.nfnum = iptNum.value;
+            div.dataset.nfval = valNumerico;
+            div.style.cssText = 'display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border-left:3px solid #3b82f6; padding:0.6rem 0.8rem; margin-bottom:0.4rem; border-top:1px solid #e2e8f0; border-right:1px solid #e2e8f0; border-bottom:1px solid #e2e8f0; border-radius:4px; font-size:0.85rem;';
+            
+            div.innerHTML = `
+                <div><span style="color:#64748b; font-size:0.7rem; text-transform:uppercase;">Nota Fiscal</span> <strong style="font-size:0.95rem; margin-left:0.3rem;">${iptNum.value}</strong> <span style="color:#cbd5e1; margin:0 0.8rem;">|</span> <span style="color:#10b981; font-weight:700;">R$ ${valNumerico.toLocaleString('pt-BR', {minimumFractionDigits:2})}</span></div>
+                <button type="button" onclick="this.closest('.lanc-nf-item').remove(); window.lancMudouEmpenho('${id}');" style="background:none; border:none; color:#64748b; cursor:pointer; font-size:1rem;" title="Remover Item" onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#64748b'"><i class="fas fa-times-circle"></i></button>
+            `;
+            
+            document.getElementById('nfs-container-' + id).appendChild(div);
+            
+            iptNum.value = '';
+            iptVal.value = '';
+            iptNum.focus();
+            
+            window.lancMudouEmpenho(id);
+        };
+
+        window.lancMudouEmpenho = function(id) {
+            const bloco = document.getElementById('bloco-emp-' + id);
+            if (!bloco) return;
+            
+            const sel = bloco.querySelector('.lanc-empenho-select');
+            const opt = sel.options[sel.selectedIndex];
+            
+            let baseEmpenho = 0;
+            if (opt && opt.value) {
+                baseEmpenho = parseFloat(opt.getAttribute('data-valor')) || 0;
+            }
+            
+            let somaNF = 0;
+            const nfItems = bloco.querySelectorAll('.lanc-nf-item');
+            nfItems.forEach(it => {
+                somaNF += parseFloat(it.dataset.nfval) || 0;
+            });
+            
+            const saldo = baseEmpenho - somaNF;
+            const infoText = bloco.querySelector('.bloco-info-text');
+            const infoBox = document.getElementById('info-bloco-' + id);
+            
+            let corSaldo = saldo < 0 ? '#ef4444' : (saldo > 0 ? '#0369a1' : '#16a34a');
+            
+            if (baseEmpenho > 0 || somaNF > 0) {
+                infoText.innerHTML = `<strong>Valor do Empenho:</strong> R$ ${baseEmpenho.toLocaleString('pt-BR', {minimumFractionDigits:2})} <span style="margin:0 0.5rem; color:#bfdbfe;">|</span> <strong>NFs Alocadas (${nfItems.length}):</strong> R$ ${somaNF.toLocaleString('pt-BR', {minimumFractionDigits:2})} <span style="margin:0 0.5rem; color:#bfdbfe;">|</span> <strong>Saldo Projetado Final:</strong> <span style="color:${corSaldo}; font-weight:800; font-size:1.05em;">R$ ${saldo.toLocaleString('pt-BR', {minimumFractionDigits:2})}</span>`;
+                if (saldo < 0) {
+                    infoBox.style.backgroundColor = '#fef2f2';
+                    infoBox.style.borderColor = '#fecaca';
+                    infoBox.style.color = '#b91c1c';
+                } else {
+                    infoBox.style.backgroundColor = '#eff6ff';
+                    infoBox.style.borderColor = '#bfdbfe';
+                    infoBox.style.color = '#1d4ed8';
+                }
+            } else {
+                infoText.innerHTML = "Selecione o Empenho acima e preencha as Notas Fiscais";
+                infoBox.style.backgroundColor = '#eff6ff';
+                infoBox.style.borderColor = '#bfdbfe';
+                infoBox.style.color = '#1d4ed8';
+            }
+        };
+
+        window.lancAtualizarTodosEmpenhosSelects = function () {
+            const empresa = document.getElementById('lanc-empresa').value;
+            const contrato = (document.getElementById('lanc-contrato') || {value:''}).value;
+            
+            let opts = '<option value="">-- Selecione --</option>';
+            if (empresa && window.fiscalData && window.fiscalData.empenhos) {
+                const enempos = window.fiscalData.empenhos.filter(e => e.supplier_name === empresa && (!contrato || e.contract_number === contrato));
+                opts += enempos.map(e => '<option value="' + e.ne_number + '" data-valor="' + e.value + '">' + e.ne_number + ' \u2014 R$ ' + parseFloat(e.value).toLocaleString('pt-BR', {minimumFractionDigits:2}) + '</option>').join('');
+            }
+            
+            document.querySelectorAll('.lanc-empenho-select').forEach(sel => {
+                const valAtual = sel.value;
+                sel.innerHTML = opts;
+                if(valAtual && Array.from(sel.options).some(o => o.value===valAtual)) sel.value = valAtual;
+            });
+            
+            document.querySelectorAll('.lanc-bloco-empenho').forEach(b => {
+                window.lancMudouEmpenho(b.dataset.blocoId);
+            });
+        };
+
+        window.importarLancamentosExcel = function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function (e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const jsondata = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+                    if (jsondata.length === 0) {
+                        alert('A planilha está vazia.');
+                        return;
+                    }
+
+                    // Identificar colunas (insensitive)
+                    const header = Object.keys(jsondata[0]);
+                    const keyMap = {
+                        mes: header.find(k => k.toLowerCase().match(/^m.s|^mês/)),
+                        ano: header.find(k => k.toLowerCase().match(/^ano/)),
+                        empresa: header.find(k => k.toLowerCase().match(/^empresa|^fornecedor|^raz.o/)),
+                        contrato: header.find(k => k.toLowerCase().match(/^contrato/)),
+                        processo: header.find(k => k.toLowerCase().match(/^processo/)),
+                        empenho: header.find(k => k.toLowerCase().match(/^empenho|^ne/)),
+                        nf: header.find(k => k.toLowerCase().match(/^nf|^nota\s*fiscal/)),
+                        valor: header.find(k => k.toLowerCase().match(/^val|^vlr|valor/))
+                    };
+
+                    const row0 = jsondata[0];
+                    if (keyMap.mes && row0[keyMap.mes]) {
+                        const mesStr = row0[keyMap.mes].toString().padStart(2, '0');
+                        document.getElementById('lanc-mes').value = mesStr;
+                    }
+                    if (keyMap.ano && row0[keyMap.ano]) document.getElementById('lanc-ano').value = row0[keyMap.ano].toString();
+                    
+                    if (keyMap.empresa && row0[keyMap.empresa]) {
+                        const empVal = row0[keyMap.empresa].toString().trim().toUpperCase();
+                        const empSelect = document.getElementById('lanc-empresa');
+                        let matchedOption = Array.from(empSelect.options).find(o => o.text.toUpperCase().includes(empVal) || o.value.toUpperCase().includes(empVal));
+                        if(matchedOption) {
+                            empSelect.value = matchedOption.value;
+                            window.lancAtualizarContratosEEmpenhos();
+                        } else {
+                            alert('Atenção: Empresa "' + empVal + '" não localizada no banco. Cadastre-a primeiro ou selecione manualmente.');
+                        }
+                    }
+
+                    setTimeout(() => {
+                        if (keyMap.contrato && row0[keyMap.contrato]) {
+                            const ctSelect = document.getElementById('lanc-contrato');
+                            const ctVal = row0[keyMap.contrato].toString().trim();
+                            let matchedCt = Array.from(ctSelect.options).find(o => o.value && o.value.includes(ctVal));
+                            if(matchedCt) {
+                                ctSelect.value = matchedCt.value;
+                                window.lancAtualizarTodosEmpenhosSelects();
+                            }
+                        }
+
+                        document.getElementById('lanc-blocos-container').innerHTML = '';
+
+                        setTimeout(() => {
+                            const groupedByEmpenho = {};
+                            jsondata.forEach(r => {
+                                const ne = keyMap.empenho && r[keyMap.empenho] ? r[keyMap.empenho].toString().trim() : 'PADRÃO';
+                                if(!groupedByEmpenho[ne]) groupedByEmpenho[ne] = [];
+                                groupedByEmpenho[ne].push(r);
+                            });
+
+                            Object.keys(groupedByEmpenho).forEach(empenhoNum => {
+                                const blocoId = window.lancNovoBlocoEmpenho(); 
+                                const bloco = document.querySelector(`.lanc-bloco-empenho[data-bloco-id="${blocoId}"]`);
+                                if (bloco) {
+                                    const neSelect = bloco.querySelector('.lanc-empenho-select');
+                                    let matchedNe = Array.from(neSelect.options).find(o => o.value && o.value.includes(empenhoNum));
+                                    if(matchedNe) neSelect.value = matchedNe.value;
+                                    window.lancMudouEmpenho(blocoId);
+
+                                    groupedByEmpenho[empenhoNum].forEach((item, index) => {
+                                        if (index === 0 && keyMap.processo && item[keyMap.processo]) {
+                                            bloco.querySelector('.lanc-proc-input').value = item[keyMap.processo].toString();
+                                        }
+
+                                        const numNf = keyMap.nf && item[keyMap.nf] ? item[keyMap.nf].toString().trim() : '';
+                                        let vlrNf = 0;
+                                        if (keyMap.valor && item[keyMap.valor]) {
+                                            let vRaw = item[keyMap.valor].toString().replace('R$', '').trim();
+                                            // Handle both American format 1000.50 and Brazilian 1.000,50
+                                            if(vRaw.includes(',') && vRaw.includes('.')) {
+                                                vRaw = vRaw.replace(/\./g, '').replace(',', '.');
+                                            } else if(vRaw.includes(',')) {
+                                                vRaw = vRaw.replace(',', '.');
+                                            }
+                                            vlrNf = parseFloat(vRaw) || 0;
+                                        }
+                                        
+                                        if (numNf) {
+                                            bloco.querySelector(`#bloco-${blocoId}-nf`).value = numNf;
+                                            bloco.querySelector(`#bloco-${blocoId}-vlr`).value = vlrNf.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+                                            window.lancAdicionarNFLinha(blocoId);
+                                        }
+                                    });
+                                }
+                            });
+                            alert('Importação do Excel (' + jsondata.length + ' linhas) concluída com sucesso!');
+                        }, 500); 
+
+                    }, 500); 
+
+                } catch (err) {
+                    console.error(err);
+                    alert('Erro ao processar planilha: ' + err.message);
+                }
+                event.target.value = '';
+            };
+            reader.readAsArrayBuffer(file);
+        };
+
+        window.salvarMapa = async function () {
+            const year = document.getElementById('lanc-ano').value;
+            const month = document.getElementById('lanc-mes').value;
+            const supplier_name = document.getElementById('lanc-empresa').value;
+            const contract_number = document.getElementById('lanc-contrato').value;
+            const notes = document.getElementById('lanc-obs').value;
+            
+            if (!supplier_name) { alert('Selecione a Empresa (Fornecedor) primeiro.'); return; }
+            
+            const blocos = document.querySelectorAll('.lanc-bloco-empenho');
+            if (blocos.length === 0) { alert('Adicione pelo menos um bloco de Empenho.'); return; }
+            
+            let rowsToInsert = [];
+            let hasError = false;
+            
+            blocos.forEach(b => {
+                const empNum = b.querySelector('.lanc-empenho-select').value;
+                const procNum = b.querySelector('.lanc-proc-input').value;
+                
+                if (!empNum) { alert('Existe um bloco com Empenho vazio. Preencha-o ou exclua o bloco.'); hasError = true; return; }
+                
+                const nfs = Array.from(b.querySelectorAll('.lanc-nf-item'));
+                if (nfs.length === 0) { alert('O Empenho ' + empNum + ' n\xe3o possui Notas Fiscais inseridas na lista. Use o bot\xe3o "Inserir na Lista".'); hasError = true; return; }
+                
+                const opt = b.querySelector('.lanc-empenho-select option[value="'+empNum+'"]');
+                let baseVal = parseFloat(opt.getAttribute('data-valor')) || 0;
+                
+                nfs.forEach(nf => {
+                    const nfNum = nf.dataset.nfnum;
+                    const nfVal = parseFloat(nf.dataset.nfval) || 0;
+                    
+                    baseVal = baseVal - nfVal; // Reduz gradativamente simulando a linha no tempo
+                    
+                    rowsToInsert.push({
+                        year,
+                        month,
+                        supplier_name,
+                        contract_number,
+                        empenho_number: empNum,
+                        process_number: procNum,
+                        invoice_number: nfNum,
+                        invoice_value: nfVal,
+                        projected_balance: baseVal,
+                        notes,
+                        status: 'Pendente'
+                    });
+                });
+            });
+            
+            if (hasError) return;
+            
+            try {
+                if (window.supabaseClient) {
+                    // Start saving button effect
+                    const submitBtn = document.querySelector('.lanc-btn-primary[onclick="window.salvarMapa()"]');
+                    if(submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrando...'; }
+
+                    for (const row of rowsToInsert) {
+                        const { error } = await window.supabaseClient.from('fiscal_measurements').insert(row);
+                        if (error) throw error;
+                    }
+                    alert('Foram registrados ' + rowsToInsert.length + ' lançamento(s) fiscal(is) individualizado(s) com sucesso!');
+                    
+                    document.getElementById('lanc-blocos-container').innerHTML = '';
+                    document.getElementById('lanc-obs').value = '';
+                    window.lancNovoBlocoEmpenho(); 
+                    
+                    if(submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '<i class="fas fa-save"></i> Salvar Mapa'; }
+                    
+                    window.loadFiscalData();
+                } else {
+                    alert('Supabase Connection Error. Client not initialized.');
+                }
+            } catch (err) { 
+                alert('Erro ao salvar no banco: ' + err.message); 
+                const submitBtn = document.querySelector('.lanc-btn-primary[onclick="window.salvarMapa()"]');
+                if(submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '<i class="fas fa-save"></i> Salvar Mapa'; }
+            }
+        };
+
+        // Adiciona um bloco vazio assim que abrir
+        document.addEventListener('DOMContentLoaded', () => { setTimeout(() => { if(document.getElementById('lanc-blocos-container')) window.lancNovoBlocoEmpenho(); }, 500); });
+</script>
 </body>
 
 </html>
